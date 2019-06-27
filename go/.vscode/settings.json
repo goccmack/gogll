@@ -1,0 +1,8 @@
+{
+    "spellright.language": [],
+    "spellright.documentTypes": [
+        "markdown",
+        "latex"
+    ],
+    "go.formatTool": "goimports"
+}
