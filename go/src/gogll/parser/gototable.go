@@ -149,10 +149,10 @@ var gotoTab = gotoTable{
 		-1, // Rules
 		-1, // Rule
 		-1, // Head
-		12, // Alternates
-		14, // Alternate
-		15, // Body
-		17, // Symbol
+		13, // Alternates
+		15, // Alternate
+		16, // Body
+		18, // Symbol
 	},
 	gotoRow{ // S12
 		-1, // S'
@@ -200,7 +200,7 @@ var gotoTab = gotoTable{
 		-1, // Alternates
 		-1, // Alternate
 		-1, // Body
-		29, // Symbol
+		-1, // Symbol
 	},
 	gotoRow{ // S16
 		-1, // S'
@@ -212,7 +212,7 @@ var gotoTab = gotoTable{
 		-1, // Alternates
 		-1, // Alternate
 		-1, // Body
-		-1, // Symbol
+		29, // Symbol
 	},
 	gotoRow{ // S17
 		-1, // S'
@@ -355,8 +355,8 @@ var gotoTab = gotoTable{
 		-1, // Head
 		-1, // Alternates
 		31, // Alternate
-		15, // Body
-		17, // Symbol
+		16, // Body
+		18, // Symbol
 	},
 	gotoRow{ // S29
 		-1, // S'

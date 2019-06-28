@@ -157,7 +157,7 @@ func (g *Grammar) genFollow() {
 		again = false
 		for _, nt := range GetNonTerminals() {
 			f := g.genFollowOf(nt)
-			if !f.Equal(g.followSets[nt]) {
+			if f.Len() > g.followSets[nt].Len() {
 				again = true
 				g.followSets[nt] = f
 			}
@@ -229,12 +229,16 @@ func NewPackage(pkg interface{}) (*Package, error) {
 	p := &Package{
 		Token: tok,
 	}
+	if parserPackage != "" {
+		err := fmt.Errorf("Duplicate package statement")
+		return nil, err
+	}
 	parserPackage = p.Value()
 	return p, nil
 }
 
 func (p *Package) Value() string {
-	return string(p.Token.Lit)
+	return p.Token.StringValue()
 }
 
 type Alternate struct {

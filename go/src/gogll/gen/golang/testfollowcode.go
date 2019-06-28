@@ -6,7 +6,8 @@ import (
 )
 
 func testFollowCode(nt string) string {
-	conds := getTestSelectConditions(nt, 0, g.Follow(nt).Elements())
+	conds := testFollowConditions(g.Follow(nt).Elements())
+	// fmt.Printf("testFollow(%s) follow=s, conds = %s\n", nt, conds)
 	tmpl, err := template.New("testFollowCode").Parse(testFollowTemplate)
 	if err != nil {
 		failError(err)
@@ -18,9 +19,16 @@ func testFollowCode(nt string) string {
 	return buf.String()
 }
 
+func testFollowConditions(follow []string) (conds []string) {
+	for _, sym := range follow {
+		conds = append(conds, getTestSelectCondition(sym))
+	}
+	return
+}
+
 const testFollowTemplate = `if {{range $i, $cond := .}}
 			{{$cond}}{{end}}{
-				cU, cI, cN = pop()
-				label = L0
+				stack.Pop(cU, cI, cN)
+				L = L0
 			}
 `

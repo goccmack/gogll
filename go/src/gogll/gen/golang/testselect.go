@@ -48,8 +48,8 @@ func getTestSelectDataForAlternate(nt string, i int, str ...string) *testSelectD
 }
 
 func getTestSelectConditions(nt string, i int, str []string) []string {
-	empty := false
 	conds := stringset.New()
+	empty := str[0] == ast.Empty
 	for _, sym := range g.FirstOfString(str).Elements() {
 		if sym == ast.Empty {
 			empty = true
@@ -67,13 +67,16 @@ func getTestSelectConditions(nt string, i int, str []string) []string {
 		if i < len(conds.Elements())-1 {
 			tsConds = append(tsConds, c+" ||")
 		} else {
-			tsConds = append(tsConds, c)
+			tsConds = append(tsConds, c+" {")
 		}
 	}
 	return tsConds
 }
 
 func getTestSelectCondition(symName string) string {
+	if symName == "$" {
+		return "next == \"$\""
+	}
 	sym := ast.GetSymbol(symName)
 	switch s := sym.(type) {
 	case *ast.Head:
@@ -109,9 +112,9 @@ func getTestSelectCondition(symName string) string {
 }
 
 const testSelectForAltTemplate = `if {{range $i, $cond := .Conditions}}{{$cond}}
-			{{end}}{
-				add({{.Label}}, cU, cI, sppf.Dummy)
+			{{end}}	UR.Add({{.Label}}, cU, cI, Dummy)
 			}`
 
 const testSelectForSymbolTemplate = `if {{range $i, $cond := .Conditions}}{{$cond}}
-			{{end}}{ label = L0 }`
+			{{end}}	L = L0 
+			}`

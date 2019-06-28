@@ -34,6 +34,10 @@ func GetSlots() Slots {
 	return res
 }
 
+func (s SlotLabel) Label() string {
+	return fmt.Sprintf("%s%dR%d", s.Head, s.Alternate+1, s.Pos+1)
+}
+
 func (s SlotLabel) String() string {
 	symbols := slots[s]
 	buf := new(bytes.Buffer)

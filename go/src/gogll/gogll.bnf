@@ -1,5 +1,4 @@
 nt : _upcase {_idchar} ;
-packageId : _lowcase {_idchar} ;
 charLiteral : '\'' ( _escapedchar | .) '\'' ;
 string : '"' _stringchar {_stringchar} '"' ;
 _stringchar : . | _escapedchar ;
@@ -19,7 +18,7 @@ Grammar
     ;
 
 Package
-    :   "package" packageId                    << ast.NewPackage($1) >>
+    :   "package" string                    << ast.NewPackage($1) >>
     ;
 
 Rules

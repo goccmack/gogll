@@ -51,7 +51,7 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Package : "package" packageId	<< ast.NewPackage(X[1]) >>`,
+		String: `Package : "package" string	<< ast.NewPackage(X[1]) >>`,
 		Id:         "Package",
 		NTType:     2,
 		Index:      3,
