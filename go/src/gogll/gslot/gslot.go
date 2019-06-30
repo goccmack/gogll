@@ -38,6 +38,15 @@ func (s SlotLabel) Label() string {
 	return fmt.Sprintf("%s%dR%d", s.Head, s.Alternate+1, s.Pos+1)
 }
 
+func (s SlotLabel) IsEoR() bool {
+	symbols := slots[s]
+	return s.Pos == len(symbols)
+}
+
+func (s SlotLabel) IsFiR() bool {
+	return s.Pos == 1
+}
+
 func (s SlotLabel) String() string {
 	symbols := slots[s]
 	buf := new(bytes.Buffer)

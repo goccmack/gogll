@@ -1,4 +1,4 @@
-package golang
+package parser
 
 import (
 	"bytes"
@@ -25,8 +25,8 @@ func codeAlt(rule *ast.Rule, altI int) string {
 }
 
 func codeTNEmpty(sl gslot.SlotLabel) string {
-	code := fmt.Sprintf(`cR := forest.GetNodeE(cI)
-			cN = forest.GetNode(%s, cN, cR)
-			stack.Pop(cU, cI, cN)`, sl.Label())
+	code := fmt.Sprintf(`cR := sppf.GetNodeE(cI)
+			cN = sppf.GetNode(labels.%s, cN, cR)
+			pop(cU, cI, cN)`, sl.Label())
 	return code
 }

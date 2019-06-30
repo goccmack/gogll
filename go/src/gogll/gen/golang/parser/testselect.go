@@ -1,4 +1,4 @@
-package golang
+package parser
 
 import (
 	"bytes"
@@ -112,9 +112,9 @@ func getTestSelectCondition(symName string) string {
 }
 
 const testSelectForAltTemplate = `if {{range $i, $cond := .Conditions}}{{$cond}}
-			{{end}}	UR.Add({{.Label}}, cU, cI, Dummy)
+			{{end}}	add(labels.{{.Label}}, cU, cI, dummy)
 			}`
 
 const testSelectForSymbolTemplate = `if {{range $i, $cond := .Conditions}}{{$cond}}
-			{{end}}	L = L0 
+			{{end}}	L = labels.L0 
 			}`

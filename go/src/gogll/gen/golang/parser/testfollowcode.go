@@ -1,4 +1,4 @@
-package golang
+package parser
 
 import (
 	"bytes"
@@ -28,7 +28,7 @@ func testFollowConditions(follow []string) (conds []string) {
 
 const testFollowTemplate = `if {{range $i, $cond := .}}
 			{{$cond}}{{end}}{
-				stack.Pop(cU, cI, cN)
-				L = L0
+				pop(cU, cI, cN)
+				L = labels.L0
 			}
 `
