@@ -1,4 +1,4 @@
-package gogll2
+package "gogll/test/gogll2"
 
 Grammar
     :   Sep Imports Sep Rules Sep

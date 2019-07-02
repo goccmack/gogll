@@ -5,49 +5,9 @@ import (
 	"fmt"
 	"gogll/ast"
 	"gogll/goutil/stringset"
-	"text/template"
 )
 
-func getTestSelectForAlternate(nt string, i int, str ...string) string {
-	data := getTestSelectDataForAlternate(nt, i, str...)
-	tmpl, err := template.New("testSelect").Parse(testSelectForAltTemplate)
-	if err != nil {
-		failError(err)
-	}
-	buf := new(bytes.Buffer)
-	if err := tmpl.Execute(buf, data); err != nil {
-		failError(err)
-	}
-	return buf.String()
-}
-
-func getTestSelectForSymbol(nt string, sym string) string {
-	data := getTestSelectDataForAlternate(nt, 0, sym)
-	tmpl, err := template.New("testSelect for Symbol").Parse(testSelectForSymbolTemplate)
-	if err != nil {
-		failError(err)
-	}
-	buf := new(bytes.Buffer)
-	if err := tmpl.Execute(buf, data); err != nil {
-		failError(err)
-	}
-	return buf.String()
-}
-
-type testSelectData struct {
-	Conditions []string
-	Label      string
-}
-
-func getTestSelectDataForAlternate(nt string, i int, str ...string) *testSelectData {
-	data := &testSelectData{
-		Conditions: getTestSelectConditions(nt, i, str),
-		Label:      getAlternateLabel(nt, i),
-	}
-	return data
-}
-
-func getTestSelectConditions(nt string, i int, str []string) []string {
+func getTestSelectConditions(nt string, str ...string) string {
 	conds := stringset.New()
 	empty := str[0] == ast.Empty
 	for _, sym := range g.FirstOfString(str).Elements() {
@@ -62,20 +22,20 @@ func getTestSelectConditions(nt string, i int, str []string) []string {
 			conds.Add(getTestSelectCondition(sym))
 		}
 	}
-	tsConds := make([]string, 0, conds.Len())
+	buf := new(bytes.Buffer)
 	for i, c := range conds.Elements() {
 		if i < len(conds.Elements())-1 {
-			tsConds = append(tsConds, c+" ||")
+			buf.WriteString(c + " ||\n")
 		} else {
-			tsConds = append(tsConds, c+" {")
+			buf.WriteString(c)
 		}
 	}
-	return tsConds
+	return buf.String()
 }
 
 func getTestSelectCondition(symName string) string {
 	if symName == "$" {
-		return "next == \"$\""
+		return "next == Dollar"
 	}
 	sym := ast.GetSymbol(symName)
 	switch s := sym.(type) {
@@ -110,11 +70,3 @@ func getTestSelectCondition(symName string) string {
 	}
 	panic(fmt.Sprintf("Invalid symbol %s", symName))
 }
-
-const testSelectForAltTemplate = `if {{range $i, $cond := .Conditions}}{{$cond}}
-			{{end}}	add(labels.{{.Label}}, cU, cI, dummy)
-			}`
-
-const testSelectForSymbolTemplate = `if {{range $i, $cond := .Conditions}}{{$cond}}
-			{{end}}	L = labels.L0 
-			}`

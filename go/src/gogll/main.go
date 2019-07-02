@@ -20,8 +20,6 @@ var (
 	baseDir string
 )
 
-const filePerm os.FileMode = 0731
-
 func main() {
 	getParameters()
 	lex, err := lexer.NewLexerFile(bnfFile)
@@ -38,12 +36,15 @@ func main() {
 	check.Check(g)
 	symbols.Gen(baseDir)
 	genff.Gen(baseDir, g)
-	slots.Gen(baseDir, filePerm)
+	slots.Gen(baseDir)
 	golang.Gen(baseDir, g)
 }
 
 func getFileBase() {
 	baseDir, _ = path.Split(bnfFile)
+	if baseDir == "" {
+		baseDir = "."
+	}
 }
 
 func getSourceFile() {

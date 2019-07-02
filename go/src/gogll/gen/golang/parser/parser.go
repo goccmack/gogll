@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"fmt"
 	"gogll/ast"
+	"gogll/goutil/ioutil"
 	"gogll/gslot"
-	"io/ioutil"
 	"os"
 	"path"
 	"path/filepath"
@@ -14,8 +14,6 @@ import (
 	"text/template"
 )
 
-const FilePerm = 0731
-
 var g *ast.Grammar
 
 func Gen(parserDir string, grammar *ast.Grammar) {
@@ -23,15 +21,15 @@ func Gen(parserDir string, grammar *ast.Grammar) {
 	buf := new(bytes.Buffer)
 	tmpl, err := template.New("Parser Template").Parse(src)
 	if err != nil {
-		failError(err)
+		parseErrorError(err)
 	}
 	data := getData(parserDir)
 	if err = tmpl.Execute(buf, data); err != nil {
-		failError(err)
+		parseErrorError(err)
 	}
 	fname := path.Join(parserDir, "parser.go")
-	if err := ioutil.WriteFile(fname, buf.Bytes(), FilePerm); err != nil {
-		failError(err)
+	if err := ioutil.WriteFile(fname, buf.Bytes()); err != nil {
+		parseErrorError(err)
 	}
 	genLabels(filepath.Join(parserDir, "labels"), data.Labels)
 }
@@ -41,12 +39,20 @@ type Data struct {
 	Imports     []string
 	StartSymbol string
 	Labels      []string
-	Rules       []*RuleCode
+	Rules       []*Rule
 }
 
-type RuleCode struct {
+type Rule struct {
+	NT    string
 	Label string
-	Code  string
+	Alts  []*Alternate
+}
+
+type Alternate struct {
+	Label      string
+	TestSelect string
+	Code       string
+	Comment    string
 }
 
 func getData(baseDir string) *Data {
@@ -66,9 +72,12 @@ func getImports(baseDir string) []string {
 	}
 }
 
-func getLabels(ruleCode []*RuleCode) (labels []string) {
-	for _, r := range ruleCode {
+func getLabels(rules []*Rule) (labels []string) {
+	for _, r := range rules {
 		labels = append(labels, r.Label)
+		for _, alt := range r.Alts {
+			labels = append(labels, alt.Label)
+		}
 	}
 	for _, s := range gslot.GetSlots() {
 		labels = append(labels, s.Label())
@@ -77,50 +86,37 @@ func getLabels(ruleCode []*RuleCode) (labels []string) {
 	return
 }
 
-func getRules() (rules []*RuleCode) {
+func getRules() (rules []*Rule) {
 	for _, nt := range ast.GetNonTerminals() {
-		rules = append(rules, getRuleCode(nt)...)
+		rules = append(rules, getRule(nt))
 	}
 	return
 }
 
-func getRuleCode(nt string) (rules []*RuleCode) {
+func getRule(nt string) *Rule {
 	rule := ast.GetRule(nt)
-	rules = append(rules, getRuleTestCode(rule))
-	for i := range rule.Alternates {
-		rules = append(rules, getAlternateCode(rule, i))
+	r := &Rule{
+		NT:    nt,
+		Label: "J_" + nt,
 	}
-	return
-}
-
-func getAlternateCode(rule *ast.Rule, altI int) *RuleCode {
-	rc := &RuleCode{
-		Label: getAlternateLabel(rule.Head.Value(), altI),
-		Code:  codeAlt(rule, altI),
-	}
-	return rc
-}
-
-func getAlternateLabel(nt string, i int) string {
-	return fmt.Sprintf("L_%s%d", nt, i)
-}
-
-func getRuleTestCode(rule *ast.Rule) *RuleCode {
-	r := &RuleCode{
-		Label: "J_" + rule.Head.Value(),
-		Code:  getTestSelectsForRule(rule),
+	for i, alt := range rule.Alternates {
+		r.Alts = append(r.Alts, getAlternate(nt, i, alt))
 	}
 	return r
 }
 
-func getTestSelectsForRule(rule *ast.Rule) (code string) {
-	buf := new(bytes.Buffer)
-	for i, a := range rule.Alternates {
-		altCode := getTestSelectForAlternate(rule.Head.Value(), i, a.Symbols()...)
-		fmt.Fprintf(buf, "%s\n", altCode)
+func getAlternate(nt string, i int, alt *ast.Alternate) *Alternate {
+	a := &Alternate{
+		Label:      fmt.Sprintf("L_%s%d", nt, i+1),
+		TestSelect: getTestSelectConditions(nt, alt.Symbols()...),
+		Code:       codeAlt(ast.GetRule(nt), i),
+		Comment:    getAlternateComment(nt, alt),
 	}
-	fmt.Fprint(buf, "            L = labels.L0\n")
-	return buf.String()
+	return a
+}
+
+func getAlternateComment(nt string, alt *ast.Alternate) string {
+	return fmt.Sprintf("%s : %s", nt, alt.Body.String())
 }
 
 func getPackage(baseDir string) string {
@@ -132,7 +128,7 @@ func getPackage(baseDir string) string {
 	return ast.GetPackage()
 }
 
-func failError(err error) {
+func parseErrorError(err error) {
 	fmt.Printf("Error generating parser: %s\n", err)
 	panic("fix me")
 	os.Exit(1)
@@ -162,7 +158,7 @@ var dummy = sppf.Dummy
 func ParseFile(fname string) {
 	buf, err := ioutil.ReadFile(fname)
 	if err != nil {
-		failError(err)
+		parseErrorError(err)
 	}
 	Parse(buf)
 }
@@ -171,27 +167,37 @@ func Parse(input []byte) {
 	m := len(input)
 	u0 := Node{L: labels.L0, I: 0}
 	cU, cN, cI := u0, dummy, 0
+	cR := dummy 
 
 	L := labels.J_{{.StartSymbol}}
 	for done := false; !done; {
 		next, runeSize := decodeRune(input[cI:])
-		fmt.Printf("L:%s, cI=%d, next=%s, size=%d\n", labels.String(L), cI, next, runeSize)
+		fmt.Printf("L:%s, cI=%d, next=%s, size=%d,cN:%s, cR:%s \n",
+			labels.String(L), cI, next, runeSize, cN.DotLabel(), cR.DotLabel())
 		switch L {
 		case labels.L0:
 			if !R.empty() {
 				L, cU, cI, cN = R.remove()
 			} else {
-				if sppf.ExistSymNode("{{.StartSymbol}}", 0, m) {
-					return
-				} else {
-					fail()
+				if !sppf.ExistSymNode("{{.StartSymbol}}", 0, m) {
+					parseError()
 				}
+				return
 			}
 
-		{{range $i, $r := .Rules}}case labels.{{$r.Label}}:
-			{{$r.Code}}
+		{{range $i, $rule := .Rules}}
+		case labels.{{$rule.Label}}:
+			{{range $alti, $alt := $rule.Alts}}if {{$alt.TestSelect}} {
+				add(labels.{{$alt.Label}}, cU, cI, dummy)
+			}
+			{{end}}L = labels.L0
+		{{range $altI, $alt := $rule.Alts}}case labels.{{$alt.Label}}: // {{$alt.Comment}}
+			{{$alt.Code}}
+		{{end}}
+		{{end}}
 
-		{{end}}default:
+
+		default:
 			panic("This must not happen")
 		}
 	}
@@ -338,11 +344,11 @@ func pop(u Node, i int, z sppf.Node) {
 
 /*** Errors ***/
 
-func fail() {
-	panic("implement me")
+func parseError() {
+	fmt.Println("parse parseErrored")
 }
 
-func failError(err error) {
+func parseErrorError(err error) {
 	fmt.Printf("Error: %s\n", err)
 	os.Exit(1)
 }
@@ -370,10 +376,8 @@ func String(label int) string {
 }
 
 `
+
 func genLabels(labelsDir string, labels []string) {
-	if err := os.MkdirAll(labelsDir, 0731); err != nil {
-		panic(err)
-	}
 	tmpl, err := template.New("labels").Parse(labelsSrc)
 	if err != nil {
 		panic(err)
@@ -382,7 +386,7 @@ func genLabels(labelsDir string, labels []string) {
 	if err := tmpl.Execute(buf, labels); err != nil {
 		panic(err)
 	}
-	if err := ioutil.WriteFile(filepath.Join(labelsDir, "labels.go"), buf.Bytes(), 0731); err != nil {
+	if err := ioutil.WriteFile(filepath.Join(labelsDir, "labels.go"), buf.Bytes()); err != nil {
 		panic(err)
 	}
 }

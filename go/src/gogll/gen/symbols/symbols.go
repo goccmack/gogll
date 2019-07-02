@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"gogll/ast"
-	"io/ioutil"
+	"gogll/goutil/ioutil"
 	"os"
 	"path"
 )
@@ -14,10 +14,7 @@ func Gen(dir string) {
 	for _, sym := range ast.GetSymbols() {
 		fmt.Fprintf(buf, "%s\n", sym)
 	}
-	if err := os.MkdirAll(dir, 0731); err != nil {
-		fail(err)
-	}
-	if err := ioutil.WriteFile(path.Join(dir, "symbols.txt"), buf.Bytes(), 0731); err != nil {
+	if err := ioutil.WriteFile(path.Join(dir, "symbols.txt"), buf.Bytes()); err != nil {
 		fail(err)
 	}
 }

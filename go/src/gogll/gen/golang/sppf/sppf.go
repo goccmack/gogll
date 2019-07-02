@@ -3,9 +3,8 @@ package sppf
 import (
 	"bytes"
 	"gogll/ast"
+	"gogll/goutil/ioutil"
 	"gogll/gslot"
-	"io/ioutil"
-	"os"
 	"path/filepath"
 	"text/template"
 )
@@ -21,10 +20,7 @@ func Gen(parserDir string) {
 	}
 	sppfDir := filepath.Join(parserDir, "sppf")
 	sppfFile := filepath.Join(sppfDir, "sppf.go")
-	if err := os.MkdirAll(sppfDir, 0731); err != nil {
-		panic(err)
-	}
-	if err := ioutil.WriteFile(sppfFile, buf.Bytes(), 0731); err != nil {
+	if err := ioutil.WriteFile(sppfFile, buf.Bytes()); err != nil {
 		panic(err)
 	}
 }
@@ -97,10 +93,10 @@ var (
 )
 
 type GrammarSlot struct {
-	Head string
-	Body []string
-	FiR bool
-	EoR bool
+	Head   string
+	Body   []string
+	FiR    bool
+	EoR    bool
 	String string
 }
 
@@ -109,6 +105,7 @@ type Node interface {
 	GetExtent() (left, right int)
 	GetLeftExtent() int
 	GetRightExtent() int
+	DotLabel() string
 	HasChild(L int, k int) bool
 	SetChild(Node)
 }
@@ -118,7 +115,7 @@ type Extent struct {
 	Right int
 }
 
-var Dummy Node = nil
+var Dummy Node = (*SymbolNode)(nil)
 
 type Edge struct {
 	from, to Node
@@ -141,6 +138,7 @@ GetNode returns an SPPF node. L is the grammar slot label used by the parser. po
 within slot L.
 */
 func GetNode(L int, w, z Node) Node {
+	fmt.Printf("GetNode %s FiR=%t EoR=%t\n", slots[L].String, slots[L].FiR, slots[L].EoR)
 	if slots[L].FiR {
 		return z
 	}
@@ -151,7 +149,7 @@ func GetNode(L int, w, z Node) Node {
 	if w == Dummy {
 		j = z.GetLeftExtent()
 	} else {
-		j = w.GetRightExtent()
+		j = w.GetLeftExtent()
 	}
 	if slots[L].EoR {
 		y = getSymbolNode(slots[L].Head, j, i)
@@ -167,6 +165,7 @@ func GetNode(L int, w, z Node) Node {
 			LeftChild:  w,
 			RightChild: z,
 		}
+		// fmt.Printf(" %s.setChild %s\n", y.DotLabel(), child.DotLabel())
 		y.SetChild(child)
 		packedNodes[child.PNKey] = child
 	}
@@ -188,12 +187,13 @@ func getIntermediateNode(L, j, i int) *IntermediateNode {
 			Extent:    Extent{j, i},
 		},
 	}
-	if n, exist := intermediateNodes[sn.InKey]; !exist {
+	n, exist := intermediateNodes[sn.InKey]
+	// fmt.Printf("getIntermediateNode %s exist=%t\n", sn.DotLabel(), exist)
+	if !exist {
 		intermediateNodes[sn.InKey] = sn
 		return sn
-	} else {
-		return n
 	}
+	return n
 }
 
 func getSymbolNode(symbol string, i, j int) *SymbolNode {
@@ -215,7 +215,7 @@ func getSymbolNode(symbol string, i, j int) *SymbolNode {
 
 type IntermediateNode struct {
 	InKey
-	Child *PackedNode
+	Children []*PackedNode
 }
 
 type InKey struct {
@@ -231,6 +231,10 @@ func (sn *IntermediateNode) Equal(n Node) bool {
 	return sn.SlotLabel == n1.SlotLabel && sn.Extent == n1.Extent
 }
 
+func (sn *IntermediateNode) DotLabel() string {
+	return fmt.Sprintf("\"%s, %d, %d\"", slots[sn.SlotLabel].String, sn.Extent.Left, sn.Extent.Right)
+}
+
 func (sn *IntermediateNode) GetExtent() (left, right int) {
 	return sn.Extent.Left, sn.Extent.Right
 }
@@ -244,14 +248,16 @@ func (sn *IntermediateNode) GetRightExtent() int {
 }
 
 func (sn *IntermediateNode) HasChild(L, k int) bool {
-	if sn.Child == nil {
-		return false
+	for _, c := range sn.Children {
+		if c.EqualPN(L, k) {
+			return true
+		}
 	}
-	return sn.Child.EqualPN(L, k)
+	return false
 }
 
 func (sn *IntermediateNode) SetChild(pn Node) {
-	sn.Child = pn.(*PackedNode)
+	sn.Children = append(sn.Children, pn.(*PackedNode))
 }
 
 /*** PackedNode ***/
@@ -273,6 +279,10 @@ func (sn *PackedNode) Equal(n Node) bool {
 		return false
 	}
 	return sn.SlotLabel == n1.SlotLabel && sn.RightExtent == n1.RightExtent
+}
+
+func (sn *PackedNode) DotLabel() string {
+	return fmt.Sprintf("\"%s, %d\"", slots[sn.SlotLabel].String, sn.RightExtent)
 }
 
 func (sn *PackedNode) EqualPN(L, k int) bool {
@@ -303,7 +313,7 @@ func (sn *PackedNode) SetChild(pn Node) {
 
 type SymbolNode struct {
 	SNKey
-	Child *PackedNode
+	Children []*PackedNode
 }
 
 type SNKey struct {
@@ -319,6 +329,13 @@ func (sn *SymbolNode) Equal(n Node) bool {
 	return sn.Symbol == n1.Symbol && sn.Extent == n1.Extent
 }
 
+func (sn *SymbolNode) DotLabel() string {
+	if sn == nil {
+		return "dummy"
+	}
+	return fmt.Sprintf("\"%s, %d, %d\"", sn.Symbol, sn.Extent.Left, sn.Extent.Right)
+}
+
 func (sn *SymbolNode) GetExtent() (left, right int) {
 	return sn.Extent.Left, sn.Extent.Right
 }
@@ -332,14 +349,16 @@ func (sn *SymbolNode) GetRightExtent() int {
 }
 
 func (sn *SymbolNode) HasChild(L, k int) bool {
-	if sn.Child == nil {
-		return false
+	for _, c := range sn.Children {
+		if c.EqualPN(L, k) {
+			return true
+		}
 	}
-	return sn.Child.EqualPN(L, k)
+	return false
 }
 
 func (sn *SymbolNode) SetChild(pn Node) {
-	sn.Child = pn.(*PackedNode)
+	sn.Children = append(sn.Children, pn.(*PackedNode))
 }
 
 /*** Dot output ***/
@@ -362,31 +381,55 @@ func DotNodes() string {
 
 func DotSymbolNodes() string {
 	buf := new(bytes.Buffer)
-	// for {
-
-	// }
+	for _, s := range symbolNodes {
+		fmt.Fprintf(buf, s.Dot())
+	}
 	return buf.String()
 }
 
 func DotIntermediateNodes() string {
 	buf := new(bytes.Buffer)
-	for _, n := range symbolNodes {
-		buf.WriteString(n.String())
+	for _, n := range intermediateNodes {
+		buf.WriteString(n.Dot())
 	}
 	return buf.String()
 }
 
 func DotPackedNodes() string {
 	buf := new(bytes.Buffer)
-	// for {
-
-	// }
+	for _, n := range packedNodes {
+		buf.WriteString(n.Dot())
+	}
 	return buf.String()
 }
 
-func (s *SymbolNode) String() string {
+func (i *IntermediateNode) Dot() string {
 	buf := new(bytes.Buffer)
-	fmt.Fprintf(buf, "%s\n", s.Symbol)
+	fmt.Fprintf(buf, "%s [shape=box]\n", i.DotLabel())
+	for _, c := range i.Children {
+		fmt.Fprintf(buf, "%s -> %s\n", i.DotLabel(), c.DotLabel())
+	}
+	return buf.String()
+}
+
+func (p *PackedNode) Dot() string {
+	buf := new(bytes.Buffer)
+	fmt.Fprintf(buf, "%s [shape=ellipse]\n", p.DotLabel())
+	if p.LeftChild != Dummy {
+		fmt.Fprintf(buf, "%s -> %s\n", p.DotLabel(), p.LeftChild.DotLabel())
+	}
+	if p.RightChild != nil {
+		fmt.Fprintf(buf, "%s -> %s\n", p.DotLabel(), p.RightChild.DotLabel())
+	}
+	return buf.String()
+}
+
+func (s *SymbolNode) Dot() string {
+	buf := new(bytes.Buffer)
+	fmt.Fprintf(buf, "%s [shape=ellipse]\n", s.DotLabel())
+	for _, c := range s.Children {
+		fmt.Fprintf(buf, "%s -> %s\n", s.DotLabel(), c.DotLabel())
+	}
 	return buf.String()
 }
 

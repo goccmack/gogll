@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"fmt"
 	"gogll/ast"
+	"gogll/goutil/ioutil"
 	"io"
-	"io/ioutil"
 	"os"
 	"path"
 )
@@ -15,7 +15,7 @@ func Gen(dir string, g *ast.Grammar) {
 	genFirstSets(w, g)
 	genFollowSets(w, g)
 	fname := path.Join(dir, "first_follow.txt")
-	if err := ioutil.WriteFile(fname, w.Bytes(), 0731); err != nil {
+	if err := ioutil.WriteFile(fname, w.Bytes()); err != nil {
 		fmt.Printf("Error writing first and follow: %s\n", err)
 		os.Exit(1)
 	}

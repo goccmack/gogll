@@ -1,6 +1,7 @@
 package ast
 
 import (
+	"bytes"
 	"fmt"
 	"gogll/goutil/utf8"
 	"gogll/token"
@@ -19,6 +20,10 @@ func GetAST(parseTree interface{}) *Grammar {
 	return g
 }
 
+var (
+	g *Grammar
+)
+
 type Grammar struct {
 	Package *Package
 
@@ -31,8 +36,12 @@ type Grammar struct {
 	followSets map[string]*stringset.StringSet
 }
 
+func GetGrammar() *Grammar {
+	return g
+}
+
 func NewGrammar(pkg, rules interface{}) (*Grammar, error) {
-	g := &Grammar{
+	g = &Grammar{
 		Rules: rules.(Rules),
 	}
 	if pkg != nil {
@@ -301,6 +310,20 @@ func AppendSymbol(body, sym interface{}) (*Body, error) {
 	AddSymbol(sym1)
 	b.Symbols = append(b.Symbols, sym1)
 	return b, nil
+}
+
+func (b *Body) String() string {
+	if b == nil {
+		return "ϵ"
+	}
+	buf := new(bytes.Buffer)
+	for i, s := range b.Symbols {
+		if i > 0 {
+			buf.WriteString(" ")
+		}
+		buf.WriteString(s.Value())
+	}
+	return buf.String()
 }
 
 type Head struct {

@@ -2,13 +2,12 @@ package parser
 
 import(
 	"testing"
-	"fmt"
-	"gogll/test/AAc/parser/sppf"
+	"gogll/test/AAc/gen/dot"
 )
 
 const src = "c"
 
 func Test(t *testing.T) {
 	Parse([]byte(src))
-	fmt.Println(sppf.Dot())
+	dot.Gen(".")
 }

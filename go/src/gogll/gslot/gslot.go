@@ -35,16 +35,25 @@ func GetSlots() Slots {
 }
 
 func (s SlotLabel) Label() string {
-	return fmt.Sprintf("%s%dR%d", s.Head, s.Alternate+1, s.Pos+1)
+	return fmt.Sprintf("%s%dR%d", s.Head, s.Alternate+1, s.Pos)
 }
 
 func (s SlotLabel) IsEoR() bool {
 	symbols := slots[s]
-	return s.Pos == len(symbols)
+	return s.Pos >= len(symbols)
 }
 
 func (s SlotLabel) IsFiR() bool {
-	return s.Pos == 1
+	symbols := slots[s]
+	if s.Pos > 1 || len(symbols) <= 1 {
+		return false
+	}
+	g := ast.GetGrammar()
+	if g.FirstOfSymbol(symbols[0]).Contain(ast.Empty) &&
+		symbols[0] == symbols[1] {
+		return false
+	}
+	return true
 }
 
 func (s SlotLabel) String() string {
@@ -57,9 +66,11 @@ func (s SlotLabel) String() string {
 		}
 		fmt.Fprintf(buf, "%s ", sym)
 	}
-	if s.Pos == len(symbols) {
+	// fmt.Printf("slotLabel.String(): %s pos=%d len(symbols)=%d\n", s.Head, s.Pos, len(symbols))
+	if s.Pos >= len(symbols) {
 		fmt.Fprintf(buf, "∙")
 	}
+	// fmt.Println("  ", buf.String())
 	return buf.String()
 }
 
@@ -102,8 +113,12 @@ func genSlotsOfRule(r *ast.Rule) {
 }
 
 func genSlotsOfAlternate(nt string, altI int, symbols ...string) {
-	for pos := range symbols {
-		genSlot(nt, altI, pos+1, symbols...)
+	if symbols[0] == ast.Empty {
+		genSlot(nt, altI, 1, []string{}...)
+	} else {
+		for pos := range symbols {
+			genSlot(nt, altI, pos+1, symbols...)
+		}
 	}
 }
 
