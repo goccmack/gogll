@@ -2,6 +2,7 @@ package sppf
 
 import (
 	"bytes"
+	"fmt"
 	"gogll/ast"
 	"gogll/goutil/ioutil"
 	"gogll/gslot"
@@ -53,7 +54,7 @@ func getSlots() (slots []*Slot) {
 			Head:   s.Head,
 			EoR:    s.IsEoR(),
 			FiR:    s.IsFiR(),
-			String: s.String(),
+			String: fmt.Sprintf("`%s`", s.String()),
 		}
 		slots = append(slots, s1)
 	}
@@ -87,7 +88,7 @@ var (
 						Head: "{{$s.Head}}",
 						EoR: {{$s.EoR}},
 						FiR: {{$s.FiR}},
-						String: "{{$s.String}}",
+						String: {{$s.String}},
 					  },{{end}}
 	}
 )

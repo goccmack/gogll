@@ -3,6 +3,7 @@ package parser
 import (
 	"bytes"
 	"fmt"
+	"go/format"
 	"gogll/ast"
 	"gogll/goutil/ioutil"
 	"gogll/gslot"
@@ -27,8 +28,12 @@ func Gen(parserDir string, grammar *ast.Grammar) {
 	if err = tmpl.Execute(buf, data); err != nil {
 		parseErrorError(err)
 	}
+	fmtSrc, err := format.Source(buf.Bytes())
+	if err != nil {
+		panic(err)
+	}
 	fname := path.Join(parserDir, "parser.go")
-	if err := ioutil.WriteFile(fname, buf.Bytes()); err != nil {
+	if err := ioutil.WriteFile(fname, []byte(fmtSrc)); err != nil {
 		parseErrorError(err)
 	}
 	genLabels(filepath.Join(parserDir, "labels"), data.Labels)
@@ -143,6 +148,7 @@ package parser
 import(
 	"fmt"
 	"os"
+	"unicode"
 	"unicode/utf8"
 
 	"{{.Package}}/parser/labels"
@@ -171,7 +177,7 @@ func Parse(input []byte) {
 
 	L := labels.J_{{.StartSymbol}}
 	for done := false; !done; {
-		next, runeSize := decodeRune(input[cI:])
+		next, nextRune, runeSize := decodeRune(input[cI:])
 		fmt.Printf("L:%s, cI=%d, next=%s, size=%d,cN:%s, cR:%s \n",
 			labels.String(L), cI, next, runeSize, cN.DotLabel(), cR.DotLabel())
 		switch L {
@@ -249,16 +255,16 @@ func (ds *descriptors) remove() (L int, u Node, i int, w sppf.Node) {
 }
 
 /*** Rune decoding ***/
-func decodeRune(str []byte) (string, int) {
+func decodeRune(str []byte) (string, rune, int) {
 	if len(str) == 0 {
-		return Dollar, 0
+		return Dollar, -1, 0
 	}
 	r, sz := utf8.DecodeRune(str)
 	if r == utf8.RuneError {
 		panic(fmt.Sprintf("Rune error: %s", str))
 	}
 	chr := runeToString(r)
-	return chr, sz
+	return chr, r, sz
 }
 
 func runeToString(r rune) string {
@@ -340,6 +346,48 @@ func pop(u Node, i int, z sppf.Node) {
 		add(u.L, e.to, i, y)
 	}
 }
+
+/*** Unicode functions ***/
+
+func any(r rune) bool {
+	return true
+}
+	
+func letter(r rune) bool {
+	return unicode.IsLetter(r)
+}
+	
+func number(r rune) bool {
+	return unicode.IsNumber(r)
+}
+	
+func upcase(r rune) bool {
+	return unicode.IsUpper(r)
+}
+	
+func lowcase(r rune) bool {
+	return unicode.IsLower(r)
+}
+	
+func not(r rune, set string) bool {
+	bs := []byte(set)
+	for i := 0; i < len(set); {
+		r1, sz := utf8.DecodeRune(bs[i:])
+		if r1 == utf8.RuneError {
+			panic(fmt.Sprintf("Rune error: %s", set))
+		}
+		if r1 == r {
+			return false
+		} 
+		i += sz
+	}
+	return true
+}
+	
+func space(r rune) bool {
+	return unicode.IsSpace(r)
+}
+	
 
 
 /*** Errors ***/

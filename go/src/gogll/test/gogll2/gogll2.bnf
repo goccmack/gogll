@@ -89,5 +89,5 @@ Symbol
     ;
 
 CharLiteral
-    :   '\'' not "'" '\''
+    :   "'" not "'" "'"
     ;

@@ -46,22 +46,22 @@ func getTestSelectCondition(symName string) string {
 	case *ast.AnyChar:
 		return "true"
 	case *ast.NotString:
-		return fmt.Sprintf("not(next, %s)", string(s.Token.Lit))
+		return fmt.Sprintf("not(nextRune, %s)", string(s.Token.Lit))
 	case *ast.Space:
-		return "unicode.IsSpace(next)"
+		return "space(nextRune)"
 	case *ast.CharLiteral:
 		if s.Rune == '"' {
 			return "next == \"\\\""
 		}
 		return fmt.Sprintf("next == \"%c\"", s.Rune)
 	case *ast.UpCase:
-		return "unicode.IsUpper(next)"
+		return "upcase(nextRune)"
 	case *ast.LowCase:
-		return "unicode.IsLower(next)"
+		return "lowcase(nextRune)"
 	case *ast.Letter:
-		return "unicode.IsLetter(next)"
+		return "letter(nextRune)"
 	case *ast.Number:
-		return "unicode.IsNumber(next)"
+		return "number(nextRune)"
 	case *ast.StringChar:
 		if s.Value() == "\"" {
 			return "next == \"\\\""
