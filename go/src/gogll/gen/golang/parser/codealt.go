@@ -60,20 +60,9 @@ func getTailSymCode(nt, sym string, l gslot.SlotLabel) *TailSymbol {
 		TestSelect: getTestSelectConditions(nt, sym),
 		CodeTN:     codeTN(sym, l),
 	}
+	// fmt.Printf("getTailSymCode: NT=%s, sym=%s, testselect=%s\n", nt, sym, data.TestSelect)
 	return data
 }
-
-// 	indent := "			"
-// 	buf := new(bytes.Buffer)
-// 	fmt.Fprintf(buf, codeTN(symbols[0], gslot.SlotLabel{rule.Head.Value(), altI, 1}))
-// 	for i := 1; i < len(symbols); i++ {
-// 		fmt.Fprintf(buf, "%s!(%s)\n", indent, getTestSelectForSymbol(rule.Head.Value(), symbols[i]))
-// 		sl := gslot.SlotLabel{rule.Head.Value(), altI, i + 1}
-// 		fmt.Fprintf(buf, "%s%s\n", indent, codeTN(symbols[i], sl))
-// 	}
-// 	fmt.Fprintf(buf, testFollowCode(rule.Head.Value()))
-// 	return buf.String()
-// }
 
 const nonEmpty = `
 			{{.HeadCodeTN}}

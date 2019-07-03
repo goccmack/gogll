@@ -263,7 +263,14 @@ func decodeRune(str []byte) (string, rune, int) {
 	if r == utf8.RuneError {
 		panic(fmt.Sprintf("Rune error: %s", str))
 	}
-	chr := runeToString(r)
+	if r == '\\' {
+		r1, sz1 := utf8.DecodeRune(str[sz:])
+		if r1 == utf8.RuneError {
+			panic(fmt.Sprintf("Rune error: %s", str))
+		}
+		r, sz = r1, sz+sz1
+	}
+	chr := string(str[:sz])
 	return chr, r, sz
 }
 

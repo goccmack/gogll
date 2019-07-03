@@ -20,8 +20,14 @@ func DecodeRune(str []byte) (string, int) {
 func DecodeRunes(str []byte) (ss []string) {
 	for i := 0; i < len(str); {
 		s, sz := DecodeRune(str[i:])
-		ss = append(ss, s)
 		i += sz
+		if s == "\\" {
+			s1, sz1 := DecodeRune(str[i:])
+			i += sz1
+			ss = append(ss, s1)
+		} else {
+			ss = append(ss, s)
+		}
 	}
 	return
 }

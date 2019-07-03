@@ -38,6 +38,7 @@ func getTestSelectCondition(symName string) string {
 		return "next == Dollar"
 	}
 	sym := ast.GetSymbol(symName)
+	// fmt.Printf("getTestSelectCondition: >%s< %T\n", symName, sym)
 	switch s := sym.(type) {
 	case *ast.Head:
 		panic(fmt.Sprintf("first returns only terminals but got %s", symName))
@@ -51,9 +52,9 @@ func getTestSelectCondition(symName string) string {
 		return "space(nextRune)"
 	case *ast.CharLiteral:
 		if s.Rune == '"' {
-			return "next == \"\\\""
+			return "next == \"\\\"<<<"
 		}
-		return fmt.Sprintf("next == \"%c\"", s.Rune)
+		return fmt.Sprintf("next == \"%c\">>>", s.Rune)
 	case *ast.UpCase:
 		return "upcase(nextRune)"
 	case *ast.LowCase:
@@ -64,7 +65,7 @@ func getTestSelectCondition(symName string) string {
 		return "number(nextRune)"
 	case *ast.StringChar:
 		if s.Value() == "\"" {
-			return "next == \"\\\""
+			return "next == \"\\\"\""
 		}
 		return fmt.Sprintf("next == \"%s\"", s.Value())
 	}
