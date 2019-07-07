@@ -24,7 +24,8 @@ func codeTNNT(sym string, sl gslot.SlotLabel) string {
 
 func codeTNT(sym string, sl gslot.SlotLabel) string {
 	buf := new(bytes.Buffer)
-	fmt.Fprintf(buf, "            cR = sppf.GetNodeT(`%s`, cI, runeSize)\n", sym)
+	// fmt.Fprintf(buf, "            cR = sppf.GetNodeT(`%s`, cI, runeSize)\n", sym)
+	fmt.Fprintf(buf, "            cR = sppf.GetNodeT(next, cI, runeSize)\n")
 	fmt.Fprintf(buf, "            cI += runeSize\n")
 	fmt.Fprintf(buf, "            next, nextRune, runeSize = decodeRune(input[cI:])\n")
 	fmt.Fprintf(buf, "            cN = sppf.GetNode(labels.%s, cN, cR)\n", sl.Label())

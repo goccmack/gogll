@@ -69,7 +69,6 @@ Package sppf implements a binarised shared packed parse forest
 package sppf
 
 import(
-	"bytes"
 	"fmt"
 	
 	"{{.Package}}/parser/labels"
@@ -92,6 +91,27 @@ var (
 					  },{{end}}
 	}
 )
+
+func GetIntermediateNodes() (nds []*IntermediateNode) {
+	for _, nd := range intermediateNodes {
+		nds = append(nds, nd)
+	}
+	return
+}
+
+func GetPackedNodes() (nds []*PackedNode) {
+	for _, nd := range packedNodes {
+		nds = append(nds, nd)
+	}
+	return
+}
+
+func GetSymbolNodes() (nds []*SymbolNode) {
+	for _, nd := range symbolNodes {
+		nds = append(nds, nd)
+	}
+	return
+}
 
 type GrammarSlot struct {
 	Head   string
@@ -178,6 +198,7 @@ func GetNodeE(i int) Node {
 }
 
 func GetNodeT(symbol string, i, size int) *SymbolNode {
+	fmt.Printf("GetNodeT(%s, %d, %d)\n", symbol, i, size)
 	return getSymbolNode(symbol, i, i+size)
 }
 
@@ -233,7 +254,7 @@ func (sn *IntermediateNode) Equal(n Node) bool {
 }
 
 func (sn *IntermediateNode) DotLabel() string {
-	return fmt.Sprintf("\"%s, %d, %d\"", slots[sn.SlotLabel].String, sn.Extent.Left, sn.Extent.Right)
+	return fmt.Sprintf("%s, %d, %d", slots[sn.SlotLabel].String, sn.Extent.Left, sn.Extent.Right)
 }
 
 func (sn *IntermediateNode) GetExtent() (left, right int) {
@@ -283,7 +304,7 @@ func (sn *PackedNode) Equal(n Node) bool {
 }
 
 func (sn *PackedNode) DotLabel() string {
-	return fmt.Sprintf("\"%s, %d\"", slots[sn.SlotLabel].String, sn.RightExtent)
+	return fmt.Sprintf("%s, %d", slots[sn.SlotLabel].String, sn.RightExtent)
 }
 
 func (sn *PackedNode) EqualPN(L, k int) bool {
@@ -334,7 +355,7 @@ func (sn *SymbolNode) DotLabel() string {
 	if sn == nil {
 		return "dummy"
 	}
-	return fmt.Sprintf("\"%s, %d, %d\"", sn.Symbol, sn.Extent.Left, sn.Extent.Right)
+	return fmt.Sprintf("%s, %d, %d", sn.Symbol, sn.Extent.Left, sn.Extent.Right)
 }
 
 func (sn *SymbolNode) GetExtent() (left, right int) {
@@ -360,78 +381,6 @@ func (sn *SymbolNode) HasChild(L, k int) bool {
 
 func (sn *SymbolNode) SetChild(pn Node) {
 	sn.Children = append(sn.Children, pn.(*PackedNode))
-}
-
-/*** Dot output ***/
-
-func Dot() string {
-	buf := new(bytes.Buffer)
-	buf.WriteString("digraph sppf{\n")
-	buf.WriteString(DotNodes())
-	buf.WriteString("}\n")
-	return buf.String()
-}
-
-func DotNodes() string {
-	buf := new(bytes.Buffer)
-	buf.WriteString(DotSymbolNodes())
-	buf.WriteString(DotIntermediateNodes())
-	buf.WriteString(DotPackedNodes())
-	return buf.String()
-}
-
-func DotSymbolNodes() string {
-	buf := new(bytes.Buffer)
-	for _, s := range symbolNodes {
-		fmt.Fprintf(buf, s.Dot())
-	}
-	return buf.String()
-}
-
-func DotIntermediateNodes() string {
-	buf := new(bytes.Buffer)
-	for _, n := range intermediateNodes {
-		buf.WriteString(n.Dot())
-	}
-	return buf.String()
-}
-
-func DotPackedNodes() string {
-	buf := new(bytes.Buffer)
-	for _, n := range packedNodes {
-		buf.WriteString(n.Dot())
-	}
-	return buf.String()
-}
-
-func (i *IntermediateNode) Dot() string {
-	buf := new(bytes.Buffer)
-	fmt.Fprintf(buf, "%s [shape=box]\n", i.DotLabel())
-	for _, c := range i.Children {
-		fmt.Fprintf(buf, "%s -> %s\n", i.DotLabel(), c.DotLabel())
-	}
-	return buf.String()
-}
-
-func (p *PackedNode) Dot() string {
-	buf := new(bytes.Buffer)
-	fmt.Fprintf(buf, "%s [shape=ellipse]\n", p.DotLabel())
-	if p.LeftChild != Dummy {
-		fmt.Fprintf(buf, "%s -> %s\n", p.DotLabel(), p.LeftChild.DotLabel())
-	}
-	if p.RightChild != nil {
-		fmt.Fprintf(buf, "%s -> %s\n", p.DotLabel(), p.RightChild.DotLabel())
-	}
-	return buf.String()
-}
-
-func (s *SymbolNode) Dot() string {
-	buf := new(bytes.Buffer)
-	fmt.Fprintf(buf, "%s [shape=ellipse]\n", s.DotLabel())
-	for _, c := range s.Children {
-		fmt.Fprintf(buf, "%s -> %s\n", s.DotLabel(), c.DotLabel())
-	}
-	return buf.String()
 }
 
 `
