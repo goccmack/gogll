@@ -1,7 +1,7 @@
 package main
 
 import (
-	"flag"
+	"gogll/cfg"
 	"fmt"
 	"gogll/ast"
 	"gogll/check"
@@ -12,7 +12,6 @@ import (
 	"gogll/lexer"
 	"gogll/parser"
 	"os"
-	"path"
 )
 
 var (
@@ -21,10 +20,11 @@ var (
 )
 
 func main() {
-	getParameters()
-	lex, err := lexer.NewLexerFile(bnfFile)
+	cfg.GetParams()
+	lex, err := lexer.NewLexerFile(cfg.BNFFile)
 	if err != nil {
-		fail(fmt.Sprintf("%s", err))
+		fmt.Printf("Error creating lexer: %s", err)
+		os.Exit(1)
 	}
 	p := parser.NewParser()
 	parse, err := p.Parse(lex)
@@ -34,40 +34,9 @@ func main() {
 	}
 	g := ast.GetAST(parse)
 	check.Check(g)
-	symbols.Gen(baseDir)
-	genff.Gen(baseDir, g)
-	slots.Gen(baseDir)
-	golang.Gen(baseDir, g)
+	symbols.Gen()
+	genff.Gen()
+	slots.Gen()
+	golang.Gen()
 }
 
-func getFileBase() {
-	baseDir, _ = path.Split(bnfFile)
-	if baseDir == "" {
-		baseDir = "."
-	}
-}
-
-func getSourceFile() {
-	if flag.NArg() < 1 {
-		fail("Source file required")
-	}
-	bnfFile = flag.Arg(0)
-}
-
-func fail(msg string) {
-	fmt.Printf("ERROR: %s\n", msg)
-	usage()
-	os.Exit(1)
-}
-
-func getParameters() {
-	flag.Parse()
-	getSourceFile()
-	getFileBase()
-}
-
-func usage() {
-	msg := `use: gogll <bnfFile file>
-	<file name> : Name of the BNF file to be processed`
-	fmt.Println(msg)
-}

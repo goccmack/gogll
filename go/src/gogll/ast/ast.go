@@ -7,7 +7,6 @@ import (
 	"gogll/token"
 
 	"gogll/goutil/stringset"
-	"gogll/goutil/stringslice"
 )
 
 const (
@@ -28,12 +27,6 @@ type Grammar struct {
 	Package *Package
 
 	Rules Rules
-
-	// Key=symbol, Value is first set of symbol
-	firstSets map[string]*stringset.StringSet
-
-	// Key=NonTerminal, Value is follow set of NonTerminal
-	followSets map[string]*stringset.StringSet
 }
 
 func GetGrammar() *Grammar {
@@ -60,174 +53,6 @@ func AddRule(rules, rule interface{}) (Rules, error) {
 	rs = append(rs, r)
 	return rs, nil
 }
-
-func (g *Grammar) FirstOfString(str []string) *stringset.StringSet {
-	// fmt.Printf("g.FirstOfString: %s\n", strings.Join(str, " "))
-	if len(str) == 0 {
-		return stringset.New(Empty)
-	}
-
-	first := stringset.New()
-	for _, s := range str {
-		fs := g.FirstOfSymbol(s)
-		first.AddSet(fs)
-		if !fs.Contain(Empty) {
-			first.Remove(Empty)
-			break
-		}
-	}
-	return first
-}
-
-func (g *Grammar) FirstOfSymbol(s string) *stringset.StringSet {
-	// println("FirstOfSymbol")
-	if g.firstSets == nil {
-		g.genFirstSets()
-	}
-
-	if f, exist := g.firstSets[s]; exist {
-		return f
-	} else {
-		return stringset.New()
-	}
-}
-
-func (g *Grammar) Follow(nt string) *stringset.StringSet {
-	if g.followSets == nil {
-		g.genFollow()
-	}
-	if f, exist := g.followSets[nt]; exist {
-		return f
-	} else {
-		return stringset.New()
-	}
-}
-
-/*
-Dragon book FIRST set algorithm used
-*/
-func (g *Grammar) genFirstSets() {
-	// println("genFirstSets")
-	g.initFirstSets()
-	for again := true; again; {
-		// println(" again")
-		again = false
-		for _, s := range GetSymbols() {
-			// println(" ", s)
-			fs := g.getFirstOfSymbol(s)
-			if !g.firstSets[s].Equal(fs) {
-				g.firstSets[s] = fs
-				again = true
-			}
-		}
-		// dumpFirstSets(g.firstSets)
-	}
-}
-
-func (g *Grammar) initFirstSets() {
-	g.firstSets = make(map[string]*stringset.StringSet)
-	for _, s := range GetSymbols() {
-		g.firstSets[s] = stringset.New()
-	}
-}
-
-func (g *Grammar) getFirstOfSymbol(s string) *stringset.StringSet {
-	// fmt.Println("getFirstOfSymbol: ", s)
-	if IsTerminal(s) {
-		// fmt.Println("  T: ", stringset.New(s))
-		return stringset.New(s)
-	}
-	// fmt.Println("  NT", g.getFirstOfNonTerminal(s))
-	return g.getFirstOfNonTerminal(s)
-}
-
-func (g *Grammar) getFirstOfAlternate(a *Alternate) *stringset.StringSet {
-	if a.Empty() {
-		return stringset.New(Empty)
-	}
-	return g.FirstOfString(a.Symbols())
-}
-
-func (g *Grammar) getFirstOfNonTerminal(s string) *stringset.StringSet {
-	first := stringset.New()
-	for _, a := range GetRule(s).Alternates {
-		f := g.getFirstOfAlternate(a)
-		first.Add(f.Elements()...)
-	}
-	return first
-}
-
-/*
-Dragon book algoritm used for Follow
-*/
-func (g *Grammar) genFollow() {
-	g.initFollowSets()
-	for again := true; again; {
-		again = false
-		for _, nt := range GetNonTerminals() {
-			f := g.genFollowOf(nt)
-			if f.Len() > g.followSets[nt].Len() {
-				again = true
-				g.followSets[nt] = f
-			}
-		}
-	}
-}
-
-/*
-TODO: genFollow only processes syntax rules
-*/
-func (g *Grammar) genFollowOf(nt string) *stringset.StringSet {
-	follow := stringset.New()
-	for _, r := range g.Rules {
-		for _, a := range r.Alternates {
-			bs := stringslice.StringSlice(a.Symbols())
-			for _, idx := range bs.Find(nt) {
-				first := g.FirstOfString(bs[idx+1:])
-				follow.AddSet(first)
-				if first.Contain(Empty) {
-					follow.AddSet(g.Follow(r.Head.Value()))
-				}
-			}
-		}
-	}
-	follow.Remove(Empty)
-	return follow
-}
-
-func (g *Grammar) initFollowSets() {
-	g.followSets = make(map[string]*stringset.StringSet)
-	for _, nt := range GetNonTerminals() {
-		if nt == GetStartSymbol() {
-			g.followSets[nt] = stringset.New("$")
-		} else {
-			g.followSets[nt] = stringset.New()
-		}
-	}
-}
-
-func (g *Grammar) GetRule(head string) *Rule {
-	for _, r := range g.Rules {
-		if r.Head.Value() == head {
-			return r
-		}
-	}
-	return nil
-}
-
-// type Action struct {
-// 	Tok   *token.Token
-// 	Value string
-// }
-
-// func NewAction(act interface{}) (*Action, error) {
-// 	tok := act.(*token.Token)
-// 	a := &Action{
-// 		Tok:   tok,
-// 		Value: string(tok.Lit[2 : len(tok.Lit)-2]),
-// 	}
-// 	return a, nil
-// }
 
 type Package struct {
 	Token *token.Token

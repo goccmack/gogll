@@ -7,20 +7,20 @@ import (
 	"bytes"
 	"fmt"
 	"gogll/ast"
+	"gogll/frstflw"
+	"gogll/symbols"
 	"sort"
 )
 
-type SlotLabel struct {
+type Label struct {
 	Head      string
 	Alternate int
 	Pos       int
 }
 
-var slots = make(map[SlotLabel]Symbols)
+var slots = make(map[Label]symbols.Symbols)
 
-type Symbols []string
-
-type Slots []SlotLabel
+type Slots []Label
 
 func GetSlots() Slots {
 	if len(slots) == 0 {
@@ -34,29 +34,28 @@ func GetSlots() Slots {
 	return res
 }
 
-func (s SlotLabel) Label() string {
-	return fmt.Sprintf("%s%dR%d", s.Head, s.Alternate+1, s.Pos)
+func (s Label) Label() string {
+	return fmt.Sprintf("%s%dR%d", s.Head, s.Alternate, s.Pos)
 }
 
-func (s SlotLabel) IsEoR() bool {
+func (s Label) IsEoR() bool {
 	symbols := slots[s]
 	return s.Pos >= len(symbols)
 }
 
-func (s SlotLabel) IsFiR() bool {
+func (s Label) IsFiR() bool {
 	symbols := slots[s]
 	if s.Pos > 1 || len(symbols) <= 1 {
 		return false
 	}
-	g := ast.GetGrammar()
-	if g.FirstOfSymbol(symbols[0]).Contain(ast.Empty) &&
+	if frstflw.FirstOfSymbol(symbols[0]).Contain(ast.Empty) &&
 		symbols[0] == symbols[1] {
 		return false
 	}
 	return true
 }
 
-func (s SlotLabel) String() string {
+func (s Label) String() string {
 	symbols := slots[s]
 	buf := new(bytes.Buffer)
 	fmt.Fprintf(buf, "%s : ", s.Head)
@@ -72,6 +71,17 @@ func (s SlotLabel) String() string {
 	}
 	// fmt.Println("  ", buf.String())
 	return buf.String()
+}
+
+func (s Label) Symbols() symbols.Symbols {
+	return slots[s]
+}
+
+func (ss Slots) Labels() (labels []string) {
+	for _, s := range ss {
+		labels = append(labels, s.Label())
+	}
+	return
 }
 
 func (ss Slots) Len() int {
@@ -114,16 +124,16 @@ func genSlotsOfRule(r *ast.Rule) {
 
 func genSlotsOfAlternate(nt string, altI int, symbols ...string) {
 	if symbols[0] == ast.Empty {
-		genSlot(nt, altI, 1, []string{}...)
+		genSlot(nt, altI, 0, []string{}...)
 	} else {
-		for pos := range symbols {
-			genSlot(nt, altI, pos+1, symbols...)
+		for pos := 0; pos <= len(symbols); pos++ {
+			genSlot(nt, altI, pos, symbols...)
 		}
 	}
 }
 
 func genSlot(nt string, altI, pos int, symbols ...string) {
-	slot := SlotLabel{
+	slot := Label{
 		Head:      nt,
 		Alternate: altI,
 		Pos:       pos,

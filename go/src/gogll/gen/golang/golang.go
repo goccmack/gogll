@@ -1,14 +1,13 @@
 package golang
 
 import (
-	"gogll/ast"
+	"gogll/cfg"
+	"gogll/gen/golang/goutil"
 	"gogll/gen/golang/parser"
-	"gogll/gen/golang/sppf"
 	"path"
 )
 
-func Gen(baseDir string, grammar *ast.Grammar) {
-	parserDir := path.Join(baseDir, "parser")
-	parser.Gen(parserDir, grammar)
-	sppf.Gen(parserDir)
+func Gen() {
+	parser.Gen(path.Join(cfg.BaseDir, "parser"))
+	goutil.Gen(path.Join(cfg.BaseDir, "goutil"))
 }
