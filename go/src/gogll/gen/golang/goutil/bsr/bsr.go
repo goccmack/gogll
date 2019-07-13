@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"gogll/cfg"
 	"gogll/goutil/ioutil"
-	"html/template"
+	"text/template"
 )
 
 func Gen(bsrFile string) {
@@ -33,6 +33,10 @@ It implements a Binary Subtree Representation set as defined in
 package bsr
 
 import (
+	"fmt"
+	"sort"
+	"strings"
+	
 	"{{.}}/parser/slot"
 )
 
@@ -84,7 +88,7 @@ func Add(l slot.Label, i, k, j int) {
 }
 
 func AddEmpty(l slot.Label, i int) {
-	insert(&String{l, i, i, i})
+	insert(String{l, i, i, i})
 }
 
 func Contain(nt string, left, right int) bool {
@@ -102,8 +106,9 @@ func insert(bsr BSR) {
 		Set.slotEntries[s] = true
 	case String:
 		Set.stringEntries[s] = true
+	default:
+		panic(fmt.Sprintf("Invalid type %T", bsr))
 	}
-	panic("must not happen")
 }
 
 func (s Slot) LeftExtent() int {
@@ -116,6 +121,11 @@ func (s Slot) RightExtent() int {
 
 func (s Slot) InputPos() int {
 	return s.inputPos
+}
+
+func (s Slot) String() string {
+	return fmt.Sprintf("%s,%d,%d,%d", s.Label, s.leftExtent, s.inputPos,
+		s.rightExtent)
 }
 
 func (s String) LeftExtent() int {
@@ -132,5 +142,61 @@ func (s String) InputPos() int {
 
 func (s String) Empty() bool {
 	return s.leftExtent == s.inputPos && s.inputPos == s.rightExtent
+}
+
+func (s String) String() string {
+	ss := s.Label.Symbols()[s.leftExtent:s.RightExtent()]
+	str := strings.Join(ss, " ")
+	return fmt.Sprintf("%s,%d,%d,%d", str, s.leftExtent, s.inputPos,
+		s.rightExtent)
+}
+
+func Dump() {
+	DumpSlots()
+	DumpStrings()
+}
+
+func DumpSlots() {
+	fmt.Printf("Slots (%d)\n", len(GetSlots()))
+	for _, s := range GetSlots() {
+		DumpSlot(s)
+	}
+}
+
+func DumpSlot(s Slot) {
+	fmt.Println(s)
+}
+
+func DumpStrings() {
+	fmt.Printf("Strings(%d)\n", len(GetStrings()))
+	for _, s := range GetStrings() {
+		DumpString(s)
+	}
+}
+
+func DumpString(s String) {
+	fmt.Println(s)
+}
+
+func GetSlots() (slots []Slot) {
+	for s := range Set.slotEntries {
+		slots = append(slots, s)
+	}
+	sort.Slice(slots,
+		func(i, j int) bool {
+			return slots[i].Label < slots[j].Label
+		})
+	return
+}
+
+func GetStrings() (strings []String) {
+	for s := range Set.stringEntries {
+		strings = append(strings, s)
+	}
+	sort.Slice(strings,
+		func(i, j int) bool {
+			return strings[i].Label < strings[j].Label
+		})
+	return
 }
 `
