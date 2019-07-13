@@ -66,9 +66,11 @@ func getNTFollowData(nt string) *FFData {
 }
 
 func getSlotFirstData(s gslot.Label) *FFData {
+	tail := s.Symbols()[s.Pos:]
+	fmt.Printf("getSlotFirstData(%s): %s = %s\n", s.Label(), tail, frstflw.FirstOfString(tail).Elements())
 	return &FFData{
 		Key:   s.Label(),
-		Value: getSymbolsList(frstflw.FirstOfString(s.Symbols()).Elements()),
+		Value: getSymbolsList(frstflw.FirstOfString(tail).Elements()),
 	}
 }
 
@@ -93,24 +95,6 @@ func getTSData() (data []*TSData) {
 	}
 	return
 }
-
-// func getTSFirst(symbols []string) string {
-// 	tmpl, err := template.New("TS first").Parse(firstTmpl)
-// 	if err != nil {
-// 		panic(err)
-// 	}
-// 	buf, data := new(bytes.Buffer), getFirstData()
-// 	if err = tmpl.Execute(buf, data); err != nil {
-// 		panic(err)
-// 	}
-// 	return buf.String()
-// }
-
-// func getFirstData() (data []*TestSelectData)
-
-// func getTSFollow(nt string) string {
-// 	println("implement me")
-// }
 
 const testSelectTmpl = `var testSelect = map[slot.Label]func(string)bool{ {{range $i, $ts := .TS}}
 	slot.{{$ts.Label}}:func(x string)bool{

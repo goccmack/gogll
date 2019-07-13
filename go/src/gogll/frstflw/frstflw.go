@@ -146,6 +146,7 @@ func genFollowOf(nt string) *stringset.StringSet {
 		}
 	}
 	follow.Remove(ast.Empty)
+	followSets[nt].AddSet(follow)
 	return follow
 }
 

@@ -104,7 +104,7 @@ import(
 )
 
 const (
-	Dollar = ""
+	Dollar = "$"
 	Empty = "empty"
 )
 
@@ -121,17 +121,27 @@ var (
 	sz    = 0
 	nextI = ""
 
-	R *descriptors = &descriptors{}
-	U *descriptors = &descriptors{}
+	R *descriptors
+	U *descriptors
 
+	popped 		map[poppedNode]bool
+	crf			map[clusterNode][]*crfNode
+	crfNodes	map[crfNode]*crfNode
+)
+
+func initParser() {
+	cI, nextI, sz = 0, "", 0
+	R, U = &descriptors{}, &descriptors{}
 	popped = make(map[poppedNode]bool)
 	crf = map[clusterNode][]*crfNode{
 		{"{{.StartSymbol}}", 0}:{},
 	}
 	crfNodes = map[crfNode]*crfNode{}
-)
+	bsr.Init()
+}
 
-func Parse(I []byte) {
+func Parse(I []byte) error {
+	initParser()
 	var L slot.Label
 	m, cU := len(I), 0
 	nextI, _, sz = decodeRune(I[cI:])
@@ -154,8 +164,9 @@ func Parse(I []byte) {
 		}
 	}
 	if !bsr.Contain("{{.StartSymbol}}",0,m) {
-		parseError()
+		return parseError()
 	}
+	return nil
 }
 
 func ntAdd(nt string, j int) {
@@ -205,7 +216,9 @@ if there is no CRF node labelled (X, j) {
 }
 */
 func call(L slot.Label, i, j int) {
+	fmt.Printf("call(%s,%d,%d)\n", L,i,j)
 	u, exist := crfNodes[crfNode{L, i}]
+	fmt.Printf("  u exist=%t\n", exist)
 	if !exist {
 		u = &crfNode{L, i}
 		crfNodes[*u] = u
@@ -214,11 +227,15 @@ func call(L slot.Label, i, j int) {
 	ndV := clusterNode{X, j}
 	v, exist := crf[ndV]
 	if !exist {
+		fmt.Println("  v exist")
 		crf[ndV] = []*crfNode{u}
 		ntAdd(X, j)
 	} else {
+		fmt.Println("  v !exist")
 		if !existEdge(v, u) {
+			fmt.Printf("  !existEdge(%s)\n", u)
 			crf[ndV] = append(v, u)
+			fmt.Printf("|popped|=%d\n", len(popped))
 			for pnd, _ := range popped {
 				if pnd.X == X && pnd.k == j {
 					dscAdd(L, i, pnd.j)
@@ -239,6 +256,7 @@ func existEdge(nds []*crfNode, nd *crfNode) bool {
 }
 
 func rtn(X string, k, j int) {
+	fmt.Printf("rtn(%s,%d,%d)\n", X,k,j)
 	p := poppedNode{X, k, j}
 	if _, exist := popped[p]; !exist {
 		popped[p] = true
@@ -291,6 +309,7 @@ func (d *descriptor) String() string {
 }
 
 func dscAdd(L slot.Label, k, i int) {
+	fmt.Printf("dscAdd(%s,%d,%d)\n", L, k, i)
 	d := &descriptor{L, k, i}
 	if !U.contain(d) {
 		R.set = append(R.set, d)
@@ -377,8 +396,8 @@ func space(r rune) bool {
 	
 /*** Errors ***/
 
-func parseError() {
-	fmt.Println("parse Error")
+func parseError() error {
+	return fmt.Errorf("parse Error")
 }
 
 func parseErrorError(err error) {

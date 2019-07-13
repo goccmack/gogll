@@ -87,7 +87,8 @@ const altCodeTmpl = `		case slot.{{.AltLabel}}: // {{.AltComment}}{{range $i, $s
 			{{else if $slot.IsNT}}call(slot.{{.PostLabel}}, cU, cI)
 case slot.{{$slot.PostLabel}}: // {{$slot.Comment}} 
 			{{else}}bsr.Add(slot.{{$slot.PostLabel}}, cU, cI, cI+sz)
-			cI += sz {{end}}{{end}}
+			cI += sz 
+			nextI, _, sz = decodeRune(I[cI:]){{end}}{{end}}
 			if follow["{{.NT}}"].Contain(nextI){
 				rtn("{{.NT}}", cU, cI)
 			}

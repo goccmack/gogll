@@ -78,7 +78,8 @@ func newSet() *BSRSet {
 Add a BSR to the set. (i,j) is the extent. k is the pivot.
 */
 func Add(l slot.Label, i, k, j int) {
-	if l.EoR() {
+	fmt.Printf("bsr.Add(%s,%d,%d,%d)\n", l,i,k,j)
+	if l.EoR() {	
 		insert(Slot{l, i, k, j})
 	} else {
 		if l.Pos() > 0 {
@@ -98,6 +99,10 @@ func Contain(nt string, left, right int) bool {
 		}
 	}
 	return false
+}
+
+func Init() {
+	Set = newSet()
 }
 
 func insert(bsr BSR) {
@@ -124,8 +129,7 @@ func (s Slot) InputPos() int {
 }
 
 func (s Slot) String() string {
-	return fmt.Sprintf("%s,%d,%d,%d", s.Label, s.leftExtent, s.inputPos,
-		s.rightExtent)
+	return fmt.Sprintf("%s,%d,%d,%d", s.Label, s.leftExtent, s.inputPos, s.rightExtent)
 }
 
 func (s String) LeftExtent() int {
@@ -145,6 +149,8 @@ func (s String) Empty() bool {
 }
 
 func (s String) String() string {
+	fmt.Printf("bsr.String.String(): %s, %d, %d, %d\n",
+		s.Label.Symbols(), s.leftExtent, s.inputPos, s.rightExtent)
 	ss := s.Label.Symbols()[s.leftExtent:s.RightExtent()]
 	str := strings.Join(ss, " ")
 	return fmt.Sprintf("%s,%d,%d,%d", str, s.leftExtent, s.inputPos,
