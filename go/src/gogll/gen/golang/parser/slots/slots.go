@@ -136,6 +136,10 @@ func (l Label) EoR() bool {
 	return l.Slot().EoR()
 }
 
+func (l Label) Head() string {
+	return l.Slot().NT
+}
+
 func (l Label) Pos() int {
 	return l.Slot().Pos
 }

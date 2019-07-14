@@ -82,7 +82,9 @@ type SlotData struct {
 }
 
 const altCodeTmpl = `		case slot.{{.AltLabel}}: // {{.AltComment}}{{range $i, $slot := .Slots}}
-			{{if $i}}if !testSelect[slot.{{$slot.PreLabel}}](nextI){ break }
+			{{if $i}}if !testSelect[slot.{{$slot.PreLabel}}](nextI){ 
+				break 
+			}
 			{{end}}{{if $slot.Empty}}bsr.AddEmpty({{$slot.PostLabel}},cI, cI, cI)
 			{{else if $slot.IsNT}}call(slot.{{.PostLabel}}, cU, cI)
 case slot.{{$slot.PostLabel}}: // {{$slot.Comment}} 

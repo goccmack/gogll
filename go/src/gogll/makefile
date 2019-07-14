@@ -1,4 +1,7 @@
-.PHONY: clean lexer gocc debug
+.PHONY: clean lexer gocc debug install
+
+install: clean gocc
+	go install
 
 clean:
 	rm first.txt ; \

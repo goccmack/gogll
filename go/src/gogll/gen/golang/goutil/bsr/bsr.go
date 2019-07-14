@@ -82,7 +82,7 @@ func Add(l slot.Label, i, k, j int) {
 	if l.EoR() {	
 		insert(Slot{l, i, k, j})
 	} else {
-		if l.Pos() > 0 {
+		if l.Pos() > 1 {
 			insert(String{l, i, k, j})
 		}
 	}
@@ -93,8 +93,10 @@ func AddEmpty(l slot.Label, i int) {
 }
 
 func Contain(nt string, left, right int) bool {
-	for e, _ := range Set.stringEntries {
-		if e.Label.Slot().NT == nt && e.LeftExtent() == left && e.RightExtent() == right {
+	fmt.Printf("bsr.Contain(%s,%d,%d)\n",nt,left,right)
+	for e, _ := range Set.slotEntries {
+		fmt.Printf("  (%s,%d,%d)\n",e.Label.Head(),e.leftExtent,e.rightExtent)
+		if e.Label.Head() == nt && e.leftExtent == left && e.rightExtent == right {
 			return true
 		}
 	}
@@ -149,9 +151,9 @@ func (s String) Empty() bool {
 }
 
 func (s String) String() string {
-	fmt.Printf("bsr.String.String(): %s, %d, %d, %d\n",
-		s.Label.Symbols(), s.leftExtent, s.inputPos, s.rightExtent)
-	ss := s.Label.Symbols()[s.leftExtent:s.RightExtent()]
+	// fmt.Printf("bsr.String.String(): %s, %d, %d, %d\n",
+	// 	s.Label.Symbols(), s.leftExtent, s.inputPos, s.rightExtent)
+	ss := s.Label.Symbols()[:s.Label.Pos()]
 	str := strings.Join(ss, " ")
 	return fmt.Sprintf("%s,%d,%d,%d", str, s.leftExtent, s.inputPos,
 		s.rightExtent)

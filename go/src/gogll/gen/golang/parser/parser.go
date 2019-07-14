@@ -152,7 +152,8 @@ func Parse(I []byte) error {
 		L, cU, cI = R.remove()
 		nextI, _, sz = decodeRune(I[cI:])
 
-		fmt.Printf("L:%s, cI:%d, I[cI]:%s\n", L, cI, nextI)
+		fmt.Println()
+		fmt.Printf("L:%s, cI:%d, I[cI]:%s, cU:%d\n", L, cI, nextI, cU)
 		fmt.Printf("R:%s\n", R)
 		fmt.Printf("U:%s\n", U)
 
@@ -170,6 +171,7 @@ func Parse(I []byte) error {
 }
 
 func ntAdd(nt string, j int) {
+	fmt.Printf("ntAdd(%s, %d)\n", nt, j)
 	for _, l := range slot.GetAlternates(nt) {
 		if testSelect[l](nextI) {
 			dscAdd(l, j, j)
@@ -233,7 +235,7 @@ func call(L slot.Label, i, j int) {
 	} else {
 		fmt.Println("  v !exist")
 		if !existEdge(v, u) {
-			fmt.Printf("  !existEdge(%s)\n", u)
+			fmt.Printf("  !existEdge(%v)\n", u)
 			crf[ndV] = append(v, u)
 			fmt.Printf("|popped|=%d\n", len(popped))
 			for pnd, _ := range popped {
@@ -266,6 +268,37 @@ func rtn(X string, k, j int) {
 		}
 	}
 }
+
+func CRFString() string {
+	buf := new(bytes.Buffer)
+	buf.WriteString("CRF: {")
+	for cn, nds := range crf{
+		for _, nd := range nds {
+			fmt.Fprintf(buf, "%s->%s, ", cn, nd)
+		}
+	}
+	buf.WriteString("}")
+	return buf.String()
+}
+
+func (cn clusterNode) String() string {
+	return fmt.Sprintf("(%s,%d)", cn.X, cn.k)
+}
+
+func (n crfNode) String() string {
+	return fmt.Sprintf("(%s,%d)", n.L.String(), n.i)
+}
+
+func PoppedString() string {
+	buf := new(bytes.Buffer)
+	buf.WriteString("Popped: {")
+	for p, _ := range popped {
+		fmt.Fprintf(buf, "(%s,%d,%d) ", p.X, p.k, p.j)
+	}
+	buf.WriteString("}")
+	return buf.String()
+}
+
 /*** descriptors ***/
 
 type descriptors struct {
@@ -305,7 +338,7 @@ type descriptor struct {
 }
 
 func (d *descriptor) String() string {
-	return fmt.Sprintf("%s,%d,%d", d.L, d.k, d.k)
+	return fmt.Sprintf("%s,%d,%d", d.L, d.k, d.i)
 }
 
 func dscAdd(L slot.Label, k, i int) {
@@ -320,7 +353,8 @@ func dscAdd(L slot.Label, k, i int) {
 func (ds *descriptors) remove() (L slot.Label, k, i int) {
 	d := ds.set[len(ds.set)-1]
 	ds.set = ds.set[:len(ds.set)-1]
-	return d.L, k, d.i
+	fmt.Printf("remove: %s,%d,%d\n", d.L, d.k, d.i)
+	return d.L, d.k, d.i
 }
 
 /*** Rune decoding ***/

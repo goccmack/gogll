@@ -1,6 +1,7 @@
 package s1
 
 import (
+	"gogll/test/s1/goutil/bsr"
 	"testing"
 	"gogll/test/s1/parser"
 )
@@ -15,4 +16,5 @@ func Test2(t *testing.T) {
 	if err := parser.Parse([]byte("daaa")); err != nil {
 		t.Error(err)
 	}
+	bsr.Dump()
 }
