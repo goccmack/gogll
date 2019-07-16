@@ -62,7 +62,7 @@ func getLabelList(rule *ast.Rule) string {
 		if i > 0 {
 			buf.WriteString(",")
 		}
-		buf.WriteString(gslot.Label{rule.Head.Value(), i, 0}.Label())
+		buf.WriteString(gslot.Label{rule.Head.StringValue(), i, 0}.Label())
 	}
 	return buf.String()
 }
@@ -87,7 +87,7 @@ func getSymbolList(ss []string) string {
 		if i > 0 {
 			buf.WriteString(",")
 		}
-		fmt.Fprintf(buf, "\"%s\"", s)
+		fmt.Fprintf(buf, "`%s`", s)
 	}
 	return buf.String()
 }

@@ -82,7 +82,9 @@ type SlotData struct {
 }
 
 const altCodeTmpl = `		case slot.{{.AltLabel}}: // {{.AltComment}}{{range $i, $slot := .Slots}}
-			{{if $i}}if !testSelect[slot.{{$slot.PreLabel}}](nextI){ 
+			fmt.Printf("  TestSelect({{$slot.PreLabel}}, %s\n", nextI)
+			{{if $i}}if !testSelect[slot.{{$slot.PreLabel}}](){ 
+				println("      testSelect failed")
 				break 
 			}
 			{{end}}{{if $slot.Empty}}bsr.AddEmpty({{$slot.PostLabel}},cI, cI, cI)
@@ -90,8 +92,8 @@ const altCodeTmpl = `		case slot.{{.AltLabel}}: // {{.AltComment}}{{range $i, $s
 case slot.{{$slot.PostLabel}}: // {{$slot.Comment}} 
 			{{else}}bsr.Add(slot.{{$slot.PostLabel}}, cU, cI, cI+sz)
 			cI += sz 
-			nextI, _, sz = decodeRune(I[cI:]){{end}}{{end}}
-			if follow["{{.NT}}"].Contain(nextI){
+			nextI, r, sz = decodeRune(I[cI:]){{end}}{{end}}
+			if follow["{{.NT}}"](){
 				rtn("{{.NT}}", cU, cI)
 			}
 	`

@@ -32,7 +32,7 @@ func genFirstSets(w io.Writer) {
 func genFirstSet(w io.Writer, symbol string) {
 	fmt.Fprintf(w, "%s: ", symbol)
 	for _, s := range frstflw.FirstOfSymbol(symbol).Elements() {
-		fmt.Fprintf(w, "%s ", s)
+		fmt.Fprintf(w, `%s `, s)
 	}
 	fmt.Fprintln(w)
 }
@@ -46,7 +46,7 @@ func genFollowSets(w io.Writer) {
 func genFollowSet(w io.Writer, nt string) {
 	fmt.Fprintf(w, "Follow(%s): ", nt)
 	for _, s := range frstflw.Follow(nt).Elements() {
-		fmt.Fprintf(w, "%s ", s)
+		fmt.Fprintf(w, `%s `, s)
 	}
 	fmt.Fprintln(w)
 }

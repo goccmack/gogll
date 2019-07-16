@@ -1,0 +1,17 @@
+S : Sep number ;
+
+Sep
+    :   space
+    |   space Sep
+    |   Comment
+    |   Comment Sep
+    ;
+
+Comment
+    :   "//" CommentString "\n"
+    ;
+
+CommentString
+    :   not "\n"
+    |   not "\n" CommentString
+    ;

@@ -23,38 +23,42 @@ var parserPackage = ""
 // }
 
 func addRule(rule *Rule) error {
-	if _, exist := rules[rule.Head.Value()]; exist {
-		return fmt.Errorf("Duplicate declaration of rule %s", rule.Head.Value())
+	if _, exist := rules[rule.Head.stringValue]; exist {
+		return fmt.Errorf("Duplicate declaration of rule %s", rule.Head.stringValue)
 	}
-	rules[rule.Head.Value()] = rule
+	rules[rule.Head.stringValue] = rule
 	AddSymbol(rule.Head)
 	if rule.IsStartSymbol {
 		if startSymbol != "" {
-			return fmt.Errorf("Duplicate start symbol %s", rule.Head.Value())
+			return fmt.Errorf("Duplicate start symbol %s", rule.Head.stringValue)
 		}
-		startSymbol = rule.Head.Value()
+		startSymbol = rule.Head.stringValue
 	}
 	return nil
 }
 
 func AddSymbol(s Symbol) (Symbol, error) {
+	// fmt.Printf("symtab.AddSymbol(\"%s\")\n", s.Value())
 	if str, ok := s.(*String); ok {
 		if err := addStringSymbols(str); err != nil {
 			return nil, err
 		}
 		return s, nil
 	}
-	if s1, exist := symbols[s.Value()]; exist && !s1.Equal(s) {
-		return nil, fmt.Errorf("Incompatible duplicate symbol %s", s.Value())
+	if s1, exist := symbols[s.StringValue()]; exist && !s1.Equal(s) {
+		return nil, fmt.Errorf("Incompatible duplicate symbol %s", s.StringValue())
 	}
-	symbols[s.Value()] = s
+	symbols[s.StringValue()] = s
 	return s, nil
 }
 
 func addStringSymbols(s *String) error {
-	for _, sym := range s.Symbols() {
-		sc := newStringChar(sym, s)
-		if _, err := AddSymbol(sc); err != nil {
+	syms, err := newStringChars(s)
+	if err != nil {
+		return err
+	}
+	for _, sym := range syms {
+		if _, err := AddSymbol(sym); err != nil {
 			return err
 		}
 	}

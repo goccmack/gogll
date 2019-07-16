@@ -1,9 +1,10 @@
 package ast
 
 import (
+	"strings"
+
 	"bytes"
 	"fmt"
-	"gogll/goutil/utf8"
 	"gogll/token"
 
 	"gogll/goutil/stringset"
@@ -15,7 +16,7 @@ const (
 
 func GetAST(parseTree interface{}) *Grammar {
 	g := parseTree.(*Grammar)
-	startSymbol = g.Rules[0].Head.value
+	startSymbol = g.Rules[0].Head.stringValue
 	return g
 }
 
@@ -67,11 +68,11 @@ func NewPackage(pkg interface{}) (*Package, error) {
 		err := fmt.Errorf("Duplicate package statement")
 		return nil, err
 	}
-	parserPackage = p.Value()
+	parserPackage = p.StringValue()
 	return p, nil
 }
 
-func (p *Package) Value() string {
+func (p *Package) StringValue() string {
 	return p.Token.StringValue()
 }
 
@@ -146,27 +147,27 @@ func (b *Body) String() string {
 		if i > 0 {
 			buf.WriteString(" ")
 		}
-		buf.WriteString(s.Value())
+		buf.WriteString(s.StringValue())
 	}
 	return buf.String()
 }
 
 type Head struct {
-	Token *token.Token
-	value string
+	Token       *token.Token
+	stringValue string
 }
 
 func NewHead(head interface{}) (*Head, error) {
 	tok := head.(*token.Token)
 	h := &Head{
-		Token: tok,
-		value: tok.IDValue(),
+		Token:       tok,
+		stringValue: tok.IDValue(),
 	}
 	return h, nil
 }
 
-func (h *Head) Value() string {
-	return h.value
+func (h *Head) StringValue() string {
+	return h.stringValue
 }
 
 type Rule struct {
@@ -189,7 +190,7 @@ type Rules []*Rule
 
 type Symbol interface {
 	isSymbol()
-	Value() string
+	StringValue() string
 	Equal(Symbol) bool
 	IsTerminal() bool
 	Symbols() Symbols
@@ -225,77 +226,77 @@ func (sym *Head) Equal(sym1 Symbol) bool {
 	if _, ok := sym1.(*Head); !ok {
 		return false
 	} else {
-		return sym.Value() == sym1.Value()
+		return sym.StringValue() == sym1.StringValue()
 	}
 }
 func (sym *ID) Equal(sym1 Symbol) bool {
 	if _, ok := sym1.(*ID); !ok {
 		return false
 	} else {
-		return sym.Value() == sym1.Value()
+		return sym.StringValue() == sym1.StringValue()
 	}
 }
 func (sym *AnyChar) Equal(sym1 Symbol) bool {
 	if _, ok := sym1.(*AnyChar); !ok {
 		return false
 	} else {
-		return sym.Value() == sym1.Value()
+		return sym.StringValue() == sym1.StringValue()
 	}
 }
 func (sym *NotString) Equal(sym1 Symbol) bool {
 	if _, ok := sym1.(*NotString); !ok {
 		return false
 	} else {
-		return sym.Value() == sym1.Value()
+		return sym.StringValue() == sym1.StringValue()
 	}
 }
 func (sym *Space) Equal(sym1 Symbol) bool {
 	if _, ok := sym1.(*Space); !ok {
 		return false
 	} else {
-		return sym.Value() == sym1.Value()
+		return sym.StringValue() == sym1.StringValue()
 	}
 }
 func (sym *CharLiteral) Equal(sym1 Symbol) bool {
 	if _, ok := sym1.(*CharLiteral); !ok {
 		return false
 	} else {
-		return sym.Value() == sym1.Value()
+		return sym.StringValue() == sym1.StringValue()
 	}
 }
 func (sym *UpCase) Equal(sym1 Symbol) bool {
 	if _, ok := sym1.(*UpCase); !ok {
 		return false
 	} else {
-		return sym.Value() == sym1.Value()
+		return sym.StringValue() == sym1.StringValue()
 	}
 }
 func (sym *LowCase) Equal(sym1 Symbol) bool {
 	if _, ok := sym1.(*LowCase); !ok {
 		return false
 	} else {
-		return sym.Value() == sym1.Value()
+		return sym.StringValue() == sym1.StringValue()
 	}
 }
 func (sym *Letter) Equal(sym1 Symbol) bool {
 	if _, ok := sym1.(*Letter); !ok {
 		return false
 	} else {
-		return sym.Value() == sym1.Value()
+		return sym.StringValue() == sym1.StringValue()
 	}
 }
 func (sym *Number) Equal(sym1 Symbol) bool {
 	if _, ok := sym1.(*Number); !ok {
 		return false
 	} else {
-		return sym.Value() == sym1.Value()
+		return sym.StringValue() == sym1.StringValue()
 	}
 }
 func (sym *String) Equal(sym1 Symbol) bool {
 	if _, ok := sym1.(*String); !ok {
 		return false
 	} else {
-		return sym.Value() == sym1.Value()
+		return sym.StringValue() == sym1.StringValue()
 	}
 }
 
@@ -303,31 +304,30 @@ func (sym *StringChar) Equal(sym1 Symbol) bool {
 	if _, ok := sym1.(*StringChar); !ok {
 		return false
 	} else {
-		return sym.Value() == sym1.Value()
+		return sym.StringValue() == sym1.StringValue()
 	}
 }
 
-func (sym *Head) Symbols() Symbols        { return Symbols{sym.Value()} }
-func (sym *ID) Symbols() Symbols          { return Symbols{sym.Value()} }
-func (sym *AnyChar) Symbols() Symbols     { return Symbols{sym.Value()} }
-func (sym *NotString) Symbols() Symbols   { return Symbols{sym.Value()} }
-func (sym *Space) Symbols() Symbols       { return Symbols{sym.Value()} }
-func (sym *CharLiteral) Symbols() Symbols { return Symbols{sym.Value()} }
-func (sym *UpCase) Symbols() Symbols      { return Symbols{sym.Value()} }
-func (sym *LowCase) Symbols() Symbols     { return Symbols{sym.Value()} }
-func (sym *Letter) Symbols() Symbols      { return Symbols{sym.Value()} }
-func (sym *Number) Symbols() Symbols      { return Symbols{sym.Value()} }
-func (s *String) Symbols() Symbols {
-	return Symbols(utf8.DecodeRunes(s.Token.Lit[1 : len(s.Token.Lit)-1]))
-}
-func (sym *StringChar) Symbols() Symbols { return Symbols{sym.Value()} }
+func (sym *Head) Symbols() Symbols        { return Symbols{sym.StringValue()} }
+func (sym *ID) Symbols() Symbols          { return Symbols{sym.StringValue()} }
+func (sym *AnyChar) Symbols() Symbols     { return Symbols{sym.StringValue()} }
+func (sym *NotString) Symbols() Symbols   { return Symbols{sym.StringValue()} }
+func (sym *Space) Symbols() Symbols       { return Symbols{sym.StringValue()} }
+func (sym *CharLiteral) Symbols() Symbols { return Symbols{sym.StringValue()} }
+func (sym *UpCase) Symbols() Symbols      { return Symbols{sym.StringValue()} }
+func (sym *LowCase) Symbols() Symbols     { return Symbols{sym.StringValue()} }
+func (sym *Letter) Symbols() Symbols      { return Symbols{sym.StringValue()} }
+func (sym *Number) Symbols() Symbols      { return Symbols{sym.StringValue()} }
+func (s *String) Symbols() (ss Symbols)   { return s.symbols }
+
+func (sym *StringChar) Symbols() Symbols { return Symbols{sym.StringValue()} }
 
 type NotString struct {
 	Token *token.Token
 	value string
 }
 
-func (ns *NotString) Value() string {
+func (ns *NotString) StringValue() string {
 	return ns.value
 }
 
@@ -335,7 +335,8 @@ func NewNotString(sym interface{}) (*NotString, error) {
 	tok := sym.(*token.Token)
 	symbol := &NotString{
 		Token: tok,
-		value: "not " + tok.IDValue(),
+		// value: "not " + tok.IDValue(),
+		value: fmt.Sprintf(`not("%s")`, tok.StringValue()),
 	}
 	return symbol, nil
 }
@@ -354,7 +355,7 @@ func NewID(id interface{}) (*ID, error) {
 	return id1, nil
 }
 
-func (id *ID) Value() string {
+func (id *ID) StringValue() string {
 	return id.value
 }
 
@@ -372,7 +373,7 @@ func NewAnyChar(t interface{}) (*AnyChar, error) {
 	return terminal, nil
 }
 
-func (t *AnyChar) Value() string {
+func (t *AnyChar) StringValue() string {
 	return t.value
 }
 
@@ -390,7 +391,7 @@ func NewSpace(t interface{}) (*Space, error) {
 	return terminal, nil
 }
 
-func (t *Space) Value() string {
+func (t *Space) StringValue() string {
 	return t.value
 }
 
@@ -414,7 +415,7 @@ func NewCharLiteral(t interface{}) (*CharLiteral, error) {
 	return terminal, nil
 }
 
-func (t *CharLiteral) Value() string {
+func (t *CharLiteral) StringValue() string {
 	return t.value
 }
 
@@ -432,7 +433,7 @@ func NewUpCase(t interface{}) (*UpCase, error) {
 	return terminal, nil
 }
 
-func (t *UpCase) Value() string {
+func (t *UpCase) StringValue() string {
 	return t.value
 }
 
@@ -450,7 +451,7 @@ func NewLowCase(t interface{}) (*LowCase, error) {
 	return terminal, nil
 }
 
-func (t *LowCase) Value() string {
+func (t *LowCase) StringValue() string {
 	return t.value
 }
 
@@ -468,7 +469,7 @@ func NewLetter(t interface{}) (*Letter, error) {
 	return terminal, nil
 }
 
-func (t *Letter) Value() string {
+func (t *Letter) StringValue() string {
 	return t.value
 }
 
@@ -486,12 +487,16 @@ func NewNumber(t interface{}) (*Number, error) {
 	return terminal, nil
 }
 
-func (t *Number) Value() string {
+func (t *Number) StringValue() string {
 	return t.value
 }
 
+// String
+
 type String struct {
-	Token *token.Token
+	Token    *token.Token
+	strChars []*StringChar
+	symbols  []string
 }
 
 func NewString(str interface{}) (*String, error) {
@@ -499,28 +504,61 @@ func NewString(str interface{}) (*String, error) {
 	sym := &String{
 		Token: tok,
 	}
+	var err error
+	sym.strChars, err = newStringChars(sym)
+	if err != nil {
+		return nil, err
+	}
+	for _, sc := range sym.strChars {
+		sym.symbols = append(sym.symbols, sc.stringValue)
+	}
 	return sym, nil
 }
 
-func (s *String) Value() string {
+func newStringChars(s *String) (cs []*StringChar, err error) {
+	rdr := strings.NewReader(s.Token.StringValue())
+	str := ""
+	for rdr.Len() > 0 {
+		r, _, err := rdr.ReadRune()
+		if err != nil {
+			return nil, err
+		}
+		if r == '\\' {
+			r, _, err = rdr.ReadRune()
+			if err != nil {
+				return nil, err
+			}
+			str = fmt.Sprintf("\\%c", r)
+		} else {
+			str = string(r)
+		}
+		cs = append(cs, newStringChar(r, str, s))
+	}
+	return
+}
+
+func (s *String) StringValue() string {
 	return string(s.Token.Lit)
 }
 
 type StringChar struct {
-	String *String
-	value  string
+	String      *String
+	Rune        rune
+	stringValue string
 }
 
-func newStringChar(sc string, str *String) *StringChar {
+func newStringChar(r rune, sc string, str *String) *StringChar {
+	fmt.Printf("ast.newStringChar*(%s)\n", sc)
 	strCh := &StringChar{
-		String: str,
-		value:  sc,
+		String:      str,
+		Rune:        r,
+		stringValue: sc,
 	}
 	return strCh
 }
 
-func (sc *StringChar) Value() string {
-	return sc.value
+func (sc *StringChar) StringValue() string {
+	return sc.stringValue
 }
 
 /*** Dump ***/

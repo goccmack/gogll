@@ -1,6 +1,7 @@
 package frstflw
 
 import (
+	"fmt"
 	"gogll/ast"
 	"gogll/goutil/stringset"
 	"gogll/goutil/stringslice"
@@ -34,7 +35,6 @@ func FirstOfString(str []string) *stringset.StringSet {
 }
 
 func FirstOfSymbol(s string) *stringset.StringSet {
-	// println("FirstOfSymbol")
 	if firstSets == nil {
 		genFirstSets()
 	}
@@ -74,8 +74,10 @@ func genFirstSets() {
 				again = true
 			}
 		}
-		// dumpFirstSets(firstSets)
 	}
+	// for sym, fs := range firstSets {
+	// 	fmt.Printf("First(\"%s\"):%s\n", sym, fs)
+	// }
 }
 
 func initFirstSets() {
@@ -140,12 +142,13 @@ func genFollowOf(nt string) *stringset.StringSet {
 				first := FirstOfString(bs[idx+1:])
 				follow.AddSet(first)
 				if first.Contain(ast.Empty) {
-					follow.AddSet(Follow(r.Head.Value()))
+					follow.AddSet(Follow(r.Head.StringValue()))
 				}
 			}
 		}
 	}
 	follow.Remove(ast.Empty)
+	fmt.Printf("frstflw.genFollowOf(%s) %s + %s\n", nt, followSets[nt], follow)
 	followSets[nt].AddSet(follow)
 	return follow
 }

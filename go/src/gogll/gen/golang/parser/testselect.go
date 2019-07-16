@@ -6,6 +6,7 @@ import (
 	"gogll/ast"
 	"gogll/frstflw"
 	"gogll/gslot"
+	"strings"
 	"text/template"
 )
 
@@ -22,96 +23,110 @@ func genTestSelect() string {
 }
 
 type TestSelectData struct {
-	TS     []*TSData
-	First  []*FFData
-	Follow []*FFData
-}
-
-type FFData struct {
-	Key   string
-	Value string
+	TestSelect []*TSData
+	Follow     []*TSData
 }
 
 type TSData struct {
-	Label, NT string
+	Label      string
+	Conditions []*Condition
+}
+
+type Condition struct {
+	Cond string
+	Last bool
 }
 
 func getTestSelectData() *TestSelectData {
 	return &TestSelectData{
-		TS:     getTSData(),
-		First:  getFirstData(),
-		Follow: getFollowData(),
+		TestSelect: getTSData(),
+		Follow:     getFollowData(),
 	}
 }
 
-func getFirstData() (data []*FFData) {
-	for _, s := range gslot.GetSlots() {
-		data = append(data, getSlotFirstData(s))
+func getFollowData() (data []*TSData) {
+	for _, nt := range ast.GetNonTerminals() {
+		data = append(data, getFollowDataForNT(nt))
 	}
 	return
 }
 
-func getFollowData() (data []*FFData) {
-	for _, r := range ast.GetRules() {
-		data = append(data, getNTFollowData(r.Head.Value()))
+func getFollowDataForNT(nt string) *TSData {
+	d := &TSData{
+		Label:      nt,
+		Conditions: getFollowConditions(nt),
 	}
-	return
-}
-
-func getNTFollowData(nt string) *FFData {
-	return &FFData{
-		Key:   nt,
-		Value: getSymbolsList(frstflw.Follow(nt).Elements()),
-	}
-}
-
-func getSlotFirstData(s gslot.Label) *FFData {
-	tail := s.Symbols()[s.Pos:]
-	fmt.Printf("getSlotFirstData(%s): %s = %s\n", s.Label(), tail, frstflw.FirstOfString(tail).Elements())
-	return &FFData{
-		Key:   s.Label(),
-		Value: getSymbolsList(frstflw.FirstOfString(tail).Elements()),
-	}
-}
-
-func getSymbolsList(symbols []string) string {
-	buf := new(bytes.Buffer)
-	for i, sym := range symbols {
-		if i > 0 {
-			buf.WriteString(",")
-		}
-		fmt.Fprintf(buf, "\"%s\"", sym)
-	}
-	return buf.String()
+	// fmt.Printf("getFollowDataForNT(%s): %d\n", nt, len(d.Conditions))
+	return d
 }
 
 func getTSData() (data []*TSData) {
-	for _, lbl := range gslot.GetSlots() {
-		d := &TSData{
-			Label: lbl.Label(),
-			NT:    lbl.Head,
-		}
-		data = append(data, d)
+	for _, s := range gslot.GetSlots() {
+		data = append(data, getSlotTSData(s))
 	}
 	return
 }
 
-const testSelectTmpl = `var testSelect = map[slot.Label]func(string)bool{ {{range $i, $ts := .TS}}
-	slot.{{$ts.Label}}:func(x string)bool{
-		return first[slot.{{$ts.Label}}].Contain(x) ||
-			first[slot.{{$ts.Label}}].Contain(Empty) && follow["{{$ts.NT}}"].Contain(x)
-	},{{end}}
+func getSlotTSData(s gslot.Label) *TSData {
+	return &TSData{
+		Label:      s.Label(),
+		Conditions: getSlotTSConditions(s),
+	}
 }
 
-var first = map[slot.Label]*stringset.StringSet {
-	{{range $i, $f := .First}}slot.{{$f.Key}}:stringset.New({{$f.Value}}),
-{{end}}}
+func getSlotTSConditions(s gslot.Label) (data []*Condition) {
+	ss := s.Symbols()[s.Pos:]
+	frst := frstflw.FirstOfString(ss)
+	for _, sym := range frst.Elements() {
+		if sym != ast.Empty {
+			data = append(data, &Condition{Cond: getSymbolCondition(sym)})
+		}
+	}
+	if frst.Contain(ast.Empty) {
+		data = append(data, getFollowConditions(s.Head)...)
+	}
+	data[len(data)-1].Last = true
+	return
+}
 
-var follow = map[string]*stringset.StringSet {
-	{{range $i, $f := .Follow}}"{{$f.Key}}":stringset.New({{$f.Value}}),
-{{end}}}
-`
+func getFollowConditions(nt string) (data []*Condition) {
+	for _, sym := range frstflw.Follow(nt).Elements() {
+		data = append(data, &Condition{Cond: getSymbolCondition(sym)})
+	}
+	data[len(data)-1].Last = true
+	return
+}
 
-const firstTmpl = `
-stringset.New({{range $i, $sym := .}}{{if i > 0}},{{end}}"{{$sym}}"{{end}})
-`
+func getSymbolCondition(sym string) string {
+	switch sym {
+	case "any":
+		return "true"
+	case "letter":
+		return "letter(r)"
+	case "number":
+		return "number(r)"
+	case "upcase":
+		return "upper(r)"
+	case "lowcase":
+		return "lower(r)"
+	case "space":
+		return "space(r)"
+	}
+	if strings.HasPrefix(sym, "not(") {
+		set := strings.TrimSuffix(strings.TrimPrefix(sym, "not("), ")")
+		return fmt.Sprintf(`not(r, %s)`, set)
+	}
+	return fmt.Sprintf("r == '%s'", sym)
+}
+
+const testSelectTmpl = `var testSelect = map[slot.Label]func()bool{ {{range $i, $ts := .TestSelect}}
+	slot.{{$ts.Label}}:func()bool{
+		return {{range $i, $c := $ts.Conditions}}{{$c.Cond}} {{if not $c.Last}}||{{end}}
+		{{end}} },
+{{end}} }
+
+var follow = map[string]func()bool{ {{range $i, $flw := .Follow}}
+	"{{$flw.Label}}":func()bool{
+		return {{range $i, $c := $flw.Conditions}}{{$c.Cond}} {{if not $c.Last}}||{{end}}
+	{{end}} },
+{{end}} }`

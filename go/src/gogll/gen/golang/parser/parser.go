@@ -97,7 +97,6 @@ import(
 	"unicode/utf8"
 
 	"{{.Package}}/goutil/bsr"
-	"{{.Package}}/goutil/stringset"
 	"{{.Package}}/parser/slot"
 	{{range $i, $import := .Imports}}
 	"{{$import}}" {{end}}
@@ -120,6 +119,7 @@ var (
 	cI    = 0
 	sz    = 0
 	nextI = ""
+	r	rune
 
 	R *descriptors
 	U *descriptors
@@ -144,13 +144,13 @@ func Parse(I []byte) error {
 	initParser()
 	var L slot.Label
 	m, cU := len(I), 0
-	nextI, _, sz = decodeRune(I[cI:])
+	nextI, r, sz = decodeRune(I[cI:])
 	ntAdd("{{.StartSymbol}}", 0)
 	fmt.Printf("R:%s\n", R)
 	fmt.Printf("U:%s\n", U)
 	for !R.empty() {
 		L, cU, cI = R.remove()
-		nextI, _, sz = decodeRune(I[cI:])
+		nextI, r, sz = decodeRune(I[cI:])
 
 		fmt.Println()
 		fmt.Printf("L:%s, cI:%d, I[cI]:%s, cU:%d\n", L, cI, nextI, cU)
@@ -173,10 +173,10 @@ func Parse(I []byte) error {
 func ntAdd(nt string, j int) {
 	fmt.Printf("ntAdd(%s, %d)\n", nt, j)
 	for _, l := range slot.GetAlternates(nt) {
-		if testSelect[l](nextI) {
+		if testSelect[l]() {
 			dscAdd(l, j, j)
 		} else {
-			fmt.Println("testSelect == false")
+			// fmt.Printf("  testSelect == false(%s)\n", l)
 		}
 	}
 }
@@ -220,7 +220,7 @@ if there is no CRF node labelled (X, j) {
 func call(L slot.Label, i, j int) {
 	fmt.Printf("call(%s,%d,%d)\n", L,i,j)
 	u, exist := crfNodes[crfNode{L, i}]
-	fmt.Printf("  u exist=%t\n", exist)
+	// fmt.Printf("  u exist=%t\n", exist)
 	if !exist {
 		u = &crfNode{L, i}
 		crfNodes[*u] = u
@@ -229,15 +229,15 @@ func call(L slot.Label, i, j int) {
 	ndV := clusterNode{X, j}
 	v, exist := crf[ndV]
 	if !exist {
-		fmt.Println("  v exist")
+		// fmt.Println("  v exist")
 		crf[ndV] = []*crfNode{u}
 		ntAdd(X, j)
 	} else {
-		fmt.Println("  v !exist")
+		// fmt.Println("  v !exist")
 		if !existEdge(v, u) {
-			fmt.Printf("  !existEdge(%v)\n", u)
+			// fmt.Printf("  !existEdge(%v)\n", u)
 			crf[ndV] = append(v, u)
-			fmt.Printf("|popped|=%d\n", len(popped))
+			// fmt.Printf("|popped|=%d\n", len(popped))
 			for pnd, _ := range popped {
 				if pnd.X == X && pnd.k == j {
 					dscAdd(L, i, pnd.j)
@@ -353,7 +353,7 @@ func dscAdd(L slot.Label, k, i int) {
 func (ds *descriptors) remove() (L slot.Label, k, i int) {
 	d := ds.set[len(ds.set)-1]
 	ds.set = ds.set[:len(ds.set)-1]
-	fmt.Printf("remove: %s,%d,%d\n", d.L, d.k, d.i)
+	// fmt.Printf("remove: %s,%d,%d\n", d.L, d.k, d.i)
 	return d.L, d.k, d.i
 }
 
@@ -366,15 +366,13 @@ func decodeRune(str []byte) (string, rune, int) {
 	if r == utf8.RuneError {
 		panic(fmt.Sprintf("Rune error: %s", str))
 	}
-	if r == '\\' {
-		r1, sz1 := utf8.DecodeRune(str[sz:])
-		if r1 == utf8.RuneError {
-			panic(fmt.Sprintf("Rune error: %s", str))
-		}
-		r, sz = r1, sz+sz1
+	switch r {
+	case '\t', ' ':
+		return "space", r, sz
+	case '\n':
+		return "\\n", r, sz
 	}
-	chr := string(str[:sz])
-	return chr, r, sz
+	return string(str[:sz]), r, sz
 }
 
 func runeToString(r rune) string {

@@ -8,32 +8,23 @@ import (
 /*
 DecodeRune returns the first rune in str as a string, together with the size of the first rune in bytes.
 */
-func DecodeRune(str []byte) (string, int) {
-	r, sz := utf8.DecodeRune(str)
-	if r == utf8.RuneError {
-		panic(fmt.Sprintf("Rune error: %s", str))
-	}
-	chr := RuneToString(r)
-	return chr, sz
-}
+// func DecodeRune(str []byte) (string, int) {
+// 	r, sz := utf8.DecodeRune(str)
+// 	if r == utf8.RuneError {
+// 		panic(fmt.Sprintf("Rune error: %r", str))
+// 	}
+// 	chr := RuneToString(r)
+// 	return chr, sz
+// }
 
-func DecodeRunes(str []byte) (ss []string) {
+func DecodeRunes(str string) (rs []rune, err error) {
 	for i := 0; i < len(str); {
-		s, sz := DecodeRune(str[i:])
-		i += sz
-		if s == "\\" {
-			s1, sz1 := DecodeRune(str[i:])
-			i += sz1
-			ss = append(ss, s1)
-		} else {
-			ss = append(ss, s)
+		r, sz := utf8.DecodeRune([]byte(str[i:]))
+		if r == utf8.RuneError {
+			return nil, fmt.Errorf("Rune error in %s", str[i:])
 		}
+		rs = append(rs, r)
+		i += sz
 	}
 	return
-}
-
-func RuneToString(r rune) string {
-	buf := make([]byte, utf8.RuneLen(r))
-	utf8.EncodeRune(buf, r)
-	return string(buf)
 }

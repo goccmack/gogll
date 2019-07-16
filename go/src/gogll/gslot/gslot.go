@@ -118,7 +118,7 @@ func genSlots() {
 
 func genSlotsOfRule(r *ast.Rule) {
 	for i, a := range r.Alternates {
-		genSlotsOfAlternate(r.Head.Value(), i, a.Symbols()...)
+		genSlotsOfAlternate(r.Head.StringValue(), i, a.Symbols()...)
 	}
 }
 
