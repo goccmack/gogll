@@ -90,7 +90,7 @@ func getSlotTSConditions(s gslot.Label) (data []*Condition) {
 }
 
 func getFollowConditions(nt string) (data []*Condition) {
-	fmt.Printf("testselect.getFollowConditions(%s)\n", nt)
+	// fmt.Printf("testselect.getFollowConditions(%s)\n", nt)
 	for _, sym := range frstflw.Follow(nt).Elements() {
 		data = append(data, &Condition{Cond: getSymbolCondition(sym)})
 	}

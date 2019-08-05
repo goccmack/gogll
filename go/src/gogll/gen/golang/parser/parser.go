@@ -93,6 +93,7 @@ import(
 	"bytes"
 	"fmt"
 	"os"
+	"sort"
 	"strings"
 	"unicode"
 	"unicode/utf8"
@@ -108,7 +109,7 @@ const (
 	Empty = "empty"
 )
 
-func ParseFile(fname string) error {
+func ParseFile(fname string) []*ParseError {
 	buf, err := ioutil.ReadFile(fname)
 	if err != nil {
 		parseErrorError(err)
@@ -128,6 +129,8 @@ var (
 	popped 		map[poppedNode]bool
 	crf			map[clusterNode][]*crfNode
 	crfNodes	map[crfNode]*crfNode
+
+	parseErrors []*ParseError
 )
 
 func initParser() {
@@ -141,22 +144,22 @@ func initParser() {
 	bsr.Init()
 }
 
-func Parse(I []byte) error {
+func Parse(I []byte) []*ParseError {
 	initParser()
 	var L slot.Label
 	m, cU := len(I), 0
 	nextI, r, sz = decodeRune(I[cI:])
 	ntAdd("{{.StartSymbol}}", 0)
-	fmt.Printf("R:%s\n", R)
-	fmt.Printf("U:%s\n", U)
+	// fmt.Printf("R:%s\n", R)
+	// fmt.Printf("U:%s\n", U)
 	for !R.empty() {
 		L, cU, cI = R.remove()
 		nextI, r, sz = decodeRune(I[cI:])
 
-		fmt.Println()
-		fmt.Printf("L:%s, cI:%d, I[cI]:%s, cU:%d\n", L, cI, nextI, cU)
-		fmt.Printf("R:%s\n", R)
-		fmt.Printf("U:%s\n", U)
+		// fmt.Println()
+		// fmt.Printf("L:%s, cI:%d, I[cI]:%s, cU:%d\n", L, cI, nextI, cU)
+		// fmt.Printf("R:%s\n", R)
+		// fmt.Printf("U:%s\n", U)
 
 		switch L { 
 {{.CodeX}}
@@ -166,13 +169,14 @@ func Parse(I []byte) error {
 		}
 	}
 	if !bsr.Contain("{{.StartSymbol}}",0,m) {
-		return parseError()
+		sortParseErrors(I)
+		return parseErrors
 	}
 	return nil
 }
 
 func ntAdd(nt string, j int) {
-	fmt.Printf("ntAdd(%s, %d)\n", nt, j)
+	// fmt.Printf("ntAdd(%s, %d)\n", nt, j)
 	for _, l := range slot.GetAlternates(nt) {
 		if testSelect[l]() {
 			dscAdd(l, j, j)
@@ -219,7 +223,7 @@ if there is no CRF node labelled (X, j) {
 }
 */
 func call(L slot.Label, i, j int) {
-	fmt.Printf("call(%s,%d,%d)\n", L,i,j)
+	// fmt.Printf("call(%s,%d,%d)\n", L,i,j)
 	u, exist := crfNodes[crfNode{L, i}]
 	// fmt.Printf("  u exist=%t\n", exist)
 	if !exist {
@@ -259,7 +263,7 @@ func existEdge(nds []*crfNode, nd *crfNode) bool {
 }
 
 func rtn(X string, k, j int) {
-	fmt.Printf("rtn(%s,%d,%d)\n", X,k,j)
+	// fmt.Printf("rtn(%s,%d,%d)\n", X,k,j)
 	p := poppedNode{X, k, j}
 	if _, exist := popped[p]; !exist {
 		popped[p] = true
@@ -343,7 +347,7 @@ func (d *descriptor) String() string {
 }
 
 func dscAdd(L slot.Label, k, i int) {
-	fmt.Printf("dscAdd(%s,%d,%d)\n", L, k, i)
+	// fmt.Printf("dscAdd(%s,%d,%d)\n", L, k, i)
 	d := &descriptor{L, k, i}
 	if !U.contain(d) {
 		R.set = append(R.set, d)
@@ -433,8 +437,47 @@ func space(r rune) bool {
 	
 /*** Errors ***/
 
-func parseError() error {
-	return fmt.Errorf("parse Error")
+type ParseError struct {
+	Slot         slot.Label
+	InputPos     int
+	Line, Column int
+}
+
+func (pe *ParseError) String() string {
+	return fmt.Sprintf("%s at line %d col %d", pe.Slot, pe.Line, pe.Column)
+}
+
+func parseError(slot slot.Label, I int) {
+	pe := &ParseError{Slot: slot, InputPos: I}
+	parseErrors = append(parseErrors, pe)
+}
+
+func sortParseErrors(I []byte) {
+	sort.Slice(parseErrors,
+		func(i, j int) bool {
+			return parseErrors[j].InputPos < parseErrors[i].InputPos
+		})
+	for _, pe := range parseErrors {
+		pe.Line, pe.Column = getLineColumn(pe.InputPos, I)
+	}
+}
+
+func getLineColumn(cI int, I []byte) (line, col int) {
+	line, col = 1, 1
+	for j := 0; j < cI; {
+		_, r, sz := decodeRune(I[j:])
+		switch r {
+		case '\n':
+			line++
+			col = 1
+		case '\t':
+			col += 4
+		default:
+			col++
+		}
+		j += sz
+	}
+	return
 }
 
 func parseErrorError(err error) {

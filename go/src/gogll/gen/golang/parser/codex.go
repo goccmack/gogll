@@ -88,7 +88,7 @@ const altCodeTmpl = `		case slot.{{.AltLabel}}: // {{.AltComment}}{{if .Empty}}
 			bsr.AddEmpty(slot.{{.AltLabel}},cI)
 		{{else}}{{range $i, $slot := .Slots}}
 			{{if $i}}if !testSelect[slot.{{$slot.PreLabel}}](){ 
-				println("      testSelect failed")
+				parseError(slot.{{$slot.PreLabel}}, cI)
 				break 
 			}
 			{{end}}

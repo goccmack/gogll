@@ -78,7 +78,7 @@ func newSet() *BSRSet {
 Add a BSR to the set. (i,j) is the extent. k is the pivot.
 */
 func Add(l slot.Label, i, k, j int) {
-	fmt.Printf("bsr.Add(%s,%d,%d,%d)\n", l,i,k,j)
+	// fmt.Printf("bsr.Add(%s,%d,%d,%d)\n", l,i,k,j)
 	if l.EoR() {	
 		insert(Slot{l, i, k, j})
 	} else {
@@ -92,27 +92,16 @@ func AddEmpty(l slot.Label, i int) {
 	insert(String{l, i, i, i})
 }
 
-// func Contain(nt string, left, right int) bool {
-// 	fmt.Printf("bsr.Contain(%s,%d,%d)\n",nt,left,right)
-// 	for e, _ := range Set.slotEntries {
-// 		fmt.Printf("  (%s,%d,%d)\n",e.Label.Head(),e.leftExtent,e.rightExtent)
-// 		if e.Label.Head() == nt && e.leftExtent == left && e.rightExtent == right {
-// 			return true
-// 		}
-// 	}
-// 	return false
-// }
-
 func Contain(nt string, left, right int) bool {
-	fmt.Printf("bsr.Contain(%s,%d,%d)\n",nt,left,right)
+	// fmt.Printf("bsr.Contain(%s,%d,%d)\n",nt,left,right)
 	for e, _ := range Set.slotEntries {
-		fmt.Printf("  (%s,%d,%d)\n",e.Label.Head(),e.leftExtent,e.rightExtent)
+		// fmt.Printf("  (%s,%d,%d)\n",e.Label.Head(),e.leftExtent,e.rightExtent)
 		if e.Label.Head() == nt && e.leftExtent == left && e.rightExtent == right {
-			fmt.Println("  true")
+			// fmt.Println("  true")
 			return true
 		}
 	}
-	fmt.Println("  false")
+	// fmt.Println("  false")
 	return false
 }
 

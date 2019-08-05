@@ -106,7 +106,7 @@ import(
 type Label int
 
 const({{range $i, $l := .Slots}}
-	{{$l.Label}}{{if not $i}} = iota{{end}}{{end}}
+	{{$l.Label}}{{if not $i}} Label = iota{{end}}{{end}}
 )
 
 type Slot struct {

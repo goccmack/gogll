@@ -1,7 +1,6 @@
 package frstflw
 
 import (
-	"fmt"
 	"gogll/ast"
 	"gogll/goutil/stringset"
 	"gogll/goutil/stringslice"
@@ -138,7 +137,7 @@ func genFollow() {
 TODO: genFollow only processes syntax rules
 */
 func genFollowOf(nt string) *stringset.StringSet {
-	fmt.Printf("genFollowOf(%s)=%s\n", nt, followSets[nt])
+	// fmt.Printf("genFollowOf(%s)=%s\n", nt, followSets[nt])
 	follow := stringset.New()
 	for _, r := range ast.GetGrammar().Rules {
 		for _, a := range r.Alternates {
@@ -147,17 +146,14 @@ func genFollowOf(nt string) *stringset.StringSet {
 				first := FirstOfString(bs[idx+1:])
 				follow.AddSet(first)
 				if first.Contain(ast.Empty) {
-					fmt.Printf("  add folow(%s)\n", r.Head.StringValue())
+					// fmt.Printf("  add folow(%s)\n", r.Head.StringValue())
 					follow.AddSet(Follow(r.Head.StringValue()))
 				}
 			}
 		}
 	}
 	follow.Remove(ast.Empty)
-	fmt.Printf("frstflw.genFollowOf(%s) %s + %s = ", nt, followSets[nt], follow)
 	follow.AddSet(followSets[nt])
-	// followSets[nt].AddSet(follow)
-	fmt.Println(follow)
 	return follow
 }
 
