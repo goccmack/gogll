@@ -24,6 +24,7 @@ var actionTab = actionTable{
 			nil,      /* | */
 			nil,      /* emptyAlt */
 			nil,      /* any */
+			nil,      /* anyof */
 			nil,      /* letter */
 			nil,      /* number */
 			nil,      /* upcase */
@@ -46,6 +47,7 @@ var actionTab = actionTable{
 			nil,          /* | */
 			nil,          /* emptyAlt */
 			nil,          /* any */
+			nil,          /* anyof */
 			nil,          /* letter */
 			nil,          /* number */
 			nil,          /* upcase */
@@ -68,6 +70,7 @@ var actionTab = actionTable{
 			nil,      /* | */
 			nil,      /* emptyAlt */
 			nil,      /* any */
+			nil,      /* anyof */
 			nil,      /* letter */
 			nil,      /* number */
 			nil,      /* upcase */
@@ -90,6 +93,7 @@ var actionTab = actionTable{
 			nil,       /* | */
 			nil,       /* emptyAlt */
 			nil,       /* any */
+			nil,       /* anyof */
 			nil,       /* letter */
 			nil,       /* number */
 			nil,       /* upcase */
@@ -112,6 +116,7 @@ var actionTab = actionTable{
 			nil,       /* | */
 			nil,       /* emptyAlt */
 			nil,       /* any */
+			nil,       /* anyof */
 			nil,       /* letter */
 			nil,       /* number */
 			nil,       /* upcase */
@@ -134,6 +139,7 @@ var actionTab = actionTable{
 			nil,       /* | */
 			nil,       /* emptyAlt */
 			nil,       /* any */
+			nil,       /* anyof */
 			nil,       /* letter */
 			nil,       /* number */
 			nil,       /* upcase */
@@ -156,6 +162,7 @@ var actionTab = actionTable{
 			nil,       /* | */
 			nil,       /* emptyAlt */
 			nil,       /* any */
+			nil,       /* anyof */
 			nil,       /* letter */
 			nil,       /* number */
 			nil,       /* upcase */
@@ -178,6 +185,7 @@ var actionTab = actionTable{
 			nil,       /* | */
 			nil,       /* emptyAlt */
 			nil,       /* any */
+			nil,       /* anyof */
 			nil,       /* letter */
 			nil,       /* number */
 			nil,       /* upcase */
@@ -200,6 +208,7 @@ var actionTab = actionTable{
 			nil,       /* | */
 			nil,       /* emptyAlt */
 			nil,       /* any */
+			nil,       /* anyof */
 			nil,       /* letter */
 			nil,       /* number */
 			nil,       /* upcase */
@@ -222,6 +231,7 @@ var actionTab = actionTable{
 			nil,       /* | */
 			nil,       /* emptyAlt */
 			nil,       /* any */
+			nil,       /* anyof */
 			nil,       /* letter */
 			nil,       /* number */
 			nil,       /* upcase */
@@ -244,6 +254,7 @@ var actionTab = actionTable{
 			nil,       /* | */
 			nil,       /* emptyAlt */
 			nil,       /* any */
+			nil,       /* anyof */
 			nil,       /* letter */
 			nil,       /* number */
 			nil,       /* upcase */
@@ -266,13 +277,14 @@ var actionTab = actionTable{
 			nil,       /* | */
 			shift(17), /* emptyAlt */
 			shift(19), /* any */
-			shift(20), /* letter */
-			shift(21), /* number */
-			shift(22), /* upcase */
-			shift(23), /* lowcase */
-			shift(24), /* not */
-			shift(25), /* space */
-			shift(26), /* charLiteral */
+			shift(20), /* anyof */
+			shift(21), /* letter */
+			shift(22), /* number */
+			shift(23), /* upcase */
+			shift(24), /* lowcase */
+			shift(25), /* not */
+			shift(26), /* space */
+			shift(27), /* charLiteral */
 		},
 	},
 	actionRow{ // S12
@@ -288,6 +300,7 @@ var actionTab = actionTable{
 			reduce(15), /* |, reduce: Symbol */
 			nil,        /* emptyAlt */
 			reduce(15), /* any, reduce: Symbol */
+			reduce(15), /* anyof, reduce: Symbol */
 			reduce(15), /* letter, reduce: Symbol */
 			reduce(15), /* number, reduce: Symbol */
 			reduce(15), /* upcase, reduce: Symbol */
@@ -305,11 +318,12 @@ var actionTab = actionTable{
 			nil,       /* package */
 			nil,       /* string */
 			nil,       /* : */
-			shift(27), /* ; */
+			shift(28), /* ; */
 			nil,       /* nt */
-			shift(28), /* | */
+			shift(29), /* | */
 			nil,       /* emptyAlt */
 			nil,       /* any */
+			nil,       /* anyof */
 			nil,       /* letter */
 			nil,       /* number */
 			nil,       /* upcase */
@@ -332,6 +346,7 @@ var actionTab = actionTable{
 			reduce(14), /* |, reduce: Symbol */
 			nil,        /* emptyAlt */
 			reduce(14), /* any, reduce: Symbol */
+			reduce(14), /* anyof, reduce: Symbol */
 			reduce(14), /* letter, reduce: Symbol */
 			reduce(14), /* number, reduce: Symbol */
 			reduce(14), /* upcase, reduce: Symbol */
@@ -354,6 +369,7 @@ var actionTab = actionTable{
 			reduce(9), /* |, reduce: Alternates */
 			nil,       /* emptyAlt */
 			nil,       /* any */
+			nil,       /* anyof */
 			nil,       /* letter */
 			nil,       /* number */
 			nil,       /* upcase */
@@ -376,13 +392,14 @@ var actionTab = actionTable{
 			reduce(10), /* |, reduce: Alternate */
 			nil,        /* emptyAlt */
 			shift(19),  /* any */
-			shift(20),  /* letter */
-			shift(21),  /* number */
-			shift(22),  /* upcase */
-			shift(23),  /* lowcase */
-			shift(24),  /* not */
-			shift(25),  /* space */
-			shift(26),  /* charLiteral */
+			shift(20),  /* anyof */
+			shift(21),  /* letter */
+			shift(22),  /* number */
+			shift(23),  /* upcase */
+			shift(24),  /* lowcase */
+			shift(25),  /* not */
+			shift(26),  /* space */
+			shift(27),  /* charLiteral */
 		},
 	},
 	actionRow{ // S17
@@ -398,6 +415,7 @@ var actionTab = actionTable{
 			reduce(11), /* |, reduce: Alternate */
 			nil,        /* emptyAlt */
 			nil,        /* any */
+			nil,        /* anyof */
 			nil,        /* letter */
 			nil,        /* number */
 			nil,        /* upcase */
@@ -420,6 +438,7 @@ var actionTab = actionTable{
 			reduce(12), /* |, reduce: Body */
 			nil,        /* emptyAlt */
 			reduce(12), /* any, reduce: Body */
+			reduce(12), /* anyof, reduce: Body */
 			reduce(12), /* letter, reduce: Body */
 			reduce(12), /* number, reduce: Body */
 			reduce(12), /* upcase, reduce: Body */
@@ -442,6 +461,7 @@ var actionTab = actionTable{
 			reduce(16), /* |, reduce: Symbol */
 			nil,        /* emptyAlt */
 			reduce(16), /* any, reduce: Symbol */
+			reduce(16), /* anyof, reduce: Symbol */
 			reduce(16), /* letter, reduce: Symbol */
 			reduce(16), /* number, reduce: Symbol */
 			reduce(16), /* upcase, reduce: Symbol */
@@ -454,23 +474,24 @@ var actionTab = actionTable{
 	actionRow{ // S20
 		canRecover: false,
 		actions: [numSymbols]action{
-			nil,        /* INVALID */
-			nil,        /* $ */
-			nil,        /* package */
-			reduce(17), /* string, reduce: Symbol */
-			nil,        /* : */
-			reduce(17), /* ;, reduce: Symbol */
-			reduce(17), /* nt, reduce: Symbol */
-			reduce(17), /* |, reduce: Symbol */
-			nil,        /* emptyAlt */
-			reduce(17), /* any, reduce: Symbol */
-			reduce(17), /* letter, reduce: Symbol */
-			reduce(17), /* number, reduce: Symbol */
-			reduce(17), /* upcase, reduce: Symbol */
-			reduce(17), /* lowcase, reduce: Symbol */
-			reduce(17), /* not, reduce: Symbol */
-			reduce(17), /* space, reduce: Symbol */
-			reduce(17), /* charLiteral, reduce: Symbol */
+			nil,       /* INVALID */
+			nil,       /* $ */
+			nil,       /* package */
+			shift(31), /* string */
+			nil,       /* : */
+			nil,       /* ; */
+			nil,       /* nt */
+			nil,       /* | */
+			nil,       /* emptyAlt */
+			nil,       /* any */
+			nil,       /* anyof */
+			nil,       /* letter */
+			nil,       /* number */
+			nil,       /* upcase */
+			nil,       /* lowcase */
+			nil,       /* not */
+			nil,       /* space */
+			nil,       /* charLiteral */
 		},
 	},
 	actionRow{ // S21
@@ -486,6 +507,7 @@ var actionTab = actionTable{
 			reduce(18), /* |, reduce: Symbol */
 			nil,        /* emptyAlt */
 			reduce(18), /* any, reduce: Symbol */
+			reduce(18), /* anyof, reduce: Symbol */
 			reduce(18), /* letter, reduce: Symbol */
 			reduce(18), /* number, reduce: Symbol */
 			reduce(18), /* upcase, reduce: Symbol */
@@ -508,6 +530,7 @@ var actionTab = actionTable{
 			reduce(19), /* |, reduce: Symbol */
 			nil,        /* emptyAlt */
 			reduce(19), /* any, reduce: Symbol */
+			reduce(19), /* anyof, reduce: Symbol */
 			reduce(19), /* letter, reduce: Symbol */
 			reduce(19), /* number, reduce: Symbol */
 			reduce(19), /* upcase, reduce: Symbol */
@@ -530,6 +553,7 @@ var actionTab = actionTable{
 			reduce(20), /* |, reduce: Symbol */
 			nil,        /* emptyAlt */
 			reduce(20), /* any, reduce: Symbol */
+			reduce(20), /* anyof, reduce: Symbol */
 			reduce(20), /* letter, reduce: Symbol */
 			reduce(20), /* number, reduce: Symbol */
 			reduce(20), /* upcase, reduce: Symbol */
@@ -542,16 +566,40 @@ var actionTab = actionTable{
 	actionRow{ // S24
 		canRecover: false,
 		actions: [numSymbols]action{
+			nil,        /* INVALID */
+			nil,        /* $ */
+			nil,        /* package */
+			reduce(21), /* string, reduce: Symbol */
+			nil,        /* : */
+			reduce(21), /* ;, reduce: Symbol */
+			reduce(21), /* nt, reduce: Symbol */
+			reduce(21), /* |, reduce: Symbol */
+			nil,        /* emptyAlt */
+			reduce(21), /* any, reduce: Symbol */
+			reduce(21), /* anyof, reduce: Symbol */
+			reduce(21), /* letter, reduce: Symbol */
+			reduce(21), /* number, reduce: Symbol */
+			reduce(21), /* upcase, reduce: Symbol */
+			reduce(21), /* lowcase, reduce: Symbol */
+			reduce(21), /* not, reduce: Symbol */
+			reduce(21), /* space, reduce: Symbol */
+			reduce(21), /* charLiteral, reduce: Symbol */
+		},
+	},
+	actionRow{ // S25
+		canRecover: false,
+		actions: [numSymbols]action{
 			nil,       /* INVALID */
 			nil,       /* $ */
 			nil,       /* package */
-			shift(30), /* string */
+			shift(32), /* string */
 			nil,       /* : */
 			nil,       /* ; */
 			nil,       /* nt */
 			nil,       /* | */
 			nil,       /* emptyAlt */
 			nil,       /* any */
+			nil,       /* anyof */
 			nil,       /* letter */
 			nil,       /* number */
 			nil,       /* upcase */
@@ -559,28 +607,6 @@ var actionTab = actionTable{
 			nil,       /* not */
 			nil,       /* space */
 			nil,       /* charLiteral */
-		},
-	},
-	actionRow{ // S25
-		canRecover: false,
-		actions: [numSymbols]action{
-			nil,        /* INVALID */
-			nil,        /* $ */
-			nil,        /* package */
-			reduce(22), /* string, reduce: Symbol */
-			nil,        /* : */
-			reduce(22), /* ;, reduce: Symbol */
-			reduce(22), /* nt, reduce: Symbol */
-			reduce(22), /* |, reduce: Symbol */
-			nil,        /* emptyAlt */
-			reduce(22), /* any, reduce: Symbol */
-			reduce(22), /* letter, reduce: Symbol */
-			reduce(22), /* number, reduce: Symbol */
-			reduce(22), /* upcase, reduce: Symbol */
-			reduce(22), /* lowcase, reduce: Symbol */
-			reduce(22), /* not, reduce: Symbol */
-			reduce(22), /* space, reduce: Symbol */
-			reduce(22), /* charLiteral, reduce: Symbol */
 		},
 	},
 	actionRow{ // S26
@@ -596,6 +622,7 @@ var actionTab = actionTable{
 			reduce(23), /* |, reduce: Symbol */
 			nil,        /* emptyAlt */
 			reduce(23), /* any, reduce: Symbol */
+			reduce(23), /* anyof, reduce: Symbol */
 			reduce(23), /* letter, reduce: Symbol */
 			reduce(23), /* number, reduce: Symbol */
 			reduce(23), /* upcase, reduce: Symbol */
@@ -608,6 +635,29 @@ var actionTab = actionTable{
 	actionRow{ // S27
 		canRecover: false,
 		actions: [numSymbols]action{
+			nil,        /* INVALID */
+			nil,        /* $ */
+			nil,        /* package */
+			reduce(24), /* string, reduce: Symbol */
+			nil,        /* : */
+			reduce(24), /* ;, reduce: Symbol */
+			reduce(24), /* nt, reduce: Symbol */
+			reduce(24), /* |, reduce: Symbol */
+			nil,        /* emptyAlt */
+			reduce(24), /* any, reduce: Symbol */
+			reduce(24), /* anyof, reduce: Symbol */
+			reduce(24), /* letter, reduce: Symbol */
+			reduce(24), /* number, reduce: Symbol */
+			reduce(24), /* upcase, reduce: Symbol */
+			reduce(24), /* lowcase, reduce: Symbol */
+			reduce(24), /* not, reduce: Symbol */
+			reduce(24), /* space, reduce: Symbol */
+			reduce(24), /* charLiteral, reduce: Symbol */
+		},
+	},
+	actionRow{ // S28
+		canRecover: false,
+		actions: [numSymbols]action{
 			nil,       /* INVALID */
 			reduce(6), /* $, reduce: Rule */
 			nil,       /* package */
@@ -618,6 +668,7 @@ var actionTab = actionTable{
 			nil,       /* | */
 			nil,       /* emptyAlt */
 			nil,       /* any */
+			nil,       /* anyof */
 			nil,       /* letter */
 			nil,       /* number */
 			nil,       /* upcase */
@@ -627,7 +678,7 @@ var actionTab = actionTable{
 			nil,       /* charLiteral */
 		},
 	},
-	actionRow{ // S28
+	actionRow{ // S29
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       /* INVALID */
@@ -640,16 +691,17 @@ var actionTab = actionTable{
 			nil,       /* | */
 			shift(17), /* emptyAlt */
 			shift(19), /* any */
-			shift(20), /* letter */
-			shift(21), /* number */
-			shift(22), /* upcase */
-			shift(23), /* lowcase */
-			shift(24), /* not */
-			shift(25), /* space */
-			shift(26), /* charLiteral */
+			shift(20), /* anyof */
+			shift(21), /* letter */
+			shift(22), /* number */
+			shift(23), /* upcase */
+			shift(24), /* lowcase */
+			shift(25), /* not */
+			shift(26), /* space */
+			shift(27), /* charLiteral */
 		},
 	},
-	actionRow{ // S29
+	actionRow{ // S30
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        /* INVALID */
@@ -662,6 +714,7 @@ var actionTab = actionTable{
 			reduce(13), /* |, reduce: Body */
 			nil,        /* emptyAlt */
 			reduce(13), /* any, reduce: Body */
+			reduce(13), /* anyof, reduce: Body */
 			reduce(13), /* letter, reduce: Body */
 			reduce(13), /* number, reduce: Body */
 			reduce(13), /* upcase, reduce: Body */
@@ -671,29 +724,53 @@ var actionTab = actionTable{
 			reduce(13), /* charLiteral, reduce: Body */
 		},
 	},
-	actionRow{ // S30
+	actionRow{ // S31
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,        /* INVALID */
 			nil,        /* $ */
 			nil,        /* package */
-			reduce(21), /* string, reduce: Symbol */
+			reduce(17), /* string, reduce: Symbol */
 			nil,        /* : */
-			reduce(21), /* ;, reduce: Symbol */
-			reduce(21), /* nt, reduce: Symbol */
-			reduce(21), /* |, reduce: Symbol */
+			reduce(17), /* ;, reduce: Symbol */
+			reduce(17), /* nt, reduce: Symbol */
+			reduce(17), /* |, reduce: Symbol */
 			nil,        /* emptyAlt */
-			reduce(21), /* any, reduce: Symbol */
-			reduce(21), /* letter, reduce: Symbol */
-			reduce(21), /* number, reduce: Symbol */
-			reduce(21), /* upcase, reduce: Symbol */
-			reduce(21), /* lowcase, reduce: Symbol */
-			reduce(21), /* not, reduce: Symbol */
-			reduce(21), /* space, reduce: Symbol */
-			reduce(21), /* charLiteral, reduce: Symbol */
+			reduce(17), /* any, reduce: Symbol */
+			reduce(17), /* anyof, reduce: Symbol */
+			reduce(17), /* letter, reduce: Symbol */
+			reduce(17), /* number, reduce: Symbol */
+			reduce(17), /* upcase, reduce: Symbol */
+			reduce(17), /* lowcase, reduce: Symbol */
+			reduce(17), /* not, reduce: Symbol */
+			reduce(17), /* space, reduce: Symbol */
+			reduce(17), /* charLiteral, reduce: Symbol */
 		},
 	},
-	actionRow{ // S31
+	actionRow{ // S32
+		canRecover: false,
+		actions: [numSymbols]action{
+			nil,        /* INVALID */
+			nil,        /* $ */
+			nil,        /* package */
+			reduce(22), /* string, reduce: Symbol */
+			nil,        /* : */
+			reduce(22), /* ;, reduce: Symbol */
+			reduce(22), /* nt, reduce: Symbol */
+			reduce(22), /* |, reduce: Symbol */
+			nil,        /* emptyAlt */
+			reduce(22), /* any, reduce: Symbol */
+			reduce(22), /* anyof, reduce: Symbol */
+			reduce(22), /* letter, reduce: Symbol */
+			reduce(22), /* number, reduce: Symbol */
+			reduce(22), /* upcase, reduce: Symbol */
+			reduce(22), /* lowcase, reduce: Symbol */
+			reduce(22), /* not, reduce: Symbol */
+			reduce(22), /* space, reduce: Symbol */
+			reduce(22), /* charLiteral, reduce: Symbol */
+		},
+	},
+	actionRow{ // S33
 		canRecover: false,
 		actions: [numSymbols]action{
 			nil,       /* INVALID */
@@ -706,6 +783,7 @@ var actionTab = actionTable{
 			reduce(8), /* |, reduce: Alternates */
 			nil,       /* emptyAlt */
 			nil,       /* any */
+			nil,       /* anyof */
 			nil,       /* letter */
 			nil,       /* number */
 			nil,       /* upcase */

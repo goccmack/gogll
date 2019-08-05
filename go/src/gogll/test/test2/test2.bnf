@@ -1,0 +1,4 @@
+S : Name "." Name ;
+
+Name : letter ;
+

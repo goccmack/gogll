@@ -199,6 +199,7 @@ type Symbol interface {
 func (*Head) isSymbol()        {}
 func (*ID) isSymbol()          {}
 func (*AnyChar) isSymbol()     {}
+func (*AnyOf) isSymbol()       {}
 func (*NotString) isSymbol()   {}
 func (*Space) isSymbol()       {}
 func (*String) isSymbol()      {}
@@ -212,6 +213,7 @@ func (*StringChar) isSymbol()  {}
 func (*Head) IsTerminal() bool        { return false }
 func (*ID) IsTerminal() bool          { return false }
 func (*AnyChar) IsTerminal() bool     { return true }
+func (*AnyOf) IsTerminal() bool       { return true }
 func (*NotString) IsTerminal() bool   { return true }
 func (*Space) IsTerminal() bool       { return true }
 func (*CharLiteral) IsTerminal() bool { return true }
@@ -238,6 +240,13 @@ func (sym *ID) Equal(sym1 Symbol) bool {
 }
 func (sym *AnyChar) Equal(sym1 Symbol) bool {
 	if _, ok := sym1.(*AnyChar); !ok {
+		return false
+	} else {
+		return sym.StringValue() == sym1.StringValue()
+	}
+}
+func (sym *AnyOf) Equal(sym1 Symbol) bool {
+	if _, ok := sym1.(*AnyOf); !ok {
 		return false
 	} else {
 		return sym.StringValue() == sym1.StringValue()
@@ -311,6 +320,7 @@ func (sym *StringChar) Equal(sym1 Symbol) bool {
 func (sym *Head) Symbols() Symbols        { return Symbols{sym.StringValue()} }
 func (sym *ID) Symbols() Symbols          { return Symbols{sym.StringValue()} }
 func (sym *AnyChar) Symbols() Symbols     { return Symbols{sym.StringValue()} }
+func (sym *AnyOf) Symbols() Symbols       { return Symbols{sym.StringValue()} }
 func (sym *NotString) Symbols() Symbols   { return Symbols{sym.StringValue()} }
 func (sym *Space) Symbols() Symbols       { return Symbols{sym.StringValue()} }
 func (sym *CharLiteral) Symbols() Symbols { return Symbols{sym.StringValue()} }
@@ -374,6 +384,26 @@ func NewAnyChar(t interface{}) (*AnyChar, error) {
 }
 
 func (t *AnyChar) StringValue() string {
+	return t.value
+}
+
+/*** AnyOf ***/
+
+type AnyOf struct {
+	Token *token.Token
+	value string
+}
+
+func NewAnyOf(str interface{}) (*AnyOf, error) {
+	tok := str.(*token.Token)
+	anyOf := &AnyOf{
+		Token: tok,
+		value: fmt.Sprintf(`anyof("%s")`, tok.StringValue()),
+	}
+	return anyOf, nil
+}
+
+func (t *AnyOf) StringValue() string {
 	return t.value
 }
 
@@ -548,7 +578,7 @@ type StringChar struct {
 }
 
 func newStringChar(r rune, sc string, str *String) *StringChar {
-	fmt.Printf("ast.newStringChar*(%s)\n", sc)
+	// fmt.Printf("ast.newStringChar*(%s)\n", sc)
 	strCh := &StringChar{
 		String:      str,
 		Rune:        r,

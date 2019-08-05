@@ -93,6 +93,7 @@ import(
 	"bytes"
 	"fmt"
 	"os"
+	"strings"
 	"unicode"
 	"unicode/utf8"
 
@@ -107,12 +108,12 @@ const (
 	Empty = "empty"
 )
 
-func ParseFile(fname string) {
+func ParseFile(fname string) error {
 	buf, err := ioutil.ReadFile(fname)
 	if err != nil {
 		parseErrorError(err)
 	}
-	Parse(buf)
+	return Parse(buf)
 }
 
 var (
@@ -229,11 +230,11 @@ func call(L slot.Label, i, j int) {
 	ndV := clusterNode{X, j}
 	v, exist := crf[ndV]
 	if !exist {
-		// fmt.Println("  v exist")
+		// fmt.Println("  v !exist")
 		crf[ndV] = []*crfNode{u}
 		ntAdd(X, j)
 	} else {
-		// fmt.Println("  v !exist")
+		// fmt.Println("  v exist")
 		if !existEdge(v, u) {
 			// fmt.Printf("  !existEdge(%v)\n", u)
 			crf[ndV] = append(v, u)
@@ -360,7 +361,7 @@ func (ds *descriptors) remove() (L slot.Label, k, i int) {
 /*** Rune decoding ***/
 func decodeRune(str []byte) (string, rune, int) {
 	if len(str) == 0 {
-		return Dollar, -1, 0
+		return "$", '$', 0
 	}
 	r, sz := utf8.DecodeRune(str)
 	if r == utf8.RuneError {
@@ -391,6 +392,10 @@ func any(r rune) bool {
 	return true
 }
 	
+func anyof(r rune, set string) bool {
+	return strings.ContainsRune(set, r)
+}
+
 func letter(r rune) bool {
 	return unicode.IsLetter(r)
 }

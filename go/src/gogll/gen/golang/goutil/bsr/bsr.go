@@ -92,14 +92,27 @@ func AddEmpty(l slot.Label, i int) {
 	insert(String{l, i, i, i})
 }
 
+// func Contain(nt string, left, right int) bool {
+// 	fmt.Printf("bsr.Contain(%s,%d,%d)\n",nt,left,right)
+// 	for e, _ := range Set.slotEntries {
+// 		fmt.Printf("  (%s,%d,%d)\n",e.Label.Head(),e.leftExtent,e.rightExtent)
+// 		if e.Label.Head() == nt && e.leftExtent == left && e.rightExtent == right {
+// 			return true
+// 		}
+// 	}
+// 	return false
+// }
+
 func Contain(nt string, left, right int) bool {
 	fmt.Printf("bsr.Contain(%s,%d,%d)\n",nt,left,right)
 	for e, _ := range Set.slotEntries {
 		fmt.Printf("  (%s,%d,%d)\n",e.Label.Head(),e.leftExtent,e.rightExtent)
 		if e.Label.Head() == nt && e.leftExtent == left && e.rightExtent == right {
+			fmt.Println("  true")
 			return true
 		}
 	}
+	fmt.Println("  false")
 	return false
 }
 

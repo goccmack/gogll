@@ -191,10 +191,20 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
-		String: `Symbol : "letter"	<< ast.NewLetter(X[0]) >>`,
+		String: `Symbol : "anyof" string	<< ast.NewAnyOf(X[1]) >>`,
 		Id:         "Symbol",
 		NTType:     9,
 		Index:      17,
+		NumSymbols: 2,
+		ReduceFunc: func(X []Attrib) (Attrib, error) {
+			return ast.NewAnyOf(X[1])
+		},
+	},
+	ProdTabEntry{
+		String: `Symbol : "letter"	<< ast.NewLetter(X[0]) >>`,
+		Id:         "Symbol",
+		NTType:     9,
+		Index:      18,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewLetter(X[0])
@@ -204,7 +214,7 @@ var productionsTable = ProdTab{
 		String: `Symbol : "number"	<< ast.NewNumber(X[0]) >>`,
 		Id:         "Symbol",
 		NTType:     9,
-		Index:      18,
+		Index:      19,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewNumber(X[0])
@@ -214,7 +224,7 @@ var productionsTable = ProdTab{
 		String: `Symbol : "upcase"	<< ast.NewUpCase(X[0]) >>`,
 		Id:         "Symbol",
 		NTType:     9,
-		Index:      19,
+		Index:      20,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewUpCase(X[0])
@@ -224,7 +234,7 @@ var productionsTable = ProdTab{
 		String: `Symbol : "lowcase"	<< ast.NewLowCase(X[0]) >>`,
 		Id:         "Symbol",
 		NTType:     9,
-		Index:      20,
+		Index:      21,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewLowCase(X[0])
@@ -234,7 +244,7 @@ var productionsTable = ProdTab{
 		String: `Symbol : "not" string	<< ast.NewNotString(X[1]) >>`,
 		Id:         "Symbol",
 		NTType:     9,
-		Index:      21,
+		Index:      22,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewNotString(X[1])
@@ -244,7 +254,7 @@ var productionsTable = ProdTab{
 		String: `Symbol : "space"	<< ast.NewSpace(X[0]) >>`,
 		Id:         "Symbol",
 		NTType:     9,
-		Index:      22,
+		Index:      23,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewSpace(X[0])
@@ -254,7 +264,7 @@ var productionsTable = ProdTab{
 		String: `Symbol : charLiteral	<< ast.NewCharLiteral(X[0]) >>`,
 		Id:         "Symbol",
 		NTType:     9,
-		Index:      23,
+		Index:      24,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewCharLiteral(X[0])

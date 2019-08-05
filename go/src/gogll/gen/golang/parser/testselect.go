@@ -90,6 +90,7 @@ func getSlotTSConditions(s gslot.Label) (data []*Condition) {
 }
 
 func getFollowConditions(nt string) (data []*Condition) {
+	fmt.Printf("testselect.getFollowConditions(%s)\n", nt)
 	for _, sym := range frstflw.Follow(nt).Elements() {
 		data = append(data, &Condition{Cond: getSymbolCondition(sym)})
 	}
@@ -106,15 +107,19 @@ func getSymbolCondition(sym string) string {
 	case "number":
 		return "number(r)"
 	case "upcase":
-		return "upper(r)"
+		return "upcase(r)"
 	case "lowcase":
-		return "lower(r)"
+		return "lowcase(r)"
 	case "space":
 		return "space(r)"
 	}
 	if strings.HasPrefix(sym, "not(") {
 		set := strings.TrimSuffix(strings.TrimPrefix(sym, "not("), ")")
 		return fmt.Sprintf(`not(r, %s)`, set)
+	}
+	if strings.HasPrefix(sym, "anyof(") {
+		set := strings.TrimSuffix(strings.TrimPrefix(sym, "anyof("), ")")
+		return fmt.Sprintf(`anyof(r, %s)`, set)
 	}
 	return fmt.Sprintf("r == '%s'", sym)
 }

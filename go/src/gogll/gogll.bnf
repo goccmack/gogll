@@ -2,12 +2,16 @@ nt : _upcase {_idchar} ;
 charLiteral : '\'' ( _escapedchar | .) '\'' ;
 string : '"' _stringchar {_stringchar} '"' ;
 _stringchar : . | _escapedchar ;
-_escapedchar : '\\' ('"' | 'n' | '\'') ;
+_escapedchar : '\\' ('"' | 'n' | 't' | 'r' | '\'') ;
 _upcase : 'A'-'Z' ;
 _lowcase : 'a'-'z' ;
 _idchar : _upcase | _lowcase | _number | '_' ;
 _number : '0'-'9' ;
 
+_blockComment : '/' '*' {. | '*'} '*' '/' ;
+_lineComment : '/' '/' {.} '\n' ;
+
+!comment : _lineComment | _blockComment ;
 !whitespace : ' ' | '\t' | '\n' | '\r' ;
 
 << import "gogll/ast" >>
@@ -53,6 +57,7 @@ Symbol
     :   nt                              << ast.NewID($0) >>
     |   string                          << ast.NewString($0) >>
     |   "any"                           << ast.NewAnyChar($0) >>
+    |   "anyof" string                  << ast.NewAnyOf($1) >>
     |   "letter"                        << ast.NewLetter($0) >>
     |   "number"                        << ast.NewNumber($0) >>
     |   "upcase"                        << ast.NewUpCase($0) >>
