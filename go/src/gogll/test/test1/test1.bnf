@@ -1,17 +1,3 @@
-S : Sep number ;
+S : "a" ;
 
-Sep
-    :   space
-    |   space Sep
-    |   Comment
-    |   Comment Sep
-    ;
-
-Comment
-    :   "//" CommentString "\n"
-    ;
-
-CommentString
-    :   not "\n"
-    |   not "\n" CommentString
-    ;
+B : "b" ;

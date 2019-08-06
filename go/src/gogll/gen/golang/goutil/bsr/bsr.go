@@ -51,6 +51,7 @@ var Set = newSet()
 type BSRSet struct {
 	slotEntries   map[Slot]bool
 	stringEntries map[String]bool
+	rightExtent int
 }
 
 type Slot struct {
@@ -105,11 +106,45 @@ func Contain(nt string, left, right int) bool {
 	return false
 }
 
+func GetBSRs() (bsrs []BSR) {
+	bsrs = make([]BSR, 0, len(Set.slotEntries)+len(Set.stringEntries))
+	for s, _ := range Set.slotEntries {
+		bsrs = append(bsrs, s)
+	}
+	for s, _ := range Set.stringEntries {
+		bsrs = append(bsrs, s)
+	}
+	sort.Slice(bsrs, func(i, j int) bool {
+		iw := bsrs[i].RightExtent() - bsrs[i].LeftExtent()
+		jw := bsrs[j].RightExtent() - bsrs[j].LeftExtent()
+		if iw > jw {
+			return true
+		}
+		if iw == jw {
+			return bsrs[i].InputPos() > bsrs[j].InputPos()
+		}
+		return false
+	})
+	return
+}
+
+func GetRoot(nt string) (roots []Slot) {
+	for s, _ := range Set.slotEntries {
+		if s.Label.Head() == nt && s.leftExtent == 0 && s.rightExtent == Set.rightExtent {
+			roots = append(roots, s)
+		}
+	}
+	return
+}
+
 func Init() {
 	Set = newSet()
 }
 
 func insert(bsr BSR) {
+	if bsr.RightExtent() > Set.rightExtent {
+		Set.rightExtent = bsr.RightExtent()
+	}
 	switch s := bsr.(type) {
 	case Slot:
 		Set.slotEntries[s] = true

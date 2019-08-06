@@ -99,6 +99,7 @@ import(
 	"unicode/utf8"
 
 	"{{.Package}}/goutil/bsr"
+	"{{.Package}}/goutil/md"
 	"{{.Package}}/parser/slot"
 	{{range $i, $import := .Imports}}
 	"{{$import}}" {{end}}
@@ -110,9 +111,20 @@ const (
 )
 
 func ParseFile(fname string) []*ParseError {
-	buf, err := ioutil.ReadFile(fname)
-	if err != nil {
-		parseErrorError(err)
+	var buf []byte
+	var err error
+	if strings.HasPrefix(fname, ".md") {
+		var str string
+		str, err = md.GetSource(fname)
+		if err != nil {
+			parseErrorError(err)
+		}
+		buf = []byte(str)
+	} else {
+		buf, err = ioutil.ReadFile(fname)
+		if err != nil {
+			parseErrorError(err)
+		}
 	}
 	return Parse(buf)
 }

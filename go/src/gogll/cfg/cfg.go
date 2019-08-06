@@ -9,7 +9,7 @@ import (
 
 var (
 	BaseDir string
-	BNFFile string
+	SrcFile string
 	Package string
 
 	pkg = flag.String("p", "", "")
@@ -23,7 +23,7 @@ func GetParams() {
 }
 
 func getFileBase() {
-	BaseDir, _ = path.Split(BNFFile)
+	BaseDir, _ = path.Split(SrcFile)
 	if BaseDir == "" {
 		BaseDir = "."
 	}
@@ -40,7 +40,7 @@ func getSourceFile() {
 	if flag.NArg() < 1 {
 		fail("Source file required")
 	}
-	BNFFile = flag.Arg(0)
+	SrcFile = flag.Arg(0)
 }
 
 func fail(msg string) {
@@ -50,9 +50,11 @@ func fail(msg string) {
 }
 
 func usage() {
-	msg := `use: gogll -p <package> <bnfFile file>
-	<file name> : Mandatory. Name of the BNF file to be processed
-    -p <package>: Mandatory. Package prefix of the generated parser packages
-                  E.g.: -p test generates parser files with a package: "test/parser"`
+	msg := `use: gogll -p <package> <source file>
+	<source file> : Mandatory. Name of the source file to be processed. 
+					If the file extension is ".md" the bnf is extracted from markdown code segments
+                    enclosed in triple backticks.
+    -p <package>  : Mandatory. Package prefix of the generated parser packages
+                    E.g.: -p test generates parser files with a package: "test/parser"`
 	fmt.Println(msg)
 }

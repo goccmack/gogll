@@ -6,6 +6,7 @@ import (
 	"gogll/ast"
 	"gogll/frstflw"
 	"gogll/gslot"
+	"os"
 	"strings"
 	"text/template"
 )
@@ -91,7 +92,12 @@ func getSlotTSConditions(s gslot.Label) (data []*Condition) {
 
 func getFollowConditions(nt string) (data []*Condition) {
 	// fmt.Printf("testselect.getFollowConditions(%s)\n", nt)
-	for _, sym := range frstflw.Follow(nt).Elements() {
+	flw := frstflw.Follow(nt)
+	if flw.Len() == 0 {
+		fmt.Printf("Production %s has empty follow set. It is never called\n", nt)
+		os.Exit(1)
+	}
+	for _, sym := range flw.Elements() {
 		data = append(data, &Condition{Cond: getSymbolCondition(sym)})
 	}
 	data[len(data)-1].Last = true
@@ -121,7 +127,8 @@ func getSymbolCondition(sym string) string {
 		set := strings.TrimSuffix(strings.TrimPrefix(sym, "anyof("), ")")
 		return fmt.Sprintf(`anyof(r, %s)`, set)
 	}
-	return fmt.Sprintf("r == '%s'", sym)
+	// return fmt.Sprintf("r == '%s'", sym)
+	return fmt.Sprintf("r == '%s'", strings.TrimPrefix(sym, "\\"))
 }
 
 const testSelectTmpl = `var testSelect = map[slot.Label]func()bool{ {{range $i, $ts := .TestSelect}}

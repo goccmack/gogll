@@ -1,6 +1,8 @@
 package main
 
 import (
+	"strings"
+	"gogll/goutil/md"
 	"gogll/cfg"
 	"fmt"
 	"gogll/ast"
@@ -14,18 +16,9 @@ import (
 	"os"
 )
 
-var (
-	bnfFile string
-	baseDir string
-)
-
 func main() {
 	cfg.GetParams()
-	lex, err := lexer.NewLexerFile(cfg.BNFFile)
-	if err != nil {
-		fmt.Printf("Error creating lexer: %s", err)
-		os.Exit(1)
-	}
+	lex := getLexer()
 	p := parser.NewParser()
 	parse, err := p.Parse(lex)
 	if err != nil {
@@ -40,3 +33,19 @@ func main() {
 	golang.Gen()
 }
 
+func getLexer() *lexer.Lexer {
+	if strings.HasSuffix(cfg.SrcFile, ".md") {
+		input, err := md.GetSource(cfg.SrcFile)
+		if err != nil {
+			fmt.Printf("Error extracting source from markdown file: %s", err)
+			os.Exit(1)
+		}
+		return lexer.NewLexer([]byte(input))
+	}
+	lex, err := lexer.NewLexerFile(cfg.SrcFile)
+	if err != nil {
+		fmt.Printf("Error creating lexer: %s", err)
+		os.Exit(1)
+	}
+	return lex
+}
