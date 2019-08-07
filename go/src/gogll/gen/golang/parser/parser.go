@@ -105,11 +105,6 @@ import(
 	"{{$import}}" {{end}}
 )
 
-const (
-	Dollar = "$"
-	Empty = "empty"
-)
-
 func ParseFile(fname string) []*ParseError {
 	var buf []byte
 	var err error
@@ -154,6 +149,7 @@ func initParser() {
 	}
 	crfNodes = map[crfNode]*crfNode{}
 	bsr.Init()
+	parseErrors = nil
 }
 
 func Parse(I []byte) []*ParseError {
@@ -162,16 +158,14 @@ func Parse(I []byte) []*ParseError {
 	m, cU := len(I), 0
 	nextI, r, sz = decodeRune(I[cI:])
 	ntAdd("{{.StartSymbol}}", 0)
-	// fmt.Printf("R:%s\n", R)
-	// fmt.Printf("U:%s\n", U)
+	// DumpDescriptors()
 	for !R.empty() {
 		L, cU, cI = R.remove()
 		nextI, r, sz = decodeRune(I[cI:])
 
 		// fmt.Println()
 		// fmt.Printf("L:%s, cI:%d, I[cI]:%s, cU:%d\n", L, cI, nextI, cU)
-		// fmt.Printf("R:%s\n", R)
-		// fmt.Printf("U:%s\n", U)
+		// DumpDescriptors()
 
 		switch L { 
 {{.CodeX}}
@@ -372,6 +366,25 @@ func (ds *descriptors) remove() (L slot.Label, k, i int) {
 	ds.set = ds.set[:len(ds.set)-1]
 	// fmt.Printf("remove: %s,%d,%d\n", d.L, d.k, d.i)
 	return d.L, d.k, d.i
+}
+
+func DumpDescriptors() {
+	DumpR()
+	DumpU()
+}
+
+func DumpR() {
+	fmt.Println("R:")
+	for _, d := range R.set {
+		fmt.Printf(" %s\n", d)
+	}
+}
+
+func DumpU() {
+	fmt.Println("U:")
+	for _, d := range U.set {
+		fmt.Printf(" %s\n", d)
+	}
 }
 
 /*** Rune decoding ***/
