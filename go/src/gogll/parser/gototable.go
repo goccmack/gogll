@@ -38,7 +38,7 @@ var gotoTab = gotoTable{
 		-1, // S'
 		-1, // Grammar
 		-1, // Package
-		8,  // Rules
+		9,  // Rules
 		5,  // Rule
 		6,  // Head
 		-1, // Alternates
@@ -51,7 +51,7 @@ var gotoTab = gotoTable{
 		-1, // Grammar
 		-1, // Package
 		-1, // Rules
-		9,  // Rule
+		10, // Rule
 		6,  // Head
 		-1, // Alternates
 		-1, // Alternate
@@ -100,7 +100,7 @@ var gotoTab = gotoTable{
 		-1, // Package
 		-1, // Rules
 		-1, // Rule
-		-1, // Head
+		13, // Head
 		-1, // Alternates
 		-1, // Alternate
 		-1, // Body
@@ -111,8 +111,8 @@ var gotoTab = gotoTable{
 		-1, // Grammar
 		-1, // Package
 		-1, // Rules
-		9,  // Rule
-		6,  // Head
+		-1, // Rule
+		-1, // Head
 		-1, // Alternates
 		-1, // Alternate
 		-1, // Body
@@ -123,8 +123,8 @@ var gotoTab = gotoTable{
 		-1, // Grammar
 		-1, // Package
 		-1, // Rules
-		-1, // Rule
-		-1, // Head
+		10, // Rule
+		6,  // Head
 		-1, // Alternates
 		-1, // Alternate
 		-1, // Body
@@ -149,10 +149,10 @@ var gotoTab = gotoTable{
 		-1, // Rules
 		-1, // Rule
 		-1, // Head
-		13, // Alternates
-		15, // Alternate
-		16, // Body
-		18, // Symbol
+		-1, // Alternates
+		-1, // Alternate
+		-1, // Body
+		-1, // Symbol
 	},
 	gotoRow{ // S12
 		-1, // S'
@@ -161,10 +161,10 @@ var gotoTab = gotoTable{
 		-1, // Rules
 		-1, // Rule
 		-1, // Head
-		-1, // Alternates
-		-1, // Alternate
-		-1, // Body
-		-1, // Symbol
+		15, // Alternates
+		17, // Alternate
+		18, // Body
+		20, // Symbol
 	},
 	gotoRow{ // S13
 		-1, // S'
@@ -212,7 +212,7 @@ var gotoTab = gotoTable{
 		-1, // Alternates
 		-1, // Alternate
 		-1, // Body
-		30, // Symbol
+		-1, // Symbol
 	},
 	gotoRow{ // S17
 		-1, // S'
@@ -236,7 +236,7 @@ var gotoTab = gotoTable{
 		-1, // Alternates
 		-1, // Alternate
 		-1, // Body
-		-1, // Symbol
+		33, // Symbol
 	},
 	gotoRow{ // S19
 		-1, // S'
@@ -366,9 +366,9 @@ var gotoTab = gotoTable{
 		-1, // Rule
 		-1, // Head
 		-1, // Alternates
-		33, // Alternate
-		16, // Body
-		18, // Symbol
+		-1, // Alternate
+		-1, // Body
+		-1, // Symbol
 	},
 	gotoRow{ // S30
 		-1, // S'
@@ -377,10 +377,10 @@ var gotoTab = gotoTable{
 		-1, // Rules
 		-1, // Rule
 		-1, // Head
-		-1, // Alternates
-		-1, // Alternate
-		-1, // Body
-		-1, // Symbol
+		36, // Alternates
+		17, // Alternate
+		18, // Body
+		20, // Symbol
 	},
 	gotoRow{ // S31
 		-1, // S'
@@ -402,11 +402,71 @@ var gotoTab = gotoTable{
 		-1, // Rule
 		-1, // Head
 		-1, // Alternates
+		37, // Alternate
+		18, // Body
+		20, // Symbol
+	},
+	gotoRow{ // S33
+		-1, // S'
+		-1, // Grammar
+		-1, // Package
+		-1, // Rules
+		-1, // Rule
+		-1, // Head
+		-1, // Alternates
 		-1, // Alternate
 		-1, // Body
 		-1, // Symbol
 	},
-	gotoRow{ // S33
+	gotoRow{ // S34
+		-1, // S'
+		-1, // Grammar
+		-1, // Package
+		-1, // Rules
+		-1, // Rule
+		-1, // Head
+		-1, // Alternates
+		-1, // Alternate
+		-1, // Body
+		-1, // Symbol
+	},
+	gotoRow{ // S35
+		-1, // S'
+		-1, // Grammar
+		-1, // Package
+		-1, // Rules
+		-1, // Rule
+		-1, // Head
+		-1, // Alternates
+		-1, // Alternate
+		-1, // Body
+		-1, // Symbol
+	},
+	gotoRow{ // S36
+		-1, // S'
+		-1, // Grammar
+		-1, // Package
+		-1, // Rules
+		-1, // Rule
+		-1, // Head
+		-1, // Alternates
+		-1, // Alternate
+		-1, // Body
+		-1, // Symbol
+	},
+	gotoRow{ // S37
+		-1, // S'
+		-1, // Grammar
+		-1, // Package
+		-1, // Rules
+		-1, // Rule
+		-1, // Head
+		-1, // Alternates
+		-1, // Alternate
+		-1, // Body
+		-1, // Symbol
+	},
+	gotoRow{ // S38
 		-1, // S'
 		-1, // Grammar
 		-1, // Package

@@ -16,7 +16,7 @@ const (
 
 func GetAST(parseTree interface{}) *Grammar {
 	g := parseTree.(*Grammar)
-	startSymbol = g.Rules[0].Head.stringValue
+	// startSymbol = g.Rules[0].Head.stringValue
 	return g
 }
 

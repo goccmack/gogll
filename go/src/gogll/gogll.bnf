@@ -27,11 +27,12 @@ Package
 
 Rules
     :   Rule                            << ast.NewRules($0) >>
-    |   Rules Rule                    << ast.AddRule($0, $1) >>
+    |   Rules Rule                      << ast.AddRule($0, $1) >>
     ;
 
 Rule
     :   Head  ":"  Alternates  ";"         << ast.NewRule(false, $0, $2) >>
+    |   "*" Head  ":"  Alternates  ";"      << ast.NewRule(true, $1, $3) >>
     ;
 
 Head

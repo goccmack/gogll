@@ -3,6 +3,7 @@ package ast
 import (
 	"fmt"
 	"gogll/goutil/stringset"
+	"os"
 	"sort"
 	"unicode"
 	"unicode/utf8"
@@ -93,7 +94,8 @@ func GetRules() map[string]*Rule {
 
 func GetStartSymbol() string {
 	if startSymbol == "" {
-		panic("No start symbol")
+		fmt.Printf("Error: No Start Symbol specified in the grammar\n")
+		os.Exit(1)
 	}
 	return startSymbol
 }

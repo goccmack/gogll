@@ -91,10 +91,20 @@ var productionsTable = ProdTab{
 		},
 	},
 	ProdTabEntry{
+		String: `Rule : "*" Head ":" Alternates ";"	<< ast.NewRule(true, X[1], X[3]) >>`,
+		Id:         "Rule",
+		NTType:     4,
+		Index:      7,
+		NumSymbols: 5,
+		ReduceFunc: func(X []Attrib) (Attrib, error) {
+			return ast.NewRule(true, X[1], X[3])
+		},
+	},
+	ProdTabEntry{
 		String: `Head : nt	<< ast.NewHead(X[0]) >>`,
 		Id:         "Head",
 		NTType:     5,
-		Index:      7,
+		Index:      8,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewHead(X[0])
@@ -104,7 +114,7 @@ var productionsTable = ProdTab{
 		String: `Alternates : Alternates "|" Alternate	<< ast.AddAlternate(X[0], X[2]) >>`,
 		Id:         "Alternates",
 		NTType:     6,
-		Index:      8,
+		Index:      9,
 		NumSymbols: 3,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.AddAlternate(X[0], X[2])
@@ -114,7 +124,7 @@ var productionsTable = ProdTab{
 		String: `Alternates : Alternate	<< ast.NewAlternates(X[0]) >>`,
 		Id:         "Alternates",
 		NTType:     6,
-		Index:      9,
+		Index:      10,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewAlternates(X[0])
@@ -124,7 +134,7 @@ var productionsTable = ProdTab{
 		String: `Alternate : Body	<< ast.NewAlternate(X[0]) >>`,
 		Id:         "Alternate",
 		NTType:     7,
-		Index:      10,
+		Index:      11,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewAlternate(X[0])
@@ -134,7 +144,7 @@ var productionsTable = ProdTab{
 		String: `Alternate : "emptyAlt"	<< ast.NewAlternate(nil) >>`,
 		Id:         "Alternate",
 		NTType:     7,
-		Index:      11,
+		Index:      12,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewAlternate(nil)
@@ -144,7 +154,7 @@ var productionsTable = ProdTab{
 		String: `Body : Symbol	<< ast.NewBody(X[0]) >>`,
 		Id:         "Body",
 		NTType:     8,
-		Index:      12,
+		Index:      13,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewBody(X[0])
@@ -154,7 +164,7 @@ var productionsTable = ProdTab{
 		String: `Body : Body Symbol	<< ast.AppendSymbol(X[0], X[1]) >>`,
 		Id:         "Body",
 		NTType:     8,
-		Index:      13,
+		Index:      14,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.AppendSymbol(X[0], X[1])
@@ -164,7 +174,7 @@ var productionsTable = ProdTab{
 		String: `Symbol : nt	<< ast.NewID(X[0]) >>`,
 		Id:         "Symbol",
 		NTType:     9,
-		Index:      14,
+		Index:      15,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewID(X[0])
@@ -174,7 +184,7 @@ var productionsTable = ProdTab{
 		String: `Symbol : string	<< ast.NewString(X[0]) >>`,
 		Id:         "Symbol",
 		NTType:     9,
-		Index:      15,
+		Index:      16,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewString(X[0])
@@ -184,7 +194,7 @@ var productionsTable = ProdTab{
 		String: `Symbol : "any"	<< ast.NewAnyChar(X[0]) >>`,
 		Id:         "Symbol",
 		NTType:     9,
-		Index:      16,
+		Index:      17,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewAnyChar(X[0])
@@ -194,7 +204,7 @@ var productionsTable = ProdTab{
 		String: `Symbol : "anyof" string	<< ast.NewAnyOf(X[1]) >>`,
 		Id:         "Symbol",
 		NTType:     9,
-		Index:      17,
+		Index:      18,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewAnyOf(X[1])
@@ -204,7 +214,7 @@ var productionsTable = ProdTab{
 		String: `Symbol : "letter"	<< ast.NewLetter(X[0]) >>`,
 		Id:         "Symbol",
 		NTType:     9,
-		Index:      18,
+		Index:      19,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewLetter(X[0])
@@ -214,7 +224,7 @@ var productionsTable = ProdTab{
 		String: `Symbol : "number"	<< ast.NewNumber(X[0]) >>`,
 		Id:         "Symbol",
 		NTType:     9,
-		Index:      19,
+		Index:      20,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewNumber(X[0])
@@ -224,7 +234,7 @@ var productionsTable = ProdTab{
 		String: `Symbol : "upcase"	<< ast.NewUpCase(X[0]) >>`,
 		Id:         "Symbol",
 		NTType:     9,
-		Index:      20,
+		Index:      21,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewUpCase(X[0])
@@ -234,7 +244,7 @@ var productionsTable = ProdTab{
 		String: `Symbol : "lowcase"	<< ast.NewLowCase(X[0]) >>`,
 		Id:         "Symbol",
 		NTType:     9,
-		Index:      21,
+		Index:      22,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewLowCase(X[0])
@@ -244,7 +254,7 @@ var productionsTable = ProdTab{
 		String: `Symbol : "not" string	<< ast.NewNotString(X[1]) >>`,
 		Id:         "Symbol",
 		NTType:     9,
-		Index:      22,
+		Index:      23,
 		NumSymbols: 2,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewNotString(X[1])
@@ -254,7 +264,7 @@ var productionsTable = ProdTab{
 		String: `Symbol : "space"	<< ast.NewSpace(X[0]) >>`,
 		Id:         "Symbol",
 		NTType:     9,
-		Index:      23,
+		Index:      24,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewSpace(X[0])
@@ -264,7 +274,7 @@ var productionsTable = ProdTab{
 		String: `Symbol : charLiteral	<< ast.NewCharLiteral(X[0]) >>`,
 		Id:         "Symbol",
 		NTType:     9,
-		Index:      24,
+		Index:      25,
 		NumSymbols: 1,
 		ReduceFunc: func(X []Attrib) (Attrib, error) {
 			return ast.NewCharLiteral(X[0])
