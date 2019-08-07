@@ -105,6 +105,7 @@ func getFollowConditions(nt string) (data []*Condition) {
 }
 
 func getSymbolCondition(sym string) string {
+	// fmt.Printf("testselect.getSymbolCondition(%s)\n", sym)
 	switch sym {
 	case "any":
 		return "true"
@@ -118,6 +119,8 @@ func getSymbolCondition(sym string) string {
 		return "lowcase(r)"
 	case "space":
 		return "space(r)"
+	case "\\\"":
+		return `r == '"'`
 	}
 	if strings.HasPrefix(sym, "not(") {
 		set := strings.TrimSuffix(strings.TrimPrefix(sym, "not("), ")")
@@ -127,8 +130,8 @@ func getSymbolCondition(sym string) string {
 		set := strings.TrimSuffix(strings.TrimPrefix(sym, "anyof("), ")")
 		return fmt.Sprintf(`anyof(r, %s)`, set)
 	}
-	// return fmt.Sprintf("r == '%s'", sym)
-	return fmt.Sprintf("r == '%s'", strings.TrimPrefix(sym, "\\"))
+	return fmt.Sprintf("r == '%s'", sym)
+	// return fmt.Sprintf("r == '%s'", strings.TrimPrefix(sym, "\\"))
 }
 
 const testSelectTmpl = `var testSelect = map[slot.Label]func()bool{ {{range $i, $ts := .TestSelect}}

@@ -452,15 +452,17 @@ func space(r rune) bool {
 type ParseError struct {
 	Slot         slot.Label
 	InputPos     int
+	Char string
 	Line, Column int
 }
 
 func (pe *ParseError) String() string {
-	return fmt.Sprintf("%s at line %d col %d", pe.Slot, pe.Line, pe.Column)
+	return fmt.Sprintf("%s cI=%d I[cI]=%s at line %d col %d", 
+		pe.Slot, pe.InputPos, pe.Char, pe.Line, pe.Column)
 }
 
 func parseError(slot slot.Label, I int) {
-	pe := &ParseError{Slot: slot, InputPos: I}
+	pe := &ParseError{Slot: slot, InputPos: I, Char: nextI}
 	parseErrors = append(parseErrors, pe)
 }
 
