@@ -50,7 +50,10 @@ type BSR interface {
 	Pivot() int
 }
 
-var Set = newSet()
+var (
+	set = newSet()
+	startSym string
+)
 
 type BSRSet struct {
 	slotEntries   map[Slot]bool
@@ -99,7 +102,7 @@ func AddEmpty(l slot.Label, i int) {
 
 func Contain(nt string, left, right int) bool {
 	// fmt.Printf("bsr.Contain(%s,%d,%d)\n",nt,left,right)
-	for e, _ := range Set.slotEntries {
+	for e, _ := range set.slotEntries {
 		// fmt.Printf("  (%s,%d,%d)\n",e.Label.Head(),e.leftExtent,e.rightExtent)
 		if e.Label.Head() == nt && e.leftExtent == left && e.rightExtent == right {
 			// fmt.Println("  true")
@@ -111,11 +114,11 @@ func Contain(nt string, left, right int) bool {
 }
 
 func GetBSRs() (bsrs []BSR) {
-	bsrs = make([]BSR, 0, len(Set.slotEntries)+len(Set.stringEntries))
-	for s, _ := range Set.slotEntries {
+	bsrs = make([]BSR, 0, len(set.slotEntries)+len(set.stringEntries))
+	for s, _ := range set.slotEntries {
 		bsrs = append(bsrs, s)
 	}
-	for s, _ := range Set.stringEntries {
+	for s, _ := range set.stringEntries {
 		bsrs = append(bsrs, s)
 	}
 	sort.Slice(bsrs, func(i, j int) bool {
@@ -133,7 +136,7 @@ func GetBSRs() (bsrs []BSR) {
 }
 
 func GetNTSlot(nt string, leftExtent, rightExtent int) Slot {
-	for sl, _ := range Set.slotEntries {
+	for sl, _ := range set.slotEntries {
 		if sl.Label.Head() == nt && sl.leftExtent == leftExtent && sl.rightExtent == rightExtent {
 			return sl
 		}
@@ -144,12 +147,12 @@ func GetNTSlot(nt string, leftExtent, rightExtent int) Slot {
 }
 
 func GetRightExtent() int {
-	return Set.rightExtent
+	return set.rightExtent
 }
 
-func GetRoot(nt string) (roots []Slot) {
-	for s, _ := range Set.slotEntries {
-		if s.Label.Head() == nt && s.leftExtent == 0 && s.rightExtent == Set.rightExtent {
+func GetRoot() (roots []Slot) {
+	for s, _ := range set.slotEntries {
+		if s.Label.Head() == startSym && s.leftExtent == 0 && s.rightExtent == set.rightExtent {
 			roots = append(roots, s)
 		}
 	}
@@ -157,7 +160,7 @@ func GetRoot(nt string) (roots []Slot) {
 }
 
 func GetString(l slot.Label, leftExtent, rightExtent int) String {
-	for str, _ := range Set.stringEntries {
+	for str, _ := range set.stringEntries {
 		if str.Label == l && str.leftExtent == leftExtent && str.rightExtent == rightExtent {
 			return str
 		}
@@ -167,19 +170,20 @@ func GetString(l slot.Label, leftExtent, rightExtent int) String {
 	panic("must not happen")
 }
 
-func Init() {
-	Set = newSet()
+func Init(startSymbol string) {
+	set = newSet()
+	startSym = startSymbol
 }
 
 func insert(bsr BSR) {
-	if bsr.RightExtent() > Set.rightExtent {
-		Set.rightExtent = bsr.RightExtent()
+	if bsr.RightExtent() > set.rightExtent {
+		set.rightExtent = bsr.RightExtent()
 	}
 	switch s := bsr.(type) {
 	case Slot:
-		Set.slotEntries[s] = true
+		set.slotEntries[s] = true
 	case String:
-		Set.stringEntries[s] = true
+		set.stringEntries[s] = true
 	default:
 		panic(fmt.Sprintf("Invalid type %T", bsr))
 	}
@@ -276,7 +280,7 @@ func DumpString(s String) {
 }
 
 func GetSlots() (slots []Slot) {
-	for s := range Set.slotEntries {
+	for s := range set.slotEntries {
 		slots = append(slots, s)
 	}
 	sort.Slice(slots,
@@ -287,7 +291,7 @@ func GetSlots() (slots []Slot) {
 }
 
 func GetStrings() (strings []String) {
-	for s := range Set.stringEntries {
+	for s := range set.stringEntries {
 		strings = append(strings, s)
 	}
 	sort.Slice(strings,

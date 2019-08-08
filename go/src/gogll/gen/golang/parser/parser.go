@@ -148,7 +148,7 @@ func initParser() {
 		{"{{.StartSymbol}}", 0}:{},
 	}
 	crfNodes = map[crfNode]*crfNode{}
-	bsr.Init()
+	bsr.Init("{{.StartSymbol}}")
 	parseErrors = nil
 }
 

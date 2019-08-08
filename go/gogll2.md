@@ -3,6 +3,9 @@
 # Scannerless Generalised LL Parsing
 Gogll generates scannerless *generalised LL parsers*[1], specifically clustered nonterminal BSR parsers (CNP) [2].
 
+# Walking the Parse Forest
+Gogll produces a parse forest represented by a set of Binary Subtree Representations. See [BSR](bsr.md) for details of walking the parse forest.
+
 # Input Symbols, Markdown Files
 Gogll accepts UTF-8 input strings. 
 A gogll parser has two parse functions: 
