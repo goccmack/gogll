@@ -8,7 +8,7 @@ import (
 )
 
 func Gen(bsrFile string) {
-	tmpl, err := template.New("BSR").Parse(bsrTmpl)
+	tmpl, err := template.New("bsr").Parse(bsrTmpl)
 	if err != nil {
 		panic(err)
 	}
@@ -44,7 +44,7 @@ import (
 	"ql/parser/slot"
 )
 
-type BSR interface {
+type bsr interface {
 	LeftExtent() int
 	RightExtent() int
 	Pivot() int
@@ -55,49 +55,50 @@ var (
 	startSym string
 )
 
-type BSRSet struct {
-	slotEntries   map[Slot]bool
-	stringEntries map[String]bool
+type bsrSet struct {
+	slotEntries   map[BSR]bool
+	stringEntries map[stringBSR]bool
 	rightExtent   int
 }
 
-type Slot struct {
+// BSR is the binary subtree representation of a parsed nonterminal
+type BSR struct {
 	Label       slot.Label
 	leftExtent  int
 	pivot       int
 	rightExtent int
 }
 
-type String struct {
+type stringBSR struct {
 	Label       slot.Label
 	leftExtent  int
 	pivot       int
 	rightExtent int
 }
 
-func newSet() *BSRSet {
-	return &BSRSet{
-		slotEntries:   make(map[Slot]bool),
-		stringEntries: make(map[String]bool),
+func newSet() *bsrSet {
+	return &bsrSet{
+		slotEntries:   make(map[BSR]bool),
+		stringEntries: make(map[stringBSR]bool),
 	}
 }
 
 /*
-Add a BSR to the set. (i,j) is the extent. k is the pivot.
+Add a bsr to the set. (i,j) is the extent. k is the pivot.
 */
 func Add(l slot.Label, i, k, j int) {
 	// fmt.Printf("bsr.Add(%s,%d,%d,%d)\n", l,i,k,j)
 	if l.EoR() {
-		insert(Slot{l, i, k, j})
+		insert(BSR{l, i, k, j})
 	} else {
 		if l.Pos() > 1 {
-			insert(String{l, i, k, j})
+			insert(stringBSR{l, i, k, j})
 		}
 	}
 }
 
 func AddEmpty(l slot.Label, i int) {
-	insert(String{l, i, i, i})
+	insert(stringBSR{l, i, i, i})
 }
 
 func Contain(nt string, left, right int) bool {
@@ -113,44 +114,12 @@ func Contain(nt string, left, right int) bool {
 	return false
 }
 
-func GetBSRs() (bsrs []BSR) {
-	bsrs = make([]BSR, 0, len(set.slotEntries)+len(set.stringEntries))
-	for s, _ := range set.slotEntries {
-		bsrs = append(bsrs, s)
-	}
-	for s, _ := range set.stringEntries {
-		bsrs = append(bsrs, s)
-	}
-	sort.Slice(bsrs, func(i, j int) bool {
-		iw := bsrs[i].RightExtent() - bsrs[i].LeftExtent()
-		jw := bsrs[j].RightExtent() - bsrs[j].LeftExtent()
-		if iw > jw {
-			return true
-		}
-		if iw == jw {
-			return bsrs[i].Pivot() > bsrs[j].Pivot()
-		}
-		return false
-	})
-	return
-}
-
-func GetNTSlot(nt string, leftExtent, rightExtent int) Slot {
-	for sl, _ := range set.slotEntries {
-		if sl.Label.Head() == nt && sl.leftExtent == leftExtent && sl.rightExtent == rightExtent {
-			return sl
-		}
-	}
-	fmt.Printf("No Slot %s left extent=%d right extent=%d\n", nt, leftExtent, rightExtent)
-	panic("")
-	// os.Exit(1)
-}
-
+// GetRightExtent returns the right extent of the BSR set
 func GetRightExtent() int {
 	return set.rightExtent
 }
 
-func GetRoot() (roots []Slot) {
+func GetRoot() (roots []BSR) {
 	for s, _ := range set.slotEntries {
 		if s.Label.Head() == startSym && s.leftExtent == 0 && s.rightExtent == set.rightExtent {
 			roots = append(roots, s)
@@ -159,7 +128,7 @@ func GetRoot() (roots []Slot) {
 	return
 }
 
-func GetString(l slot.Label, leftExtent, rightExtent int) String {
+func getString(l slot.Label, leftExtent, rightExtent int) stringBSR {
 	for str, _ := range set.stringEntries {
 		if str.Label == l && str.leftExtent == leftExtent && str.rightExtent == rightExtent {
 			return str
@@ -175,21 +144,26 @@ func Init(startSymbol string) {
 	startSym = startSymbol
 }
 
-func insert(bsr BSR) {
+func insert(bsr bsr) {
 	if bsr.RightExtent() > set.rightExtent {
 		set.rightExtent = bsr.RightExtent()
 	}
 	switch s := bsr.(type) {
-	case Slot:
+	case BSR:
 		set.slotEntries[s] = true
-	case String:
+	case stringBSR:
 		set.stringEntries[s] = true
 	default:
 		panic(fmt.Sprintf("Invalid type %T", bsr))
 	}
 }
 
-func (s Slot) GetNTChild(nt string) Slot {
+// Alternate returns the index of the grammar rule alternate.
+func (b BSR) Alternate() int {
+	return b.Label.Alternate()
+}
+
+func (s BSR) GetNTChild(nt string) BSR {
 	symbols, i := s.Label.Symbols(), 0
 	for ; i < len(symbols) && symbols[i] != nt; i++ {
 	}
@@ -203,48 +177,48 @@ func (s Slot) GetNTChild(nt string) Slot {
 		os.Exit(1)
 	}
 	idx := s.Label.Index()
-	str := String{s.Label, s.leftExtent, s.pivot, s.rightExtent}
+	str := stringBSR{s.Label, s.leftExtent, s.pivot, s.rightExtent}
 	for idx.Pos > i+1 {
 		idx.Pos--
-		str = GetString(slot.GetLabel(idx.NT, idx.Alt, idx.Pos), str.leftExtent, str.pivot)
+		str = getString(slot.GetLabel(idx.NT, idx.Alt, idx.Pos), str.leftExtent, str.pivot)
 	}
-	return GetNTSlot(s.Label.Symbols()[i], str.pivot, str.rightExtent)
+	return getNTSlot(s.Label.Symbols()[i], str.pivot, str.rightExtent)
 }
 
-func (s Slot) LeftExtent() int {
+func (s BSR) LeftExtent() int {
 	return s.leftExtent
 }
 
-func (s Slot) RightExtent() int {
+func (s BSR) RightExtent() int {
 	return s.rightExtent
 }
 
-func (s Slot) Pivot() int {
+func (s BSR) Pivot() int {
 	return s.pivot
 }
 
-func (s Slot) String() string {
+func (s BSR) stringBSR() string {
 	return fmt.Sprintf("%s,%d,%d,%d", s.Label, s.leftExtent, s.pivot, s.rightExtent)
 }
 
-func (s String) LeftExtent() int {
+func (s stringBSR) LeftExtent() int {
 	return s.leftExtent
 }
 
-func (s String) RightExtent() int {
+func (s stringBSR) RightExtent() int {
 	return s.rightExtent
 }
 
-func (s String) Pivot() int {
+func (s stringBSR) Pivot() int {
 	return s.pivot
 }
 
-func (s String) Empty() bool {
+func (s stringBSR) Empty() bool {
 	return s.leftExtent == s.pivot && s.pivot == s.rightExtent
 }
 
-func (s String) String() string {
-	// fmt.Printf("bsr.String.String(): %s, %d, %d, %d\n",
+func (s stringBSR) stringBSR() string {
+	// fmt.Printf("bsr.stringBSR.stringBSR(): %s, %d, %d, %d\n",
 	// 	s.Label.Symbols(), s.leftExtent, s.pivot, s.rightExtent)
 	ss := s.Label.Symbols()[:s.Label.Pos()]
 	str := strings.Join(ss, " ")
@@ -258,28 +232,28 @@ func Dump() {
 }
 
 func DumpSlots() {
-	fmt.Printf("Slots (%d)\n", len(GetSlots()))
-	for _, s := range GetSlots() {
+	fmt.Printf("Slots (%d)\n", len(getSlots()))
+	for _, s := range getSlots() {
 		DumpSlot(s)
 	}
 }
 
-func DumpSlot(s Slot) {
+func DumpSlot(s BSR) {
 	fmt.Println(s)
 }
 
 func DumpStrings() {
-	fmt.Printf("Strings(%d)\n", len(GetStrings()))
-	for _, s := range GetStrings() {
-		DumpString(s)
+	fmt.Printf("Strings(%d)\n", len(getStrings()))
+	for _, s := range getStrings() {
+		dumpString(s)
 	}
 }
 
-func DumpString(s String) {
+func dumpString(s stringBSR) {
 	fmt.Println(s)
 }
 
-func GetSlots() (slots []Slot) {
+func getSlots() (slots []BSR) {
 	for s := range set.slotEntries {
 		slots = append(slots, s)
 	}
@@ -290,7 +264,7 @@ func GetSlots() (slots []Slot) {
 	return
 }
 
-func GetStrings() (strings []String) {
+func getStrings() (strings []stringBSR) {
 	for s := range set.stringEntries {
 		strings = append(strings, s)
 	}
@@ -300,4 +274,16 @@ func GetStrings() (strings []String) {
 		})
 	return
 }
+
+func getNTSlot(nt string, leftExtent, rightExtent int) BSR {
+	for sl, _ := range set.slotEntries {
+		if sl.Label.Head() == nt && sl.leftExtent == leftExtent && sl.rightExtent == rightExtent {
+			return sl
+		}
+	}
+	fmt.Printf("No BSR %s left extent=%d right extent=%d\n", nt, leftExtent, rightExtent)
+	panic("")
+	// os.Exit(1)
+}
+
 `
