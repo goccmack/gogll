@@ -105,23 +105,18 @@ import(
 
 type Label int
 
-const({{range $i, $l := .Slots}}
-	{{$l.Label}}{{if not $i}} Label = iota{{end}}{{end}}
-)
-
 type Slot struct {
 	NT      string
 	Alt     int
 	Pos     int
 	Symbols []string
+	Label 	Label
 }
 
-var slots = map[Label]*Slot{ {{range $i, $s := .Slots}}
-	{{$s.Label}}:&Slot{"{{$s.NT}}", {{$s.Alt}}, {{$s.Pos}}, []string{ {{$s.Symbols}} } }, {{end}}
-}
-
-var alternates = map[string][]Label{ {{range $i, $a := .Alts}}
-	"{{$a.NT}}":[]Label{ {{$a.Labels}} },{{end}}
+type Index struct {
+	NT      string
+	Alt     int
+	Pos     int
 }
 
 func GetAlternates(nt string) []Label {
@@ -132,12 +127,29 @@ func GetAlternates(nt string) []Label {
 	return alts
 }
 
+func GetLabel(nt string, alt, pos int) Label {
+	l, exist := slotIndex[Index{nt,alt,pos}]
+	if exist {
+		return l
+	}
+	panic(fmt.Sprintf("Error: no slot label for NT=%s, alt=%d, pos=%d", nt, alt, pos))
+}
+
 func (l Label) EoR() bool {
 	return l.Slot().EoR()
 }
 
 func (l Label) Head() string {
 	return l.Slot().NT
+}
+
+func (l Label) Index() Index {
+	s := l.Slot()
+	return Index{s.NT, s.Alt, s.Pos}
+}
+
+func (l Label) Alternate() int {
+	return l.Slot().Alt
 }
 
 func (l Label) Pos() int {
@@ -177,6 +189,22 @@ func (s *Slot) String() string {
 		fmt.Fprintf(buf, "∙")
 	}
 	return buf.String()
+}
+
+const({{range $i, $l := .Slots}}
+	{{$l.Label}}{{if not $i}} Label = iota{{end}}{{end}}
+)
+
+var slots = map[Label]*Slot{ {{range $i, $s := .Slots}}
+	{{$s.Label}}:&Slot{"{{$s.NT}}", {{$s.Alt}}, {{$s.Pos}}, []string{ {{$s.Symbols}} }, {{$s.Label}} },{{end}}
+}
+
+var slotIndex = map[Index]Label { {{range $i, $s := .Slots}}
+	Index{ "{{$s.NT}}",{{$s.Alt}},{{$s.Pos}} }: {{$s.Label}},{{end}}
+}
+
+var alternates = map[string][]Label{ {{range $i, $a := .Alts}}
+	"{{$a.NT}}":[]Label{ {{$a.Labels}} },{{end}}
 }
 
 `
