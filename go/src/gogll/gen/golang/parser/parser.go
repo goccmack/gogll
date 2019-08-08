@@ -108,7 +108,7 @@ import(
 func ParseFile(fname string) []*ParseError {
 	var buf []byte
 	var err error
-	if strings.HasPrefix(fname, ".md") {
+	if strings.HasSuffix(fname, ".md") {
 		var str string
 		str, err = md.GetSource(fname)
 		if err != nil {

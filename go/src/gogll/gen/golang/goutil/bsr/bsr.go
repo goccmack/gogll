@@ -128,6 +128,10 @@ func GetBSRs() (bsrs []BSR) {
 	return
 }
 
+func GetRightExtent() int {
+	return Set.rightExtent
+}
+
 func GetRoot(nt string) (roots []Slot) {
 	for s, _ := range Set.slotEntries {
 		if s.Label.Head() == nt && s.leftExtent == 0 && s.rightExtent == Set.rightExtent {
