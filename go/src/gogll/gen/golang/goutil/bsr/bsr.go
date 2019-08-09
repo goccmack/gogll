@@ -119,7 +119,18 @@ func GetRightExtent() int {
 	return set.rightExtent
 }
 
-func GetRoot() (roots []BSR) {
+// GetRoot returns the root of the parse tree of an unambiguous parse. 
+// GetRoot fails if the parse was ambiguous. Use GetRoots() for ambiguous parses.
+func GetRoot() BSR {
+	rts := GetRoots()
+	if len(rts) != 1 {
+		failf("%d parse trees exist for start symbol %s", len(rts), startSym)
+	}
+	return rts[0]
+}
+
+// GetRoots returns all the roots of parse trees of the start symbol of the grammar.
+func GetRoots() (roots []BSR) {
 	for s, _ := range set.slotEntries {
 		if s.Label.Head() == startSym && s.leftExtent == 0 && s.rightExtent == set.rightExtent {
 			roots = append(roots, s)
@@ -163,8 +174,28 @@ func (b BSR) Alternate() int {
 	return b.Label.Alternate()
 }
 
+// GetNTChild returns the BSR of occurrence i of nt in s.
+// GetNTChild fails if s has ambiguous subtrees of occurrence i of nt.
+func (b BSR) GetNTChild(nt string, i int) BSR {
+	bsrs := b.GetNTChildren(nt, i)
+	if len(bsrs) != 1 {
+		failf("NT %s is ambiguous in %s", nt, b)
+	}
+	return bsrs[0]
+}
+
+// GetNTChildI returns the BSR of NT symbol[i] in s.
+// GetNTChildI fails if s has ambiguous subtrees of NT i.
+func (b BSR) GetNTChildI(i int) BSR {
+	bsrs := b.GetNTChildrenI(i)
+	if len(bsrs) != 1 {
+		failf("NT %d is ambiguous in %s", i, b)
+	}
+	return bsrs[0]
+}
+
 // GetNTChild returns all the BSRs of occurrence i of nt in s
-func (b BSR) GetNTChild(nt string, i int) []BSR {
+func (b BSR) GetNTChildren(nt string, i int) []BSR {
 	// fmt.Printf("GetNTChild(%s,%d) %s\n", nt, i, b)
 	positions := []int{}
 	for j, s := range b.Label.Symbols() {
@@ -176,11 +207,11 @@ func (b BSR) GetNTChild(nt string, i int) []BSR {
 		fmt.Printf("Error: %s has no NT %s\n", b, nt)
 		os.Exit(1)
 	}
-	return b.GetNTChildI(positions[i])
+	return b.GetNTChildrenI(positions[i])
 }
 
 // GetNTChildI returns all the BSRs of NT symbol[i] in s
-func (b BSR) GetNTChildI(i int) []BSR {
+func (b BSR) GetNTChildrenI(i int) []BSR {
 	// fmt.Printf("bsr.GetNTChildI(%d) %s\n", i, b)
 	if i >= len(b.Label.Symbols()) {
 		fmt.Printf("Error: cannot get NT child %d of %s\n", i, b)
@@ -307,4 +338,8 @@ func getNTSlot(nt string, leftExtent, rightExtent int) (bsrs []BSR) {
 	return
 }
 
+func failf(format string, args ...interface{}) {
+	fmt.Printf("Error in BSR: %s\n", fmt.Sprintf(format, args...))
+	os.Exit(1)
+}
 `
