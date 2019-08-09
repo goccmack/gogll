@@ -41,7 +41,7 @@ import (
 	"sort"
 	"strings"
 
-	"ql/parser/slot"
+	"{{.}}/parser/slot"
 )
 
 type bsr interface {
@@ -163,7 +163,7 @@ func (b BSR) Alternate() int {
 	return b.Label.Alternate()
 }
 
-func (s BSR) GetNTChild(nt string) BSR {
+func (s BSR) GetNTChild(nt string) []BSR {
 	symbols, i := s.Label.Symbols(), 0
 	for ; i < len(symbols) && symbols[i] != nt; i++ {
 	}
@@ -275,15 +275,13 @@ func getStrings() (strings []stringBSR) {
 	return
 }
 
-func getNTSlot(nt string, leftExtent, rightExtent int) BSR {
+func getNTSlot(nt string, leftExtent, rightExtent int) (bsrs []BSR) {
 	for sl, _ := range set.slotEntries {
 		if sl.Label.Head() == nt && sl.leftExtent == leftExtent && sl.rightExtent == rightExtent {
-			return sl
+			bsrs = append(bsrs, sl)
 		}
 	}
-	fmt.Printf("No BSR %s left extent=%d right extent=%d\n", nt, leftExtent, rightExtent)
-	panic("")
-	// os.Exit(1)
+	return
 }
 
 `

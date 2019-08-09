@@ -105,7 +105,7 @@ import(
 	"{{$import}}" {{end}}
 )
 
-func ParseFile(fname string) []*ParseError {
+func ParseFile(fname string) (error, []*ParseError) {
 	var buf []byte
 	var err error
 	if strings.HasSuffix(fname, ".md") {
@@ -152,7 +152,7 @@ func initParser() {
 	parseErrors = nil
 }
 
-func Parse(I []byte) []*ParseError {
+func Parse(I []byte) (error, []*ParseError) {
 	initParser()
 	var L slot.Label
 	m, cU := len(I), 0
@@ -176,9 +176,11 @@ func Parse(I []byte) []*ParseError {
 	}
 	if !bsr.Contain("{{.StartSymbol}}",0,m) {
 		sortParseErrors(I)
-		return parseErrors
+		err := fmt.Errorf("Error: Parse Failed right extent=%d, m=%d", 
+			bsr.GetRightExtent(), len(I))
+		return err, parseErrors
 	}
-	return nil
+	return nil, nil
 }
 
 func ntAdd(nt string, j int) {

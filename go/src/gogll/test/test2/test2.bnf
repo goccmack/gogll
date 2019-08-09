@@ -1,4 +1,8 @@
-S : Name "." Name ;
+*S : A A ;
 
-Name : letter ;
+A : B | C ;
+
+B : "a" ;
+
+C : "a" ;
 
