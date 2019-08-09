@@ -163,26 +163,49 @@ func (b BSR) Alternate() int {
 	return b.Label.Alternate()
 }
 
-func (s BSR) GetNTChild(nt string) []BSR {
-	symbols, i := s.Label.Symbols(), 0
-	for ; i < len(symbols) && symbols[i] != nt; i++ {
+// GetNTChild returns all the BSRs of occurrence i of nt in s
+func (b BSR) GetNTChild(nt string, i int) []BSR {
+	// fmt.Printf("GetNTChild(%s,%d) %s\n", nt, i, b)
+	positions := []int{}
+	for j, s := range b.Label.Symbols() {
+		if s == nt {
+			positions = append(positions, j)
+		}
 	}
-	if i >= len(symbols) {
-		fmt.Printf("Error: %s has no NT %s\n", s, nt)
+	if len(positions) == 0 {
+		fmt.Printf("Error: %s has no NT %s\n", b, nt)
 		os.Exit(1)
 	}
+	return b.GetNTChildI(positions[i])
+}
 
-	if i >= len(s.Label.Symbols()) {
-		fmt.Printf("Error: cannot get NT child %d of %s\n", i, s)
+// GetNTChildI returns all the BSRs of NT symbol[i] in s
+func (b BSR) GetNTChildI(i int) []BSR {
+	// fmt.Printf("bsr.GetNTChildI(%d) %s\n", i, b)
+	if i >= len(b.Label.Symbols()) {
+		fmt.Printf("Error: cannot get NT child %d of %s\n", i, b)
 		os.Exit(1)
 	}
-	idx := s.Label.Index()
-	str := stringBSR{s.Label, s.leftExtent, s.pivot, s.rightExtent}
-	for idx.Pos > i+1 {
+	if len(b.Label.Symbols()) == 1 {
+		return getNTSlot(b.Label.Symbols()[i], b.pivot, b.rightExtent)
+	}
+	if len(b.Label.Symbols()) == 2 {
+		if i == 0 {
+			return getNTSlot(b.Label.Symbols()[i], b.leftExtent, b.pivot)
+		}
+		return getNTSlot(b.Label.Symbols()[i], b.pivot, b.rightExtent)
+	}
+	idx := b.Label.Index()
+	str := stringBSR{b.Label, b.leftExtent, b.pivot, b.rightExtent}
+	for idx.Pos > i+1 && idx.Pos > 2 {
 		idx.Pos--
 		str = getString(slot.GetLabel(idx.NT, idx.Alt, idx.Pos), str.leftExtent, str.pivot)
+		// fmt.Printf("  %s\n", str)
 	}
-	return getNTSlot(s.Label.Symbols()[i], str.pivot, str.rightExtent)
+	if i == 0 {
+		return getNTSlot(b.Label.Symbols()[i], str.leftExtent, str.pivot)
+	}
+	return getNTSlot(b.Label.Symbols()[i], str.pivot, str.rightExtent)
 }
 
 func (s BSR) LeftExtent() int {
@@ -197,7 +220,7 @@ func (s BSR) Pivot() int {
 	return s.pivot
 }
 
-func (s BSR) stringBSR() string {
+func (s BSR) String() string {
 	return fmt.Sprintf("%s,%d,%d,%d", s.Label, s.leftExtent, s.pivot, s.rightExtent)
 }
 
@@ -217,7 +240,7 @@ func (s stringBSR) Empty() bool {
 	return s.leftExtent == s.pivot && s.pivot == s.rightExtent
 }
 
-func (s stringBSR) stringBSR() string {
+func (s stringBSR) String() string {
 	// fmt.Printf("bsr.stringBSR.stringBSR(): %s, %d, %d, %d\n",
 	// 	s.Label.Symbols(), s.leftExtent, s.pivot, s.rightExtent)
 	ss := s.Label.Symbols()[:s.Label.Pos()]
