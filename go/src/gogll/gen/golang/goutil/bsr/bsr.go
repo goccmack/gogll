@@ -40,6 +40,7 @@ import (
 	"os"
 	"sort"
 	"strings"
+	"unicode/utf8"
 
 	"{{.}}/parser/slot"
 )
@@ -51,14 +52,16 @@ type bsr interface {
 }
 
 var (
-	set = newSet()
+	set *bsrSet
 	startSym string
 )
 
 type bsrSet struct {
 	slotEntries   map[BSR]bool
+	ignoredSlots   map[BSR]bool
 	stringEntries map[stringBSR]bool
 	rightExtent   int
+	I			  []byte
 }
 
 // BSR is the binary subtree representation of a parsed nonterminal
@@ -76,10 +79,12 @@ type stringBSR struct {
 	rightExtent int
 }
 
-func newSet() *bsrSet {
+func newSet(I []byte) *bsrSet {
 	return &bsrSet{
 		slotEntries:   make(map[BSR]bool),
+		ignoredSlots:   make(map[BSR]bool),
 		stringEntries: make(map[stringBSR]bool),
+		I: I,
 	}
 }
 
@@ -150,8 +155,8 @@ func getString(l slot.Label, leftExtent, rightExtent int) stringBSR {
 	panic("must not happen")
 }
 
-func Init(startSymbol string) {
-	set = newSet()
+func Init(startSymbol string, I []byte) {
+	set = newSet(I)
 	startSym = startSymbol
 }
 
@@ -179,7 +184,7 @@ func (b BSR) Alternate() int {
 func (b BSR) GetNTChild(nt string, i int) BSR {
 	bsrs := b.GetNTChildren(nt, i)
 	if len(bsrs) != 1 {
-		failf("NT %s is ambiguous in %s", nt, b)
+		fail(b, "NT %s is ambiguous in %s", nt, b)
 	}
 	return bsrs[0]
 }
@@ -189,7 +194,7 @@ func (b BSR) GetNTChild(nt string, i int) BSR {
 func (b BSR) GetNTChildI(i int) BSR {
 	bsrs := b.GetNTChildrenI(i)
 	if len(bsrs) != 1 {
-		failf("NT %d is ambiguous in %s", i, b)
+		fail(b, "NT %d is ambiguous in %s", i, b)
 	}
 	return bsrs[0]
 }
@@ -204,8 +209,7 @@ func (b BSR) GetNTChildren(nt string, i int) []BSR {
 		}
 	}
 	if len(positions) == 0 {
-		fmt.Printf("Error: %s has no NT %s\n", b, nt)
-		os.Exit(1)
+		fail(b, "Error: %s has no NT %s", b, nt)
 	}
 	return b.GetNTChildrenI(positions[i])
 }
@@ -214,8 +218,7 @@ func (b BSR) GetNTChildren(nt string, i int) []BSR {
 func (b BSR) GetNTChildrenI(i int) []BSR {
 	// fmt.Printf("bsr.GetNTChildI(%d) %s\n", i, b)
 	if i >= len(b.Label.Symbols()) {
-		fmt.Printf("Error: cannot get NT child %d of %s\n", i, b)
-		os.Exit(1)
+		fail(b, "Error: cannot get NT child %d of %s", i, b)
 	}
 	if len(b.Label.Symbols()) == 1 {
 		return getNTSlot(b.Label.Symbols()[i], b.pivot, b.rightExtent)
@@ -237,6 +240,12 @@ func (b BSR) GetNTChildrenI(i int) []BSR {
 		return getNTSlot(b.Label.Symbols()[i], str.leftExtent, str.pivot)
 	}
 	return getNTSlot(b.Label.Symbols()[i], str.pivot, str.rightExtent)
+}
+
+func (b BSR) Ignore() {
+	// fmt.Printf("bsr.Ignore %s\n", b)
+	delete(set.slotEntries, b)
+	set.ignoredSlots[b] = true
 }
 
 func (s BSR) LeftExtent() int {
@@ -338,8 +347,51 @@ func getNTSlot(nt string, leftExtent, rightExtent int) (bsrs []BSR) {
 	return
 }
 
+func fail(b BSR, format string, a ...interface{}) {
+	msg := fmt.Sprintf(format, a...)
+	line, col := getLineColumn(b.LeftExtent(), set.I)
+	fmt.Printf("Error in BSR: %s at line %d col %d\n", msg, line, col)
+	os.Exit(1)
+}
+
 func failf(format string, args ...interface{}) {
 	fmt.Printf("Error in BSR: %s\n", fmt.Sprintf(format, args...))
 	os.Exit(1)
 }
+
+func decodeRune(str []byte) (string, rune, int) {
+	if len(str) == 0 {
+		return "$", '$', 0
+	}
+	r, sz := utf8.DecodeRune(str)
+	if r == utf8.RuneError {
+		panic(fmt.Sprintf("Rune error: %s", str))
+	}
+	switch r {
+	case '\t', ' ':
+		return "space", r, sz
+	case '\n':
+		return "\\n", r, sz
+	}
+	return string(str[:sz]), r, sz
+}
+
+func getLineColumn(cI int, I []byte) (line, col int) {
+	line, col = 1, 1
+	for j := 0; j < cI; {
+		_, r, sz := decodeRune(I[j:])
+		switch r {
+		case '\n':
+			line++
+			col = 1
+		case '\t':
+			col += 4
+		default:
+			col++
+		}
+		j += sz
+	}
+	return
+}
+
 `

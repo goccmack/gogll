@@ -11,12 +11,12 @@ func Check(g *ast.Grammar) {
 
 func checkRuleReferences() {
 	for _, nt := range ast.GetNonTerminals() {
-		checkRuleReference(nt)
+		checkRuleReference(ast.GetSymbol(nt))
 	}
 }
 
-func checkRuleReference(nt string) {
-	if _, exist := ast.GetRules()[nt]; !exist {
-		fail("No rule declaration for " + nt)
+func checkRuleReference(nt ast.Symbol) {
+	if _, exist := ast.GetRules()[nt.StringValue()]; !exist {
+		fail(nt.GetPos(), "No rule declaration for %s", nt.StringValue())
 	}
 }

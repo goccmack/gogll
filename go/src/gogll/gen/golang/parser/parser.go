@@ -140,7 +140,7 @@ var (
 	parseErrors []*ParseError
 )
 
-func initParser() {
+func initParser(I []byte) {
 	cI, nextI, sz = 0, "", 0
 	R, U = &descriptors{}, &descriptors{}
 	popped = make(map[poppedNode]bool)
@@ -148,12 +148,12 @@ func initParser() {
 		{"{{.StartSymbol}}", 0}:{},
 	}
 	crfNodes = map[crfNode]*crfNode{}
-	bsr.Init("{{.StartSymbol}}")
+	bsr.Init("{{.StartSymbol}}", I)
 	parseErrors = nil
 }
 
 func Parse(I []byte) (error, []*ParseError) {
-	initParser()
+	initParser(I)
 	var L slot.Label
 	m, cU := len(I), 0
 	nextI, r, sz = decodeRune(I[cI:])
@@ -487,11 +487,11 @@ func sortParseErrors(I []byte) {
 			return parseErrors[j].InputPos < parseErrors[i].InputPos
 		})
 	for _, pe := range parseErrors {
-		pe.Line, pe.Column = getLineColumn(pe.InputPos, I)
+		pe.Line, pe.Column = GetLineColumn(pe.InputPos, I)
 	}
 }
 
-func getLineColumn(cI int, I []byte) (line, col int) {
+func GetLineColumn(cI int, I []byte) (line, col int) {
 	line, col = 1, 1
 	for j := 0; j < cI; {
 		_, r, sz := decodeRune(I[j:])

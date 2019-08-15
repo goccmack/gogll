@@ -166,6 +166,10 @@ func NewHead(head interface{}) (*Head, error) {
 	return h, nil
 }
 
+func (h *Head) GetPos() token.Pos {
+	return h.Token.Pos
+}
+
 func (h *Head) StringValue() string {
 	return h.stringValue
 }
@@ -190,6 +194,7 @@ type Rules []*Rule
 
 type Symbol interface {
 	isSymbol()
+	GetPos() token.Pos
 	StringValue() string
 	Equal(Symbol) bool
 	IsTerminal() bool
@@ -351,6 +356,12 @@ func NewNotString(sym interface{}) (*NotString, error) {
 	return symbol, nil
 }
 
+func (n *NotString) GetPos() token.Pos {
+	return n.Token.Pos
+}
+
+/*** ID ***/
+
 type ID struct {
 	Token *token.Token
 	value string
@@ -363,6 +374,10 @@ func NewID(id interface{}) (*ID, error) {
 		value: tok.IDValue(),
 	}
 	return id1, nil
+}
+
+func (id *ID) GetPos() token.Pos {
+	return id.Token.Pos
 }
 
 func (id *ID) StringValue() string {
@@ -381,6 +396,10 @@ func NewAnyChar(t interface{}) (*AnyChar, error) {
 		value: "any",
 	}
 	return terminal, nil
+}
+
+func (t *AnyChar) GetPos() token.Pos {
+	return t.Token.Pos
 }
 
 func (t *AnyChar) StringValue() string {
@@ -403,8 +422,12 @@ func NewAnyOf(str interface{}) (*AnyOf, error) {
 	return anyOf, nil
 }
 
-func (t *AnyOf) StringValue() string {
-	return t.value
+func (a *AnyOf) GetPos() token.Pos {
+	return a.Token.Pos
+}
+
+func (a *AnyOf) StringValue() string {
+	return a.value
 }
 
 type Space struct {
@@ -421,9 +444,15 @@ func NewSpace(t interface{}) (*Space, error) {
 	return terminal, nil
 }
 
+func (s *Space) GetPos() token.Pos {
+	return s.Token.Pos
+}
+
 func (t *Space) StringValue() string {
 	return t.value
 }
+
+/*** CharLiteral ***/
 
 type CharLiteral struct {
 	Token *token.Token
@@ -449,6 +478,12 @@ func (t *CharLiteral) StringValue() string {
 	return t.value
 }
 
+func (c *CharLiteral) GetPos() token.Pos {
+	return c.Token.Pos
+}
+
+/*** UpCase ***/
+
 type UpCase struct {
 	Token *token.Token
 	value string
@@ -461,6 +496,10 @@ func NewUpCase(t interface{}) (*UpCase, error) {
 		value: tok.IDValue(),
 	}
 	return terminal, nil
+}
+
+func (u *UpCase) GetPos() token.Pos {
+	return u.Token.Pos
 }
 
 func (t *UpCase) StringValue() string {
@@ -481,6 +520,10 @@ func NewLowCase(t interface{}) (*LowCase, error) {
 	return terminal, nil
 }
 
+func (l *LowCase) GetPos() token.Pos {
+	return l.Token.Pos
+}
+
 func (t *LowCase) StringValue() string {
 	return t.value
 }
@@ -499,6 +542,10 @@ func NewLetter(t interface{}) (*Letter, error) {
 	return terminal, nil
 }
 
+func (l *Letter) GetPos() token.Pos {
+	return l.Token.Pos
+}
+
 func (t *Letter) StringValue() string {
 	return t.value
 }
@@ -515,6 +562,10 @@ func NewNumber(t interface{}) (*Number, error) {
 		value: tok.IDValue(),
 	}
 	return terminal, nil
+}
+
+func (n *Number) GetPos() token.Pos {
+	return n.Token.Pos
 }
 
 func (t *Number) StringValue() string {
@@ -567,6 +618,10 @@ func newStringChars(s *String) (cs []*StringChar, err error) {
 	return
 }
 
+func (s *String) GetPos() token.Pos {
+	return s.Token.Pos
+}
+
 func (s *String) StringValue() string {
 	return string(s.Token.Lit)
 }
@@ -585,6 +640,10 @@ func newStringChar(r rune, sc string, str *String) *StringChar {
 		stringValue: sc,
 	}
 	return strCh
+}
+
+func (s *StringChar) GetPos() token.Pos {
+	return s.GetPos()
 }
 
 func (sc *StringChar) StringValue() string {

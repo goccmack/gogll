@@ -11,7 +11,7 @@ import (
 
 // symbol.Value() -> Symbols
 var symbols = make(map[string]Symbol)
-var nonTerminals = make(map[string]bool)
+// var nonTerminals = make(map[string]bool)
 var rules = make(map[string]*Rule)
 
 // token literal -> token type
