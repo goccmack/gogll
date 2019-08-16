@@ -84,6 +84,7 @@ func newSet(I []byte) *bsrSet {
 		slotEntries:   make(map[BSR]bool),
 		ignoredSlots:   make(map[BSR]bool),
 		stringEntries: make(map[stringBSR]bool),
+		rightExtent:	0,
 		I: I,
 	}
 }
