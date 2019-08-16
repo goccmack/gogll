@@ -193,6 +193,8 @@ var TransTab = TransitionTable{
 			return 36
 		case r == 39: // [''',''']
 			return 36
+		case r == 92: // ['\','\']
+			return 36
 		case r == 110: // ['n','n']
 			return 36
 		case r == 114: // ['r','r']
@@ -219,6 +221,8 @@ var TransTab = TransitionTable{
 		case r == 34: // ['"','"']
 			return 39
 		case r == 39: // [''',''']
+			return 39
+		case r == 92: // ['\','\']
 			return 39
 		case r == 110: // ['n','n']
 			return 39
@@ -406,6 +410,8 @@ var TransTab = TransitionTable{
 		case r == 34: // ['"','"']
 			return 36
 		case r == 39: // [''',''']
+			return 36
+		case r == 92: // ['\','\']
 			return 36
 		case r == 110: // ['n','n']
 			return 36

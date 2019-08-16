@@ -16,3 +16,4 @@ gocc:
 
 debug:
 	gocc -p gogll -v -debug_lexer gogll.bnf
+

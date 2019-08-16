@@ -1,8 +1,8 @@
 nt : _upcase {_idchar} ;
-charLiteral : '\'' ( _escapedchar | .) '\'' ;
 string : '"' _stringchar {_stringchar} '"' ;
+charLiteral : '\'' ( _escapedchar | .) '\'' ;
 _stringchar : . | _escapedchar ;
-_escapedchar : '\\' ('"' | 'n' | 't' | 'r' | '\'') ;
+_escapedchar : '\\' ('"' | 'n' | 't' | 'r' | '\'' | '\\') ;
 _upcase : 'A'-'Z' ;
 _lowcase : 'a'-'z' ;
 _idchar : _upcase | _lowcase | _number | '_' ;
