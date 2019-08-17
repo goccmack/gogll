@@ -8,6 +8,6 @@ import (
 )
 
 func Gen() {
-	parser.Gen(path.Join(cfg.BaseDir, "parser"))
 	goutil.Gen(path.Join(cfg.BaseDir, "goutil"))
+	parser.Gen(path.Join(cfg.BaseDir, "parser"))
 }

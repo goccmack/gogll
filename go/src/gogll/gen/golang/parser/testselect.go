@@ -106,6 +106,9 @@ func getFollowConditions(nt string) (data []*Condition) {
 
 func getSymbolCondition(sym string) string {
 	// fmt.Printf("testselect.getSymbolCondition(%s)\n", sym)
+	if sym == `'\\'` {
+		panic(`'\\'`)
+	}
 	switch sym {
 	case "any":
 		return "true"

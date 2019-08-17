@@ -61,7 +61,7 @@ func (m TokenMap) StringType(typ Type) string {
 
 // CharLiteralValue returns the string value of the char literal.
 func (t *Token) CharLiteralValue() string {
-	return string(t.Lit)
+	return string(t.Lit[1 : len(t.Lit)-1])
 }
 
 // Float32Value returns the float32 value of the token or an error if the token literal does not
