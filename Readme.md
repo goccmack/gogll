@@ -1,6 +1,9 @@
-# Readmea
+# Readme
 
 This is gogll V2: a clustered nonterminal parser (CNP) generator according to [Scott et al 2019](1)
+
+# Benefits
+* General CF grammars are composable.
 
 # Bibliography
 [1]: Elizabeth Scott, Adrian Johnstone and L. Thomas van Binsbergen. 
