@@ -1,5 +1,0 @@
-package "gogll/test/AAc"
-
-S : A A "c" ;
-
-A : emptyAlt ;

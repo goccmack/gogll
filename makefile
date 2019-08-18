@@ -1,19 +1,12 @@
-.PHONY: clean lexer gocc debug install
+.PHONY: all clean install
 
-install: clean gocc
-	go install
+all: parser/parser.go
+	go build
+
+parser/parser.go: gogll.md
+	gogll -p gogll gogll.md 
 
 clean:
-	rm first.txt ; \
-	rm lexer_sets.txt ; \
-	rm LR1_* ; \
-	rm terminals.txt ; \
-	rm -rf lexer ; \
+	rm *..txt ; \
 	rm -rf parser ; \
-
-gocc:
-	gocc -p gogll gogll.bnf 
-
-debug:
-	gocc -p gogll -v -debug_lexer gogll.bnf
 

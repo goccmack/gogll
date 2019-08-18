@@ -1,4 +1,0 @@
-S : A C "a" B | A B "a" "a" ;
-A : "a" A | "a" ;
-B : "b" B | "b" ;
-C : "b" C | "b" ;

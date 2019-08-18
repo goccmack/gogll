@@ -1,1 +1,0 @@
-Test1 test whether gogll catches productions which are never called.

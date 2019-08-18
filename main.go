@@ -1,51 +1,24 @@
 package main
 
 import (
-	"strings"
-	"gogll/goutil/md"
-	"gogll/cfg"
 	"fmt"
-	"gogll/ast"
-	"gogll/check"
-	genff "gogll/gen/firstfollow"
-	"gogll/gen/golang"
-	"gogll/gen/slots"
-	"gogll/gen/symbols"
-	"gogll/lexer"
+	"gogll/cfg"
+	"gogll/goutil/bsr"
 	"gogll/parser"
-	"os"
 )
 
 func main() {
 	cfg.GetParams()
-	lex := getLexer()
-	p := parser.NewParser()
-	parse, err := p.Parse(lex)
-	if err != nil {
-		fmt.Printf("PARSE ERROR: %s\n", err)
-		os.Exit(1)
+	if err, errs := parser.ParseFile(cfg.SrcFile); err != nil {
+		fail(err, errs)
 	}
-	g := ast.GetAST(parse)
-	check.Check(g)
-	symbols.Gen()
-	genff.Gen()
-	slots.Gen()
-	golang.Gen()
 }
 
-func getLexer() *lexer.Lexer {
-	if strings.HasSuffix(cfg.SrcFile, ".md") {
-		input, err := md.GetSource(cfg.SrcFile)
-		if err != nil {
-			fmt.Printf("Error extracting source from markdown file: %s", err)
-			os.Exit(1)
-		}
-		return lexer.NewLexer([]byte(input))
+func fail(err error, errs []*parser.ParseError) {
+	fmt.Printf("ParseError: %s\n", err)
+	// parser.DumpCRF(errs[0].InputPos)
+	bsr.Dump()
+	for _, e := range errs {
+		fmt.Println("", e)
 	}
-	lex, err := lexer.NewLexerFile(cfg.SrcFile)
-	if err != nil {
-		fmt.Printf("Error creating lexer: %s", err)
-		os.Exit(1)
-	}
-	return lex
 }
