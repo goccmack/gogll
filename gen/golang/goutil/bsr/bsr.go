@@ -262,7 +262,7 @@ func (s BSR) Pivot() int {
 }
 
 func (s BSR) String() string {
-	return fmt.Sprintf("%s,%d,%d,%d", s.Label, s.leftExtent, s.pivot, s.rightExtent)
+	return fmt.Sprintf("%s,%d,%d,%d - %s", s.Label, s.leftExtent, s.pivot, s.rightExtent, set.I[s.LeftExtent():s.RightExtent()])
 }
 
 func (s stringBSR) LeftExtent() int {
@@ -286,8 +286,8 @@ func (s stringBSR) String() string {
 	// 	s.Label.Symbols(), s.leftExtent, s.pivot, s.rightExtent)
 	ss := s.Label.Symbols()[:s.Label.Pos()]
 	str := strings.Join(ss, " ")
-	return fmt.Sprintf("%s,%d,%d,%d", str, s.leftExtent, s.pivot,
-		s.rightExtent)
+	return fmt.Sprintf("%s,%d,%d,%d - %s", str, s.leftExtent, s.pivot,
+		s.rightExtent, set.I[s.LeftExtent():s.RightExtent()])
 }
 
 func Dump() {

@@ -185,11 +185,16 @@ func Parse(I []byte) (error, []*ParseError) {
 
 func ntAdd(nt string, j int) {
 	// fmt.Printf("ntAdd(%s, %d)\n", nt, j)
+	failed := true
 	for _, l := range slot.GetAlternates(nt) {
 		if testSelect[l]() {
 			dscAdd(l, j, j)
-		} else {
-			// fmt.Printf("  testSelect == false(%s)\n", l)
+			failed = false
+		}
+	}
+	if failed {
+		for _, l := range slot.GetAlternates(nt) {
+			parseError(l)
 		}
 	}
 }
@@ -390,6 +395,22 @@ func DumpU() {
 }
 
 /*** Rune decoding ***/
+// func decodeRune(str []byte) (string, rune, int) {
+// 	if len(str) == 0 {
+// 		return "$", '$', 0
+// 	}
+// 	r, sz := utf8.DecodeRune(str)
+// 	if r == utf8.RuneError {
+// 		panic(fmt.Sprintf("Rune error: %s", str))
+// 	}
+// 	switch r {
+// 	case '\t', ' ':
+// 		return "space", r, sz
+// 	case '\n':
+// 		return "\\n", r, sz
+// 	}
+// 	return string(str[:sz]), r, sz
+// }
 func decodeRune(str []byte) (string, rune, int) {
 	if len(str) == 0 {
 		return "$", '$', 0
@@ -399,6 +420,25 @@ func decodeRune(str []byte) (string, rune, int) {
 		panic(fmt.Sprintf("Rune error: %s", str))
 	}
 	switch r {
+	case '\\':
+		r, sz = utf8.DecodeRune(str)
+		if r == utf8.RuneError {
+			panic(fmt.Sprintf("Rune error: %s", str))
+		}
+		switch r {
+		case '"':
+			return "\"", r, sz
+		case 'n':
+			return "n", r, sz
+		case 'r':
+			return "r", r, sz
+		case 't':
+			return "t", r, sz
+		case '\\':
+			return "\\", r, sz
+		case '\'':
+			return "'", r, sz
+		}
 	case '\t', ' ':
 		return "space", r, sz
 	case '\n':
@@ -406,6 +446,7 @@ func decodeRune(str []byte) (string, rune, int) {
 	}
 	return string(str[:sz]), r, sz
 }
+
 
 func runeToString(r rune) string {
 	buf := make([]byte, utf8.RuneLen(r))
@@ -472,7 +513,7 @@ type ParseError struct {
 }
 
 func (pe *ParseError) String() string {
-	return fmt.Sprintf("%s cI=%d I[cI]=%s at line %d col %d", 
+	return fmt.Sprintf("Parse Error: %s cI=%d I[cI]=%s at line %d col %d", 
 		pe.Slot, pe.InputPos, pe.Char, pe.Line, pe.Column)
 }
 
