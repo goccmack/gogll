@@ -104,7 +104,7 @@ func Add(l slot.Label, i, k, j int) {
 }
 
 func AddEmpty(l slot.Label, i int) {
-	insert(stringBSR{l, i, i, i})
+	insert(BSR{l, i, i, i})
 }
 
 func Contain(nt string, left, right int) bool {
@@ -140,6 +140,16 @@ func GetRoots() (roots []BSR) {
 	for s, _ := range set.slotEntries {
 		if s.Label.Head() == startSym && s.leftExtent == 0 && s.rightExtent == set.rightExtent {
 			roots = append(roots, s)
+		}
+	}
+	return
+}
+
+// GetNTSlot returns all slot entries of the NT, 'nt'
+func GetNTSlot(nt string) (slots []BSR) {
+	for bsr := range set.slotEntries {
+		if bsr.Label.Head() == nt {
+			slots = append(slots, bsr)
 		}
 	}
 	return
@@ -241,6 +251,10 @@ func (b BSR) GetNTChildrenI(i int) []BSR {
 		return getNTSlot(b.Label.Symbols()[i], str.leftExtent, str.pivot)
 	}
 	return getNTSlot(b.Label.Symbols()[i], str.pivot, str.rightExtent)
+}
+
+func (b BSR) GetString() string {
+	return string(set.I[b.LeftExtent():b.RightExtent()])
 }
 
 func (b BSR) Ignore() {

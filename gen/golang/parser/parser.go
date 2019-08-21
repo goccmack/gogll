@@ -7,6 +7,7 @@ import (
 	"gogll/ast"
 	"gogll/cfg"
 	"gogll/gen/golang/parser/slots"
+	"gogll/gen/golang/parser/symbols"
 	"gogll/goutil/ioutil"
 	"os"
 	"path"
@@ -20,6 +21,7 @@ import (
 func Gen(parserDir string) {
 	genParser(parserDir)
 	slots.Gen(filepath.Join(parserDir, "slot", "slot.go"))
+	symbols.Gen(filepath.Join(parserDir, "symbols", "symbols.go"))
 }
 
 func genParser(parserDir string) {
@@ -137,10 +139,12 @@ var (
 	crf			map[clusterNode][]*crfNode
 	crfNodes	map[crfNode]*crfNode
 
+	input []byte
 	parseErrors []*ParseError
 )
 
 func initParser(I []byte) {
+	input = I
 	cI, nextI, sz = 0, "", 0
 	R, U = &descriptors{}, &descriptors{}
 	popped = make(map[poppedNode]bool)
@@ -194,7 +198,7 @@ func ntAdd(nt string, j int) {
 	}
 	if failed {
 		for _, l := range slot.GetAlternates(nt) {
-			parseError(l)
+			parseError(l, j)
 		}
 	}
 }
@@ -528,14 +532,14 @@ func sortParseErrors(I []byte) {
 			return parseErrors[j].InputPos < parseErrors[i].InputPos
 		})
 	for _, pe := range parseErrors {
-		pe.Line, pe.Column = GetLineColumn(pe.InputPos, I)
+		pe.Line, pe.Column = GetLineColumn(pe.InputPos)
 	}
 }
 
-func GetLineColumn(cI int, I []byte) (line, col int) {
+func GetLineColumn(cI int) (line, col int) {
 	line, col = 1, 1
 	for j := 0; j < cI; {
-		_, r, sz := decodeRune(I[j:])
+		_, r, sz := decodeRune(input[j:])
 		switch r {
 		case '\n':
 			line++
