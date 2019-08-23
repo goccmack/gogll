@@ -10,6 +10,7 @@ GoGLL
 Head
 NTChar
 NTChars
+NTID
 NonTerminal
 Package
 Rule
@@ -17,10 +18,10 @@ Rules
 Sep
 SepChar
 SepE
-StartSymbol
 String
 StringChars
 Symbol
+Symbols
 Terminal
 \"
 \'

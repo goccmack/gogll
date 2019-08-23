@@ -51,10 +51,12 @@ var (
 	crf      map[clusterNode][]*crfNode
 	crfNodes map[crfNode]*crfNode
 
+	input       []byte
 	parseErrors []*ParseError
 )
 
 func initParser(I []byte) {
+	input = I
 	cI, nextI, sz = 0, "", 0
 	R, U = &descriptors{}, &descriptors{}
 	popped = make(map[poppedNode]bool)
@@ -82,73 +84,49 @@ func Parse(I []byte) (error, []*ParseError) {
 		// DumpDescriptors()
 
 		switch L {
-		case slot.Alternate0R0: // Alternate : ∙Symbol
+		case slot.Alternate0R0: // Alternate : ∙Symbols
 
 			call(slot.Alternate0R1, cU, cI)
-		case slot.Alternate0R1: // Alternate : Symbol ∙
+		case slot.Alternate0R1: // Alternate : Symbols ∙
 
 			if follow["Alternate"]() {
 				rtn("Alternate", cU, cI)
 			}
-		case slot.Alternate1R0: // Alternate : ∙Symbol Sep Alternate
+		case slot.Alternate1R0: // Alternate : ∙e m p t y
 
-			call(slot.Alternate1R1, cU, cI)
-		case slot.Alternate1R1: // Alternate : Symbol ∙Sep Alternate
-
+			bsr.Add(slot.Alternate1R1, cU, cI, cI+sz)
+			cI += sz
+			nextI, r, sz = decodeRune(I[cI:])
 			if !testSelect[slot.Alternate1R1]() {
 				parseError(slot.Alternate1R1, cI)
 				break
 			}
 
-			call(slot.Alternate1R2, cU, cI)
-		case slot.Alternate1R2: // Alternate : Symbol Sep ∙Alternate
-
+			bsr.Add(slot.Alternate1R2, cU, cI, cI+sz)
+			cI += sz
+			nextI, r, sz = decodeRune(I[cI:])
 			if !testSelect[slot.Alternate1R2]() {
 				parseError(slot.Alternate1R2, cI)
 				break
 			}
 
-			call(slot.Alternate1R3, cU, cI)
-		case slot.Alternate1R3: // Alternate : Symbol Sep Alternate ∙
-
-			if follow["Alternate"]() {
-				rtn("Alternate", cU, cI)
-			}
-		case slot.Alternate2R0: // Alternate : ∙e m p t y
-
-			bsr.Add(slot.Alternate2R1, cU, cI, cI+sz)
+			bsr.Add(slot.Alternate1R3, cU, cI, cI+sz)
 			cI += sz
 			nextI, r, sz = decodeRune(I[cI:])
-			if !testSelect[slot.Alternate2R1]() {
-				parseError(slot.Alternate2R1, cI)
+			if !testSelect[slot.Alternate1R3]() {
+				parseError(slot.Alternate1R3, cI)
 				break
 			}
 
-			bsr.Add(slot.Alternate2R2, cU, cI, cI+sz)
+			bsr.Add(slot.Alternate1R4, cU, cI, cI+sz)
 			cI += sz
 			nextI, r, sz = decodeRune(I[cI:])
-			if !testSelect[slot.Alternate2R2]() {
-				parseError(slot.Alternate2R2, cI)
+			if !testSelect[slot.Alternate1R4]() {
+				parseError(slot.Alternate1R4, cI)
 				break
 			}
 
-			bsr.Add(slot.Alternate2R3, cU, cI, cI+sz)
-			cI += sz
-			nextI, r, sz = decodeRune(I[cI:])
-			if !testSelect[slot.Alternate2R3]() {
-				parseError(slot.Alternate2R3, cI)
-				break
-			}
-
-			bsr.Add(slot.Alternate2R4, cU, cI, cI+sz)
-			cI += sz
-			nextI, r, sz = decodeRune(I[cI:])
-			if !testSelect[slot.Alternate2R4]() {
-				parseError(slot.Alternate2R4, cI)
-				break
-			}
-
-			bsr.Add(slot.Alternate2R5, cU, cI, cI+sz)
+			bsr.Add(slot.Alternate1R5, cU, cI, cI+sz)
 			cI += sz
 			nextI, r, sz = decodeRune(I[cI:])
 			if follow["Alternate"]() {
@@ -346,10 +324,18 @@ func Parse(I []byte) (error, []*ParseError) {
 			if follow["GoGLL"]() {
 				rtn("GoGLL", cU, cI)
 			}
-		case slot.Head0R0: // Head : ∙StartSymbol
+		case slot.Head0R0: // Head : ∙* NonTerminal
 
-			call(slot.Head0R1, cU, cI)
-		case slot.Head0R1: // Head : StartSymbol ∙
+			bsr.Add(slot.Head0R1, cU, cI, cI+sz)
+			cI += sz
+			nextI, r, sz = decodeRune(I[cI:])
+			if !testSelect[slot.Head0R1]() {
+				parseError(slot.Head0R1, cI)
+				break
+			}
+
+			call(slot.Head0R2, cU, cI)
+		case slot.Head0R2: // Head : * NonTerminal ∙
 
 			if follow["Head"]() {
 				rtn("Head", cU, cI)
@@ -410,26 +396,34 @@ func Parse(I []byte) (error, []*ParseError) {
 			if follow["NTChars"]() {
 				rtn("NTChars", cU, cI)
 			}
-		case slot.NonTerminal0R0: // NonTerminal : ∙letter
+		case slot.NTID0R0: // NTID : ∙letter
 
-			bsr.Add(slot.NonTerminal0R1, cU, cI, cI+sz)
+			bsr.Add(slot.NTID0R1, cU, cI, cI+sz)
 			cI += sz
 			nextI, r, sz = decodeRune(I[cI:])
-			if follow["NonTerminal"]() {
-				rtn("NonTerminal", cU, cI)
+			if follow["NTID"]() {
+				rtn("NTID", cU, cI)
 			}
-		case slot.NonTerminal1R0: // NonTerminal : ∙letter NTChars
+		case slot.NTID1R0: // NTID : ∙letter NTChars
 
-			bsr.Add(slot.NonTerminal1R1, cU, cI, cI+sz)
+			bsr.Add(slot.NTID1R1, cU, cI, cI+sz)
 			cI += sz
 			nextI, r, sz = decodeRune(I[cI:])
-			if !testSelect[slot.NonTerminal1R1]() {
-				parseError(slot.NonTerminal1R1, cI)
+			if !testSelect[slot.NTID1R1]() {
+				parseError(slot.NTID1R1, cI)
 				break
 			}
 
-			call(slot.NonTerminal1R2, cU, cI)
-		case slot.NonTerminal1R2: // NonTerminal : letter NTChars ∙
+			call(slot.NTID1R2, cU, cI)
+		case slot.NTID1R2: // NTID : letter NTChars ∙
+
+			if follow["NTID"]() {
+				rtn("NTID", cU, cI)
+			}
+		case slot.NonTerminal0R0: // NonTerminal : ∙NTID
+
+			call(slot.NonTerminal0R1, cU, cI)
+		case slot.NonTerminal0R1: // NonTerminal : NTID ∙
 
 			if follow["NonTerminal"]() {
 				rtn("NonTerminal", cU, cI)
@@ -648,30 +642,6 @@ func Parse(I []byte) (error, []*ParseError) {
 			if follow["SepE"]() {
 				rtn("SepE", cU, cI)
 			}
-		case slot.StartSymbol0R0: // StartSymbol : ∙* SepE NonTerminal
-
-			bsr.Add(slot.StartSymbol0R1, cU, cI, cI+sz)
-			cI += sz
-			nextI, r, sz = decodeRune(I[cI:])
-			if !testSelect[slot.StartSymbol0R1]() {
-				parseError(slot.StartSymbol0R1, cI)
-				break
-			}
-
-			call(slot.StartSymbol0R2, cU, cI)
-		case slot.StartSymbol0R2: // StartSymbol : * SepE ∙NonTerminal
-
-			if !testSelect[slot.StartSymbol0R2]() {
-				parseError(slot.StartSymbol0R2, cI)
-				break
-			}
-
-			call(slot.StartSymbol0R3, cU, cI)
-		case slot.StartSymbol0R3: // StartSymbol : * SepE NonTerminal ∙
-
-			if follow["StartSymbol"]() {
-				rtn("StartSymbol", cU, cI)
-			}
 		case slot.String0R0: // String : ∙\" StringChars \"
 
 			bsr.Add(slot.String0R1, cU, cI, cI+sz)
@@ -757,6 +727,38 @@ func Parse(I []byte) (error, []*ParseError) {
 
 			if follow["Symbol"]() {
 				rtn("Symbol", cU, cI)
+			}
+		case slot.Symbols0R0: // Symbols : ∙Symbol Sep Symbols
+
+			call(slot.Symbols0R1, cU, cI)
+		case slot.Symbols0R1: // Symbols : Symbol ∙Sep Symbols
+
+			if !testSelect[slot.Symbols0R1]() {
+				parseError(slot.Symbols0R1, cI)
+				break
+			}
+
+			call(slot.Symbols0R2, cU, cI)
+		case slot.Symbols0R2: // Symbols : Symbol Sep ∙Symbols
+
+			if !testSelect[slot.Symbols0R2]() {
+				parseError(slot.Symbols0R2, cI)
+				break
+			}
+
+			call(slot.Symbols0R3, cU, cI)
+		case slot.Symbols0R3: // Symbols : Symbol Sep Symbols ∙
+
+			if follow["Symbols"]() {
+				rtn("Symbols", cU, cI)
+			}
+		case slot.Symbols1R0: // Symbols : ∙Symbol
+
+			call(slot.Symbols1R1, cU, cI)
+		case slot.Symbols1R1: // Symbols : Symbol ∙
+
+			if follow["Symbols"]() {
+				rtn("Symbols", cU, cI)
 			}
 		case slot.Terminal0R0: // Terminal : ∙a n y
 
@@ -1150,11 +1152,16 @@ func Parse(I []byte) (error, []*ParseError) {
 
 func ntAdd(nt string, j int) {
 	// fmt.Printf("ntAdd(%s, %d)\n", nt, j)
+	failed := true
 	for _, l := range slot.GetAlternates(nt) {
 		if testSelect[l]() {
 			dscAdd(l, j, j)
-		} else {
-			// fmt.Printf("  testSelect == false(%s)\n", l)
+			failed = false
+		}
+	}
+	if failed {
+		for _, l := range slot.GetAlternates(nt) {
+			parseError(l, j)
 		}
 	}
 }
@@ -1427,21 +1434,6 @@ var testSelect = map[slot.Label]func() bool{
 			r == 'u'
 	},
 
-	slot.Alternate1R0: func() bool {
-		return r == '"' ||
-			r == '\'' ||
-			r == 'a' ||
-			r == 'l' ||
-			letter(r) ||
-			r == 'n' ||
-			r == 's' ||
-			r == 'u'
-	},
-
-	slot.Alternate2R0: func() bool {
-		return r == 'e'
-	},
-
 	slot.Alternate0R1: func() bool {
 		return r == ';' ||
 			anyof(r, "\t\n\t") ||
@@ -1449,47 +1441,27 @@ var testSelect = map[slot.Label]func() bool{
 			r == '|'
 	},
 
+	slot.Alternate1R0: func() bool {
+		return r == 'e'
+	},
+
 	slot.Alternate1R1: func() bool {
-		return anyof(r, "\t\n\t") ||
-			space(r)
-	},
-
-	slot.Alternate1R3: func() bool {
-		return r == ';' ||
-			anyof(r, "\t\n\t") ||
-			space(r) ||
-			r == '|'
-	},
-
-	slot.Alternate2R1: func() bool {
 		return r == 'm'
 	},
 
 	slot.Alternate1R2: func() bool {
-		return r == '"' ||
-			r == '\'' ||
-			r == 'a' ||
-			r == 'e' ||
-			r == 'l' ||
-			letter(r) ||
-			r == 'n' ||
-			r == 's' ||
-			r == 'u'
-	},
-
-	slot.Alternate2R2: func() bool {
 		return r == 'p'
 	},
 
-	slot.Alternate2R3: func() bool {
+	slot.Alternate1R3: func() bool {
 		return r == 't'
 	},
 
-	slot.Alternate2R4: func() bool {
+	slot.Alternate1R4: func() bool {
 		return r == 'y'
 	},
 
-	slot.Alternate2R5: func() bool {
+	slot.Alternate1R5: func() bool {
 		return r == ';' ||
 			anyof(r, "\t\n\t") ||
 			space(r) ||
@@ -1508,6 +1480,12 @@ var testSelect = map[slot.Label]func() bool{
 			r == 'u'
 	},
 
+	slot.Alternates0R1: func() bool {
+		return r == ';' ||
+			anyof(r, "\t\n\t") ||
+			space(r)
+	},
+
 	slot.Alternates1R0: func() bool {
 		return r == '"' ||
 			r == '\'' ||
@@ -1518,12 +1496,6 @@ var testSelect = map[slot.Label]func() bool{
 			r == 'n' ||
 			r == 's' ||
 			r == 'u'
-	},
-
-	slot.Alternates0R1: func() bool {
-		return r == ';' ||
-			anyof(r, "\t\n\t") ||
-			space(r)
 	},
 
 	slot.Alternates1R1: func() bool {
@@ -1572,8 +1544,16 @@ var testSelect = map[slot.Label]func() bool{
 		return r == '\''
 	},
 
+	slot.CharLiteral1R0: func() bool {
+		return r == '\''
+	},
+
 	slot.CharLiteral0R1: func() bool {
 		return r == '\\'
+	},
+
+	slot.CharLiteral1R1: func() bool {
+		return true
 	},
 
 	slot.CharLiteral0R2: func() bool {
@@ -1584,26 +1564,18 @@ var testSelect = map[slot.Label]func() bool{
 		return r == '\''
 	},
 
-	slot.CharLiteral0R4: func() bool {
+	slot.CharLiteral1R2: func() bool {
+		return r == '\''
+	},
+
+	slot.CharLiteral1R3: func() bool {
 		return r == ';' ||
 			anyof(r, "\t\n\t") ||
 			space(r) ||
 			r == '|'
 	},
 
-	slot.CharLiteral1R0: func() bool {
-		return r == '\''
-	},
-
-	slot.CharLiteral1R1: func() bool {
-		return true
-	},
-
-	slot.CharLiteral1R2: func() bool {
-		return r == '\''
-	},
-
-	slot.CharLiteral1R3: func() bool {
+	slot.CharLiteral0R4: func() bool {
 		return r == ';' ||
 			anyof(r, "\t\n\t") ||
 			space(r) ||
@@ -1624,6 +1596,12 @@ var testSelect = map[slot.Label]func() bool{
 		return r == 'n'
 	},
 
+	slot.EscapedChar1R1: func() bool {
+		return r == '"' ||
+			r == '\\' ||
+			not(r, "\\\"")
+	},
+
 	slot.EscapedChar2R0: func() bool {
 		return r == 'r'
 	},
@@ -1634,16 +1612,6 @@ var testSelect = map[slot.Label]func() bool{
 
 	slot.EscapedChar4R0: func() bool {
 		return r == '\\'
-	},
-
-	slot.EscapedChar5R0: func() bool {
-		return r == '\''
-	},
-
-	slot.EscapedChar1R1: func() bool {
-		return r == '"' ||
-			r == '\\' ||
-			not(r, "\\\"")
 	},
 
 	slot.EscapedChar2R1: func() bool {
@@ -1662,6 +1630,10 @@ var testSelect = map[slot.Label]func() bool{
 		return r == '"' ||
 			r == '\\' ||
 			not(r, "\\\"")
+	},
+
+	slot.EscapedChar5R0: func() bool {
+		return r == '\''
 	},
 
 	slot.EscapedChar5R1: func() bool {
@@ -1705,6 +1677,10 @@ var testSelect = map[slot.Label]func() bool{
 	},
 
 	slot.Head0R1: func() bool {
+		return letter(r)
+	},
+
+	slot.Head0R2: func() bool {
 		return r == ':' ||
 			anyof(r, "\t\n\t") ||
 			space(r)
@@ -1771,18 +1747,18 @@ var testSelect = map[slot.Label]func() bool{
 			number(r)
 	},
 
+	slot.NTChars1R0: func() bool {
+		return anyof(r, "!@#$%^&*-_+=") ||
+			letter(r) ||
+			number(r)
+	},
+
 	slot.NTChars0R1: func() bool {
 		return r == ':' ||
 			r == ';' ||
 			anyof(r, "\t\n\t") ||
 			space(r) ||
 			r == '|'
-	},
-
-	slot.NTChars1R0: func() bool {
-		return anyof(r, "!@#$%^&*-_+=") ||
-			letter(r) ||
-			number(r)
 	},
 
 	slot.NTChars1R1: func() bool {
@@ -1799,11 +1775,11 @@ var testSelect = map[slot.Label]func() bool{
 			r == '|'
 	},
 
-	slot.NonTerminal0R0: func() bool {
+	slot.NTID0R0: func() bool {
 		return letter(r)
 	},
 
-	slot.NonTerminal0R1: func() bool {
+	slot.NTID0R1: func() bool {
 		return r == ':' ||
 			r == ';' ||
 			anyof(r, "\t\n\t") ||
@@ -1811,17 +1787,29 @@ var testSelect = map[slot.Label]func() bool{
 			r == '|'
 	},
 
-	slot.NonTerminal1R0: func() bool {
+	slot.NTID1R0: func() bool {
 		return letter(r)
 	},
 
-	slot.NonTerminal1R1: func() bool {
+	slot.NTID1R1: func() bool {
 		return anyof(r, "!@#$%^&*-_+=") ||
 			letter(r) ||
 			number(r)
 	},
 
-	slot.NonTerminal1R2: func() bool {
+	slot.NTID1R2: func() bool {
+		return r == ':' ||
+			r == ';' ||
+			anyof(r, "\t\n\t") ||
+			space(r) ||
+			r == '|'
+	},
+
+	slot.NonTerminal0R0: func() bool {
+		return letter(r)
+	},
+
+	slot.NonTerminal0R1: func() bool {
 		return r == ':' ||
 			r == ';' ||
 			anyof(r, "\t\n\t") ||
@@ -2019,10 +2007,6 @@ var testSelect = map[slot.Label]func() bool{
 		return space(r)
 	},
 
-	slot.SepChar1R0: func() bool {
-		return anyof(r, "\t\n\t")
-	},
-
 	slot.SepChar0R1: func() bool {
 		return r == '$' ||
 			r == '*' ||
@@ -2041,6 +2025,10 @@ var testSelect = map[slot.Label]func() bool{
 			space(r) ||
 			r == 'u' ||
 			r == '|'
+	},
+
+	slot.SepChar1R0: func() bool {
+		return anyof(r, "\t\n\t")
 	},
 
 	slot.SepChar1R1: func() bool {
@@ -2068,24 +2056,6 @@ var testSelect = map[slot.Label]func() bool{
 			space(r)
 	},
 
-	slot.SepE1R0: func() bool {
-		return r == '$' ||
-			r == '*' ||
-			r == ':' ||
-			r == ';' ||
-			r == '"' ||
-			r == '\'' ||
-			r == 'a' ||
-			r == 'e' ||
-			r == 'l' ||
-			letter(r) ||
-			r == 'n' ||
-			r == 'p' ||
-			r == 's' ||
-			r == 'u' ||
-			r == '|'
-	},
-
 	slot.SepE0R1: func() bool {
 		return r == '$' ||
 			r == '*' ||
@@ -2104,24 +2074,22 @@ var testSelect = map[slot.Label]func() bool{
 			r == '|'
 	},
 
-	slot.StartSymbol0R0: func() bool {
-		return r == '*'
-	},
-
-	slot.StartSymbol0R1: func() bool {
-		return anyof(r, "\t\n\t") ||
+	slot.SepE1R0: func() bool {
+		return r == '$' ||
+			r == '*' ||
+			r == ':' ||
+			r == ';' ||
+			r == '"' ||
+			r == '\'' ||
+			r == 'a' ||
+			r == 'e' ||
+			r == 'l' ||
 			letter(r) ||
-			space(r)
-	},
-
-	slot.StartSymbol0R2: func() bool {
-		return letter(r)
-	},
-
-	slot.StartSymbol0R3: func() bool {
-		return r == ':' ||
-			anyof(r, "\t\n\t") ||
-			space(r)
+			r == 'n' ||
+			r == 'p' ||
+			r == 's' ||
+			r == 'u' ||
+			r == '|'
 	},
 
 	slot.String0R0: func() bool {
@@ -2149,14 +2117,18 @@ var testSelect = map[slot.Label]func() bool{
 		return not(r, "\\\"")
 	},
 
+	slot.StringChars1R0: func() bool {
+		return r == '\\'
+	},
+
+	slot.StringChars2R0: func() bool {
+		return r == '"'
+	},
+
 	slot.StringChars0R1: func() bool {
 		return r == '\\' ||
 			not(r, "\\\"") ||
 			r == '"'
-	},
-
-	slot.StringChars1R0: func() bool {
-		return r == '\\'
 	},
 
 	slot.StringChars0R2: func() bool {
@@ -2176,10 +2148,6 @@ var testSelect = map[slot.Label]func() bool{
 		return r == '\\' ||
 			not(r, "\\\"") ||
 			r == '"'
-	},
-
-	slot.StringChars2R0: func() bool {
-		return r == '"'
 	},
 
 	slot.StringChars1R3: func() bool {
@@ -2214,6 +2182,58 @@ var testSelect = map[slot.Label]func() bool{
 			r == '|'
 	},
 
+	slot.Symbols0R0: func() bool {
+		return r == '"' ||
+			r == '\'' ||
+			r == 'a' ||
+			r == 'l' ||
+			letter(r) ||
+			r == 'n' ||
+			r == 's' ||
+			r == 'u'
+	},
+
+	slot.Symbols0R1: func() bool {
+		return anyof(r, "\t\n\t") ||
+			space(r)
+	},
+
+	slot.Symbols0R2: func() bool {
+		return r == '"' ||
+			r == '\'' ||
+			r == 'a' ||
+			r == 'l' ||
+			letter(r) ||
+			r == 'n' ||
+			r == 's' ||
+			r == 'u'
+	},
+
+	slot.Symbols0R3: func() bool {
+		return r == ';' ||
+			anyof(r, "\t\n\t") ||
+			space(r) ||
+			r == '|'
+	},
+
+	slot.Symbols1R0: func() bool {
+		return r == '"' ||
+			r == '\'' ||
+			r == 'a' ||
+			r == 'l' ||
+			letter(r) ||
+			r == 'n' ||
+			r == 's' ||
+			r == 'u'
+	},
+
+	slot.Symbols1R1: func() bool {
+		return r == ';' ||
+			anyof(r, "\t\n\t") ||
+			space(r) ||
+			r == '|'
+	},
+
 	slot.Terminal0R0: func() bool {
 		return r == 'a'
 	},
@@ -2230,31 +2250,28 @@ var testSelect = map[slot.Label]func() bool{
 		return r == 'a'
 	},
 
+	slot.Terminal2R0: func() bool {
+		return r == 'l'
+	},
+
+	slot.Terminal4R0: func() bool {
+		return r == 's'
+	},
+
 	slot.Terminal1R1: func() bool {
 		return r == 'n'
+	},
+
+	slot.Terminal2R1: func() bool {
+		return r == 'e'
 	},
 
 	slot.Terminal1R2: func() bool {
 		return r == 'y'
 	},
 
-	slot.Terminal0R3: func() bool {
-		return r == ';' ||
-			anyof(r, "\t\n\t") ||
-			space(r) ||
-			r == '|'
-	},
-
-	slot.Terminal1R3: func() bool {
-		return r == 'o'
-	},
-
-	slot.Terminal2R0: func() bool {
-		return r == 'l'
-	},
-
-	slot.Terminal2R1: func() bool {
-		return r == 'e'
+	slot.Terminal2R2: func() bool {
+		return r == 't'
 	},
 
 	slot.Terminal3R0: func() bool {
@@ -2269,31 +2286,39 @@ var testSelect = map[slot.Label]func() bool{
 		return r == 'm'
 	},
 
-	slot.Terminal4R0: func() bool {
-		return r == 's'
+	slot.Terminal5R0: func() bool {
+		return r == 'u'
 	},
 
 	slot.Terminal4R1: func() bool {
 		return r == 'p'
 	},
 
-	slot.Terminal1R7: func() bool {
-		return r == ';' ||
-			anyof(r, "\t\n\t") ||
-			space(r) ||
-			r == '|'
-	},
-
-	slot.Terminal5R0: func() bool {
-		return r == 'u'
+	slot.Terminal4R2: func() bool {
+		return r == 'a'
 	},
 
 	slot.Terminal5R1: func() bool {
 		return r == 'p'
 	},
 
-	slot.Terminal2R2: func() bool {
-		return r == 't'
+	slot.Terminal5R2: func() bool {
+		return r == 'c'
+	},
+
+	slot.Terminal0R3: func() bool {
+		return r == ';' ||
+			anyof(r, "\t\n\t") ||
+			space(r) ||
+			r == '|'
+	},
+
+	slot.Terminal1R3: func() bool {
+		return r == 'o'
+	},
+
+	slot.Terminal1R4: func() bool {
+		return r == 'f'
 	},
 
 	slot.Terminal2R3: func() bool {
@@ -2304,12 +2329,12 @@ var testSelect = map[slot.Label]func() bool{
 		return r == 'b'
 	},
 
-	slot.Terminal4R2: func() bool {
-		return r == 'a'
+	slot.Terminal2R4: func() bool {
+		return r == 'e'
 	},
 
-	slot.Terminal5R2: func() bool {
-		return r == 'c'
+	slot.Terminal3R4: func() bool {
+		return r == 'e'
 	},
 
 	slot.Terminal4R3: func() bool {
@@ -2320,32 +2345,81 @@ var testSelect = map[slot.Label]func() bool{
 		return r == 'a'
 	},
 
+	slot.Terminal4R4: func() bool {
+		return r == 'e'
+	},
+
+	slot.Terminal2R6: func() bool {
+		return r == ';' ||
+			anyof(r, "\t\n\t") ||
+			space(r) ||
+			r == '|'
+	},
+
+	slot.Terminal3R6: func() bool {
+		return r == ';' ||
+			anyof(r, "\t\n\t") ||
+			space(r) ||
+			r == '|'
+	},
+
 	slot.Terminal6R0: func() bool {
 		return r == 'l'
+	},
+
+	slot.Terminal6R1: func() bool {
+		return r == 'o'
 	},
 
 	slot.Terminal7R0: func() bool {
 		return r == 'n'
 	},
 
-	slot.Terminal6R5: func() bool {
-		return r == 's'
-	},
-
-	slot.Terminal8R0: func() bool {
-		return r == '\''
+	slot.Terminal8R1: func() bool {
+		return r == ';' ||
+			anyof(r, "\t\n\t") ||
+			space(r) ||
+			r == '|'
 	},
 
 	slot.Terminal9R0: func() bool {
 		return r == '"'
 	},
 
+	slot.Terminal6R2: func() bool {
+		return r == 'w'
+	},
+
 	slot.Terminal6R3: func() bool {
 		return r == 'c'
 	},
 
-	slot.Terminal1R4: func() bool {
-		return r == 'f'
+	slot.Terminal5R4: func() bool {
+		return r == 's'
+	},
+
+	slot.Terminal5R5: func() bool {
+		return r == 'e'
+	},
+
+	slot.Terminal7R1: func() bool {
+		return r == 'o'
+	},
+
+	slot.Terminal7R3: func() bool {
+		return anyof(r, "\t\n\t") ||
+			space(r)
+	},
+
+	slot.Terminal9R1: func() bool {
+		return r == ';' ||
+			anyof(r, "\t\n\t") ||
+			space(r) ||
+			r == '|'
+	},
+
+	slot.Terminal6R4: func() bool {
+		return r == 'a'
 	},
 
 	slot.Terminal1R5: func() bool {
@@ -2353,24 +2427,8 @@ var testSelect = map[slot.Label]func() bool{
 			space(r)
 	},
 
-	slot.Terminal2R4: func() bool {
-		return r == 'e'
-	},
-
-	slot.Terminal3R4: func() bool {
-		return r == 'e'
-	},
-
-	slot.Terminal4R4: func() bool {
-		return r == 'e'
-	},
-
-	slot.Terminal5R4: func() bool {
-		return r == 's'
-	},
-
-	slot.Terminal6R4: func() bool {
-		return r == 'a'
+	slot.Terminal7R2: func() bool {
+		return r == 't'
 	},
 
 	slot.Terminal2R5: func() bool {
@@ -2388,61 +2446,19 @@ var testSelect = map[slot.Label]func() bool{
 			r == '|'
 	},
 
-	slot.Terminal5R5: func() bool {
-		return r == 'e'
+	slot.Terminal6R5: func() bool {
+		return r == 's'
 	},
 
-	slot.Terminal6R1: func() bool {
-		return r == 'o'
-	},
-
-	slot.Terminal8R1: func() bool {
+	slot.Terminal7R5: func() bool {
 		return r == ';' ||
 			anyof(r, "\t\n\t") ||
 			space(r) ||
 			r == '|'
-	},
-
-	slot.Terminal9R1: func() bool {
-		return r == ';' ||
-			anyof(r, "\t\n\t") ||
-			space(r) ||
-			r == '|'
-	},
-
-	slot.Terminal6R2: func() bool {
-		return r == 'w'
-	},
-
-	slot.Terminal7R2: func() bool {
-		return r == 't'
-	},
-
-	slot.Terminal7R3: func() bool {
-		return anyof(r, "\t\n\t") ||
-			space(r)
-	},
-
-	slot.Terminal7R4: func() bool {
-		return r == '"'
 	},
 
 	slot.Terminal1R6: func() bool {
 		return r == '"'
-	},
-
-	slot.Terminal2R6: func() bool {
-		return r == ';' ||
-			anyof(r, "\t\n\t") ||
-			space(r) ||
-			r == '|'
-	},
-
-	slot.Terminal3R6: func() bool {
-		return r == ';' ||
-			anyof(r, "\t\n\t") ||
-			space(r) ||
-			r == '|'
 	},
 
 	slot.Terminal5R6: func() bool {
@@ -2452,11 +2468,7 @@ var testSelect = map[slot.Label]func() bool{
 			r == '|'
 	},
 
-	slot.Terminal7R1: func() bool {
-		return r == 'o'
-	},
-
-	slot.Terminal7R5: func() bool {
+	slot.Terminal1R7: func() bool {
 		return r == ';' ||
 			anyof(r, "\t\n\t") ||
 			space(r) ||
@@ -2467,11 +2479,19 @@ var testSelect = map[slot.Label]func() bool{
 		return r == 'e'
 	},
 
+	slot.Terminal8R0: func() bool {
+		return r == '\''
+	},
+
 	slot.Terminal6R7: func() bool {
 		return r == ';' ||
 			anyof(r, "\t\n\t") ||
 			space(r) ||
 			r == '|'
+	},
+
+	slot.Terminal7R4: func() bool {
+		return r == '"'
 	},
 }
 
@@ -2524,6 +2544,14 @@ var follow = map[string]func() bool{
 	},
 
 	"NTChars": func() bool {
+		return r == ':' ||
+			r == ';' ||
+			anyof(r, "\t\n\t") ||
+			space(r) ||
+			r == '|'
+	},
+
+	"NTID": func() bool {
 		return r == ':' ||
 			r == ';' ||
 			anyof(r, "\t\n\t") ||
@@ -2614,12 +2642,6 @@ var follow = map[string]func() bool{
 			r == '|'
 	},
 
-	"StartSymbol": func() bool {
-		return r == ':' ||
-			anyof(r, "\t\n\t") ||
-			space(r)
-	},
-
 	"String": func() bool {
 		return r == ';' ||
 			anyof(r, "\t\n\t") ||
@@ -2632,6 +2654,13 @@ var follow = map[string]func() bool{
 	},
 
 	"Symbol": func() bool {
+		return r == ';' ||
+			anyof(r, "\t\n\t") ||
+			space(r) ||
+			r == '|'
+	},
+
+	"Symbols": func() bool {
 		return r == ';' ||
 			anyof(r, "\t\n\t") ||
 			space(r) ||
@@ -2716,14 +2745,14 @@ func sortParseErrors(I []byte) {
 			return parseErrors[j].InputPos < parseErrors[i].InputPos
 		})
 	for _, pe := range parseErrors {
-		pe.Line, pe.Column = GetLineColumn(pe.InputPos, I)
+		pe.Line, pe.Column = GetLineColumn(pe.InputPos)
 	}
 }
 
-func GetLineColumn(cI int, I []byte) (line, col int) {
+func GetLineColumn(cI int) (line, col int) {
 	line, col = 1, 1
 	for j := 0; j < cI; {
-		_, r, sz := decodeRune(I[j:])
+		_, r, sz := decodeRune(input[j:])
 		switch r {
 		case '\n':
 			line++

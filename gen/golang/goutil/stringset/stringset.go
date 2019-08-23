@@ -1,10 +1,21 @@
 package stringset
 
 import (
+	"gogll/goutil/ioutil"
+)
+
+func Gen(file string) {
+	if err := ioutil.WriteFile(file, []byte(src)); err != nil {
+		panic(err)
+	}
+}
+
+const src = `package stringset
+
+import (
 	"bytes"
 	"fmt"
 	"sort"
-	"strings"
 )
 
 type StringSet struct {
@@ -93,3 +104,4 @@ func (ss *StringSet) String() string {
 	fmt.Fprint(w, "}")
 	return w.String()
 }
+`

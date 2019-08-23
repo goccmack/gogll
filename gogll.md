@@ -23,10 +23,12 @@ Rules
 
 ```
 Rule : Head SepE ":" SepE Alternates SepE ";" ;
+```
+If multiple rules are declared with the same `Head` their alternates are combined into a single instance of the rule.
 
-Head : StartSymbol | NonTerminal ;
-
-StartSymbol : "*" SepE NonTerminal ;
+`Head` is the start symbol if preceded by `*`. Any rule declaration of the start symbol may be marked with `*` but only one may be marked.
+```
+Head : "*" NonTerminal | NonTerminal ;
 
 Alternates
     :   Alternate
@@ -34,16 +36,25 @@ Alternates
     ;
 
 Alternate
-    :   Symbol
-    |   Symbol Sep Alternate
+    :   Symbols
     |   "empty"
+    ;
+
+Symbols
+    :   Symbol Sep Symbols
+    |   Symbol
     ;
 
 Symbol : NonTerminal | Terminal ;
 
 NonTerminal 
+    :   NTID
+    ;
+
+NTID
     : letter 
-    | letter NTChars ;
+    | letter NTChars 
+    ;
 
 NTChars
     :   NTChar

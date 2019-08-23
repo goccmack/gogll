@@ -1,9 +1,5 @@
-Alternate : ∙Symbol 
-Alternate : Symbol ∙
-Alternate : ∙Symbol Sep Alternate 
-Alternate : Symbol ∙Sep Alternate 
-Alternate : Symbol Sep ∙Alternate 
-Alternate : Symbol Sep Alternate ∙
+Alternate : ∙Symbols 
+Alternate : Symbols ∙
 Alternate : ∙e m p t y 
 Alternate : e ∙m p t y 
 Alternate : e m ∙p t y 
@@ -11,32 +7,32 @@ Alternate : e m p ∙t y
 Alternate : e m p t ∙y 
 Alternate : e m p t y ∙
 Alternates : ∙Alternate 
-Alternates : Alternate ∙
 Alternates : ∙Alternate SepE | SepE Alternates 
+Alternates : Alternate ∙
 Alternates : Alternate ∙SepE | SepE Alternates 
 Alternates : Alternate SepE ∙| SepE Alternates 
 Alternates : Alternate SepE | ∙SepE Alternates 
 Alternates : Alternate SepE | SepE ∙Alternates 
 Alternates : Alternate SepE | SepE Alternates ∙
 CharLiteral : ∙\' \\ anyof("nrt\\'\"") \' 
-CharLiteral : ∙\' any \' 
 CharLiteral : \' ∙\\ anyof("nrt\\'\"") \' 
-CharLiteral : \' ∙any \' 
 CharLiteral : \' \\ ∙anyof("nrt\\'\"") \' 
 CharLiteral : \' \\ anyof("nrt\\'\"") ∙\' 
+CharLiteral : ∙\' any \' 
+CharLiteral : \' ∙any \' 
 CharLiteral : \' any ∙\' 
 CharLiteral : \' any \' ∙
 CharLiteral : \' \\ anyof("nrt\\'\"") \' ∙
 EscapedChar : ∙" 
+EscapedChar : " ∙
 EscapedChar : ∙n 
+EscapedChar : n ∙
 EscapedChar : ∙r 
 EscapedChar : ∙t 
-EscapedChar : ∙\\ 
-EscapedChar : ∙\' 
-EscapedChar : " ∙
-EscapedChar : n ∙
 EscapedChar : r ∙
 EscapedChar : t ∙
+EscapedChar : ∙\\ 
+EscapedChar : ∙\' 
 EscapedChar : \\ ∙
 EscapedChar : \' ∙
 GoGLL : ∙SepE Package Sep Rules SepE 
@@ -45,26 +41,29 @@ GoGLL : SepE Package ∙Sep Rules SepE
 GoGLL : SepE Package Sep ∙Rules SepE 
 GoGLL : SepE Package Sep Rules ∙SepE 
 GoGLL : SepE Package Sep Rules SepE ∙
-Head : ∙StartSymbol 
-Head : StartSymbol ∙
+Head : ∙* NonTerminal 
+Head : * ∙NonTerminal 
 Head : ∙NonTerminal 
 Head : NonTerminal ∙
+Head : * NonTerminal ∙
 NTChar : ∙letter 
-NTChar : ∙number 
-NTChar : ∙anyof("!@#$%^&*-_+=") 
 NTChar : letter ∙
+NTChar : ∙number 
 NTChar : number ∙
+NTChar : ∙anyof("!@#$%^&*-_+=") 
 NTChar : anyof("!@#$%^&*-_+=") ∙
 NTChars : ∙NTChar 
 NTChars : NTChar ∙
 NTChars : ∙NTChar NTChars 
 NTChars : NTChar ∙NTChars 
 NTChars : NTChar NTChars ∙
-NonTerminal : ∙letter 
-NonTerminal : letter ∙
-NonTerminal : ∙letter NTChars 
-NonTerminal : letter ∙NTChars 
-NonTerminal : letter NTChars ∙
+NTID : ∙letter 
+NTID : ∙letter NTChars 
+NTID : letter ∙
+NTID : letter ∙NTChars 
+NTID : letter NTChars ∙
+NonTerminal : ∙NTID 
+NonTerminal : NTID ∙
 Package : ∙p a c k a g e Sep String 
 Package : p ∙a c k a g e Sep String 
 Package : p a ∙c k a g e Sep String 
@@ -84,8 +83,8 @@ Rule : Head SepE : SepE Alternates ∙SepE ;
 Rule : Head SepE : SepE Alternates SepE ∙; 
 Rule : Head SepE : SepE Alternates SepE ; ∙
 Rules : ∙Rule 
-Rules : ∙Rule SepE Rules 
 Rules : Rule ∙
+Rules : ∙Rule SepE Rules 
 Rules : Rule ∙SepE Rules 
 Rules : Rule SepE ∙Rules 
 Rules : Rule SepE Rules ∙
@@ -101,80 +100,82 @@ SepChar : anyof("\t\n\t") ∙
 SepE : ∙Sep 
 SepE : Sep ∙
 SepE : ∙
-StartSymbol : ∙* SepE NonTerminal 
-StartSymbol : * ∙SepE NonTerminal 
-StartSymbol : * SepE ∙NonTerminal 
-StartSymbol : * SepE NonTerminal ∙
 String : ∙\" StringChars \" 
 String : \" ∙StringChars \" 
 String : \" StringChars ∙\" 
 String : \" StringChars \" ∙
 StringChars : ∙not("\\\"") StringChars 
-StringChars : ∙\\ EscapedChar StringChars 
 StringChars : not("\\\"") ∙StringChars 
+StringChars : ∙\\ EscapedChar StringChars 
 StringChars : \\ ∙EscapedChar StringChars 
 StringChars : not("\\\"") StringChars ∙
 StringChars : \\ EscapedChar ∙StringChars 
-StringChars : \\ EscapedChar StringChars ∙
 StringChars : ∙
+StringChars : \\ EscapedChar StringChars ∙
 Symbol : ∙NonTerminal 
-Symbol : ∙Terminal 
 Symbol : NonTerminal ∙
+Symbol : ∙Terminal 
 Symbol : Terminal ∙
+Symbols : ∙Symbol Sep Symbols 
+Symbols : Symbol ∙Sep Symbols 
+Symbols : ∙Symbol 
+Symbols : Symbol ∙
+Symbols : Symbol Sep ∙Symbols 
+Symbols : Symbol Sep Symbols ∙
 Terminal : ∙a n y 
-Terminal : ∙a n y o f Sep String 
 Terminal : a ∙n y 
 Terminal : a n ∙y 
+Terminal : ∙a n y o f Sep String 
 Terminal : a ∙n y o f Sep String 
-Terminal : a n ∙y o f Sep String 
-Terminal : ∙s p a c e 
-Terminal : ∙l o w c a s e 
-Terminal : CharLiteral ∙
 Terminal : a n y ∙
+Terminal : a n ∙y o f Sep String 
 Terminal : a n y ∙o f Sep String 
-Terminal : a n y o ∙f Sep String 
-Terminal : n o t ∙Sep String 
-Terminal : a n y o f ∙Sep String 
-Terminal : l o w c a ∙s e 
-Terminal : a n y o f Sep ∙String 
 Terminal : ∙l e t t e r 
-Terminal : ∙n u m b e r 
-Terminal : ∙n o t Sep String 
 Terminal : l ∙e t t e r 
-Terminal : l e ∙t t e r 
-Terminal : l e t ∙t e r 
-Terminal : n ∙u m b e r 
-Terminal : s ∙p a c e 
+Terminal : u ∙p c a s e 
 Terminal : n ∙o t Sep String 
+Terminal : l e ∙t t e r 
+Terminal : n o ∙t Sep String 
+Terminal : l e t ∙t e r 
+Terminal : ∙l o w c a s e 
+Terminal : a n y o ∙f Sep String 
+Terminal : a n y o f ∙Sep String 
+Terminal : ∙n u m b e r 
+Terminal : ∙s p a c e 
+Terminal : n ∙u m b e r 
 Terminal : n u ∙m b e r 
+Terminal : s ∙p a c e 
+Terminal : ∙u p c a s e 
+Terminal : l e t t ∙e r 
 Terminal : s p ∙a c e 
 Terminal : n u m ∙b e r 
 Terminal : s p a ∙c e 
-Terminal : u ∙p c a s e 
-Terminal : n o ∙t Sep String 
-Terminal : l e t t ∙e r 
-Terminal : l e t t e ∙r 
+Terminal : u p c ∙a s e 
+Terminal : u p c a ∙s e 
+Terminal : u p c a s ∙e 
+Terminal : a n y o f Sep String ∙
+Terminal : u p c a s e ∙
+Terminal : l ∙o w c a s e 
+Terminal : l o ∙w c a s e 
+Terminal : ∙n o t Sep String 
+Terminal : ∙CharLiteral 
+Terminal : String ∙
+Terminal : u p ∙c a s e 
+Terminal : l o w ∙c a s e 
+Terminal : n o t ∙Sep String 
+Terminal : CharLiteral ∙
 Terminal : n u m b ∙e r 
 Terminal : s p a c ∙e 
-Terminal : n u m b e ∙r 
 Terminal : n o t Sep ∙String 
-Terminal : s p a c e ∙
-Terminal : a n y o f Sep String ∙
-Terminal : ∙u p c a s e 
-Terminal : u p ∙c a s e 
-Terminal : l e t t e r ∙
-Terminal : l ∙o w c a s e 
-Terminal : String ∙
-Terminal : l o ∙w c a s e 
-Terminal : u p c ∙a s e 
-Terminal : l o w ∙c a s e 
-Terminal : ∙CharLiteral 
-Terminal : ∙String 
-Terminal : n u m b e r ∙
-Terminal : u p c a ∙s e 
+Terminal : a n y o f Sep ∙String 
 Terminal : l o w c ∙a s e 
-Terminal : u p c a s ∙e 
-Terminal : u p c a s e ∙
-Terminal : l o w c a s ∙e 
+Terminal : l e t t e ∙r 
+Terminal : n u m b e ∙r 
+Terminal : s p a c e ∙
+Terminal : l o w c a ∙s e 
 Terminal : n o t Sep String ∙
+Terminal : l e t t e r ∙
+Terminal : n u m b e r ∙
+Terminal : l o w c a s ∙e 
 Terminal : l o w c a s e ∙
+Terminal : ∙String 
