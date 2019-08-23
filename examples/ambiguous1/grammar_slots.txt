@@ -1,0 +1,11 @@
+A : ∙letter 
+A : letter ∙
+B : ∙letter 
+B : letter ∙
+S : ∙A S 
+S : A ∙S 
+S : A S ∙
+S : ∙B S 
+S : B ∙S 
+S : B S ∙
+S : ∙

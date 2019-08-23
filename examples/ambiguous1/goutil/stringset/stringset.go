@@ -1,18 +1,6 @@
 package stringset
 
 import (
-	"gogll/goutil/ioutil"
-)
-
-func Gen(file string) {
-	if err := ioutil.WriteFile(file, []byte(src)); err != nil {
-		panic(err)
-	}
-}
-
-const src = `package stringset
-
-import (
 	"bytes"
 	"fmt"
 	"sort"
@@ -68,19 +56,6 @@ func (ss *StringSet) Equal(ss1 *StringSet) bool {
 	return true
 }
 
-// Join escaped joins the elements of ss into one string and escapes '"'.
-func (ss *StringSet) JoinEscaped() string {
-	s := new(strings.Builder)
-	for _, e := range ss.Elements() {
-		if e == "\"" {
-			s.WriteString("\\\"")
-		} else {
-			s.WriteString(e)
-		}
-	}
-	return s.String()
-}
-
 func (ss *StringSet) Len() int {
 	return len(ss.smap)
 }
@@ -104,4 +79,3 @@ func (ss *StringSet) String() string {
 	fmt.Fprint(w, "}")
 	return w.String()
 }
-`
