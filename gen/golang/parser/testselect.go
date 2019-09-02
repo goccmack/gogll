@@ -75,10 +75,10 @@ func (g *gen) getSlotTSData(s gslot.Label) *TSData {
 }
 
 func (g *gen) getSlotTSConditions(s gslot.Label) (data []*Condition) {
-	fmt.Printf("testselect.getSlotTSConditions(%s)\n", s)
+	// fmt.Printf("testselect.getSlotTSConditions(%s)\n", s)
 	ss := s.Symbols()[s.Pos:]
 	frst := g.ff.FirstOfString(ss)
-	fmt.Printf("  first: %s\n", frst)
+	// fmt.Printf("  first: %s\n", frst)
 	for _, sym := range frst.Elements() {
 		if sym != frstflw.Empty {
 			data = append(data, &Condition{Cond: getSymbolCondition(sym)})

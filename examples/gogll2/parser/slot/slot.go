@@ -99,68 +99,46 @@ func (s *Slot) String() string {
 
 const(
 	Alternate0R0 Label = iota
-	Alternate0R1
 	Alternate1R0
-	Alternate2R0
+	Alternate0R1
 	Alternate1R1
-	Alternate2R1
+	Alternate2R0
 	Alternate1R2
-	Alternate2R2
+	Alternate2R1
 	Alternate1R3
+	Alternate2R2
 	Alternate2R3
 	Alternate2R4
 	Alternate2R5
-	Alternate2R6
-	Alternate2R7
 	Alternates0R0
-	Alternates0R1
 	Alternates1R0
+	Alternates0R1
 	Alternates1R1
 	Alternates1R2
 	Alternates1R3
 	Alternates1R4
 	Alternates1R5
-	Alternates1R6
-	Alternates1R7
 	CharLiteral0R0
 	CharLiteral0R1
-	CharLiteral1R1
+	CharLiteral1R0
 	CharLiteral0R2
 	CharLiteral0R3
-	CharLiteral0R4
-	CharLiteral0R5
-	CharLiteral1R0
-	CharLiteral1R3
-	CharLiteral0R6
-	CharLiteral0R7
-	CharLiteral0R8
+	CharLiteral1R1
 	CharLiteral1R2
-	CharLiteral1R4
-	CharLiteral1R5
-	CharLiteral1R6
-	CharLiteral1R7
+	CharLiteral1R3
+	CharLiteral0R4
 	EscapedChar0R0
-	EscapedChar1R0
-	EscapedChar2R0
 	EscapedChar0R1
+	EscapedChar1R0
 	EscapedChar1R1
+	EscapedChar2R0
 	EscapedChar2R1
 	EscapedChar3R0
-	EscapedChar2R3
 	EscapedChar3R1
 	EscapedChar4R0
 	EscapedChar4R1
 	EscapedChar5R0
 	EscapedChar5R1
-	EscapedChar1R2
-	EscapedChar1R3
-	EscapedChar2R2
-	EscapedChar3R2
-	EscapedChar3R3
-	EscapedChar4R2
-	EscapedChar4R3
-	EscapedChar5R2
-	EscapedChar5R3
 	GoGLL0R0
 	GoGLL0R1
 	GoGLL0R2
@@ -168,13 +146,13 @@ const(
 	GoGLL0R4
 	GoGLL0R5
 	Head0R0
-	Head0R1
 	Head1R0
+	Head0R1
 	Head1R1
 	NTChar0R0
-	NTChar0R1
 	NTChar1R0
 	NTChar2R0
+	NTChar0R1
 	NTChar1R1
 	NTChar2R1
 	NTChars0R0
@@ -195,8 +173,6 @@ const(
 	Package0R7
 	Package0R8
 	Package0R9
-	Package0R10
-	Package0R11
 	Rule0R0
 	Rule0R1
 	Rule0R2
@@ -205,10 +181,6 @@ const(
 	Rule0R5
 	Rule0R6
 	Rule0R7
-	Rule0R8
-	Rule0R9
-	Rule0R10
-	Rule0R11
 	Rules0R0
 	Rules0R1
 	Rules1R0
@@ -216,13 +188,13 @@ const(
 	Rules1R2
 	Rules1R3
 	Sep0R0
-	Sep1R0
 	Sep0R1
+	Sep1R0
 	Sep1R1
 	Sep1R2
 	SepChar0R0
-	SepChar1R0
 	SepChar0R1
+	SepChar1R0
 	SepChar1R1
 	SepE0R0
 	SepE1R0
@@ -231,8 +203,6 @@ const(
 	StartSymbol0R1
 	StartSymbol0R2
 	StartSymbol0R3
-	StartSymbol0R4
-	StartSymbol0R5
 	String0R0
 	String0R1
 	String0R2
@@ -241,147 +211,109 @@ const(
 	StringChars1R0
 	StringChars0R1
 	Symbol0R0
-	Symbol1R0
 	Symbol0R1
+	Symbol1R0
 	Symbol1R1
 	Terminal0R0
+	Terminal3R0
 	Terminal0R1
 	Terminal1R0
 	Terminal1R1
 	Terminal2R0
 	Terminal2R1
+	Terminal3R1
+	Terminal4R0
+	Terminal4R1
 	Terminal0R2
 	Terminal1R2
-	Terminal2R2
-	Terminal0R3
-	Terminal1R3
-	Terminal2R3
-	Terminal0R4
-	Terminal0R5
-	Terminal1R4
-	Terminal2R4
-	Terminal1R5
-	Terminal1R6
-	Terminal2R5
-	Terminal2R6
-	Terminal1R7
-	Terminal2R7
-	Terminal1R8
-	Terminal4R0
-	Terminal5R1
-	Terminal4R2
-	Terminal3R3
-	Terminal3R4
-	Terminal4R4
-	Terminal4R5
-	Terminal6R1
-	Terminal3R7
-	Terminal6R3
-	Terminal7R0
-	Terminal4R6
-	Terminal5R6
-	Terminal4R7
-	Terminal2R8
-	Terminal3R0
-	Terminal3R1
-	Terminal4R1
 	Terminal5R0
-	Terminal6R0
-	Terminal3R2
-	Terminal5R2
-	Terminal6R2
-	Terminal3R5
+	Terminal4R4
 	Terminal5R4
-	Terminal3R6
-	Terminal3R8
-	Terminal4R3
-	Terminal5R3
-	Terminal5R5
+	Terminal6R0
+	Terminal6R3
 	Terminal6R5
-	Terminal7R2
-	Terminal7R5
-	Terminal8R0
-	Terminal1R9
-	Terminal8R1
-	Terminal9R0
-	Terminal5R7
-	Terminal7R1
-	Terminal7R3
-	Terminal7R4
+	Terminal2R6
+	Terminal3R6
 	Terminal6R6
 	Terminal6R7
-	Terminal7R6
-	Terminal5R8
-	Terminal6R8
-	Terminal6R9
+	Terminal7R0
+	Terminal0R3
+	Terminal1R6
+	Terminal2R2
+	Terminal2R3
+	Terminal3R4
+	Terminal9R0
+	Terminal5R1
+	Terminal6R1
+	Terminal7R1
 	Terminal9R1
+	Terminal4R2
+	Terminal4R3
+	Terminal5R2
+	Terminal1R5
+	Terminal2R4
+	Terminal2R5
+	Terminal3R2
+	Terminal3R5
+	Terminal1R7
+	Terminal6R2
+	Terminal4R5
+	Terminal5R5
+	Terminal5R6
+	Terminal8R1
+	Terminal7R2
+	Terminal8R0
+	Terminal1R3
+	Terminal3R3
+	Terminal1R4
+	Terminal5R3
 	Terminal6R4
+	Terminal7R3
+	Terminal7R4
 )
 
 var slots = map[Label]*Slot{ 
 	Alternate0R0:&Slot{"Alternate", 0, 0, []string{ `Symbol` }, Alternate0R0 },
-	Alternate0R1:&Slot{"Alternate", 0, 1, []string{ `Symbol` }, Alternate0R1 },
 	Alternate1R0:&Slot{"Alternate", 1, 0, []string{ `Symbol`,`Sep`,`Alternate` }, Alternate1R0 },
-	Alternate2R0:&Slot{"Alternate", 2, 0, []string{ `"`,`e`,`m`,`p`,`t`,`y`,`"` }, Alternate2R0 },
+	Alternate0R1:&Slot{"Alternate", 0, 1, []string{ `Symbol` }, Alternate0R1 },
 	Alternate1R1:&Slot{"Alternate", 1, 1, []string{ `Symbol`,`Sep`,`Alternate` }, Alternate1R1 },
-	Alternate2R1:&Slot{"Alternate", 2, 1, []string{ `"`,`e`,`m`,`p`,`t`,`y`,`"` }, Alternate2R1 },
+	Alternate2R0:&Slot{"Alternate", 2, 0, []string{ `e`,`m`,`p`,`t`,`y` }, Alternate2R0 },
 	Alternate1R2:&Slot{"Alternate", 1, 2, []string{ `Symbol`,`Sep`,`Alternate` }, Alternate1R2 },
-	Alternate2R2:&Slot{"Alternate", 2, 2, []string{ `"`,`e`,`m`,`p`,`t`,`y`,`"` }, Alternate2R2 },
+	Alternate2R1:&Slot{"Alternate", 2, 1, []string{ `e`,`m`,`p`,`t`,`y` }, Alternate2R1 },
 	Alternate1R3:&Slot{"Alternate", 1, 3, []string{ `Symbol`,`Sep`,`Alternate` }, Alternate1R3 },
-	Alternate2R3:&Slot{"Alternate", 2, 3, []string{ `"`,`e`,`m`,`p`,`t`,`y`,`"` }, Alternate2R3 },
-	Alternate2R4:&Slot{"Alternate", 2, 4, []string{ `"`,`e`,`m`,`p`,`t`,`y`,`"` }, Alternate2R4 },
-	Alternate2R5:&Slot{"Alternate", 2, 5, []string{ `"`,`e`,`m`,`p`,`t`,`y`,`"` }, Alternate2R5 },
-	Alternate2R6:&Slot{"Alternate", 2, 6, []string{ `"`,`e`,`m`,`p`,`t`,`y`,`"` }, Alternate2R6 },
-	Alternate2R7:&Slot{"Alternate", 2, 7, []string{ `"`,`e`,`m`,`p`,`t`,`y`,`"` }, Alternate2R7 },
+	Alternate2R2:&Slot{"Alternate", 2, 2, []string{ `e`,`m`,`p`,`t`,`y` }, Alternate2R2 },
+	Alternate2R3:&Slot{"Alternate", 2, 3, []string{ `e`,`m`,`p`,`t`,`y` }, Alternate2R3 },
+	Alternate2R4:&Slot{"Alternate", 2, 4, []string{ `e`,`m`,`p`,`t`,`y` }, Alternate2R4 },
+	Alternate2R5:&Slot{"Alternate", 2, 5, []string{ `e`,`m`,`p`,`t`,`y` }, Alternate2R5 },
 	Alternates0R0:&Slot{"Alternates", 0, 0, []string{ `Alternate` }, Alternates0R0 },
+	Alternates1R0:&Slot{"Alternates", 1, 0, []string{ `Alternate`,`SepE`,`|`,`SepE`,`Alternates` }, Alternates1R0 },
 	Alternates0R1:&Slot{"Alternates", 0, 1, []string{ `Alternate` }, Alternates0R1 },
-	Alternates1R0:&Slot{"Alternates", 1, 0, []string{ `Alternate`,`SepE`,`"`,`|`,`"`,`SepE`,`Alternates` }, Alternates1R0 },
-	Alternates1R1:&Slot{"Alternates", 1, 1, []string{ `Alternate`,`SepE`,`"`,`|`,`"`,`SepE`,`Alternates` }, Alternates1R1 },
-	Alternates1R2:&Slot{"Alternates", 1, 2, []string{ `Alternate`,`SepE`,`"`,`|`,`"`,`SepE`,`Alternates` }, Alternates1R2 },
-	Alternates1R3:&Slot{"Alternates", 1, 3, []string{ `Alternate`,`SepE`,`"`,`|`,`"`,`SepE`,`Alternates` }, Alternates1R3 },
-	Alternates1R4:&Slot{"Alternates", 1, 4, []string{ `Alternate`,`SepE`,`"`,`|`,`"`,`SepE`,`Alternates` }, Alternates1R4 },
-	Alternates1R5:&Slot{"Alternates", 1, 5, []string{ `Alternate`,`SepE`,`"`,`|`,`"`,`SepE`,`Alternates` }, Alternates1R5 },
-	Alternates1R6:&Slot{"Alternates", 1, 6, []string{ `Alternate`,`SepE`,`"`,`|`,`"`,`SepE`,`Alternates` }, Alternates1R6 },
-	Alternates1R7:&Slot{"Alternates", 1, 7, []string{ `Alternate`,`SepE`,`"`,`|`,`"`,`SepE`,`Alternates` }, Alternates1R7 },
-	CharLiteral0R0:&Slot{"CharLiteral", 0, 0, []string{ `"`,`\'`,`"`,`\\`,`EscapedChar`,`"`,`\'`,`"` }, CharLiteral0R0 },
-	CharLiteral0R1:&Slot{"CharLiteral", 0, 1, []string{ `"`,`\'`,`"`,`\\`,`EscapedChar`,`"`,`\'`,`"` }, CharLiteral0R1 },
-	CharLiteral1R1:&Slot{"CharLiteral", 1, 1, []string{ `"`,`\'`,`"`,`any`,`"`,`\'`,`"` }, CharLiteral1R1 },
-	CharLiteral0R2:&Slot{"CharLiteral", 0, 2, []string{ `"`,`\'`,`"`,`\\`,`EscapedChar`,`"`,`\'`,`"` }, CharLiteral0R2 },
-	CharLiteral0R3:&Slot{"CharLiteral", 0, 3, []string{ `"`,`\'`,`"`,`\\`,`EscapedChar`,`"`,`\'`,`"` }, CharLiteral0R3 },
-	CharLiteral0R4:&Slot{"CharLiteral", 0, 4, []string{ `"`,`\'`,`"`,`\\`,`EscapedChar`,`"`,`\'`,`"` }, CharLiteral0R4 },
-	CharLiteral0R5:&Slot{"CharLiteral", 0, 5, []string{ `"`,`\'`,`"`,`\\`,`EscapedChar`,`"`,`\'`,`"` }, CharLiteral0R5 },
-	CharLiteral1R0:&Slot{"CharLiteral", 1, 0, []string{ `"`,`\'`,`"`,`any`,`"`,`\'`,`"` }, CharLiteral1R0 },
-	CharLiteral1R3:&Slot{"CharLiteral", 1, 3, []string{ `"`,`\'`,`"`,`any`,`"`,`\'`,`"` }, CharLiteral1R3 },
-	CharLiteral0R6:&Slot{"CharLiteral", 0, 6, []string{ `"`,`\'`,`"`,`\\`,`EscapedChar`,`"`,`\'`,`"` }, CharLiteral0R6 },
-	CharLiteral0R7:&Slot{"CharLiteral", 0, 7, []string{ `"`,`\'`,`"`,`\\`,`EscapedChar`,`"`,`\'`,`"` }, CharLiteral0R7 },
-	CharLiteral0R8:&Slot{"CharLiteral", 0, 8, []string{ `"`,`\'`,`"`,`\\`,`EscapedChar`,`"`,`\'`,`"` }, CharLiteral0R8 },
-	CharLiteral1R2:&Slot{"CharLiteral", 1, 2, []string{ `"`,`\'`,`"`,`any`,`"`,`\'`,`"` }, CharLiteral1R2 },
-	CharLiteral1R4:&Slot{"CharLiteral", 1, 4, []string{ `"`,`\'`,`"`,`any`,`"`,`\'`,`"` }, CharLiteral1R4 },
-	CharLiteral1R5:&Slot{"CharLiteral", 1, 5, []string{ `"`,`\'`,`"`,`any`,`"`,`\'`,`"` }, CharLiteral1R5 },
-	CharLiteral1R6:&Slot{"CharLiteral", 1, 6, []string{ `"`,`\'`,`"`,`any`,`"`,`\'`,`"` }, CharLiteral1R6 },
-	CharLiteral1R7:&Slot{"CharLiteral", 1, 7, []string{ `"`,`\'`,`"`,`any`,`"`,`\'`,`"` }, CharLiteral1R7 },
+	Alternates1R1:&Slot{"Alternates", 1, 1, []string{ `Alternate`,`SepE`,`|`,`SepE`,`Alternates` }, Alternates1R1 },
+	Alternates1R2:&Slot{"Alternates", 1, 2, []string{ `Alternate`,`SepE`,`|`,`SepE`,`Alternates` }, Alternates1R2 },
+	Alternates1R3:&Slot{"Alternates", 1, 3, []string{ `Alternate`,`SepE`,`|`,`SepE`,`Alternates` }, Alternates1R3 },
+	Alternates1R4:&Slot{"Alternates", 1, 4, []string{ `Alternate`,`SepE`,`|`,`SepE`,`Alternates` }, Alternates1R4 },
+	Alternates1R5:&Slot{"Alternates", 1, 5, []string{ `Alternate`,`SepE`,`|`,`SepE`,`Alternates` }, Alternates1R5 },
+	CharLiteral0R0:&Slot{"CharLiteral", 0, 0, []string{ `\'`,`\\`,`EscapedChar`,`\'` }, CharLiteral0R0 },
+	CharLiteral0R1:&Slot{"CharLiteral", 0, 1, []string{ `\'`,`\\`,`EscapedChar`,`\'` }, CharLiteral0R1 },
+	CharLiteral1R0:&Slot{"CharLiteral", 1, 0, []string{ `\'`,`any`,`\'` }, CharLiteral1R0 },
+	CharLiteral0R2:&Slot{"CharLiteral", 0, 2, []string{ `\'`,`\\`,`EscapedChar`,`\'` }, CharLiteral0R2 },
+	CharLiteral0R3:&Slot{"CharLiteral", 0, 3, []string{ `\'`,`\\`,`EscapedChar`,`\'` }, CharLiteral0R3 },
+	CharLiteral1R1:&Slot{"CharLiteral", 1, 1, []string{ `\'`,`any`,`\'` }, CharLiteral1R1 },
+	CharLiteral1R2:&Slot{"CharLiteral", 1, 2, []string{ `\'`,`any`,`\'` }, CharLiteral1R2 },
+	CharLiteral1R3:&Slot{"CharLiteral", 1, 3, []string{ `\'`,`any`,`\'` }, CharLiteral1R3 },
+	CharLiteral0R4:&Slot{"CharLiteral", 0, 4, []string{ `\'`,`\\`,`EscapedChar`,`\'` }, CharLiteral0R4 },
 	EscapedChar0R0:&Slot{"EscapedChar", 0, 0, []string{ `"` }, EscapedChar0R0 },
-	EscapedChar1R0:&Slot{"EscapedChar", 1, 0, []string{ `"`,`n`,`"` }, EscapedChar1R0 },
-	EscapedChar2R0:&Slot{"EscapedChar", 2, 0, []string{ `"`,`r`,`"` }, EscapedChar2R0 },
 	EscapedChar0R1:&Slot{"EscapedChar", 0, 1, []string{ `"` }, EscapedChar0R1 },
-	EscapedChar1R1:&Slot{"EscapedChar", 1, 1, []string{ `"`,`n`,`"` }, EscapedChar1R1 },
-	EscapedChar2R1:&Slot{"EscapedChar", 2, 1, []string{ `"`,`r`,`"` }, EscapedChar2R1 },
-	EscapedChar3R0:&Slot{"EscapedChar", 3, 0, []string{ `"`,`t`,`"` }, EscapedChar3R0 },
-	EscapedChar2R3:&Slot{"EscapedChar", 2, 3, []string{ `"`,`r`,`"` }, EscapedChar2R3 },
-	EscapedChar3R1:&Slot{"EscapedChar", 3, 1, []string{ `"`,`t`,`"` }, EscapedChar3R1 },
-	EscapedChar4R0:&Slot{"EscapedChar", 4, 0, []string{ `"`,`\\`,`"` }, EscapedChar4R0 },
-	EscapedChar4R1:&Slot{"EscapedChar", 4, 1, []string{ `"`,`\\`,`"` }, EscapedChar4R1 },
-	EscapedChar5R0:&Slot{"EscapedChar", 5, 0, []string{ `"`,`\'`,`"` }, EscapedChar5R0 },
-	EscapedChar5R1:&Slot{"EscapedChar", 5, 1, []string{ `"`,`\'`,`"` }, EscapedChar5R1 },
-	EscapedChar1R2:&Slot{"EscapedChar", 1, 2, []string{ `"`,`n`,`"` }, EscapedChar1R2 },
-	EscapedChar1R3:&Slot{"EscapedChar", 1, 3, []string{ `"`,`n`,`"` }, EscapedChar1R3 },
-	EscapedChar2R2:&Slot{"EscapedChar", 2, 2, []string{ `"`,`r`,`"` }, EscapedChar2R2 },
-	EscapedChar3R2:&Slot{"EscapedChar", 3, 2, []string{ `"`,`t`,`"` }, EscapedChar3R2 },
-	EscapedChar3R3:&Slot{"EscapedChar", 3, 3, []string{ `"`,`t`,`"` }, EscapedChar3R3 },
-	EscapedChar4R2:&Slot{"EscapedChar", 4, 2, []string{ `"`,`\\`,`"` }, EscapedChar4R2 },
-	EscapedChar4R3:&Slot{"EscapedChar", 4, 3, []string{ `"`,`\\`,`"` }, EscapedChar4R3 },
-	EscapedChar5R2:&Slot{"EscapedChar", 5, 2, []string{ `"`,`\'`,`"` }, EscapedChar5R2 },
-	EscapedChar5R3:&Slot{"EscapedChar", 5, 3, []string{ `"`,`\'`,`"` }, EscapedChar5R3 },
+	EscapedChar1R0:&Slot{"EscapedChar", 1, 0, []string{ `n` }, EscapedChar1R0 },
+	EscapedChar1R1:&Slot{"EscapedChar", 1, 1, []string{ `n` }, EscapedChar1R1 },
+	EscapedChar2R0:&Slot{"EscapedChar", 2, 0, []string{ `r` }, EscapedChar2R0 },
+	EscapedChar2R1:&Slot{"EscapedChar", 2, 1, []string{ `r` }, EscapedChar2R1 },
+	EscapedChar3R0:&Slot{"EscapedChar", 3, 0, []string{ `t` }, EscapedChar3R0 },
+	EscapedChar3R1:&Slot{"EscapedChar", 3, 1, []string{ `t` }, EscapedChar3R1 },
+	EscapedChar4R0:&Slot{"EscapedChar", 4, 0, []string{ `\\` }, EscapedChar4R0 },
+	EscapedChar4R1:&Slot{"EscapedChar", 4, 1, []string{ `\\` }, EscapedChar4R1 },
+	EscapedChar5R0:&Slot{"EscapedChar", 5, 0, []string{ `\'` }, EscapedChar5R0 },
+	EscapedChar5R1:&Slot{"EscapedChar", 5, 1, []string{ `\'` }, EscapedChar5R1 },
 	GoGLL0R0:&Slot{"GoGLL", 0, 0, []string{ `SepE`,`Package`,`Sep`,`Rules`,`SepE` }, GoGLL0R0 },
 	GoGLL0R1:&Slot{"GoGLL", 0, 1, []string{ `SepE`,`Package`,`Sep`,`Rules`,`SepE` }, GoGLL0R1 },
 	GoGLL0R2:&Slot{"GoGLL", 0, 2, []string{ `SepE`,`Package`,`Sep`,`Rules`,`SepE` }, GoGLL0R2 },
@@ -389,13 +321,13 @@ var slots = map[Label]*Slot{
 	GoGLL0R4:&Slot{"GoGLL", 0, 4, []string{ `SepE`,`Package`,`Sep`,`Rules`,`SepE` }, GoGLL0R4 },
 	GoGLL0R5:&Slot{"GoGLL", 0, 5, []string{ `SepE`,`Package`,`Sep`,`Rules`,`SepE` }, GoGLL0R5 },
 	Head0R0:&Slot{"Head", 0, 0, []string{ `StartSymbol` }, Head0R0 },
-	Head0R1:&Slot{"Head", 0, 1, []string{ `StartSymbol` }, Head0R1 },
 	Head1R0:&Slot{"Head", 1, 0, []string{ `NonTerminal` }, Head1R0 },
+	Head0R1:&Slot{"Head", 0, 1, []string{ `StartSymbol` }, Head0R1 },
 	Head1R1:&Slot{"Head", 1, 1, []string{ `NonTerminal` }, Head1R1 },
 	NTChar0R0:&Slot{"NTChar", 0, 0, []string{ `letter` }, NTChar0R0 },
-	NTChar0R1:&Slot{"NTChar", 0, 1, []string{ `letter` }, NTChar0R1 },
 	NTChar1R0:&Slot{"NTChar", 1, 0, []string{ `number` }, NTChar1R0 },
 	NTChar2R0:&Slot{"NTChar", 2, 0, []string{ `anyof(!\"#$%&*+-=@^_)` }, NTChar2R0 },
+	NTChar0R1:&Slot{"NTChar", 0, 1, []string{ `letter` }, NTChar0R1 },
 	NTChar1R1:&Slot{"NTChar", 1, 1, []string{ `number` }, NTChar1R1 },
 	NTChar2R1:&Slot{"NTChar", 2, 1, []string{ `anyof(!\"#$%&*+-=@^_)` }, NTChar2R1 },
 	NTChars0R0:&Slot{"NTChars", 0, 0, []string{ `NTChar` }, NTChars0R0 },
@@ -406,30 +338,24 @@ var slots = map[Label]*Slot{
 	NonTerminal0R0:&Slot{"NonTerminal", 0, 0, []string{ `letter`,`NTChars` }, NonTerminal0R0 },
 	NonTerminal0R1:&Slot{"NonTerminal", 0, 1, []string{ `letter`,`NTChars` }, NonTerminal0R1 },
 	NonTerminal0R2:&Slot{"NonTerminal", 0, 2, []string{ `letter`,`NTChars` }, NonTerminal0R2 },
-	Package0R0:&Slot{"Package", 0, 0, []string{ `"`,`p`,`a`,`c`,`k`,`a`,`g`,`e`,`"`,`Sep`,`String` }, Package0R0 },
-	Package0R1:&Slot{"Package", 0, 1, []string{ `"`,`p`,`a`,`c`,`k`,`a`,`g`,`e`,`"`,`Sep`,`String` }, Package0R1 },
-	Package0R2:&Slot{"Package", 0, 2, []string{ `"`,`p`,`a`,`c`,`k`,`a`,`g`,`e`,`"`,`Sep`,`String` }, Package0R2 },
-	Package0R3:&Slot{"Package", 0, 3, []string{ `"`,`p`,`a`,`c`,`k`,`a`,`g`,`e`,`"`,`Sep`,`String` }, Package0R3 },
-	Package0R4:&Slot{"Package", 0, 4, []string{ `"`,`p`,`a`,`c`,`k`,`a`,`g`,`e`,`"`,`Sep`,`String` }, Package0R4 },
-	Package0R5:&Slot{"Package", 0, 5, []string{ `"`,`p`,`a`,`c`,`k`,`a`,`g`,`e`,`"`,`Sep`,`String` }, Package0R5 },
-	Package0R6:&Slot{"Package", 0, 6, []string{ `"`,`p`,`a`,`c`,`k`,`a`,`g`,`e`,`"`,`Sep`,`String` }, Package0R6 },
-	Package0R7:&Slot{"Package", 0, 7, []string{ `"`,`p`,`a`,`c`,`k`,`a`,`g`,`e`,`"`,`Sep`,`String` }, Package0R7 },
-	Package0R8:&Slot{"Package", 0, 8, []string{ `"`,`p`,`a`,`c`,`k`,`a`,`g`,`e`,`"`,`Sep`,`String` }, Package0R8 },
-	Package0R9:&Slot{"Package", 0, 9, []string{ `"`,`p`,`a`,`c`,`k`,`a`,`g`,`e`,`"`,`Sep`,`String` }, Package0R9 },
-	Package0R10:&Slot{"Package", 0, 10, []string{ `"`,`p`,`a`,`c`,`k`,`a`,`g`,`e`,`"`,`Sep`,`String` }, Package0R10 },
-	Package0R11:&Slot{"Package", 0, 11, []string{ `"`,`p`,`a`,`c`,`k`,`a`,`g`,`e`,`"`,`Sep`,`String` }, Package0R11 },
-	Rule0R0:&Slot{"Rule", 0, 0, []string{ `Head`,`SepE`,`"`,`:`,`"`,`SepE`,`Alternates`,`SepE`,`"`,`;`,`"` }, Rule0R0 },
-	Rule0R1:&Slot{"Rule", 0, 1, []string{ `Head`,`SepE`,`"`,`:`,`"`,`SepE`,`Alternates`,`SepE`,`"`,`;`,`"` }, Rule0R1 },
-	Rule0R2:&Slot{"Rule", 0, 2, []string{ `Head`,`SepE`,`"`,`:`,`"`,`SepE`,`Alternates`,`SepE`,`"`,`;`,`"` }, Rule0R2 },
-	Rule0R3:&Slot{"Rule", 0, 3, []string{ `Head`,`SepE`,`"`,`:`,`"`,`SepE`,`Alternates`,`SepE`,`"`,`;`,`"` }, Rule0R3 },
-	Rule0R4:&Slot{"Rule", 0, 4, []string{ `Head`,`SepE`,`"`,`:`,`"`,`SepE`,`Alternates`,`SepE`,`"`,`;`,`"` }, Rule0R4 },
-	Rule0R5:&Slot{"Rule", 0, 5, []string{ `Head`,`SepE`,`"`,`:`,`"`,`SepE`,`Alternates`,`SepE`,`"`,`;`,`"` }, Rule0R5 },
-	Rule0R6:&Slot{"Rule", 0, 6, []string{ `Head`,`SepE`,`"`,`:`,`"`,`SepE`,`Alternates`,`SepE`,`"`,`;`,`"` }, Rule0R6 },
-	Rule0R7:&Slot{"Rule", 0, 7, []string{ `Head`,`SepE`,`"`,`:`,`"`,`SepE`,`Alternates`,`SepE`,`"`,`;`,`"` }, Rule0R7 },
-	Rule0R8:&Slot{"Rule", 0, 8, []string{ `Head`,`SepE`,`"`,`:`,`"`,`SepE`,`Alternates`,`SepE`,`"`,`;`,`"` }, Rule0R8 },
-	Rule0R9:&Slot{"Rule", 0, 9, []string{ `Head`,`SepE`,`"`,`:`,`"`,`SepE`,`Alternates`,`SepE`,`"`,`;`,`"` }, Rule0R9 },
-	Rule0R10:&Slot{"Rule", 0, 10, []string{ `Head`,`SepE`,`"`,`:`,`"`,`SepE`,`Alternates`,`SepE`,`"`,`;`,`"` }, Rule0R10 },
-	Rule0R11:&Slot{"Rule", 0, 11, []string{ `Head`,`SepE`,`"`,`:`,`"`,`SepE`,`Alternates`,`SepE`,`"`,`;`,`"` }, Rule0R11 },
+	Package0R0:&Slot{"Package", 0, 0, []string{ `p`,`a`,`c`,`k`,`a`,`g`,`e`,`Sep`,`String` }, Package0R0 },
+	Package0R1:&Slot{"Package", 0, 1, []string{ `p`,`a`,`c`,`k`,`a`,`g`,`e`,`Sep`,`String` }, Package0R1 },
+	Package0R2:&Slot{"Package", 0, 2, []string{ `p`,`a`,`c`,`k`,`a`,`g`,`e`,`Sep`,`String` }, Package0R2 },
+	Package0R3:&Slot{"Package", 0, 3, []string{ `p`,`a`,`c`,`k`,`a`,`g`,`e`,`Sep`,`String` }, Package0R3 },
+	Package0R4:&Slot{"Package", 0, 4, []string{ `p`,`a`,`c`,`k`,`a`,`g`,`e`,`Sep`,`String` }, Package0R4 },
+	Package0R5:&Slot{"Package", 0, 5, []string{ `p`,`a`,`c`,`k`,`a`,`g`,`e`,`Sep`,`String` }, Package0R5 },
+	Package0R6:&Slot{"Package", 0, 6, []string{ `p`,`a`,`c`,`k`,`a`,`g`,`e`,`Sep`,`String` }, Package0R6 },
+	Package0R7:&Slot{"Package", 0, 7, []string{ `p`,`a`,`c`,`k`,`a`,`g`,`e`,`Sep`,`String` }, Package0R7 },
+	Package0R8:&Slot{"Package", 0, 8, []string{ `p`,`a`,`c`,`k`,`a`,`g`,`e`,`Sep`,`String` }, Package0R8 },
+	Package0R9:&Slot{"Package", 0, 9, []string{ `p`,`a`,`c`,`k`,`a`,`g`,`e`,`Sep`,`String` }, Package0R9 },
+	Rule0R0:&Slot{"Rule", 0, 0, []string{ `Head`,`SepE`,`:`,`SepE`,`Alternates`,`SepE`,`;` }, Rule0R0 },
+	Rule0R1:&Slot{"Rule", 0, 1, []string{ `Head`,`SepE`,`:`,`SepE`,`Alternates`,`SepE`,`;` }, Rule0R1 },
+	Rule0R2:&Slot{"Rule", 0, 2, []string{ `Head`,`SepE`,`:`,`SepE`,`Alternates`,`SepE`,`;` }, Rule0R2 },
+	Rule0R3:&Slot{"Rule", 0, 3, []string{ `Head`,`SepE`,`:`,`SepE`,`Alternates`,`SepE`,`;` }, Rule0R3 },
+	Rule0R4:&Slot{"Rule", 0, 4, []string{ `Head`,`SepE`,`:`,`SepE`,`Alternates`,`SepE`,`;` }, Rule0R4 },
+	Rule0R5:&Slot{"Rule", 0, 5, []string{ `Head`,`SepE`,`:`,`SepE`,`Alternates`,`SepE`,`;` }, Rule0R5 },
+	Rule0R6:&Slot{"Rule", 0, 6, []string{ `Head`,`SepE`,`:`,`SepE`,`Alternates`,`SepE`,`;` }, Rule0R6 },
+	Rule0R7:&Slot{"Rule", 0, 7, []string{ `Head`,`SepE`,`:`,`SepE`,`Alternates`,`SepE`,`;` }, Rule0R7 },
 	Rules0R0:&Slot{"Rules", 0, 0, []string{ `Rule` }, Rules0R0 },
 	Rules0R1:&Slot{"Rules", 0, 1, []string{ `Rule` }, Rules0R1 },
 	Rules1R0:&Slot{"Rules", 1, 0, []string{ `Rule`,`SepE`,`Rules` }, Rules1R0 },
@@ -437,23 +363,21 @@ var slots = map[Label]*Slot{
 	Rules1R2:&Slot{"Rules", 1, 2, []string{ `Rule`,`SepE`,`Rules` }, Rules1R2 },
 	Rules1R3:&Slot{"Rules", 1, 3, []string{ `Rule`,`SepE`,`Rules` }, Rules1R3 },
 	Sep0R0:&Slot{"Sep", 0, 0, []string{ `SepChar` }, Sep0R0 },
-	Sep1R0:&Slot{"Sep", 1, 0, []string{ `SepChar`,`Sep` }, Sep1R0 },
 	Sep0R1:&Slot{"Sep", 0, 1, []string{ `SepChar` }, Sep0R1 },
+	Sep1R0:&Slot{"Sep", 1, 0, []string{ `SepChar`,`Sep` }, Sep1R0 },
 	Sep1R1:&Slot{"Sep", 1, 1, []string{ `SepChar`,`Sep` }, Sep1R1 },
 	Sep1R2:&Slot{"Sep", 1, 2, []string{ `SepChar`,`Sep` }, Sep1R2 },
 	SepChar0R0:&Slot{"SepChar", 0, 0, []string{ `space` }, SepChar0R0 },
-	SepChar1R0:&Slot{"SepChar", 1, 0, []string{ `anyof(\"\n\t)` }, SepChar1R0 },
 	SepChar0R1:&Slot{"SepChar", 0, 1, []string{ `space` }, SepChar0R1 },
+	SepChar1R0:&Slot{"SepChar", 1, 0, []string{ `anyof(\"\n\t)` }, SepChar1R0 },
 	SepChar1R1:&Slot{"SepChar", 1, 1, []string{ `anyof(\"\n\t)` }, SepChar1R1 },
 	SepE0R0:&Slot{"SepE", 0, 0, []string{ `Sep` }, SepE0R0 },
 	SepE1R0:&Slot{"SepE", 1, 0, []string{  }, SepE1R0 },
 	SepE0R1:&Slot{"SepE", 0, 1, []string{ `Sep` }, SepE0R1 },
-	StartSymbol0R0:&Slot{"StartSymbol", 0, 0, []string{ `"`,`*`,`"`,`SepE`,`NonTerminal` }, StartSymbol0R0 },
-	StartSymbol0R1:&Slot{"StartSymbol", 0, 1, []string{ `"`,`*`,`"`,`SepE`,`NonTerminal` }, StartSymbol0R1 },
-	StartSymbol0R2:&Slot{"StartSymbol", 0, 2, []string{ `"`,`*`,`"`,`SepE`,`NonTerminal` }, StartSymbol0R2 },
-	StartSymbol0R3:&Slot{"StartSymbol", 0, 3, []string{ `"`,`*`,`"`,`SepE`,`NonTerminal` }, StartSymbol0R3 },
-	StartSymbol0R4:&Slot{"StartSymbol", 0, 4, []string{ `"`,`*`,`"`,`SepE`,`NonTerminal` }, StartSymbol0R4 },
-	StartSymbol0R5:&Slot{"StartSymbol", 0, 5, []string{ `"`,`*`,`"`,`SepE`,`NonTerminal` }, StartSymbol0R5 },
+	StartSymbol0R0:&Slot{"StartSymbol", 0, 0, []string{ `*`,`SepE`,`NonTerminal` }, StartSymbol0R0 },
+	StartSymbol0R1:&Slot{"StartSymbol", 0, 1, []string{ `*`,`SepE`,`NonTerminal` }, StartSymbol0R1 },
+	StartSymbol0R2:&Slot{"StartSymbol", 0, 2, []string{ `*`,`SepE`,`NonTerminal` }, StartSymbol0R2 },
+	StartSymbol0R3:&Slot{"StartSymbol", 0, 3, []string{ `*`,`SepE`,`NonTerminal` }, StartSymbol0R3 },
 	String0R0:&Slot{"String", 0, 0, []string{ `"`,`StringChars`,`"` }, String0R0 },
 	String0R1:&Slot{"String", 0, 1, []string{ `"`,`StringChars`,`"` }, String0R1 },
 	String0R2:&Slot{"String", 0, 2, []string{ `"`,`StringChars`,`"` }, String0R2 },
@@ -462,147 +386,109 @@ var slots = map[Label]*Slot{
 	StringChars1R0:&Slot{"StringChars", 1, 0, []string{  }, StringChars1R0 },
 	StringChars0R1:&Slot{"StringChars", 0, 1, []string{ `not(\"\")` }, StringChars0R1 },
 	Symbol0R0:&Slot{"Symbol", 0, 0, []string{ `NonTerminal` }, Symbol0R0 },
-	Symbol1R0:&Slot{"Symbol", 1, 0, []string{ `Terminal` }, Symbol1R0 },
 	Symbol0R1:&Slot{"Symbol", 0, 1, []string{ `NonTerminal` }, Symbol0R1 },
+	Symbol1R0:&Slot{"Symbol", 1, 0, []string{ `Terminal` }, Symbol1R0 },
 	Symbol1R1:&Slot{"Symbol", 1, 1, []string{ `Terminal` }, Symbol1R1 },
-	Terminal0R0:&Slot{"Terminal", 0, 0, []string{ `"`,`a`,`n`,`y`,`"` }, Terminal0R0 },
-	Terminal0R1:&Slot{"Terminal", 0, 1, []string{ `"`,`a`,`n`,`y`,`"` }, Terminal0R1 },
-	Terminal1R0:&Slot{"Terminal", 1, 0, []string{ `"`,`a`,`n`,`y`,`o`,`f`,`"`,`Sep`,`String` }, Terminal1R0 },
-	Terminal1R1:&Slot{"Terminal", 1, 1, []string{ `"`,`a`,`n`,`y`,`o`,`f`,`"`,`Sep`,`String` }, Terminal1R1 },
-	Terminal2R0:&Slot{"Terminal", 2, 0, []string{ `"`,`l`,`e`,`t`,`t`,`e`,`r`,`"` }, Terminal2R0 },
-	Terminal2R1:&Slot{"Terminal", 2, 1, []string{ `"`,`l`,`e`,`t`,`t`,`e`,`r`,`"` }, Terminal2R1 },
-	Terminal0R2:&Slot{"Terminal", 0, 2, []string{ `"`,`a`,`n`,`y`,`"` }, Terminal0R2 },
-	Terminal1R2:&Slot{"Terminal", 1, 2, []string{ `"`,`a`,`n`,`y`,`o`,`f`,`"`,`Sep`,`String` }, Terminal1R2 },
-	Terminal2R2:&Slot{"Terminal", 2, 2, []string{ `"`,`l`,`e`,`t`,`t`,`e`,`r`,`"` }, Terminal2R2 },
-	Terminal0R3:&Slot{"Terminal", 0, 3, []string{ `"`,`a`,`n`,`y`,`"` }, Terminal0R3 },
-	Terminal1R3:&Slot{"Terminal", 1, 3, []string{ `"`,`a`,`n`,`y`,`o`,`f`,`"`,`Sep`,`String` }, Terminal1R3 },
-	Terminal2R3:&Slot{"Terminal", 2, 3, []string{ `"`,`l`,`e`,`t`,`t`,`e`,`r`,`"` }, Terminal2R3 },
-	Terminal0R4:&Slot{"Terminal", 0, 4, []string{ `"`,`a`,`n`,`y`,`"` }, Terminal0R4 },
-	Terminal0R5:&Slot{"Terminal", 0, 5, []string{ `"`,`a`,`n`,`y`,`"` }, Terminal0R5 },
-	Terminal1R4:&Slot{"Terminal", 1, 4, []string{ `"`,`a`,`n`,`y`,`o`,`f`,`"`,`Sep`,`String` }, Terminal1R4 },
-	Terminal2R4:&Slot{"Terminal", 2, 4, []string{ `"`,`l`,`e`,`t`,`t`,`e`,`r`,`"` }, Terminal2R4 },
-	Terminal1R5:&Slot{"Terminal", 1, 5, []string{ `"`,`a`,`n`,`y`,`o`,`f`,`"`,`Sep`,`String` }, Terminal1R5 },
-	Terminal1R6:&Slot{"Terminal", 1, 6, []string{ `"`,`a`,`n`,`y`,`o`,`f`,`"`,`Sep`,`String` }, Terminal1R6 },
-	Terminal2R5:&Slot{"Terminal", 2, 5, []string{ `"`,`l`,`e`,`t`,`t`,`e`,`r`,`"` }, Terminal2R5 },
-	Terminal2R6:&Slot{"Terminal", 2, 6, []string{ `"`,`l`,`e`,`t`,`t`,`e`,`r`,`"` }, Terminal2R6 },
-	Terminal1R7:&Slot{"Terminal", 1, 7, []string{ `"`,`a`,`n`,`y`,`o`,`f`,`"`,`Sep`,`String` }, Terminal1R7 },
-	Terminal2R7:&Slot{"Terminal", 2, 7, []string{ `"`,`l`,`e`,`t`,`t`,`e`,`r`,`"` }, Terminal2R7 },
-	Terminal1R8:&Slot{"Terminal", 1, 8, []string{ `"`,`a`,`n`,`y`,`o`,`f`,`"`,`Sep`,`String` }, Terminal1R8 },
-	Terminal4R0:&Slot{"Terminal", 4, 0, []string{ `"`,`s`,`p`,`a`,`c`,`e`,`"` }, Terminal4R0 },
-	Terminal5R1:&Slot{"Terminal", 5, 1, []string{ `"`,`u`,`p`,`c`,`a`,`s`,`e`,`"` }, Terminal5R1 },
-	Terminal4R2:&Slot{"Terminal", 4, 2, []string{ `"`,`s`,`p`,`a`,`c`,`e`,`"` }, Terminal4R2 },
-	Terminal3R3:&Slot{"Terminal", 3, 3, []string{ `"`,`n`,`u`,`m`,`b`,`e`,`r`,`"` }, Terminal3R3 },
-	Terminal3R4:&Slot{"Terminal", 3, 4, []string{ `"`,`n`,`u`,`m`,`b`,`e`,`r`,`"` }, Terminal3R4 },
-	Terminal4R4:&Slot{"Terminal", 4, 4, []string{ `"`,`s`,`p`,`a`,`c`,`e`,`"` }, Terminal4R4 },
-	Terminal4R5:&Slot{"Terminal", 4, 5, []string{ `"`,`s`,`p`,`a`,`c`,`e`,`"` }, Terminal4R5 },
-	Terminal6R1:&Slot{"Terminal", 6, 1, []string{ `"`,`l`,`o`,`w`,`c`,`a`,`s`,`e`,`"` }, Terminal6R1 },
-	Terminal3R7:&Slot{"Terminal", 3, 7, []string{ `"`,`n`,`u`,`m`,`b`,`e`,`r`,`"` }, Terminal3R7 },
-	Terminal6R3:&Slot{"Terminal", 6, 3, []string{ `"`,`l`,`o`,`w`,`c`,`a`,`s`,`e`,`"` }, Terminal6R3 },
-	Terminal7R0:&Slot{"Terminal", 7, 0, []string{ `"`,`n`,`o`,`t`,`"`,`String` }, Terminal7R0 },
-	Terminal4R6:&Slot{"Terminal", 4, 6, []string{ `"`,`s`,`p`,`a`,`c`,`e`,`"` }, Terminal4R6 },
-	Terminal5R6:&Slot{"Terminal", 5, 6, []string{ `"`,`u`,`p`,`c`,`a`,`s`,`e`,`"` }, Terminal5R6 },
-	Terminal4R7:&Slot{"Terminal", 4, 7, []string{ `"`,`s`,`p`,`a`,`c`,`e`,`"` }, Terminal4R7 },
-	Terminal2R8:&Slot{"Terminal", 2, 8, []string{ `"`,`l`,`e`,`t`,`t`,`e`,`r`,`"` }, Terminal2R8 },
-	Terminal3R0:&Slot{"Terminal", 3, 0, []string{ `"`,`n`,`u`,`m`,`b`,`e`,`r`,`"` }, Terminal3R0 },
-	Terminal3R1:&Slot{"Terminal", 3, 1, []string{ `"`,`n`,`u`,`m`,`b`,`e`,`r`,`"` }, Terminal3R1 },
-	Terminal4R1:&Slot{"Terminal", 4, 1, []string{ `"`,`s`,`p`,`a`,`c`,`e`,`"` }, Terminal4R1 },
-	Terminal5R0:&Slot{"Terminal", 5, 0, []string{ `"`,`u`,`p`,`c`,`a`,`s`,`e`,`"` }, Terminal5R0 },
-	Terminal6R0:&Slot{"Terminal", 6, 0, []string{ `"`,`l`,`o`,`w`,`c`,`a`,`s`,`e`,`"` }, Terminal6R0 },
-	Terminal3R2:&Slot{"Terminal", 3, 2, []string{ `"`,`n`,`u`,`m`,`b`,`e`,`r`,`"` }, Terminal3R2 },
-	Terminal5R2:&Slot{"Terminal", 5, 2, []string{ `"`,`u`,`p`,`c`,`a`,`s`,`e`,`"` }, Terminal5R2 },
-	Terminal6R2:&Slot{"Terminal", 6, 2, []string{ `"`,`l`,`o`,`w`,`c`,`a`,`s`,`e`,`"` }, Terminal6R2 },
-	Terminal3R5:&Slot{"Terminal", 3, 5, []string{ `"`,`n`,`u`,`m`,`b`,`e`,`r`,`"` }, Terminal3R5 },
-	Terminal5R4:&Slot{"Terminal", 5, 4, []string{ `"`,`u`,`p`,`c`,`a`,`s`,`e`,`"` }, Terminal5R4 },
-	Terminal3R6:&Slot{"Terminal", 3, 6, []string{ `"`,`n`,`u`,`m`,`b`,`e`,`r`,`"` }, Terminal3R6 },
-	Terminal3R8:&Slot{"Terminal", 3, 8, []string{ `"`,`n`,`u`,`m`,`b`,`e`,`r`,`"` }, Terminal3R8 },
-	Terminal4R3:&Slot{"Terminal", 4, 3, []string{ `"`,`s`,`p`,`a`,`c`,`e`,`"` }, Terminal4R3 },
-	Terminal5R3:&Slot{"Terminal", 5, 3, []string{ `"`,`u`,`p`,`c`,`a`,`s`,`e`,`"` }, Terminal5R3 },
-	Terminal5R5:&Slot{"Terminal", 5, 5, []string{ `"`,`u`,`p`,`c`,`a`,`s`,`e`,`"` }, Terminal5R5 },
-	Terminal6R5:&Slot{"Terminal", 6, 5, []string{ `"`,`l`,`o`,`w`,`c`,`a`,`s`,`e`,`"` }, Terminal6R5 },
-	Terminal7R2:&Slot{"Terminal", 7, 2, []string{ `"`,`n`,`o`,`t`,`"`,`String` }, Terminal7R2 },
-	Terminal7R5:&Slot{"Terminal", 7, 5, []string{ `"`,`n`,`o`,`t`,`"`,`String` }, Terminal7R5 },
-	Terminal8R0:&Slot{"Terminal", 8, 0, []string{ `CharLiteral` }, Terminal8R0 },
-	Terminal1R9:&Slot{"Terminal", 1, 9, []string{ `"`,`a`,`n`,`y`,`o`,`f`,`"`,`Sep`,`String` }, Terminal1R9 },
-	Terminal8R1:&Slot{"Terminal", 8, 1, []string{ `CharLiteral` }, Terminal8R1 },
+	Terminal0R0:&Slot{"Terminal", 0, 0, []string{ `a`,`n`,`y` }, Terminal0R0 },
+	Terminal3R0:&Slot{"Terminal", 3, 0, []string{ `n`,`u`,`m`,`b`,`e`,`r` }, Terminal3R0 },
+	Terminal0R1:&Slot{"Terminal", 0, 1, []string{ `a`,`n`,`y` }, Terminal0R1 },
+	Terminal1R0:&Slot{"Terminal", 1, 0, []string{ `a`,`n`,`y`,`o`,`f`,`Sep`,`String` }, Terminal1R0 },
+	Terminal1R1:&Slot{"Terminal", 1, 1, []string{ `a`,`n`,`y`,`o`,`f`,`Sep`,`String` }, Terminal1R1 },
+	Terminal2R0:&Slot{"Terminal", 2, 0, []string{ `l`,`e`,`t`,`t`,`e`,`r` }, Terminal2R0 },
+	Terminal2R1:&Slot{"Terminal", 2, 1, []string{ `l`,`e`,`t`,`t`,`e`,`r` }, Terminal2R1 },
+	Terminal3R1:&Slot{"Terminal", 3, 1, []string{ `n`,`u`,`m`,`b`,`e`,`r` }, Terminal3R1 },
+	Terminal4R0:&Slot{"Terminal", 4, 0, []string{ `s`,`p`,`a`,`c`,`e` }, Terminal4R0 },
+	Terminal4R1:&Slot{"Terminal", 4, 1, []string{ `s`,`p`,`a`,`c`,`e` }, Terminal4R1 },
+	Terminal0R2:&Slot{"Terminal", 0, 2, []string{ `a`,`n`,`y` }, Terminal0R2 },
+	Terminal1R2:&Slot{"Terminal", 1, 2, []string{ `a`,`n`,`y`,`o`,`f`,`Sep`,`String` }, Terminal1R2 },
+	Terminal5R0:&Slot{"Terminal", 5, 0, []string{ `u`,`p`,`c`,`a`,`s`,`e` }, Terminal5R0 },
+	Terminal4R4:&Slot{"Terminal", 4, 4, []string{ `s`,`p`,`a`,`c`,`e` }, Terminal4R4 },
+	Terminal5R4:&Slot{"Terminal", 5, 4, []string{ `u`,`p`,`c`,`a`,`s`,`e` }, Terminal5R4 },
+	Terminal6R0:&Slot{"Terminal", 6, 0, []string{ `l`,`o`,`w`,`c`,`a`,`s`,`e` }, Terminal6R0 },
+	Terminal6R3:&Slot{"Terminal", 6, 3, []string{ `l`,`o`,`w`,`c`,`a`,`s`,`e` }, Terminal6R3 },
+	Terminal6R5:&Slot{"Terminal", 6, 5, []string{ `l`,`o`,`w`,`c`,`a`,`s`,`e` }, Terminal6R5 },
+	Terminal2R6:&Slot{"Terminal", 2, 6, []string{ `l`,`e`,`t`,`t`,`e`,`r` }, Terminal2R6 },
+	Terminal3R6:&Slot{"Terminal", 3, 6, []string{ `n`,`u`,`m`,`b`,`e`,`r` }, Terminal3R6 },
+	Terminal6R6:&Slot{"Terminal", 6, 6, []string{ `l`,`o`,`w`,`c`,`a`,`s`,`e` }, Terminal6R6 },
+	Terminal6R7:&Slot{"Terminal", 6, 7, []string{ `l`,`o`,`w`,`c`,`a`,`s`,`e` }, Terminal6R7 },
+	Terminal7R0:&Slot{"Terminal", 7, 0, []string{ `n`,`o`,`t`,`String` }, Terminal7R0 },
+	Terminal0R3:&Slot{"Terminal", 0, 3, []string{ `a`,`n`,`y` }, Terminal0R3 },
+	Terminal1R6:&Slot{"Terminal", 1, 6, []string{ `a`,`n`,`y`,`o`,`f`,`Sep`,`String` }, Terminal1R6 },
+	Terminal2R2:&Slot{"Terminal", 2, 2, []string{ `l`,`e`,`t`,`t`,`e`,`r` }, Terminal2R2 },
+	Terminal2R3:&Slot{"Terminal", 2, 3, []string{ `l`,`e`,`t`,`t`,`e`,`r` }, Terminal2R3 },
+	Terminal3R4:&Slot{"Terminal", 3, 4, []string{ `n`,`u`,`m`,`b`,`e`,`r` }, Terminal3R4 },
 	Terminal9R0:&Slot{"Terminal", 9, 0, []string{ `String` }, Terminal9R0 },
-	Terminal5R7:&Slot{"Terminal", 5, 7, []string{ `"`,`u`,`p`,`c`,`a`,`s`,`e`,`"` }, Terminal5R7 },
-	Terminal7R1:&Slot{"Terminal", 7, 1, []string{ `"`,`n`,`o`,`t`,`"`,`String` }, Terminal7R1 },
-	Terminal7R3:&Slot{"Terminal", 7, 3, []string{ `"`,`n`,`o`,`t`,`"`,`String` }, Terminal7R3 },
-	Terminal7R4:&Slot{"Terminal", 7, 4, []string{ `"`,`n`,`o`,`t`,`"`,`String` }, Terminal7R4 },
-	Terminal6R6:&Slot{"Terminal", 6, 6, []string{ `"`,`l`,`o`,`w`,`c`,`a`,`s`,`e`,`"` }, Terminal6R6 },
-	Terminal6R7:&Slot{"Terminal", 6, 7, []string{ `"`,`l`,`o`,`w`,`c`,`a`,`s`,`e`,`"` }, Terminal6R7 },
-	Terminal7R6:&Slot{"Terminal", 7, 6, []string{ `"`,`n`,`o`,`t`,`"`,`String` }, Terminal7R6 },
-	Terminal5R8:&Slot{"Terminal", 5, 8, []string{ `"`,`u`,`p`,`c`,`a`,`s`,`e`,`"` }, Terminal5R8 },
-	Terminal6R8:&Slot{"Terminal", 6, 8, []string{ `"`,`l`,`o`,`w`,`c`,`a`,`s`,`e`,`"` }, Terminal6R8 },
-	Terminal6R9:&Slot{"Terminal", 6, 9, []string{ `"`,`l`,`o`,`w`,`c`,`a`,`s`,`e`,`"` }, Terminal6R9 },
+	Terminal5R1:&Slot{"Terminal", 5, 1, []string{ `u`,`p`,`c`,`a`,`s`,`e` }, Terminal5R1 },
+	Terminal6R1:&Slot{"Terminal", 6, 1, []string{ `l`,`o`,`w`,`c`,`a`,`s`,`e` }, Terminal6R1 },
+	Terminal7R1:&Slot{"Terminal", 7, 1, []string{ `n`,`o`,`t`,`String` }, Terminal7R1 },
 	Terminal9R1:&Slot{"Terminal", 9, 1, []string{ `String` }, Terminal9R1 },
-	Terminal6R4:&Slot{"Terminal", 6, 4, []string{ `"`,`l`,`o`,`w`,`c`,`a`,`s`,`e`,`"` }, Terminal6R4 },
+	Terminal4R2:&Slot{"Terminal", 4, 2, []string{ `s`,`p`,`a`,`c`,`e` }, Terminal4R2 },
+	Terminal4R3:&Slot{"Terminal", 4, 3, []string{ `s`,`p`,`a`,`c`,`e` }, Terminal4R3 },
+	Terminal5R2:&Slot{"Terminal", 5, 2, []string{ `u`,`p`,`c`,`a`,`s`,`e` }, Terminal5R2 },
+	Terminal1R5:&Slot{"Terminal", 1, 5, []string{ `a`,`n`,`y`,`o`,`f`,`Sep`,`String` }, Terminal1R5 },
+	Terminal2R4:&Slot{"Terminal", 2, 4, []string{ `l`,`e`,`t`,`t`,`e`,`r` }, Terminal2R4 },
+	Terminal2R5:&Slot{"Terminal", 2, 5, []string{ `l`,`e`,`t`,`t`,`e`,`r` }, Terminal2R5 },
+	Terminal3R2:&Slot{"Terminal", 3, 2, []string{ `n`,`u`,`m`,`b`,`e`,`r` }, Terminal3R2 },
+	Terminal3R5:&Slot{"Terminal", 3, 5, []string{ `n`,`u`,`m`,`b`,`e`,`r` }, Terminal3R5 },
+	Terminal1R7:&Slot{"Terminal", 1, 7, []string{ `a`,`n`,`y`,`o`,`f`,`Sep`,`String` }, Terminal1R7 },
+	Terminal6R2:&Slot{"Terminal", 6, 2, []string{ `l`,`o`,`w`,`c`,`a`,`s`,`e` }, Terminal6R2 },
+	Terminal4R5:&Slot{"Terminal", 4, 5, []string{ `s`,`p`,`a`,`c`,`e` }, Terminal4R5 },
+	Terminal5R5:&Slot{"Terminal", 5, 5, []string{ `u`,`p`,`c`,`a`,`s`,`e` }, Terminal5R5 },
+	Terminal5R6:&Slot{"Terminal", 5, 6, []string{ `u`,`p`,`c`,`a`,`s`,`e` }, Terminal5R6 },
+	Terminal8R1:&Slot{"Terminal", 8, 1, []string{ `CharLiteral` }, Terminal8R1 },
+	Terminal7R2:&Slot{"Terminal", 7, 2, []string{ `n`,`o`,`t`,`String` }, Terminal7R2 },
+	Terminal8R0:&Slot{"Terminal", 8, 0, []string{ `CharLiteral` }, Terminal8R0 },
+	Terminal1R3:&Slot{"Terminal", 1, 3, []string{ `a`,`n`,`y`,`o`,`f`,`Sep`,`String` }, Terminal1R3 },
+	Terminal3R3:&Slot{"Terminal", 3, 3, []string{ `n`,`u`,`m`,`b`,`e`,`r` }, Terminal3R3 },
+	Terminal1R4:&Slot{"Terminal", 1, 4, []string{ `a`,`n`,`y`,`o`,`f`,`Sep`,`String` }, Terminal1R4 },
+	Terminal5R3:&Slot{"Terminal", 5, 3, []string{ `u`,`p`,`c`,`a`,`s`,`e` }, Terminal5R3 },
+	Terminal6R4:&Slot{"Terminal", 6, 4, []string{ `l`,`o`,`w`,`c`,`a`,`s`,`e` }, Terminal6R4 },
+	Terminal7R3:&Slot{"Terminal", 7, 3, []string{ `n`,`o`,`t`,`String` }, Terminal7R3 },
+	Terminal7R4:&Slot{"Terminal", 7, 4, []string{ `n`,`o`,`t`,`String` }, Terminal7R4 },
 }
 
 var slotIndex = map[Index]Label { 
 	Index{ "Alternate",0,0 }: Alternate0R0,
-	Index{ "Alternate",0,1 }: Alternate0R1,
 	Index{ "Alternate",1,0 }: Alternate1R0,
-	Index{ "Alternate",2,0 }: Alternate2R0,
+	Index{ "Alternate",0,1 }: Alternate0R1,
 	Index{ "Alternate",1,1 }: Alternate1R1,
-	Index{ "Alternate",2,1 }: Alternate2R1,
+	Index{ "Alternate",2,0 }: Alternate2R0,
 	Index{ "Alternate",1,2 }: Alternate1R2,
-	Index{ "Alternate",2,2 }: Alternate2R2,
+	Index{ "Alternate",2,1 }: Alternate2R1,
 	Index{ "Alternate",1,3 }: Alternate1R3,
+	Index{ "Alternate",2,2 }: Alternate2R2,
 	Index{ "Alternate",2,3 }: Alternate2R3,
 	Index{ "Alternate",2,4 }: Alternate2R4,
 	Index{ "Alternate",2,5 }: Alternate2R5,
-	Index{ "Alternate",2,6 }: Alternate2R6,
-	Index{ "Alternate",2,7 }: Alternate2R7,
 	Index{ "Alternates",0,0 }: Alternates0R0,
-	Index{ "Alternates",0,1 }: Alternates0R1,
 	Index{ "Alternates",1,0 }: Alternates1R0,
+	Index{ "Alternates",0,1 }: Alternates0R1,
 	Index{ "Alternates",1,1 }: Alternates1R1,
 	Index{ "Alternates",1,2 }: Alternates1R2,
 	Index{ "Alternates",1,3 }: Alternates1R3,
 	Index{ "Alternates",1,4 }: Alternates1R4,
 	Index{ "Alternates",1,5 }: Alternates1R5,
-	Index{ "Alternates",1,6 }: Alternates1R6,
-	Index{ "Alternates",1,7 }: Alternates1R7,
 	Index{ "CharLiteral",0,0 }: CharLiteral0R0,
 	Index{ "CharLiteral",0,1 }: CharLiteral0R1,
-	Index{ "CharLiteral",1,1 }: CharLiteral1R1,
+	Index{ "CharLiteral",1,0 }: CharLiteral1R0,
 	Index{ "CharLiteral",0,2 }: CharLiteral0R2,
 	Index{ "CharLiteral",0,3 }: CharLiteral0R3,
-	Index{ "CharLiteral",0,4 }: CharLiteral0R4,
-	Index{ "CharLiteral",0,5 }: CharLiteral0R5,
-	Index{ "CharLiteral",1,0 }: CharLiteral1R0,
-	Index{ "CharLiteral",1,3 }: CharLiteral1R3,
-	Index{ "CharLiteral",0,6 }: CharLiteral0R6,
-	Index{ "CharLiteral",0,7 }: CharLiteral0R7,
-	Index{ "CharLiteral",0,8 }: CharLiteral0R8,
+	Index{ "CharLiteral",1,1 }: CharLiteral1R1,
 	Index{ "CharLiteral",1,2 }: CharLiteral1R2,
-	Index{ "CharLiteral",1,4 }: CharLiteral1R4,
-	Index{ "CharLiteral",1,5 }: CharLiteral1R5,
-	Index{ "CharLiteral",1,6 }: CharLiteral1R6,
-	Index{ "CharLiteral",1,7 }: CharLiteral1R7,
+	Index{ "CharLiteral",1,3 }: CharLiteral1R3,
+	Index{ "CharLiteral",0,4 }: CharLiteral0R4,
 	Index{ "EscapedChar",0,0 }: EscapedChar0R0,
-	Index{ "EscapedChar",1,0 }: EscapedChar1R0,
-	Index{ "EscapedChar",2,0 }: EscapedChar2R0,
 	Index{ "EscapedChar",0,1 }: EscapedChar0R1,
+	Index{ "EscapedChar",1,0 }: EscapedChar1R0,
 	Index{ "EscapedChar",1,1 }: EscapedChar1R1,
+	Index{ "EscapedChar",2,0 }: EscapedChar2R0,
 	Index{ "EscapedChar",2,1 }: EscapedChar2R1,
 	Index{ "EscapedChar",3,0 }: EscapedChar3R0,
-	Index{ "EscapedChar",2,3 }: EscapedChar2R3,
 	Index{ "EscapedChar",3,1 }: EscapedChar3R1,
 	Index{ "EscapedChar",4,0 }: EscapedChar4R0,
 	Index{ "EscapedChar",4,1 }: EscapedChar4R1,
 	Index{ "EscapedChar",5,0 }: EscapedChar5R0,
 	Index{ "EscapedChar",5,1 }: EscapedChar5R1,
-	Index{ "EscapedChar",1,2 }: EscapedChar1R2,
-	Index{ "EscapedChar",1,3 }: EscapedChar1R3,
-	Index{ "EscapedChar",2,2 }: EscapedChar2R2,
-	Index{ "EscapedChar",3,2 }: EscapedChar3R2,
-	Index{ "EscapedChar",3,3 }: EscapedChar3R3,
-	Index{ "EscapedChar",4,2 }: EscapedChar4R2,
-	Index{ "EscapedChar",4,3 }: EscapedChar4R3,
-	Index{ "EscapedChar",5,2 }: EscapedChar5R2,
-	Index{ "EscapedChar",5,3 }: EscapedChar5R3,
 	Index{ "GoGLL",0,0 }: GoGLL0R0,
 	Index{ "GoGLL",0,1 }: GoGLL0R1,
 	Index{ "GoGLL",0,2 }: GoGLL0R2,
@@ -610,13 +496,13 @@ var slotIndex = map[Index]Label {
 	Index{ "GoGLL",0,4 }: GoGLL0R4,
 	Index{ "GoGLL",0,5 }: GoGLL0R5,
 	Index{ "Head",0,0 }: Head0R0,
-	Index{ "Head",0,1 }: Head0R1,
 	Index{ "Head",1,0 }: Head1R0,
+	Index{ "Head",0,1 }: Head0R1,
 	Index{ "Head",1,1 }: Head1R1,
 	Index{ "NTChar",0,0 }: NTChar0R0,
-	Index{ "NTChar",0,1 }: NTChar0R1,
 	Index{ "NTChar",1,0 }: NTChar1R0,
 	Index{ "NTChar",2,0 }: NTChar2R0,
+	Index{ "NTChar",0,1 }: NTChar0R1,
 	Index{ "NTChar",1,1 }: NTChar1R1,
 	Index{ "NTChar",2,1 }: NTChar2R1,
 	Index{ "NTChars",0,0 }: NTChars0R0,
@@ -637,8 +523,6 @@ var slotIndex = map[Index]Label {
 	Index{ "Package",0,7 }: Package0R7,
 	Index{ "Package",0,8 }: Package0R8,
 	Index{ "Package",0,9 }: Package0R9,
-	Index{ "Package",0,10 }: Package0R10,
-	Index{ "Package",0,11 }: Package0R11,
 	Index{ "Rule",0,0 }: Rule0R0,
 	Index{ "Rule",0,1 }: Rule0R1,
 	Index{ "Rule",0,2 }: Rule0R2,
@@ -647,10 +531,6 @@ var slotIndex = map[Index]Label {
 	Index{ "Rule",0,5 }: Rule0R5,
 	Index{ "Rule",0,6 }: Rule0R6,
 	Index{ "Rule",0,7 }: Rule0R7,
-	Index{ "Rule",0,8 }: Rule0R8,
-	Index{ "Rule",0,9 }: Rule0R9,
-	Index{ "Rule",0,10 }: Rule0R10,
-	Index{ "Rule",0,11 }: Rule0R11,
 	Index{ "Rules",0,0 }: Rules0R0,
 	Index{ "Rules",0,1 }: Rules0R1,
 	Index{ "Rules",1,0 }: Rules1R0,
@@ -658,13 +538,13 @@ var slotIndex = map[Index]Label {
 	Index{ "Rules",1,2 }: Rules1R2,
 	Index{ "Rules",1,3 }: Rules1R3,
 	Index{ "Sep",0,0 }: Sep0R0,
-	Index{ "Sep",1,0 }: Sep1R0,
 	Index{ "Sep",0,1 }: Sep0R1,
+	Index{ "Sep",1,0 }: Sep1R0,
 	Index{ "Sep",1,1 }: Sep1R1,
 	Index{ "Sep",1,2 }: Sep1R2,
 	Index{ "SepChar",0,0 }: SepChar0R0,
-	Index{ "SepChar",1,0 }: SepChar1R0,
 	Index{ "SepChar",0,1 }: SepChar0R1,
+	Index{ "SepChar",1,0 }: SepChar1R0,
 	Index{ "SepChar",1,1 }: SepChar1R1,
 	Index{ "SepE",0,0 }: SepE0R0,
 	Index{ "SepE",1,0 }: SepE1R0,
@@ -673,8 +553,6 @@ var slotIndex = map[Index]Label {
 	Index{ "StartSymbol",0,1 }: StartSymbol0R1,
 	Index{ "StartSymbol",0,2 }: StartSymbol0R2,
 	Index{ "StartSymbol",0,3 }: StartSymbol0R3,
-	Index{ "StartSymbol",0,4 }: StartSymbol0R4,
-	Index{ "StartSymbol",0,5 }: StartSymbol0R5,
 	Index{ "String",0,0 }: String0R0,
 	Index{ "String",0,1 }: String0R1,
 	Index{ "String",0,2 }: String0R2,
@@ -683,81 +561,65 @@ var slotIndex = map[Index]Label {
 	Index{ "StringChars",1,0 }: StringChars1R0,
 	Index{ "StringChars",0,1 }: StringChars0R1,
 	Index{ "Symbol",0,0 }: Symbol0R0,
-	Index{ "Symbol",1,0 }: Symbol1R0,
 	Index{ "Symbol",0,1 }: Symbol0R1,
+	Index{ "Symbol",1,0 }: Symbol1R0,
 	Index{ "Symbol",1,1 }: Symbol1R1,
 	Index{ "Terminal",0,0 }: Terminal0R0,
+	Index{ "Terminal",3,0 }: Terminal3R0,
 	Index{ "Terminal",0,1 }: Terminal0R1,
 	Index{ "Terminal",1,0 }: Terminal1R0,
 	Index{ "Terminal",1,1 }: Terminal1R1,
 	Index{ "Terminal",2,0 }: Terminal2R0,
 	Index{ "Terminal",2,1 }: Terminal2R1,
+	Index{ "Terminal",3,1 }: Terminal3R1,
+	Index{ "Terminal",4,0 }: Terminal4R0,
+	Index{ "Terminal",4,1 }: Terminal4R1,
 	Index{ "Terminal",0,2 }: Terminal0R2,
 	Index{ "Terminal",1,2 }: Terminal1R2,
-	Index{ "Terminal",2,2 }: Terminal2R2,
-	Index{ "Terminal",0,3 }: Terminal0R3,
-	Index{ "Terminal",1,3 }: Terminal1R3,
-	Index{ "Terminal",2,3 }: Terminal2R3,
-	Index{ "Terminal",0,4 }: Terminal0R4,
-	Index{ "Terminal",0,5 }: Terminal0R5,
-	Index{ "Terminal",1,4 }: Terminal1R4,
-	Index{ "Terminal",2,4 }: Terminal2R4,
-	Index{ "Terminal",1,5 }: Terminal1R5,
-	Index{ "Terminal",1,6 }: Terminal1R6,
-	Index{ "Terminal",2,5 }: Terminal2R5,
-	Index{ "Terminal",2,6 }: Terminal2R6,
-	Index{ "Terminal",1,7 }: Terminal1R7,
-	Index{ "Terminal",2,7 }: Terminal2R7,
-	Index{ "Terminal",1,8 }: Terminal1R8,
-	Index{ "Terminal",4,0 }: Terminal4R0,
-	Index{ "Terminal",5,1 }: Terminal5R1,
-	Index{ "Terminal",4,2 }: Terminal4R2,
-	Index{ "Terminal",3,3 }: Terminal3R3,
-	Index{ "Terminal",3,4 }: Terminal3R4,
-	Index{ "Terminal",4,4 }: Terminal4R4,
-	Index{ "Terminal",4,5 }: Terminal4R5,
-	Index{ "Terminal",6,1 }: Terminal6R1,
-	Index{ "Terminal",3,7 }: Terminal3R7,
-	Index{ "Terminal",6,3 }: Terminal6R3,
-	Index{ "Terminal",7,0 }: Terminal7R0,
-	Index{ "Terminal",4,6 }: Terminal4R6,
-	Index{ "Terminal",5,6 }: Terminal5R6,
-	Index{ "Terminal",4,7 }: Terminal4R7,
-	Index{ "Terminal",2,8 }: Terminal2R8,
-	Index{ "Terminal",3,0 }: Terminal3R0,
-	Index{ "Terminal",3,1 }: Terminal3R1,
-	Index{ "Terminal",4,1 }: Terminal4R1,
 	Index{ "Terminal",5,0 }: Terminal5R0,
-	Index{ "Terminal",6,0 }: Terminal6R0,
-	Index{ "Terminal",3,2 }: Terminal3R2,
-	Index{ "Terminal",5,2 }: Terminal5R2,
-	Index{ "Terminal",6,2 }: Terminal6R2,
-	Index{ "Terminal",3,5 }: Terminal3R5,
+	Index{ "Terminal",4,4 }: Terminal4R4,
 	Index{ "Terminal",5,4 }: Terminal5R4,
-	Index{ "Terminal",3,6 }: Terminal3R6,
-	Index{ "Terminal",3,8 }: Terminal3R8,
-	Index{ "Terminal",4,3 }: Terminal4R3,
-	Index{ "Terminal",5,3 }: Terminal5R3,
-	Index{ "Terminal",5,5 }: Terminal5R5,
+	Index{ "Terminal",6,0 }: Terminal6R0,
+	Index{ "Terminal",6,3 }: Terminal6R3,
 	Index{ "Terminal",6,5 }: Terminal6R5,
-	Index{ "Terminal",7,2 }: Terminal7R2,
-	Index{ "Terminal",7,5 }: Terminal7R5,
-	Index{ "Terminal",8,0 }: Terminal8R0,
-	Index{ "Terminal",1,9 }: Terminal1R9,
-	Index{ "Terminal",8,1 }: Terminal8R1,
-	Index{ "Terminal",9,0 }: Terminal9R0,
-	Index{ "Terminal",5,7 }: Terminal5R7,
-	Index{ "Terminal",7,1 }: Terminal7R1,
-	Index{ "Terminal",7,3 }: Terminal7R3,
-	Index{ "Terminal",7,4 }: Terminal7R4,
+	Index{ "Terminal",2,6 }: Terminal2R6,
+	Index{ "Terminal",3,6 }: Terminal3R6,
 	Index{ "Terminal",6,6 }: Terminal6R6,
 	Index{ "Terminal",6,7 }: Terminal6R7,
-	Index{ "Terminal",7,6 }: Terminal7R6,
-	Index{ "Terminal",5,8 }: Terminal5R8,
-	Index{ "Terminal",6,8 }: Terminal6R8,
-	Index{ "Terminal",6,9 }: Terminal6R9,
+	Index{ "Terminal",7,0 }: Terminal7R0,
+	Index{ "Terminal",0,3 }: Terminal0R3,
+	Index{ "Terminal",1,6 }: Terminal1R6,
+	Index{ "Terminal",2,2 }: Terminal2R2,
+	Index{ "Terminal",2,3 }: Terminal2R3,
+	Index{ "Terminal",3,4 }: Terminal3R4,
+	Index{ "Terminal",9,0 }: Terminal9R0,
+	Index{ "Terminal",5,1 }: Terminal5R1,
+	Index{ "Terminal",6,1 }: Terminal6R1,
+	Index{ "Terminal",7,1 }: Terminal7R1,
 	Index{ "Terminal",9,1 }: Terminal9R1,
+	Index{ "Terminal",4,2 }: Terminal4R2,
+	Index{ "Terminal",4,3 }: Terminal4R3,
+	Index{ "Terminal",5,2 }: Terminal5R2,
+	Index{ "Terminal",1,5 }: Terminal1R5,
+	Index{ "Terminal",2,4 }: Terminal2R4,
+	Index{ "Terminal",2,5 }: Terminal2R5,
+	Index{ "Terminal",3,2 }: Terminal3R2,
+	Index{ "Terminal",3,5 }: Terminal3R5,
+	Index{ "Terminal",1,7 }: Terminal1R7,
+	Index{ "Terminal",6,2 }: Terminal6R2,
+	Index{ "Terminal",4,5 }: Terminal4R5,
+	Index{ "Terminal",5,5 }: Terminal5R5,
+	Index{ "Terminal",5,6 }: Terminal5R6,
+	Index{ "Terminal",8,1 }: Terminal8R1,
+	Index{ "Terminal",7,2 }: Terminal7R2,
+	Index{ "Terminal",8,0 }: Terminal8R0,
+	Index{ "Terminal",1,3 }: Terminal1R3,
+	Index{ "Terminal",3,3 }: Terminal3R3,
+	Index{ "Terminal",1,4 }: Terminal1R4,
+	Index{ "Terminal",5,3 }: Terminal5R3,
 	Index{ "Terminal",6,4 }: Terminal6R4,
+	Index{ "Terminal",7,3 }: Terminal7R3,
+	Index{ "Terminal",7,4 }: Terminal7R4,
 }
 
 var alternates = map[string][]Label{ 

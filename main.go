@@ -31,10 +31,24 @@ import (
 	"gogll/sa"
 	"io/ioutil"
 	"os"
+	"runtime/pprof"
 )
 
 func main() {
 	cfg.GetParams()
+	if *cfg.CPUProfile {
+		f, err := os.Create("cpu.prof")
+		if err != nil {
+			fmt.Println("could not create CPU profile: ", err)
+			os.Exit(1)
+		}
+		defer f.Close()
+		if err := pprof.StartCPUProfile(f); err != nil {
+			fmt.Println("could not start CPU profile: ", err)
+			os.Exit(1)
+		}
+		defer pprof.StopCPUProfile()
+	}
 	if err, errs := parser.ParseFile(cfg.SrcFile); err != nil {
 		fail(err, errs)
 	}

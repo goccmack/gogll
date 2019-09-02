@@ -500,7 +500,7 @@ func newString(s string) (cs []string) {
 }
 
 func (g *Grammar) NewString(b bsr.BSR, s string) (cs []Symbol) {
-	for _, str := range newString(s) {
+	for _, str := range newString(s[1 : len(s)-1]) {
 		cs = append(cs, g.newCharLiteral(b, str))
 	}
 	return

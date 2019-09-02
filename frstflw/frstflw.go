@@ -1,11 +1,9 @@
 package frstflw
 
 import (
-	"fmt"
 	"gogll/ast"
 	"gogll/goutil/stringset"
 	"gogll/goutil/stringslice"
-	"strings"
 )
 
 const Empty = "ϵ"
@@ -30,7 +28,7 @@ func New(g *ast.Grammar) *FF {
 }
 
 func (ff *FF) FirstOfString(str []string) *stringset.StringSet {
-	fmt.Printf("FirstOfString: %s\n", strings.Join(str, " "))
+	// fmt.Printf("FirstOfString: %s\n", strings.Join(str, " "))
 	if len(str) == 0 {
 		return stringset.New(Empty)
 	}
@@ -44,17 +42,16 @@ func (ff *FF) FirstOfString(str []string) *stringset.StringSet {
 			break
 		}
 	}
-	fmt.Printf("FirstOfString(%s): %s\n", strings.Join(str, " "), first)
+	// fmt.Printf("FirstOfString(%s): %s\n", strings.Join(str, " "), first)
 	return first
 }
 
 func (ff *FF) FirstOfSymbol(s string) *stringset.StringSet {
-	fmt.Printf("frstflw.FirstOfSymbol(%s)\n", s)
+	// fmt.Printf("frstflw.FirstOfSymbol(%s)\n", s)
 	if f, exist := ff.firstSets[s]; exist {
 		return f
-	} else {
-		return stringset.New()
 	}
+	return stringset.New()
 }
 
 func (ff *FF) Follow(nt string) *stringset.StringSet {

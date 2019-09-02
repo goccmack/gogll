@@ -8,8 +8,9 @@ import (
 )
 
 var (
-	BaseDir string
-	SrcFile string
+	BaseDir    string
+	SrcFile    string
+	CPUProfile = flag.Bool("CPUProf", false, "")
 )
 
 func GetParams() {
@@ -39,9 +40,10 @@ func fail(msg string) {
 }
 
 func usage() {
-	msg := `use: gogll <source file>
+	msg := `use: gogll [-CPUProf] <source file>
 	<source file> : Mandatory. Name of the source file to be processed. 
 					If the file extension is ".md" the bnf is extracted from markdown code segments
-                    enclosed in triple backticks.`
+					enclosed in triple backticks.
+    -CPUProf : Optional. Generate a CPU profile. Default false`
 	fmt.Println(msg)
 }

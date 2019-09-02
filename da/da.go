@@ -22,16 +22,38 @@ func daReservedWords() {
 	}
 }
 
+// func removeNTsWithoutChildren() {
+// 	reps := 0
+// 	for again := true; again; {
+// 		again = false
+// 		for _, b := range bsr.GetAll() {
+// 			for i, s := range b.Label.Symbols() {
+// 				reps++
+// 				if symbols.IsNonTerminal(s) && len(b.GetNTChildrenI(i)) == 0 {
+// 					// fmt.Printf("remove %s\n", b)
+// 					b.Ignore()
+// 					again = true
+// 				}
+// 			}
+// 		}
+// 	}
+// 	fmt.Printf("da.removeNTsWithoutChildren: %d reps\n", reps)
+// }
+
 func removeNTsWithoutChildren() {
-	for again := true; again; {
-		again = false
-		for _, b := range bsr.GetAll() {
-			for i, s := range b.Label.Symbols() {
-				if symbols.IsNonTerminal(s) && len(b.GetNTChildrenI(i)) == 0 {
-					// fmt.Printf("remove %s\n", b)
-					b.Ignore()
-					again = true
-				}
+	for _, rt := range bsr.GetRoots() {
+		removeZombieChildren(rt)
+	}
+}
+
+func removeZombieChildren(nt bsr.BSR) {
+	for i, s := range nt.Label.Symbols() {
+		if symbols.IsNonTerminal(s) {
+			for _, c := range nt.GetNTChildrenI(i) {
+				removeZombieChildren(c)
+			}
+			if len(nt.GetNTChildrenI(i)) == 0 {
+				nt.Ignore()
 			}
 		}
 	}
