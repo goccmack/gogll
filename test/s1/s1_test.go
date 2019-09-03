@@ -1,9 +1,9 @@
 package s1
 
 import (
-	"gogll/test/s1/goutil/bsr"
+	"github.com/goccmack/gogll/test/s1/goutil/bsr"
 	"testing"
-	"gogll/test/s1/parser"
+	"github.com/goccmack/gogll/test/s1/parser"
 )
 
 func Test1(t *testing.T) {

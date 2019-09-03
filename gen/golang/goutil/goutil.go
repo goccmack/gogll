@@ -14,10 +14,10 @@
 package goutil
 
 import (
-	"gogll/ast"
-	"gogll/gen/golang/goutil/bsr"
-	"gogll/gen/golang/goutil/md"
-	"gogll/gen/golang/goutil/stringset"
+	"github.com/goccmack/gogll/ast"
+	"github.com/goccmack/gogll/gen/golang/goutil/bsr"
+	"github.com/goccmack/gogll/gen/golang/goutil/md"
+	"github.com/goccmack/gogll/gen/golang/goutil/stringset"
 	"path/filepath"
 )
 

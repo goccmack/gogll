@@ -17,9 +17,9 @@ package symbols
 import (
 	"bytes"
 	"fmt"
-	"gogll/ast"
-	"gogll/cfg"
-	"gogll/goutil/ioutil"
+	"github.com/goccmack/gogll/ast"
+	"github.com/goccmack/gogll/cfg"
+	"github.com/goccmack/gogll/goutil/ioutil"
 	"os"
 	"path"
 )

@@ -14,12 +14,12 @@
 package golang
 
 import (
-	"gogll/ast"
-	"gogll/cfg"
-	"gogll/frstflw"
-	"gogll/gen/golang/goutil"
-	"gogll/gen/golang/parser"
-	"gogll/gslot"
+	"github.com/goccmack/gogll/ast"
+	"github.com/goccmack/gogll/cfg"
+	"github.com/goccmack/gogll/frstflw"
+	"github.com/goccmack/gogll/gen/golang/goutil"
+	"github.com/goccmack/gogll/gen/golang/parser"
+	"github.com/goccmack/gogll/gslot"
 	"path"
 )
 

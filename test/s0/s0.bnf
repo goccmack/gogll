@@ -1,4 +1,4 @@
-package "gogll/test/s0"
+package "github.com/goccmack/gogll/test/s0"
 
 S   : "b" "a" "c"
     |   "b" "a" "a"

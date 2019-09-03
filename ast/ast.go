@@ -19,10 +19,11 @@ package ast
 
 import (
 	"fmt"
-	"gogll/goutil/bsr"
-	"gogll/goutil/stringset"
 	"sort"
 	"strings"
+
+	"github.com/goccmack/gogll/goutil/bsr"
+	"github.com/goccmack/gogll/goutil/stringset"
 )
 
 type Grammar struct {

@@ -16,9 +16,9 @@ package ambiguous1
 
 import (
 	"fmt"
-	"gogll/examples/ambiguous1/goutil/bsr"
-	"gogll/examples/ambiguous1/parser"
-	"gogll/examples/ambiguous1/parser/symbols"
+	"github.com/goccmack/gogll/examples/ambiguous1/goutil/bsr"
+	"github.com/goccmack/gogll/examples/ambiguous1/parser"
+	"github.com/goccmack/gogll/examples/ambiguous1/parser/symbols"
 	"testing"
 )
 

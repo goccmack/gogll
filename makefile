@@ -1,7 +1,7 @@
 .PHONY: all clean install
 
 all: parser/parser.go
-	go build
+	go install
 
 parser/parser.go: gogll.md
 	gogll -p gogll gogll.md 

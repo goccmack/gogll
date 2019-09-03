@@ -1,8 +1,8 @@
 package test2
 
 import (
-	"gogll/test/test2/goutil/bsr"
-	"gogll/test/test2/parser"
+	"github.com/goccmack/gogll/test/test2/goutil/bsr"
+	"github.com/goccmack/gogll/test/test2/parser"
 	"testing"
 )
 

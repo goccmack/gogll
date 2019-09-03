@@ -16,7 +16,7 @@ package bsr
 
 import (
 	"bytes"
-	"gogll/goutil/ioutil"
+	"github.com/goccmack/gogll/goutil/ioutil"
 	"text/template"
 )
 

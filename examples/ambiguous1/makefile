@@ -14,4 +14,4 @@
 .PHONY: all
 
 all: 
-	gogll -p "gogll/examples/ambiguous1" g.md
+	gogll -p "github.com/goccmack/gogll/examples/ambiguous1" g.md

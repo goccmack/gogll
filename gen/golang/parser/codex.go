@@ -15,8 +15,8 @@ package parser
 
 import (
 	"bytes"
-	"gogll/ast"
-	"gogll/gslot"
+	"github.com/goccmack/gogll/ast"
+	"github.com/goccmack/gogll/gslot"
 	"text/template"
 )
 

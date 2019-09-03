@@ -19,7 +19,7 @@ import (
 	"strings"
 	"unicode/utf8"
 
-	"gogll/examples/ambiguous1/parser/slot"
+	"github.com/goccmack/gogll/examples/ambiguous1/parser/slot"
 )
 
 type bsr interface {

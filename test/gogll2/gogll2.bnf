@@ -12,7 +12,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-package "gogll/test/gogll2"
+package "github.com/goccmack/gogll/test/gogll2"
 
 Grammar
     :   Sep Imports Sep Rules Sep

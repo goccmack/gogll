@@ -15,7 +15,7 @@
 package stringset
 
 import (
-	"gogll/goutil/ioutil"
+	"github.com/goccmack/gogll/goutil/ioutil"
 )
 
 func Gen(file string) {

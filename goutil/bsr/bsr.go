@@ -27,7 +27,7 @@ import (
 	"strings"
 	"unicode/utf8"
 
-	"gogll/parser/slot"
+	"github.com/goccmack/gogll/parser/slot"
 )
 
 type bsr interface {

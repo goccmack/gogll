@@ -19,9 +19,9 @@ package sa
 
 import (
 	"fmt"
-	"gogll/ast"
-	"gogll/goutil/bsr"
-	"gogll/parser"
+	"github.com/goccmack/gogll/ast"
+	"github.com/goccmack/gogll/goutil/bsr"
+	"github.com/goccmack/gogll/parser"
 )
 
 // Semantic analysis

@@ -18,9 +18,9 @@ package gslot
 import (
 	"bytes"
 	"fmt"
-	"gogll/ast"
-	"gogll/frstflw"
-	"gogll/symbols"
+	"github.com/goccmack/gogll/ast"
+	"github.com/goccmack/gogll/frstflw"
+	"github.com/goccmack/gogll/symbols"
 	"sort"
 )
 

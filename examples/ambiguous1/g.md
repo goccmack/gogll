@@ -14,7 +14,7 @@
 # Example: Ambiguous grammar
 
 ```
-package "gogll/examples/ambiguous1"
+package "github.com/goccmack/gogll/examples/ambiguous1"
 
 *S : A S | B S | emptyAlt ;
 

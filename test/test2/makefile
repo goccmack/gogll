@@ -1,7 +1,7 @@
 .PHONY: all clean
 
 all:
-	gogll -p "gogll/test/test2" test2.bnf
+	gogll -p "github.com/goccmack/gogll/test/test2" test2.bnf
 	go test -v
 
 clean:

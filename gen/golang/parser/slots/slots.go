@@ -16,10 +16,10 @@ package slots
 import (
 	"bytes"
 	"fmt"
-	"gogll/ast"
-	"gogll/frstflw"
-	"gogll/goutil/ioutil"
-	"gogll/gslot"
+	"github.com/goccmack/gogll/ast"
+	"github.com/goccmack/gogll/frstflw"
+	"github.com/goccmack/gogll/goutil/ioutil"
+	"github.com/goccmack/gogll/gslot"
 	"text/template"
 )
 

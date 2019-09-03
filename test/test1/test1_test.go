@@ -2,8 +2,8 @@ package test1
 
 import (
 	"testing"
-	"gogll/test/test1/parser"
-	"gogll/test/test1/goutil/bsr"
+	"github.com/goccmack/gogll/test/test1/parser"
+	"github.com/goccmack/gogll/test/test1/goutil/bsr"
 )
 
 func Test1(t *testing.T) {

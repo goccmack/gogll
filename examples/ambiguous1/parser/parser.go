@@ -12,9 +12,9 @@ import (
 	"unicode"
 	"unicode/utf8"
 
-	"gogll/examples/ambiguous1/goutil/bsr"
-	"gogll/examples/ambiguous1/goutil/md"
-	"gogll/examples/ambiguous1/parser/slot"
+	"github.com/goccmack/gogll/examples/ambiguous1/goutil/bsr"
+	"github.com/goccmack/gogll/examples/ambiguous1/goutil/md"
+	"github.com/goccmack/gogll/examples/ambiguous1/parser/slot"
 
 	"io/ioutil"
 )

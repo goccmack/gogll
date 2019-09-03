@@ -1,8 +1,8 @@
 package g2
 
 import (
-	"gogll/test/g2/goutil/bsr"
-	"gogll/test/g2/parser"
+	"github.com/goccmack/gogll/test/g2/goutil/bsr"
+	"github.com/goccmack/gogll/test/g2/parser"
 	"testing"
 )
 

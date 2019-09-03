@@ -19,9 +19,9 @@ package slots
 import (
 	"bytes"
 	"fmt"
-	"gogll/cfg"
-	"gogll/goutil/ioutil"
-	"gogll/gslot"
+	"github.com/goccmack/gogll/cfg"
+	"github.com/goccmack/gogll/goutil/ioutil"
+	"github.com/goccmack/gogll/gslot"
 	"os"
 	"path/filepath"
 )

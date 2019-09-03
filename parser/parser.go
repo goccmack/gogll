@@ -24,9 +24,9 @@ import (
 	"unicode"
 	"unicode/utf8"
 
-	"gogll/goutil/bsr"
-	"gogll/goutil/md"
-	"gogll/parser/slot"
+	"github.com/goccmack/gogll/goutil/bsr"
+	"github.com/goccmack/gogll/goutil/md"
+	"github.com/goccmack/gogll/parser/slot"
 
 	"io/ioutil"
 )

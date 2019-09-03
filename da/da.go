@@ -18,8 +18,8 @@ Package da disambiguates the BSR set.
 package da
 
 import (
-	"gogll/goutil/bsr"
-	"gogll/parser/symbols"
+	"github.com/goccmack/gogll/goutil/bsr"
+	"github.com/goccmack/gogll/parser/symbols"
 	"strings"
 )
 
