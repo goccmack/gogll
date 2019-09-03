@@ -1,5 +1,7 @@
 # Gogll
-**This is the Readme for gogll v0**
+[Copyright 2019 Marius Ackerman](License.txt)
+
+**This is the Readme for gogll v1**
 
 Gogll is a clustered nonterminal parser (CNP) generator following [Scott et al 2019](#Scott-et-al-2019). CNP is a version of generalised LL parsing (GLL). [GLL parsers can parse all context free (CF) languages](#Scott-et-al-2016).
 
@@ -32,9 +34,6 @@ The [grammar for gogll v0](gogll.bnf) is a gocc BNF.
 # Features considered for for future implementation
 1. [EBNF](#Scott-et-al-2018)
 
-# License
-See [Apache license](License.txt)
-
 # Notes
 [see](notes.md)
 
@@ -63,3 +62,6 @@ Volume 125, 1 September 2016](https://pure.royalholloway.ac.uk/portal/en/publica
 1. Ali Afroozeh, Mark van den Brand, Adrian Johnstone, Elizabeth Scott, Jurgen Vinju.   
 Safe Specification of Operator Precedence Rules.   
 In: [Erwig M., Paige R.F., Van Wyk E. (eds) Software Language Engineering. SLE 2013. Lecture Notes in Computer Science, vol 8225. Springer, Cham](https://pure.royalholloway.ac.uk/portal/en/publications/safe-specification-of-operator-precedence-rules(0287d70e-92b8-4204-aafb-15a81de84968).html)
+
+<a name="Basten-2019"></a>
+1. Basten H.J.S., Vinju J.J. (2012) Parse Forest Diagnostics with Dr. Ambiguity. In: Sloane A., Aßmann U. (eds) Software Language Engineering. SLE 2011. [Lecture Notes in Computer Science, vol 6940. Springer, Berlin, Heidelberg](https://homepages.cwi.nl/~jurgenv/papers/SLE2011-2.pdf)

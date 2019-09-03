@@ -11,18 +11,18 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-
 package goutil
 
 import (
+	"gogll/ast"
 	"gogll/gen/golang/goutil/bsr"
 	"gogll/gen/golang/goutil/md"
 	"gogll/gen/golang/goutil/stringset"
 	"path/filepath"
 )
 
-func Gen(utilDir string) {
-	bsr.Gen(filepath.Join(utilDir, "bsr", "bsr.go"))
+func Gen(utilDir string, g *ast.Grammar) {
+	bsr.Gen(filepath.Join(utilDir, "bsr", "bsr.go"), g.Package)
 	stringset.Gen(filepath.Join(utilDir, "stringset", "stringset.go"))
 	md.Gen(filepath.Join(utilDir, "md", "md.go"))
 }

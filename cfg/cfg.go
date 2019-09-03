@@ -11,6 +11,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
+
 package cfg
 
 import (
@@ -21,18 +22,15 @@ import (
 )
 
 var (
-	BaseDir string
-	SrcFile string
-	Package string
-
-	pkg = flag.String("p", "", "")
+	BaseDir    string
+	SrcFile    string
+	CPUProfile = flag.Bool("CPUProf", false, "")
 )
 
 func GetParams() {
 	flag.Parse()
 	getSourceFile()
 	getFileBase()
-	getPackage()
 }
 
 func getFileBase() {
@@ -40,13 +38,6 @@ func getFileBase() {
 	if BaseDir == "" {
 		BaseDir = "."
 	}
-}
-
-func getPackage() {
-	if *pkg == "" {
-		fail("Package prefix must be specified")
-	}
-	Package = *pkg
 }
 
 func getSourceFile() {
@@ -63,11 +54,10 @@ func fail(msg string) {
 }
 
 func usage() {
-	msg := `use: gogll -p <package> <source file>
+	msg := `use: gogll [-CPUProf] <source file>
 	<source file> : Mandatory. Name of the source file to be processed. 
 					If the file extension is ".md" the bnf is extracted from markdown code segments
-                    enclosed in triple backticks.
-    -p <package>  : Mandatory. Package prefix of the generated parser packages
-                    E.g.: -p test generates parser files with a package: "test/parser"`
+					enclosed in triple backticks.
+    -CPUProf : Optional. Generate a CPU profile. Default false`
 	fmt.Println(msg)
 }

@@ -26,9 +26,9 @@ import (
 	"path/filepath"
 )
 
-func Gen() {
+func Gen(gs *gslot.GSlot) {
 	buf := new(bytes.Buffer)
-	for _, s := range gslot.GetSlots() {
+	for _, s := range gs.Slots() {
 		fmt.Fprintf(buf, "%s\n", s)
 	}
 	if err := ioutil.WriteFile(filepath.Join(cfg.BaseDir, "grammar_slots.txt"), buf.Bytes()); err != nil {

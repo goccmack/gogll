@@ -1,3 +1,17 @@
+//  Copyright 2019 Marius Ackerman
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+
 package firstfollow
 
 import (
@@ -12,10 +26,10 @@ import (
 	"path"
 )
 
-func Gen() {
+func Gen(g *ast.Grammar, ff *frstflw.FF) {
 	w := new(bytes.Buffer)
-	genFirstSets(w)
-	genFollowSets(w)
+	genFirstSets(w, g, ff)
+	genFollowSets(w, g, ff)
 	fname := path.Join(cfg.BaseDir, "first_follow.txt")
 	if err := ioutil.WriteFile(fname, w.Bytes()); err != nil {
 		fmt.Printf("Error writing first and follow: %s\n", err)
@@ -23,29 +37,29 @@ func Gen() {
 	}
 }
 
-func genFirstSets(w io.Writer) {
-	for _, s := range ast.GetSymbols() {
-		genFirstSet(w, s)
+func genFirstSets(w io.Writer, g *ast.Grammar, ff *frstflw.FF) {
+	for _, s := range g.GetSymbols() {
+		genFirstSet(w, s, ff)
 	}
 }
 
-func genFirstSet(w io.Writer, symbol string) {
+func genFirstSet(w io.Writer, symbol string, ff *frstflw.FF) {
 	fmt.Fprintf(w, "%s: ", symbol)
-	for _, s := range frstflw.FirstOfSymbol(symbol).Elements() {
+	for _, s := range ff.FirstOfSymbol(symbol).Elements() {
 		fmt.Fprintf(w, `%s `, s)
 	}
 	fmt.Fprintln(w)
 }
 
-func genFollowSets(w io.Writer) {
-	for _, s := range ast.GetNonTerminals() {
-		genFollowSet(w, s)
+func genFollowSets(w io.Writer, g *ast.Grammar, ff *frstflw.FF) {
+	for _, s := range g.GetNonTerminals() {
+		genFollowSet(w, s, ff)
 	}
 }
 
-func genFollowSet(w io.Writer, nt string) {
+func genFollowSet(w io.Writer, nt string, ff *frstflw.FF) {
 	fmt.Fprintf(w, "Follow(%s): ", nt)
-	for _, s := range frstflw.Follow(nt).Elements() {
+	for _, s := range ff.Follow(nt).Elements() {
 		fmt.Fprintf(w, `%s `, s)
 	}
 	fmt.Fprintln(w)

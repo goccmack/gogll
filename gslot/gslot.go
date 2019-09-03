@@ -12,9 +12,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-/*
-Package gslot implements grammar slots
-*/
+// Package gslot implements grammar slots
 package gslot
 
 import (
@@ -30,18 +28,41 @@ type Label struct {
 	Head      string
 	Alternate int
 	Pos       int
+	gs        *GSlot
+	ff        *frstflw.FF
 }
-
-var slots = make(map[Label]symbols.Symbols)
 
 type Slots []Label
 
-func GetSlots() Slots {
-	if len(slots) == 0 {
-		genSlots()
+type GSlot struct {
+	g     *ast.Grammar
+	ff    *frstflw.FF
+	slots map[Label]symbols.Symbols
+}
+
+func New(g *ast.Grammar, ff *frstflw.FF) *GSlot {
+	gs := &GSlot{
+		g:     g,
+		ff:    ff,
+		slots: make(map[Label]symbols.Symbols),
 	}
-	res := make(Slots, 0, len(slots))
-	for l, _ := range slots {
+	gs.genSlots()
+	return gs
+}
+
+func NewLabel(head string, alt, pos int, gs *GSlot, ff *frstflw.FF) *Label {
+	return &Label{
+		Head:      head,
+		Alternate: alt,
+		Pos:       pos,
+		gs:        gs,
+		ff:        ff,
+	}
+}
+
+func (gs *GSlot) Slots() Slots {
+	res := make(Slots, 0, len(gs.slots))
+	for l, _ := range gs.slots {
 		res = append(res, l)
 	}
 	sort.Sort(res)
@@ -53,16 +74,16 @@ func (s Label) Label() string {
 }
 
 func (s Label) IsEoR() bool {
-	symbols := slots[s]
+	symbols := s.gs.slots[s]
 	return s.Pos >= len(symbols)
 }
 
 func (s Label) IsFiR() bool {
-	symbols := slots[s]
+	symbols := s.gs.slots[s]
 	if s.Pos > 1 || len(symbols) <= 1 {
 		return false
 	}
-	if frstflw.FirstOfSymbol(symbols[0]).Contain(ast.Empty) &&
+	if s.ff.FirstOfSymbol(symbols[0]).Contain(frstflw.Empty) &&
 		symbols[0] == symbols[1] {
 		return false
 	}
@@ -70,7 +91,7 @@ func (s Label) IsFiR() bool {
 }
 
 func (s Label) String() string {
-	symbols := slots[s]
+	symbols := s.gs.slots[s]
 	buf := new(bytes.Buffer)
 	fmt.Fprintf(buf, "%s : ", s.Head)
 	for i, sym := range symbols {
@@ -88,7 +109,7 @@ func (s Label) String() string {
 }
 
 func (s Label) Symbols() symbols.Symbols {
-	return slots[s]
+	return s.gs.slots[s]
 }
 
 func (ss Slots) Labels() (labels []string) {
@@ -126,33 +147,35 @@ func (ss Slots) Swap(i, j int) {
 	ss[j] = iTmp
 }
 
-func genSlots() {
-	for _, rule := range ast.GetRules() {
-		genSlotsOfRule(rule)
+func (gs *GSlot) genSlots() {
+	for _, rule := range gs.g.Rules {
+		gs.genSlotsOfRule(rule)
 	}
 }
 
-func genSlotsOfRule(r *ast.Rule) {
+func (gs *GSlot) genSlotsOfRule(r *ast.Rule) {
 	for i, a := range r.Alternates {
-		genSlotsOfAlternate(r.Head.StringValue(), i, a.Symbols()...)
+		gs.genSlotsOfAlternate(r.Head.NT, i, a.GetSymbols()...)
 	}
 }
 
-func genSlotsOfAlternate(nt string, altI int, symbols ...string) {
-	if symbols[0] == ast.Empty {
-		genSlot(nt, altI, 0, []string{}...)
+func (gs *GSlot) genSlotsOfAlternate(nt string, altI int, symbols ...string) {
+	if len(symbols) == 0 {
+		gs.genSlot(nt, altI, 0, []string{}...)
 	} else {
 		for pos := 0; pos <= len(symbols); pos++ {
-			genSlot(nt, altI, pos, symbols...)
+			gs.genSlot(nt, altI, pos, symbols...)
 		}
 	}
 }
 
-func genSlot(nt string, altI, pos int, symbols ...string) {
+func (gs *GSlot) genSlot(nt string, altI, pos int, symbols ...string) {
 	slot := Label{
 		Head:      nt,
 		Alternate: altI,
 		Pos:       pos,
+		gs:        gs,
+		ff:        gs.ff,
 	}
-	slots[slot] = symbols
+	gs.slots[slot] = symbols
 }

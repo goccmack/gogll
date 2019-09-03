@@ -11,662 +11,543 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
+
+/*
+Package ast is an Abstract Syntax Tree for gogll, used for code generation.
+*/
 package ast
 
 import (
-	"strings"
-
-	"bytes"
 	"fmt"
-	"gogll/token"
-
+	"gogll/goutil/bsr"
 	"gogll/goutil/stringset"
-)
-
-const (
-	Empty = "empty"
-)
-
-func GetAST(parseTree interface{}) *Grammar {
-	g := parseTree.(*Grammar)
-	// startSymbol = g.Rules[0].Head.stringValue
-	return g
-}
-
-var (
-	g *Grammar
+	"sort"
+	"strings"
 )
 
 type Grammar struct {
-	Package *Package
-
-	Rules Rules
+	Package      string
+	Rules        []*Rule
+	StartSymbol  string
+	CharLiterals []string
+	Terminals    map[string]bool
 }
 
-func GetGrammar() *Grammar {
-	return g
-}
-
-func NewGrammar(pkg, rules interface{}) (*Grammar, error) {
-	g = &Grammar{
-		Rules: rules.(Rules),
+func New() *Grammar {
+	return &Grammar{
+		Terminals: map[string]bool{
+			// "any":     true,
+			// "letter":  true,
+			// "number":  true,
+			// "space":   true,
+			// "upcase":  true,
+			// "lowcase": true,
+		},
 	}
-	if pkg != nil {
-		g.Package = pkg.(*Package)
+}
+
+func (g *Grammar) AddPackage(p string) {
+	g.Package = p[1 : len(p)-1]
+}
+
+func (g *Grammar) AddRule(r *Rule) error {
+	if r1 := g.GetRule(r.Head.NT); r1 != nil {
+		r1.Append(r)
+	} else {
+		g.Rules = append(g.Rules, r)
 	}
-	return g, nil
+	return nil
 }
 
-func NewRules(rule interface{}) (Rules, error) {
-	rules := Rules{rule.(*Rule)}
-	return rules, nil
+func (g *Grammar) AddTerminal(t Terminal) {
+	g.Terminals[t.String()] = true
 }
 
-func AddRule(rules, rule interface{}) (Rules, error) {
-	rs, r := rules.(Rules), rule.(*Rule)
-	rs = append(rs, r)
-	return rs, nil
-}
-
-type Package struct {
-	Token *token.Token
-}
-
-func NewPackage(pkg interface{}) (*Package, error) {
-	tok := pkg.(*token.Token)
-	p := &Package{
-		Token: tok,
+func (g *Grammar) GetNonTerminals() (nts []string) {
+	for _, r := range g.Rules {
+		nts = append(nts, r.Head.NT)
 	}
-	if parserPackage != "" {
-		err := fmt.Errorf("Duplicate package statement")
-		return nil, err
-	}
-	parserPackage = p.StringValue()
-	return p, nil
+	sort.Strings(nts)
+	return
 }
 
-func (p *Package) StringValue() string {
-	return p.Token.StringValue()
-}
-
-type Alternate struct {
-	Body *Body
-}
-
-func NewAlternate(body interface{}) (*Alternate, error) {
-	a := &Alternate{}
-	if body != nil {
-		a.Body = body.(*Body)
-	}
-	return a, nil
-}
-
-func (a *Alternate) Empty() bool {
-	return a.Body == nil
-}
-
-func (a *Alternate) Symbols() Symbols {
-	if a.Empty() {
-		return Symbols{Empty}
-	}
-	ss := make(Symbols, 0, len(a.Body.Symbols))
-	for _, s := range a.Body.Symbols {
-		ss = append(ss, s.Symbols()...)
-	}
-	return ss
-}
-
-type Alternates []*Alternate
-
-func NewAlternates(alt interface{}) (Alternates, error) {
-	a := Alternates{alt.(*Alternate)}
-	return a, nil
-}
-
-func AddAlternate(alts, alt interface{}) (Alternates, error) {
-	as := alts.(Alternates)
-	as = append(as, alt.(*Alternate))
-	return as, nil
-}
-
-type Body struct {
-	Symbols []Symbol
-}
-
-func NewBody(sym interface{}) (*Body, error) {
-	sym1 := sym.(Symbol)
-	AddSymbol(sym1)
-	b := &Body{
-		Symbols: []Symbol{sym1},
-	}
-
-	return b, nil
-}
-
-func AppendSymbol(body, sym interface{}) (*Body, error) {
-	b := body.(*Body)
-	sym1 := sym.(Symbol)
-	AddSymbol(sym1)
-	b.Symbols = append(b.Symbols, sym1)
-	return b, nil
-}
-
-func (b *Body) String() string {
-	if b == nil {
-		return "ϵ"
-	}
-	buf := new(bytes.Buffer)
-	for i, s := range b.Symbols {
-		if i > 0 {
-			buf.WriteString(" ")
+func (g *Grammar) GetRule(head string) *Rule {
+	for _, r := range g.Rules {
+		if r.Head.NT == head {
+			return r
 		}
-		buf.WriteString(s.StringValue())
 	}
-	return buf.String()
+	return nil
 }
 
-type Head struct {
-	Token       *token.Token
-	stringValue string
-}
-
-func NewHead(head interface{}) (*Head, error) {
-	tok := head.(*token.Token)
-	h := &Head{
-		Token:       tok,
-		stringValue: tok.IDValue(),
+func (g *Grammar) SetStartSymbol(nt string) error {
+	if g.StartSymbol != "" {
+		return fmt.Errorf("Duplicate start symbols %s and %s", g.StartSymbol, nt)
 	}
-	return h, nil
+	g.StartSymbol = nt
+	return nil
 }
 
-func (h *Head) GetPos() token.Pos {
-	return h.Token.Pos
-}
-
-func (h *Head) StringValue() string {
-	return h.stringValue
+func (g *Grammar) GetSymbols() []string {
+	return append(g.GetTerminals(), g.GetNonTerminals()...)
 }
 
 type Rule struct {
-	IsStartSymbol bool
-	Head          *Head
-	Alternates    Alternates
+	Head       *Head
+	Alternates []*Alternate
 }
 
-func NewRule(start bool, head, alts interface{}) (*Rule, error) {
-	r := &Rule{
-		IsStartSymbol: start,
-		Head:          head.(*Head),
-		Alternates:    alts.(Alternates),
+func (r *Rule) Append(r1 *Rule) error {
+	for _, a := range r1.Alternates {
+		if r.HasAlternate(a) {
+			return fmt.Errorf("Duplicate alternate %s : %s", r.Head, a)
+		}
+		r.Alternates = append(r.Alternates, a)
 	}
-	addRule(r)
-	return r, nil
+	return nil
 }
 
-type Rules []*Rule
+func (r *Rule) GetCharLiterals() (cls []*CharLiteral) {
+	for _, a := range r.Alternates {
+		cls = append(cls, a.GetCharLiterals()...)
+	}
+	return
+}
+
+func (r *Rule) HasAlternate(a *Alternate) bool {
+	for _, a1 := range r.Alternates {
+		if a1.Equal(a) {
+			return true
+		}
+	}
+	return false
+}
+
+type Head struct {
+	BSR bsr.BSR
+	NT  string
+}
+
+func NewHead(b bsr.BSR, nt string) *Head {
+	return &Head{
+		BSR: b,
+		NT:  nt,
+	}
+}
+
+func (h *Head) String() string {
+	return h.NT
+}
+
+type Alternate struct {
+	Symbols []Symbol
+}
+
+func (a *Alternate) Equal(a1 *Alternate) bool {
+	if len(a.Symbols) != len(a1.Symbols) {
+		return false
+	}
+	if a.Empty() != a1.Empty() {
+		return false
+	}
+	for i, s := range a.Symbols {
+		if !s.Equal(a1.Symbols[i]) {
+			return false
+		}
+	}
+	return true
+}
+
+func (a *Alternate) GetSymbols() (ss []string) {
+	for _, s := range a.Symbols {
+		ss = append(ss, s.GetSymbol())
+	}
+	return
+}
+
+func (a *Alternate) GetCharLiterals() (cls []*CharLiteral) {
+	for _, s := range a.Symbols {
+		if cl, ok := s.(*CharLiteral); ok {
+			cls = append(cls, cl)
+		}
+	}
+	return
+}
+
+func (a *Alternate) String() string {
+	strs := make([]string, len(a.Symbols))
+	for i, s := range a.Symbols {
+		strs[i] = s.String()
+	}
+	return strings.Join(strs, " ")
+}
+
+func (a *Alternate) Empty() bool {
+	return len(a.Symbols) == 0
+}
 
 type Symbol interface {
-	isSymbol()
-	GetPos() token.Pos
-	StringValue() string
+	IsSymbol()
 	Equal(Symbol) bool
-	IsTerminal() bool
-	Symbols() Symbols
+	String() string
+	GetBSR() bsr.BSR
+	GetSymbol() string
 }
 
-func (*Head) isSymbol()        {}
-func (*ID) isSymbol()          {}
-func (*AnyChar) isSymbol()     {}
-func (*AnyOf) isSymbol()       {}
-func (*NotString) isSymbol()   {}
-func (*Space) isSymbol()       {}
-func (*String) isSymbol()      {}
-func (*CharLiteral) isSymbol() {}
-func (*UpCase) isSymbol()      {}
-func (*LowCase) isSymbol()     {}
-func (*Letter) isSymbol()      {}
-func (*Number) isSymbol()      {}
-func (*StringChar) isSymbol()  {}
+func (NonTerminal) IsSymbol() {}
 
-func (*Head) IsTerminal() bool        { return false }
-func (*ID) IsTerminal() bool          { return false }
-func (*AnyChar) IsTerminal() bool     { return true }
-func (*AnyOf) IsTerminal() bool       { return true }
-func (*NotString) IsTerminal() bool   { return true }
-func (*Space) IsTerminal() bool       { return true }
-func (*CharLiteral) IsTerminal() bool { return true }
-func (*UpCase) IsTerminal() bool      { return true }
-func (*LowCase) IsTerminal() bool     { return true }
-func (*Letter) IsTerminal() bool      { return true }
-func (*Number) IsTerminal() bool      { return true }
-func (*String) IsTerminal() bool      { return true }
-func (*StringChar) IsTerminal() bool  { return true }
+type NonTerminal struct {
+	bsr bsr.BSR
+	NT  string
+}
 
-func (sym *Head) Equal(sym1 Symbol) bool {
-	if _, ok := sym1.(*Head); !ok {
+func NewNonTerminal(b bsr.BSR, s string) *NonTerminal {
+	return &NonTerminal{
+		bsr: b,
+		NT:  s,
+	}
+}
+
+func (nt *NonTerminal) Equal(s Symbol) bool {
+	nt1, ok := s.(*NonTerminal)
+	if !ok {
 		return false
-	} else {
-		return sym.StringValue() == sym1.StringValue()
 	}
+	return nt.NT == nt1.NT
 }
-func (sym *ID) Equal(sym1 Symbol) bool {
-	if _, ok := sym1.(*ID); !ok {
+
+func (nt *NonTerminal) GetBSR() bsr.BSR {
+	return nt.bsr
+}
+
+func (nt *NonTerminal) GetSymbol() string {
+	return nt.NT
+}
+
+func (nt *NonTerminal) String() string {
+	return string(nt.NT)
+}
+
+type Terminal interface {
+	Symbol
+}
+
+func (*Any) IsSymbol()         {}
+func (*AnyOf) IsSymbol()       {}
+func (*Letter) IsSymbol()      {}
+func (*Number) IsSymbol()      {}
+func (*Space) IsSymbol()       {}
+func (*Upcase) IsSymbol()      {}
+func (*Lowcase) IsSymbol()     {}
+func (*Not) IsSymbol()         {}
+func (*CharLiteral) IsSymbol() {}
+
+func (g *Grammar) IsCharLiteral(symbol string) bool {
+	for _, cl := range g.CharLiterals {
+		if cl == symbol {
+			return true
+		}
+	}
+	return false
+}
+
+func (g *Grammar) GetTerminals() []string {
+	ts := make([]string, 0, len(g.Terminals))
+	for t := range g.Terminals {
+		ts = append(ts, t)
+	}
+	sort.Strings(ts)
+	return ts
+}
+
+func (g *Grammar) IsTerminal(symbol string) bool {
+	// fmt.Printf("ast.IsTerminal(%s)=%t\n", symbol, g.Terminals[symbol])
+	return g.Terminals[symbol]
+}
+
+func (a *Any) Equal(s Symbol) bool {
+	_, ok := s.(*Any)
+	return ok
+}
+
+func (a *AnyOf) Equal(s Symbol) bool {
+	a1, ok := s.(*AnyOf)
+	if !ok {
 		return false
-	} else {
-		return sym.StringValue() == sym1.StringValue()
 	}
+	return a.Set.Equal(a1.Set)
 }
-func (sym *AnyChar) Equal(sym1 Symbol) bool {
-	if _, ok := sym1.(*AnyChar); !ok {
+
+func (l *Letter) Equal(s Symbol) bool {
+	_, ok := s.(*Letter)
+	return ok
+}
+
+func (n *Number) Equal(s Symbol) bool {
+	_, ok := s.(*Number)
+	return ok
+}
+
+func (s *Space) Equal(s1 Symbol) bool {
+	_, ok := s1.(*Space)
+	return ok
+}
+
+func (u *Upcase) Equal(s Symbol) bool {
+	_, ok := s.(*Upcase)
+	return ok
+}
+
+func (l *Lowcase) Equal(s Symbol) bool {
+	_, ok := s.(*Lowcase)
+	return ok
+}
+
+func (n *Not) Equal(s Symbol) bool {
+	n1, ok := s.(*Not)
+	if !ok {
 		return false
-	} else {
-		return sym.StringValue() == sym1.StringValue()
 	}
+	return n.Set.Equal(n1.Set)
 }
-func (sym *AnyOf) Equal(sym1 Symbol) bool {
-	if _, ok := sym1.(*AnyOf); !ok {
+
+func (c *CharLiteral) Equal(s Symbol) bool {
+	c1, ok := s.(*CharLiteral)
+	if !ok {
 		return false
-	} else {
-		return sym.StringValue() == sym1.StringValue()
 	}
-}
-func (sym *NotString) Equal(sym1 Symbol) bool {
-	if _, ok := sym1.(*NotString); !ok {
-		return false
-	} else {
-		return sym.StringValue() == sym1.StringValue()
-	}
-}
-func (sym *Space) Equal(sym1 Symbol) bool {
-	if _, ok := sym1.(*Space); !ok {
-		return false
-	} else {
-		return sym.StringValue() == sym1.StringValue()
-	}
-}
-func (sym *CharLiteral) Equal(sym1 Symbol) bool {
-	if _, ok := sym1.(*CharLiteral); !ok {
-		return false
-	} else {
-		return sym.StringValue() == sym1.StringValue()
-	}
-}
-func (sym *UpCase) Equal(sym1 Symbol) bool {
-	if _, ok := sym1.(*UpCase); !ok {
-		return false
-	} else {
-		return sym.StringValue() == sym1.StringValue()
-	}
-}
-func (sym *LowCase) Equal(sym1 Symbol) bool {
-	if _, ok := sym1.(*LowCase); !ok {
-		return false
-	} else {
-		return sym.StringValue() == sym1.StringValue()
-	}
-}
-func (sym *Letter) Equal(sym1 Symbol) bool {
-	if _, ok := sym1.(*Letter); !ok {
-		return false
-	} else {
-		return sym.StringValue() == sym1.StringValue()
-	}
-}
-func (sym *Number) Equal(sym1 Symbol) bool {
-	if _, ok := sym1.(*Number); !ok {
-		return false
-	} else {
-		return sym.StringValue() == sym1.StringValue()
-	}
-}
-func (sym *String) Equal(sym1 Symbol) bool {
-	if _, ok := sym1.(*String); !ok {
-		return false
-	} else {
-		return sym.StringValue() == sym1.StringValue()
-	}
+	return c.Literal == c1.Literal
 }
 
-func (sym *StringChar) Equal(sym1 Symbol) bool {
-	if _, ok := sym1.(*StringChar); !ok {
-		return false
-	} else {
-		return sym.StringValue() == sym1.StringValue()
-	}
+func (Any) GetSymbol() string {
+	return "any"
 }
 
-func (sym *Head) Symbols() Symbols        { return Symbols{sym.StringValue()} }
-func (sym *ID) Symbols() Symbols          { return Symbols{sym.StringValue()} }
-func (sym *AnyChar) Symbols() Symbols     { return Symbols{sym.StringValue()} }
-func (sym *AnyOf) Symbols() Symbols       { return Symbols{sym.StringValue()} }
-func (sym *NotString) Symbols() Symbols   { return Symbols{sym.StringValue()} }
-func (sym *Space) Symbols() Symbols       { return Symbols{sym.StringValue()} }
-func (sym *CharLiteral) Symbols() Symbols { return Symbols{sym.StringValue()} }
-func (sym *UpCase) Symbols() Symbols      { return Symbols{sym.StringValue()} }
-func (sym *LowCase) Symbols() Symbols     { return Symbols{sym.StringValue()} }
-func (sym *Letter) Symbols() Symbols      { return Symbols{sym.StringValue()} }
-func (sym *Number) Symbols() Symbols      { return Symbols{sym.StringValue()} }
-func (s *String) Symbols() (ss Symbols)   { return s.symbols }
-
-func (sym *StringChar) Symbols() Symbols { return Symbols{sym.StringValue()} }
-
-type NotString struct {
-	Token *token.Token
-	value string
+func (a *AnyOf) GetSymbol() string {
+	return fmt.Sprintf(`anyof(%s)`, a.Set.JoinEscaped())
 }
 
-func (ns *NotString) StringValue() string {
-	return ns.value
+func (Letter) GetSymbol() string {
+	return "letter"
 }
 
-func NewNotString(sym interface{}) (*NotString, error) {
-	tok := sym.(*token.Token)
-	symbol := &NotString{
-		Token: tok,
-		// value: "not " + tok.IDValue(),
-		value: fmt.Sprintf(`not("%s")`, tok.StringValue()),
-	}
-	return symbol, nil
+func (Number) GetSymbol() string {
+	return "number"
 }
 
-func (n *NotString) GetPos() token.Pos {
-	return n.Token.Pos
+func (Space) GetSymbol() string {
+	return "space"
 }
 
-/*** ID ***/
-
-type ID struct {
-	Token *token.Token
-	value string
+func (Upcase) GetSymbol() string {
+	return "upcase"
 }
 
-func NewID(id interface{}) (*ID, error) {
-	tok := id.(*token.Token)
-	id1 := &ID{
-		Token: tok,
-		value: tok.IDValue(),
-	}
-	return id1, nil
+func (Lowcase) GetSymbol() string {
+	return "lowcase"
 }
 
-func (id *ID) GetPos() token.Pos {
-	return id.Token.Pos
+func (n *Not) GetSymbol() string {
+	return fmt.Sprintf(`not(%s)`, n.Set.JoinEscaped())
 }
 
-func (id *ID) StringValue() string {
-	return id.value
+func (Any) String() string {
+	return "any"
 }
 
-type AnyChar struct {
-	Token *token.Token
-	value string
+func (a *AnyOf) String() string {
+	return fmt.Sprintf(`anyof "%s"`, strings.Join(a.Set.Elements(), ""))
 }
 
-func NewAnyChar(t interface{}) (*AnyChar, error) {
-	tok := t.(*token.Token)
-	terminal := &AnyChar{
-		Token: tok,
-		value: "any",
-	}
-	return terminal, nil
+func (Letter) String() string {
+	return "letter"
 }
 
-func (t *AnyChar) GetPos() token.Pos {
-	return t.Token.Pos
+func (Number) String() string {
+	return "number"
 }
 
-func (t *AnyChar) StringValue() string {
-	return t.value
+func (Space) String() string {
+	return "space"
+}
+
+func (Upcase) String() string {
+	return "upcase"
+}
+
+func (Lowcase) String() string {
+	return "lowcase"
+}
+
+func (*Not) String() string {
+	return "not"
+}
+
+type Any struct {
+	bsr bsr.BSR
+}
+
+func NewAny(b bsr.BSR) *Any {
+	return &Any{b}
+}
+
+func (a *Any) GetBSR() bsr.BSR {
+	return a.bsr
 }
 
 /*** AnyOf ***/
 
 type AnyOf struct {
-	Token *token.Token
-	value string
+	bsr bsr.BSR
+	Set *stringset.StringSet
 }
 
-func NewAnyOf(str interface{}) (*AnyOf, error) {
-	tok := str.(*token.Token)
-	anyOf := &AnyOf{
-		Token: tok,
-		value: fmt.Sprintf(`anyof("%s")`, tok.StringValue()),
+func (g *Grammar) NewAnyOf(b bsr.BSR, s string) *AnyOf {
+	a := &AnyOf{
+		bsr: b,
+		Set: stringset.New(newString(s)...),
 	}
-	return anyOf, nil
+	g.Terminals[a.GetSymbol()] = true
+	return a
 }
 
-func (a *AnyOf) GetPos() token.Pos {
-	return a.Token.Pos
-}
-
-func (a *AnyOf) StringValue() string {
-	return a.value
-}
-
-type Space struct {
-	Token *token.Token
-	value string
-}
-
-func NewSpace(t interface{}) (*Space, error) {
-	tok := t.(*token.Token)
-	terminal := &Space{
-		Token: tok,
-		value: "space",
-	}
-	return terminal, nil
-}
-
-func (s *Space) GetPos() token.Pos {
-	return s.Token.Pos
-}
-
-func (t *Space) StringValue() string {
-	return t.value
-}
-
-/*** CharLiteral ***/
-
-type CharLiteral struct {
-	Token *token.Token
-	value string
-	Rune  rune
-}
-
-func NewCharLiteral(t interface{}) (*CharLiteral, error) {
-	tok := t.(*token.Token)
-	r, err := tok.UTF8Rune()
-	if err != nil {
-		return nil, err
-	}
-	terminal := &CharLiteral{
-		Token: tok,
-		value: tok.CharLiteralValue(),
-		Rune:  r,
-	}
-	return terminal, nil
-}
-
-func (t *CharLiteral) StringValue() string {
-	return t.value
-}
-
-func (c *CharLiteral) GetPos() token.Pos {
-	return c.Token.Pos
-}
-
-/*** UpCase ***/
-
-type UpCase struct {
-	Token *token.Token
-	value string
-}
-
-func NewUpCase(t interface{}) (*UpCase, error) {
-	tok := t.(*token.Token)
-	terminal := &UpCase{
-		Token: tok,
-		value: tok.IDValue(),
-	}
-	return terminal, nil
-}
-
-func (u *UpCase) GetPos() token.Pos {
-	return u.Token.Pos
-}
-
-func (t *UpCase) StringValue() string {
-	return t.value
-}
-
-type LowCase struct {
-	Token *token.Token
-	value string
-}
-
-func NewLowCase(t interface{}) (*LowCase, error) {
-	tok := t.(*token.Token)
-	terminal := &LowCase{
-		Token: tok,
-		value: tok.IDValue(),
-	}
-	return terminal, nil
-}
-
-func (l *LowCase) GetPos() token.Pos {
-	return l.Token.Pos
-}
-
-func (t *LowCase) StringValue() string {
-	return t.value
+func (a *AnyOf) GetBSR() bsr.BSR {
+	return a.bsr
 }
 
 type Letter struct {
-	Token *token.Token
-	value string
+	bsr bsr.BSR
 }
 
-func NewLetter(t interface{}) (*Letter, error) {
-	tok := t.(*token.Token)
-	terminal := &Letter{
-		Token: tok,
-		value: tok.IDValue(),
-	}
-	return terminal, nil
+func NewLetter(b bsr.BSR) *Letter {
+	return &Letter{b}
 }
 
-func (l *Letter) GetPos() token.Pos {
-	return l.Token.Pos
-}
-
-func (t *Letter) StringValue() string {
-	return t.value
+func (s *Letter) GetBSR() bsr.BSR {
+	return s.bsr
 }
 
 type Number struct {
-	Token *token.Token
-	value string
+	bsr bsr.BSR
 }
 
-func NewNumber(t interface{}) (*Number, error) {
-	tok := t.(*token.Token)
-	terminal := &Number{
-		Token: tok,
-		value: tok.IDValue(),
+func NewNumber(b bsr.BSR) *Number {
+	return &Number{b}
+}
+
+func (s *Number) GetBSR() bsr.BSR {
+	return s.bsr
+}
+
+type Space struct {
+	bsr bsr.BSR
+}
+
+func NewSpace(b bsr.BSR) *Space {
+	return &Space{b}
+}
+
+func (s *Space) GetBSR() bsr.BSR {
+	return s.bsr
+}
+
+type Upcase struct {
+	bsr bsr.BSR
+}
+
+func NewUpcase(b bsr.BSR) *Upcase {
+	return &Upcase{b}
+}
+
+func (s *Upcase) GetBSR() bsr.BSR {
+	return s.bsr
+}
+
+type Lowcase struct {
+	bsr bsr.BSR
+}
+
+func NewLowcase(b bsr.BSR) *Lowcase {
+	return &Lowcase{b}
+}
+
+func (s *Lowcase) GetBSR() bsr.BSR {
+	return s.bsr
+}
+
+type Not struct {
+	bsr bsr.BSR
+	Set *stringset.StringSet
+}
+
+func (g *Grammar) NewNot(b bsr.BSR, s string) *Not {
+	n := &Not{
+		bsr: b,
+		Set: stringset.New(newString(s)...),
 	}
-	return terminal, nil
+	g.Terminals[n.GetSymbol()] = true
+	return n
 }
 
-func (n *Number) GetPos() token.Pos {
-	return n.Token.Pos
+func (n *Not) GetBSR() bsr.BSR {
+	return n.bsr
 }
 
-func (t *Number) StringValue() string {
-	return t.value
+type CharLiteral struct {
+	bsr     bsr.BSR
+	Literal string
 }
 
-// String
-
-type String struct {
-	Token    *token.Token
-	strChars []*StringChar
-	symbols  []string
+func (g *Grammar) NewCharLiteral(b bsr.BSR, s string) *CharLiteral {
+	return g.newCharLiteral(b, s[1:len(s)-1])
 }
 
-func NewString(str interface{}) (*String, error) {
-	tok := str.(*token.Token)
-	sym := &String{
-		Token: tok,
-	}
-	var err error
-	sym.strChars, err = newStringChars(sym)
-	if err != nil {
-		return nil, err
-	}
-	for _, sc := range sym.strChars {
-		sym.symbols = append(sym.symbols, sc.stringValue)
-	}
-	return sym, nil
+func (c *CharLiteral) GetBSR() bsr.BSR {
+	return c.bsr
 }
 
-func newStringChars(s *String) (cs []*StringChar, err error) {
-	rdr := strings.NewReader(s.Token.StringValue())
+func (c *CharLiteral) GetSymbol() string {
+	return fmt.Sprintf(`%s`, c.Literal)
+}
+
+func (c *CharLiteral) String() string {
+	return fmt.Sprintf(`'%s'`, c.Literal)
+}
+
+func newString(s string) (cs []string) {
+	rdr := strings.NewReader(s)
 	str := ""
 	for rdr.Len() > 0 {
 		r, _, err := rdr.ReadRune()
 		if err != nil {
-			return nil, err
+			panic(err)
 		}
 		if r == '\\' {
 			r, _, err = rdr.ReadRune()
 			if err != nil {
-				return nil, err
+				panic(err)
 			}
 			str = fmt.Sprintf("\\%c", r)
 		} else {
 			str = string(r)
 		}
-		cs = append(cs, newStringChar(r, str, s))
+		cs = append(cs, str)
 	}
 	return
 }
 
-func (s *String) GetPos() token.Pos {
-	return s.Token.Pos
-}
-
-func (s *String) StringValue() string {
-	return string(s.Token.Lit)
-}
-
-type StringChar struct {
-	String      *String
-	Rune        rune
-	stringValue string
-}
-
-func newStringChar(r rune, sc string, str *String) *StringChar {
-	// fmt.Printf("ast.newStringChar*(%s)\n", sc)
-	strCh := &StringChar{
-		String:      str,
-		Rune:        r,
-		stringValue: sc,
+func (g *Grammar) NewString(b bsr.BSR, s string) (cs []Terminal) {
+	for _, str := range newString(s[1 : len(s)-1]) {
+		cs = append(cs, g.newCharLiteral(b, str))
 	}
-	return strCh
+	return
 }
 
-func (s *StringChar) GetPos() token.Pos {
-	return s.GetPos()
-}
-
-func (sc *StringChar) StringValue() string {
-	return sc.stringValue
-}
-
-/*** Dump ***/
-
-func dumpFirstSets(fs map[string]*stringset.StringSet) {
-	for _, s := range GetSymbols() {
-		fmt.Printf("%s: %s\n", s, fs[s])
+func (g *Grammar) newCharLiteral(b bsr.BSR, s string) *CharLiteral {
+	g.CharLiterals = append(g.CharLiterals, s)
+	g.Terminals[s] = true
+	return &CharLiteral{
+		bsr:     b,
+		Literal: s,
 	}
 }
