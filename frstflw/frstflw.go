@@ -15,11 +15,9 @@
 package frstflw
 
 import (
-	"fmt"
 	"gogll/ast"
 	"gogll/goutil/stringset"
 	"gogll/goutil/stringslice"
-	"strings"
 )
 
 const Empty = "ϵ"
@@ -58,7 +56,7 @@ func (ff *FF) FirstOfString(str []string) *stringset.StringSet {
 			break
 		}
 	}
-	fmt.Printf("FirstOfString(%s): %s\n", strings.Join(str, " "), first)
+	// fmt.Printf("FirstOfString(%s): %s\n", strings.Join(str, " "), first)
 	return first
 }
 
