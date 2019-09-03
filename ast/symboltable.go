@@ -1,3 +1,16 @@
+//  Copyright 2019 Marius Ackerman
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
 package ast
 
 import (
@@ -11,6 +24,7 @@ import (
 
 // symbol.Value() -> Symbols
 var symbols = make(map[string]Symbol)
+
 // var nonTerminals = make(map[string]bool)
 var rules = make(map[string]*Rule)
 
@@ -72,7 +86,7 @@ func GetNonTerminals() (ss Symbols) {
 			ss = append(ss, nt)
 		}
 	}
-	sort.Sort(ss)
+	sort.Strings(ss)
 	return
 }
 
@@ -106,7 +120,7 @@ func GetTerminals() (ss Symbols) {
 			ss = append(ss, t)
 		}
 	}
-	sort.Sort(ss)
+	sort.Strings(ss)
 	return
 }
 
@@ -122,7 +136,9 @@ func GetSymbols() Symbols {
 	for _, sym := range symbols {
 		ss.Add([]string(sym.Symbols())...)
 	}
-	return ss.Elements()
+	ss1 := ss.Elements()
+	sort.Strings(ss1)
+	return ss1
 }
 
 func IsTerminal(symbol string) bool {
@@ -165,19 +181,19 @@ func (ss Symbols) RemoveDuplicates() (newSS Symbols) {
 	return
 }
 
-func (ss Symbols) Len() int {
-	return len(ss)
-}
+// func (ss Symbols) Len() int {
+// 	return len(ss)
+// }
 
-func (ss Symbols) Less(i, j int) bool {
-	return ss[i] < ss[j]
-}
+// func (ss Symbols) Less(i, j int) bool {
+// 	return ss[i] < ss[j]
+// }
 
-func (ss Symbols) Swap(i, j int) {
-	iTmp := ss[i]
-	ss[i] = ss[j]
-	ss[j] = iTmp
-}
+// func (ss Symbols) Swap(i, j int) {
+// 	iTmp := ss[i]
+// 	ss[i] = ss[j]
+// 	ss[j] = iTmp
+// }
 
 /*** Utils ***/
 

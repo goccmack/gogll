@@ -32,6 +32,9 @@ The [grammar for gogll v0](gogll.bnf) is a gocc BNF.
 # Features considered for for future implementation
 1. [EBNF](#Scott-et-al-2018)
 
+# License
+See [Apache license](License.txt)
+
 # Notes
 [see](notes.md)
 
