@@ -7,11 +7,13 @@ parser/parser.go: gogll.md
 	gogll -p gogll gogll.md 
 
 clean:
-	first_follow.txt; \
-	grammar_slots.txt; \
-	symbols.txt; \
+	rm first_follow.txt; \
+	rm grammar_slots.txt; \
+	rm symbols.txt; \
+	rm first_follow.txt; \
 	rm -rf parser ; \
 	rm -rf goutil/bsr ; \
 	rm -rf goutil/md ; \
 	rm -rf goutil/stringset ; \
+	rm gogll
 
