@@ -1,0 +1,76 @@
+": " 
+*: * 
+:: : 
+;: ; 
+Alternate: \" \' a e l letter n s u 
+Alternates: \" \' a e l letter n s u 
+CharLiteral: \' 
+EscapedChar: " \' \\ n r t 
+GoGLL: anyof("\t\n\t") p space 
+Head: * letter 
+NTChar: anyof("!@#$%^&*-_+=") letter number 
+NTChars: anyof("!@#$%^&*-_+=") letter number 
+NTID: letter 
+NonTerminal: letter 
+Package: p 
+Rule: * letter 
+Rules: * letter 
+Sep: anyof("\t\n\t") space 
+SepChar: anyof("\t\n\t") space 
+SepE: anyof("\t\n\t") empty space 
+String: \" 
+StringChars: \\ empty not("\\\"") 
+Symbol: \" \' a l letter n s u 
+Symbols: \" \' a l letter n s u 
+Terminal: \" \' a l n s u 
+\": \" 
+\': \' 
+\\: \\ 
+a: a 
+any: any 
+anyof("!@#$%^&*-_+="): anyof("!@#$%^&*-_+=") 
+anyof("\t\n\t"): anyof("\t\n\t") 
+anyof("nrt\\'\""): anyof("nrt\\'\"") 
+b: b 
+c: c 
+e: e 
+f: f 
+g: g 
+k: k 
+l: l 
+letter: letter 
+m: m 
+n: n 
+not("\\\""): not("\\\"") 
+number: number 
+o: o 
+p: p 
+r: r 
+s: s 
+space: space 
+t: t 
+u: u 
+w: w 
+y: y 
+|: | 
+Follow(Alternate): ; anyof("\t\n\t") space | 
+Follow(Alternates): ; anyof("\t\n\t") space 
+Follow(CharLiteral): ; anyof("\t\n\t") space | 
+Follow(EscapedChar): \" \\ not("\\\"") 
+Follow(GoGLL): $ 
+Follow(Head): : anyof("\t\n\t") space 
+Follow(NTChar): : ; anyof("!@#$%^&*-_+=") anyof("\t\n\t") letter number space | 
+Follow(NTChars): : ; anyof("\t\n\t") space | 
+Follow(NTID): : ; anyof("\t\n\t") space | 
+Follow(NonTerminal): ; anyof("\t\n\t") space | 
+Follow(Package): anyof("\t\n\t") space 
+Follow(Rule): $ * anyof("\t\n\t") letter space 
+Follow(Rules): $ anyof("\t\n\t") space 
+Follow(Sep): $ * : ; \" \' a e l letter n p s u | 
+Follow(SepChar): $ * : ; \" \' a anyof("\t\n\t") e l letter n p s space u | 
+Follow(SepE): $ * : ; \" \' a e l letter n p s u | 
+Follow(String): ; anyof("\t\n\t") space | 
+Follow(StringChars): \" 
+Follow(Symbol): ; anyof("\t\n\t") space | 
+Follow(Symbols): ; anyof("\t\n\t") space | 
+Follow(Terminal): ; anyof("\t\n\t") space | 
