@@ -1,3 +1,17 @@
+//  Copyright 2019 Marius Ackerman
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+
 /*
 Package ast is an Abstract Syntax Tree for gogll, used for code generation.
 */
@@ -22,12 +36,12 @@ type Grammar struct {
 func New() *Grammar {
 	return &Grammar{
 		Terminals: map[string]bool{
-			"any":     true,
-			"letter":  true,
-			"number":  true,
-			"space":   true,
-			"upcase":  true,
-			"lowcase": true,
+			// "any":     true,
+			// "letter":  true,
+			// "number":  true,
+			// "space":   true,
+			// "upcase":  true,
+			// "lowcase": true,
 		},
 	}
 }
@@ -38,16 +52,22 @@ func (g *Grammar) AddPackage(p string) {
 
 func (g *Grammar) AddRule(r *Rule) error {
 	if r1 := g.GetRule(r.Head.NT); r1 != nil {
-		return r1.Append(r)
+		r1.Append(r)
+	} else {
+		g.Rules = append(g.Rules, r)
 	}
-	g.Rules = append(g.Rules, r)
 	return nil
+}
+
+func (g *Grammar) AddTerminal(t Terminal) {
+	g.Terminals[t.String()] = true
 }
 
 func (g *Grammar) GetNonTerminals() (nts []string) {
 	for _, r := range g.Rules {
 		nts = append(nts, r.Head.NT)
 	}
+	sort.Strings(nts)
 	return
 }
 
@@ -85,6 +105,13 @@ func (r *Rule) Append(r1 *Rule) error {
 		r.Alternates = append(r.Alternates, a)
 	}
 	return nil
+}
+
+func (r *Rule) GetCharLiterals() (cls []*CharLiteral) {
+	for _, a := range r.Alternates {
+		cls = append(cls, a.GetCharLiterals()...)
+	}
+	return
 }
 
 func (r *Rule) HasAlternate(a *Alternate) bool {
@@ -134,6 +161,15 @@ func (a *Alternate) Equal(a1 *Alternate) bool {
 func (a *Alternate) GetSymbols() (ss []string) {
 	for _, s := range a.Symbols {
 		ss = append(ss, s.GetSymbol())
+	}
+	return
+}
+
+func (a *Alternate) GetCharLiterals() (cls []*CharLiteral) {
+	for _, s := range a.Symbols {
+		if cl, ok := s.(*CharLiteral); ok {
+			cls = append(cls, cl)
+		}
 	}
 	return
 }
@@ -225,6 +261,7 @@ func (g *Grammar) GetTerminals() []string {
 }
 
 func (g *Grammar) IsTerminal(symbol string) bool {
+	// fmt.Printf("ast.IsTerminal(%s)=%t\n", symbol, g.Terminals[symbol])
 	return g.Terminals[symbol]
 }
 
@@ -499,7 +536,7 @@ func newString(s string) (cs []string) {
 	return
 }
 
-func (g *Grammar) NewString(b bsr.BSR, s string) (cs []Symbol) {
+func (g *Grammar) NewString(b bsr.BSR, s string) (cs []Terminal) {
 	for _, str := range newString(s[1 : len(s)-1]) {
 		cs = append(cs, g.newCharLiteral(b, str))
 	}

@@ -1,3 +1,17 @@
+//  Copyright 2019 Marius Ackerman
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+
 /*
 Package sa performs semantic analysis on the BSR and builds the AST
 */
@@ -83,10 +97,10 @@ func (a *sa) rule(b bsr.BSR) {
 }
 
 /*
-Head : "*" NonTerminal | NonTerminal ;
+Head : "*" NTID | NTID ;
 */
 func (a *sa) getHead(b bsr.BSR) *ast.Head {
-	nt := b.GetNTChild("NonTerminal", 0).GetString()
+	nt := b.GetNTChild("NTID", 0).GetString()
 	if b.Alternate() == 0 {
 		if err := a.grammar.SetStartSymbol(nt); err != nil {
 			a.Error(b, err)
@@ -155,7 +169,12 @@ func (a *sa) symbol(b bsr.BSR) []ast.Symbol {
 	if b.Alternate() == 0 {
 		return []ast.Symbol{ast.NewNonTerminal(b, b.GetNTChild("NonTerminal", 0).GetString())}
 	}
-	return a.terminal(b.GetNTChild("Terminal", 0))
+	ts := a.terminal(b.GetNTChild("Terminal", 0))
+	ss := make([]ast.Symbol, len(ts))
+	for i, t := range ts {
+		ss[i] = t
+	}
+	return ss
 }
 
 /*
@@ -172,30 +191,35 @@ Terminal
     |   String
     ;
 */
-func (a *sa) terminal(b bsr.BSR) []ast.Symbol {
+func (a *sa) terminal(b bsr.BSR) (ts []ast.Terminal) {
 	switch b.Alternate() {
 	case 0:
-		return []ast.Symbol{ast.NewAny(b)}
+		ts = []ast.Terminal{ast.NewAny(b)}
 	case 1:
-		return []ast.Symbol{a.grammar.NewAnyOf(b, b.GetNTChild("String", 0).GetString())}
+		ts = []ast.Terminal{a.grammar.NewAnyOf(b, b.GetNTChild("String", 0).GetString())}
 	case 2:
-		return []ast.Symbol{ast.NewLetter(b)}
+		ts = []ast.Terminal{ast.NewLetter(b)}
 	case 3:
-		return []ast.Symbol{ast.NewNumber(b)}
+		ts = []ast.Terminal{ast.NewNumber(b)}
 	case 4:
-		return []ast.Symbol{ast.NewSpace(b)}
+		ts = []ast.Terminal{ast.NewSpace(b)}
 	case 5:
-		return []ast.Symbol{ast.NewUpcase(b)}
+		ts = []ast.Terminal{ast.NewUpcase(b)}
 	case 6:
-		return []ast.Symbol{ast.NewLowcase(b)}
+		ts = []ast.Terminal{ast.NewLowcase(b)}
 	case 7:
-		return []ast.Symbol{a.grammar.NewNot(b, b.GetNTChild("String", 0).GetString())}
+		ts = []ast.Terminal{a.grammar.NewNot(b, b.GetNTChild("String", 0).GetString())}
 	case 8:
-		return []ast.Symbol{a.grammar.NewCharLiteral(b, b.GetNTChild("CharLiteral", 0).GetString())}
+		ts = []ast.Terminal{a.grammar.NewCharLiteral(b, b.GetNTChild("CharLiteral", 0).GetString())}
 	case 9:
-		return a.grammar.NewString(b, b.GetNTChild("String", 0).GetString())
+		ts = a.grammar.NewString(b, b.GetNTChild("String", 0).GetString())
+	default:
+		panic(fmt.Sprintf("Invalid alternate %d", b.Alternate()))
 	}
-	panic(fmt.Sprintf("Invalid alternate %d", b.Alternate()))
+	for _, t := range ts {
+		a.grammar.AddTerminal(t)
+	}
+	return
 }
 
 /*** Error ***/

@@ -1,4 +1,6 @@
 # Gogll
+[Copyright 2019 Marius Ackerman](License.txt)
+
 **This is the Readme for gogll v1**
 
 Gogll is a clustered nonterminal parser (CNP) generator following [Scott et al 2019](#Scott-et-al-2019). CNP is a version of generalised LL parsing (GLL). [GLL parsers can parse all context free (CF) languages](#Scott-et-al-2016).
