@@ -62,7 +62,7 @@ Follow(Head): : anyof("\t\n\t") space
 Follow(NTChar): : ; anyof("!@#$%^&*-_+=") anyof("\t\n\t") letter number space | 
 Follow(NTChars): : ; anyof("\t\n\t") space | 
 Follow(NTID): : ; anyof("\t\n\t") space | 
-Follow(NonTerminal): : ; anyof("\t\n\t") space | 
+Follow(NonTerminal): ; anyof("\t\n\t") space | 
 Follow(Package): anyof("\t\n\t") space 
 Follow(Rule): $ * anyof("\t\n\t") letter space 
 Follow(Rules): $ anyof("\t\n\t") space 
