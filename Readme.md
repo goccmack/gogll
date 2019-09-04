@@ -1,4 +1,4 @@
-[](https://travis-ci.org/goccmack/gogll.svg?branch=master)
+![](https://travis-ci.org/goccmack/gogll.svg?branch=master)
 
 Copyright 2019 Marius Ackerman. See [Apache license](LICENSE).
 
