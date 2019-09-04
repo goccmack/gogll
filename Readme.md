@@ -50,7 +50,9 @@ Gogll v1 has a BNF grammar. See [gogll.md](gogll.md)
 `gogll v1` is actively being developed.
 
 # Features considered for future implementation
-1. EBNF grammar support [Scott&Johnstone 2018](#Scott-et-al-2018)
+1. EBNF grammar support [Scott&Johnstone 2018](#Scott-et-al-2018).
+1. Error reporting for normal people.
+1. Better documentation, including how to traverse the binary subtree reprentation (BSR) of the parse forest.
 
 # Documentation
 At the moment this document and the [gogll grammar](gogll.md) are the only documentation. Have a look at 
