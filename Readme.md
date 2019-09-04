@@ -3,7 +3,7 @@
 Copyright 2019 Marius Ackerman. See [Apache license](LICENSE).
 
 # Gogll
-Gogll generates scannerless, clustered nonterminal parsers (CNP) following [Scott et al 2019](#Scott-et-al-2019). CNP is a version of generalised LL parsing (GLL)[Scott et al 2016](#Scott-et-al-2016). GLL parsers can parse all context free (CF) languages.
+Gogll generates scannerless, clustered nonterminal parsers (CNP) following [Scott et al 2019](#Scott-et-al-2019). CNP is a version of generalised LL parsing (GLL)[Scott & Johnstone 2016](#Scott-et-al-2016). GLL parsers can parse all context free (CF) languages.
 
 # Benefits and disadvantages
 The following table compares GLL parsers with LL-k/LR-k parsers and [PEGs](#Ford-2004)
@@ -50,7 +50,7 @@ Gogll v1 has a BNF grammar. See [gogll.md](gogll.md)
 `gogll v1` is actively being developed.
 
 # Features considered for future implementation
-1. EBNF grammar support [Scott et al 2018](#Scott-et-al-2018)
+1. EBNF grammar support [Scott&Johnstone 2018](#Scott-et-al-2018)
 
 # Documentation
 At the moment this document and the [gogll grammar](gogll.md) are the only documentation. Have a look at 
