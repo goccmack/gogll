@@ -3,7 +3,7 @@
 Copyright 2019 Marius Ackerman. See [Apache license](LICENSE).
 
 # Gogll
-Gogll generates scannerless, clustered nonterminal parsers (CNP) following [Scott et al 2019](#Scott-et-al-2019). CNP is a version of generalised LL parsing (GLL)[Scott et al 2016](Scott-et-al-2016). GLL parsers can parse all context free (CF) languages.
+Gogll generates scannerless, clustered nonterminal parsers (CNP) following [Scott et al 2019](#Scott-et-al-2019). CNP is a version of generalised LL parsing (GLL)[Scott et al 2016](#Scott-et-al-2016). GLL parsers can parse all context free (CF) languages.
 
 # Benefits and disadvantages
 The following table compares GLL parsers with LL-k/LR-k parsers and [PEGs](#Ford-2004)
@@ -19,7 +19,7 @@ Speed (time to compile `gogll.md`) | 1.289 s | 0.040 s | -
 * General CF grammars allow the parser developer to write grammars that match the language most naturally.
 * Composability allows pre-existing grammar modules to be imported.
 * GLL produces a forest of all valid parses of a string. This provides a more systematic basis for disambiguation than k>1 lookahead and solves the problem of PEGs that hide ambiguity by selecting the first valid parse.
-* [Operator precedence can be implemented very easily by disambiguating the parse forest](#Afroozeh-et-al-2019, #Basten-2019).
+* Operator precedence can be implemented very easily by disambiguating the parse forest[Afroozeh et al 2019](#Afroozeh-et-al-2019), [Basten & Vinju 2019](#Basten-2019).
 
 But
 
@@ -85,7 +85,7 @@ Volume 125, 1 September 2016](https://pure.royalholloway.ac.uk/portal/en/publica
 Safe Specification of Operator Precedence Rules.   
 In: [Erwig M., Paige R.F., Van Wyk E. (eds) Software Language Engineering. SLE 2013. Lecture Notes in Computer Science, vol 8225. Springer, Cham](https://pure.royalholloway.ac.uk/portal/en/publications/safe-specification-of-operator-precedence-rules(0287d70e-92b8-4204-aafb-15a81de84968).html)
 
-<a name="Basten-2019"></a>
+<a name="Basten-2012"></a>
 * Basten H.J.S., Vinju J.J. (2012) Parse Forest Diagnostics with Dr. Ambiguity. In: Sloane A., Aßmann U. (eds) Software Language Engineering. SLE 2011. [Lecture Notes in Computer Science, vol 6940. Springer, Berlin, Heidelberg](https://homepages.cwi.nl/~jurgenv/papers/SLE2011-2.pdf)
 
 <a name="Ford-2004"></a>
