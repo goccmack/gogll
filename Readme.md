@@ -19,7 +19,7 @@ Speed (time to compile `gogll.md`) | 1.289 s | 0.040 s | -
 * General CF grammars allow the parser developer to write grammars that match the language most naturally.
 * Composability allows pre-existing grammar modules to be imported.
 * GLL produces a forest of all valid parses of a string. This provides a more systematic basis for disambiguation than k>1 lookahead and solves the problem of PEGs that hide ambiguity by selecting the first valid parse.
-* Operator precedence can be implemented very easily by disambiguating the parse forest [[Afroozeh et al 2013](#Afroozeh-et-al-2013), [Basten & Vinju 2019](Basten-2012)].
+* Operator precedence can be implemented very easily by disambiguating the parse forest [[Afroozeh et al 2013](#Afroozeh-et-al-2013), [Basten & Vinju 2012](#Basten-2012)].
 
 But
 
@@ -49,7 +49,7 @@ Gogll v1 has a BNF grammar. See [gogll.md](gogll.md)
 
 `gogll v1` is actively being developed.
 
-# Features considered for for future implementation
+# Features considered for future implementation
 1. EBNF grammar support [Scott et al 2018](#Scott-et-al-2018)
 
 # Documentation
