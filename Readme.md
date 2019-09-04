@@ -50,8 +50,12 @@ Gogll v1 has a BNF grammar. See [gogll.md](gogll.md)
 # Features considered for for future implementation
 1. EBNF grammar support [Scott et al 2018](#Scott-et-al-2018)
 
-# Notes
-[see](notes.md)
+# Documentation
+At the moment this document and the `gogll grammar ` are the only documentation. Have a look at 
+`gogll/examples/ambiguous` for a simple example and also for simple disambiguation.
+
+Alternatively look at `gogll.md` which is the input grammar and also the grammar
+from which the `parser` for was generated. `gogll/da` disambiguates the parse forest for an input string.
 
 # Changelog
 [see](ChangeLog.md)

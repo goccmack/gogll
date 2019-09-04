@@ -17,14 +17,18 @@ package symbols
 import (
 	"bytes"
 	"fmt"
+	"os"
+	"path"
+
 	"github.com/goccmack/gogll/ast"
 	"github.com/goccmack/gogll/cfg"
 	"github.com/goccmack/gogll/goutil/ioutil"
-	"os"
-	"path"
 )
 
 func Gen(g *ast.Grammar) {
+	if !cfg.Verbose {
+		return
+	}
 	buf := new(bytes.Buffer)
 	for _, sym := range g.GetSymbols() {
 		fmt.Fprintf(buf, "%s\n", sym)

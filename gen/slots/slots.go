@@ -19,14 +19,18 @@ package slots
 import (
 	"bytes"
 	"fmt"
+	"os"
+	"path/filepath"
+
 	"github.com/goccmack/gogll/cfg"
 	"github.com/goccmack/gogll/goutil/ioutil"
 	"github.com/goccmack/gogll/gslot"
-	"os"
-	"path/filepath"
 )
 
 func Gen(gs *gslot.GSlot) {
+	if !cfg.Verbose {
+		return
+	}
 	buf := new(bytes.Buffer)
 	for _, s := range gs.Slots() {
 		fmt.Fprintf(buf, "%s\n", s)

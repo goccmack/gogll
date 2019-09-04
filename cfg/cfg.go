@@ -24,13 +24,16 @@ import (
 var (
 	BaseDir    string
 	SrcFile    string
+	Verbose    bool
 	CPUProfile = flag.Bool("CPUProf", false, "")
+	verbose    = flag.Bool("v", false, "")
 )
 
 func GetParams() {
 	flag.Parse()
 	getSourceFile()
 	getFileBase()
+	Verbose = *verbose
 }
 
 func getFileBase() {

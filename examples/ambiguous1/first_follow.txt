@@ -1,7 +1,0 @@
-A: letter 
-B: letter 
-S: empty letter 
-letter: letter 
-Follow(A): $ letter 
-Follow(B): $ letter 
-Follow(S): $ 

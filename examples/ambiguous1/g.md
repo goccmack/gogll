@@ -16,9 +16,9 @@
 ```
 package "github.com/goccmack/gogll/examples/ambiguous1"
 
-*S : A S | B S | emptyAlt ;
+*S : A S | B S | empty ;
 
-A : letter ;
+A : 'a' ;
 
 B : letter ;
 ```

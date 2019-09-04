@@ -17,16 +17,20 @@ package firstfollow
 import (
 	"bytes"
 	"fmt"
+	"io"
+	"os"
+	"path"
+
 	"github.com/goccmack/gogll/ast"
 	"github.com/goccmack/gogll/cfg"
 	"github.com/goccmack/gogll/frstflw"
 	"github.com/goccmack/gogll/goutil/ioutil"
-	"io"
-	"os"
-	"path"
 )
 
 func Gen(g *ast.Grammar, ff *frstflw.FF) {
+	if !cfg.Verbose {
+		return
+	}
 	w := new(bytes.Buffer)
 	genFirstSets(w, g, ff)
 	genFollowSets(w, g, ff)

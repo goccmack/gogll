@@ -18,15 +18,17 @@ import (
 	"bytes"
 	"fmt"
 	"go/format"
-	"github.com/goccmack/gogll/ast"
-	"github.com/goccmack/gogll/frstflw"
-	"github.com/goccmack/gogll/gen/golang/parser/slots"
-	"github.com/goccmack/gogll/goutil/ioutil"
-	"github.com/goccmack/gogll/gslot"
 	"os"
 	"path"
 	"path/filepath"
 	"text/template"
+
+	"github.com/goccmack/gogll/ast"
+	"github.com/goccmack/gogll/frstflw"
+	"github.com/goccmack/gogll/gen/golang/parser/slots"
+	"github.com/goccmack/gogll/gen/golang/parser/symbols"
+	"github.com/goccmack/gogll/goutil/ioutil"
+	"github.com/goccmack/gogll/gslot"
 )
 
 /*** Main parser section ***/
@@ -41,6 +43,7 @@ func Gen(parserDir string, g *ast.Grammar, gs *gslot.GSlot, ff *frstflw.FF) {
 	gn := &gen{g, gs, ff}
 	gn.genParser(parserDir)
 	slots.Gen(filepath.Join(parserDir, "slot", "slot.go"), g, gs, ff)
+	symbols.Gen(filepath.Join(parserDir, "symbols", "symbols.go"), g)
 }
 
 func (g *gen) genParser(parserDir string) {
