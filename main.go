@@ -18,6 +18,10 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
+	"os"
+	"runtime/pprof"
+
 	"github.com/goccmack/gogll/cfg"
 	"github.com/goccmack/gogll/da"
 	"github.com/goccmack/gogll/frstflw"
@@ -25,13 +29,9 @@ import (
 	"github.com/goccmack/gogll/gen/golang"
 	"github.com/goccmack/gogll/gen/slots"
 	"github.com/goccmack/gogll/gen/symbols"
-	"github.com/goccmack/gogll/goutil/bsr"
 	"github.com/goccmack/gogll/gslot"
 	"github.com/goccmack/gogll/parser"
 	"github.com/goccmack/gogll/sa"
-	"io/ioutil"
-	"os"
-	"runtime/pprof"
 )
 
 func main() {
@@ -71,7 +71,7 @@ func main() {
 func fail(err error, errs []*parser.ParseError) {
 	fmt.Printf("ParseError: %s\n", err)
 	// parser.DumpCRF(errs[0].InputPos)
-	bsr.Dump()
+	// bsr.Dump()
 	for _, e := range errs {
 		fmt.Println("", e)
 	}

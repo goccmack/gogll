@@ -15,11 +15,11 @@
 package ambiguous1
 
 import (
-	"fmt"
+	"testing"
+
 	"github.com/goccmack/gogll/examples/ambiguous1/goutil/bsr"
 	"github.com/goccmack/gogll/examples/ambiguous1/parser"
 	"github.com/goccmack/gogll/examples/ambiguous1/parser/symbols"
-	"testing"
 )
 
 func Test1(t *testing.T) {
@@ -35,9 +35,9 @@ func da() {
 
 func rmBa() {
 	for _, b := range bsr.GetAll() {
-		fmt.Println(b)
+		// fmt.Println(b)
 		if b.GetString() == "a" && b.Label.Head() == "B" {
-			fmt.Println("  ignore")
+			// fmt.Println("  ignore")
 			b.Ignore()
 		}
 	}
