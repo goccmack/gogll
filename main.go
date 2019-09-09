@@ -21,6 +21,7 @@ import (
 	"io/ioutil"
 	"os"
 	"runtime/pprof"
+	"time"
 
 	"github.com/goccmack/gogll/cfg"
 	"github.com/goccmack/gogll/da"
@@ -32,6 +33,13 @@ import (
 	"github.com/goccmack/gogll/gslot"
 	"github.com/goccmack/gogll/parser"
 	"github.com/goccmack/gogll/sa"
+)
+
+var (
+	parseDur time.Duration
+	daDur    time.Duration
+	saDur    time.Duration
+	genDur   time.Duration
 )
 
 func main() {
@@ -49,11 +57,22 @@ func main() {
 		}
 		defer pprof.StopCPUProfile()
 	}
+	startTime := time.Now()
 	if err, errs := parser.ParseFile(cfg.SrcFile); err != nil {
 		fail(err, errs)
 	}
+	parseDur = time.Now().Sub(startTime)
+
+	// da.Report()
+
+	startTime = time.Now()
 	da.Go()
+	daDur = time.Now().Sub(startTime)
+
+	startTime = time.Now()
 	g, errs := sa.Go()
+	saDur = time.Now().Sub(startTime)
+	startTime = time.Now()
 	if errs != nil {
 		for _, err := range errs {
 			fmt.Println(err)
@@ -66,6 +85,12 @@ func main() {
 	gs := gslot.New(g, ff)
 	slots.Gen(gs)
 	golang.Gen(g, gs, ff)
+	genDur = time.Now().Sub(startTime)
+	fmt.Printf("parse %.3f ms, da %.3f ms, sa %.3f ms, gen %.3f ms\n",
+		float64(parseDur)/float64(time.Millisecond),
+		float64(daDur)/float64(time.Millisecond),
+		float64(saDur)/float64(time.Millisecond),
+		float64(genDur)/float64(time.Millisecond))
 }
 
 func fail(err error, errs []*parser.ParseError) {

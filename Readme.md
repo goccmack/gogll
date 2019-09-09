@@ -2,6 +2,11 @@
 
 Copyright 2019 Marius Ackerman. See [Apache license](LICENSE).
 
+# News
+## 2019-09-09
+The performance of the BSR has been improved. The time for gogll to compile gogll.md is reduced from
+1.3s to 0.2s
+
 # Gogll
 Gogll generates scannerless, clustered nonterminal parsers (CNP) following [Scott et al 2019](#Scott-et-al-2019). CNP is a version of generalised LL parsing (GLL)[Scott & Johnstone 2016](#Scott-et-al-2016). GLL parsers can parse all context free (CF) languages.
 
@@ -14,7 +19,7 @@ General CF grammars | Yes | No | No
 Composable CF grammars | Yes | No | No
 Handle ambiguity | Yes | No | No
 Indirect left recursion | No problem | Bad | Bad
-Speed (time to compile `gogll.md`) | 1.289 s | 0.040 s | -
+Speed (time to compile `gogll.md`) | 0.244 s | 0.040 s | -
 
 * General CF grammars allow the parser developer to write grammars that match the language most naturally.
 * Composability allows pre-existing grammar modules to be imported.

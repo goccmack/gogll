@@ -19,6 +19,7 @@ package sa
 
 import (
 	"fmt"
+
 	"github.com/goccmack/gogll/ast"
 	"github.com/goccmack/gogll/goutil/bsr"
 	"github.com/goccmack/gogll/parser"
@@ -250,7 +251,7 @@ func (a *sa) checkAllNTsDeclared() {
 	}
 	for _, rule := range a.grammar.Rules {
 		if _, used := usedNT[rule.Head.NT]; !used && rule.Head.NT != a.grammar.StartSymbol {
-			fmt.Printf("sa.checkAllNTsDeclared: NT=%s, grammer.S=%s\n", rule.Head.NT, a.grammar.StartSymbol)
+			// fmt.Printf("sa.checkAllNTsDeclared: NT=%s, grammer.S=%s\n", rule.Head.NT, a.grammar.StartSymbol)
 			a.Error(rule.Head.BSR, fmt.Errorf("Rule %s is not used", rule.Head.NT))
 		}
 	}

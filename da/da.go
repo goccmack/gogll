@@ -18,70 +18,82 @@ Package da disambiguates the BSR set.
 package da
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/goccmack/gogll/goutil/bsr"
 	"github.com/goccmack/gogll/parser/symbols"
-	"strings"
 )
 
 func Go() {
-	// fmt.Println("da.Go")
-	daReservedWords()
-	removeNTsWithoutChildren()
+	for _, r := range bsr.GetRoots() {
+		da(r, daReservedWord)
+	}
 }
 
-func daReservedWords() {
-	for _, b := range bsr.GetAll() {
-		if reservedWord(b.GetString()) && b.Label.Head() == "NonTerminal" {
-			// fmt.Println("daReservedWords", b, b.GetString())
-			b.Ignore()
+// Report lists the ambiguous subtrees of the parse forest
+func Report() {
+	rts := bsr.GetRoots()
+	if len(rts) != 1 {
+		fmt.Println(len(rts), "ambiguous BSR roots")
+	}
+	for i, b := range bsr.GetRoots() {
+		fmt.Println("Root", i)
+		report(b)
+	}
+}
+
+func report(b bsr.BSR) {
+	for i, s := range b.Label.Symbols() {
+		if s != "Sep" && symbols.IsNonTerminal(s) {
+			if len(b.GetNTChildrenI(i)) > 1 {
+				fmt.Printf("  Ambigous: in %s: NT %s (%d) \n", b, s, i)
+			}
+			for _, b1 := range b.GetNTChildrenI(i) {
+				report(b1)
+			}
 		}
 	}
 }
 
-// func removeNTsWithoutChildren() {
-// 	reps := 0
-// 	for again := true; again; {
-// 		again = false
-// 		for _, b := range bsr.GetAll() {
-// 			for i, s := range b.Label.Symbols() {
-// 				reps++
-// 				if symbols.IsNonTerminal(s) && len(b.GetNTChildrenI(i)) == 0 {
-// 					// fmt.Printf("remove %s\n", b)
-// 					b.Ignore()
-// 					again = true
-// 				}
-// 			}
-// 		}
-// 	}
-// 	fmt.Printf("da.removeNTsWithoutChildren: %d reps\n", reps)
-// }
-
-func removeNTsWithoutChildren() {
-	// fmt.Println("da.removeNTsWithoutChildren")
-	for _, rt := range bsr.GetRoots() {
-		removeZombieChildren(rt)
+func daReservedWord(b bsr.BSR) bool {
+	if b.Label.Head() == "NTID" && reservedWord(b.GetString()) {
+		// fmt.Printf("daReservedWord: %s\n", b.Label.Head())
+		b.Ignore()
+		return true
 	}
+	return false
 }
 
-func removeZombieChildren(nt bsr.BSR) {
-	// fmt.Println("da.removeZombieChildren", nt)
-	if nt.Label.Head() == "Sep" || nt.Label.Head() == "SepE" {
+func da(b bsr.BSR, daFuncs ...func(bsr.BSR) bool) {
+	if b.Label.Head() == "Sep" || b.Label.Head() == "SepE" || b.Label.Head() == "StringChars" {
 		return
 	}
+	for _, daf := range daFuncs {
+		if daf(b) {
+			return
+		}
+	}
 
-	for i, s := range nt.Label.Symbols() {
+	ignore := false
+	for i, s := range b.Label.Symbols() {
 		if symbols.IsNonTerminal(s) {
-			for _, c := range nt.GetNTChildrenI(i) {
-				removeZombieChildren(c)
+			for _, b1 := range b.GetNTChildrenI(i) {
+				da(b1, daFuncs...)
 			}
-			if len(nt.GetNTChildrenI(i)) == 0 {
-				nt.Ignore()
+			if len(b.GetNTChildrenI(i)) < 1 {
+				ignore = true
 			}
 		}
+	}
+	if ignore {
+
+		b.Ignore()
 	}
 }
 
 func reservedWord(s string) bool {
+	// fmt.Printf("reservedWord(%s)\n", s)
 	switch s {
 	case "empty":
 		return true

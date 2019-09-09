@@ -107,12 +107,12 @@ String : "\"" StringChars "\"" ;
 StringChars
     :   not "\\\"" StringChars
     |   "\\" EscapedChar StringChars
-    |   emptyAlt
+    |   empty
     ;
 
 SepE
     :   Sep
-    |   emptyAlt
+    |   empty
     ;
 
 Sep

@@ -25,12 +25,17 @@ var (
 	BaseDir    string
 	SrcFile    string
 	Verbose    bool
+	help       = flag.Bool("h", false, "")
 	CPUProfile = flag.Bool("CPUProf", false, "")
 	verbose    = flag.Bool("v", false, "")
 )
 
 func GetParams() {
 	flag.Parse()
+	if *help {
+		usage()
+		os.Exit(0)
+	}
 	getSourceFile()
 	getFileBase()
 	Verbose = *verbose

@@ -37,16 +37,23 @@ type bsr interface {
 }
 
 var (
-	set *bsrSet
+	set      *bsrSet
 	startSym string
 )
 
 type bsrSet struct {
 	slotEntries   map[BSR]bool
-	ignoredSlots   map[BSR]bool
+	ntSlotEntries map[ntSlot][]BSR
+	ignoredSlots  map[BSR]bool
 	stringEntries map[stringBSR]bool
 	rightExtent   int
-	I			  []byte
+	I             []byte
+}
+
+type ntSlot struct {
+	nt          string
+	leftExtent  int
+	rightExtent int
 }
 
 // BSR is the binary subtree representation of a parsed nonterminal
@@ -67,10 +74,11 @@ type stringBSR struct {
 func newSet(I []byte) *bsrSet {
 	return &bsrSet{
 		slotEntries:   make(map[BSR]bool),
-		ignoredSlots:   make(map[BSR]bool),
+		ntSlotEntries: make(map[ntSlot][]BSR),
+		ignoredSlots:  make(map[BSR]bool),
 		stringEntries: make(map[stringBSR]bool),
-		rightExtent:	0,
-		I: I,
+		rightExtent:   0,
+		I:             I,
 	}
 }
 
@@ -118,7 +126,7 @@ func GetRightExtent() int {
 	return set.rightExtent
 }
 
-// GetRoot returns the root of the parse tree of an unambiguous parse. 
+// GetRoot returns the root of the parse tree of an unambiguous parse.
 // GetRoot fails if the parse was ambiguous. Use GetRoots() for ambiguous parses.
 func GetRoot() BSR {
 	rts := GetRoots()
@@ -171,6 +179,8 @@ func insert(bsr bsr) {
 	switch s := bsr.(type) {
 	case BSR:
 		set.slotEntries[s] = true
+		nt := ntSlot{s.Label.Head(), s.leftExtent, s.rightExtent}
+		set.ntSlotEntries[nt] = append(set.ntSlotEntries[nt], s)
 	case stringBSR:
 		set.stringEntries[s] = true
 	default:
@@ -257,7 +267,30 @@ func (b BSR) GetString() string {
 func (b BSR) Ignore() {
 	// fmt.Printf("bsr.Ignore %s\n", b)
 	delete(set.slotEntries, b)
+	deleteNTSlotEntry(b)
 	set.ignoredSlots[b] = true
+}
+
+func deleteNTSlotEntry(b BSR) {
+	// fmt.Printf("deletNTSlotEntry(%s)\n", b)
+	nts := ntSlot{b.Label.Head(), b.leftExtent, b.rightExtent}
+	slots := set.ntSlotEntries[nts]
+	bi := -1
+	for i, s := range slots {
+		// fmt.Println("", i, ":", s)
+		if s == b {
+			if bi != -1 {
+				panic("Duplicate")
+			}
+			bi = i
+			// fmt.Println("  bi", i)
+		}
+	}
+	slots1 := slots[0:bi]
+	slots1 = append(slots1, slots[bi+1:]...)
+	// fmt.Println("  slots", slots)
+	// fmt.Println("  slots1", slots1)
+	set.ntSlotEntries[nts] = slots1
 }
 
 func (s BSR) LeftExtent() int {
@@ -351,13 +384,17 @@ func getStrings() (strings []stringBSR) {
 }
 
 func getNTSlot(nt string, leftExtent, rightExtent int) (bsrs []BSR) {
-	for sl, _ := range set.slotEntries {
-		if sl.Label.Head() == nt && sl.leftExtent == leftExtent && sl.rightExtent == rightExtent {
-			bsrs = append(bsrs, sl)
-		}
-	}
-	return
+	return set.ntSlotEntries[ntSlot{nt, leftExtent, rightExtent}]
 }
+
+// func getNTSlot(nt string, leftExtent, rightExtent int) (bsrs []BSR) {
+// 	for sl, _ := range set.slotEntries {
+// 		if sl.Label.Head() == nt && sl.leftExtent == leftExtent && sl.rightExtent == rightExtent {
+// 			bsrs = append(bsrs, sl)
+// 		}
+// 	}
+// 	return
+// }
 
 func fail(b BSR, format string, a ...interface{}) {
 	msg := fmt.Sprintf(format, a...)
@@ -405,4 +442,3 @@ func getLineColumn(cI int, I []byte) (line, col int) {
 	}
 	return
 }
-
