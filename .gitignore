@@ -4,3 +4,5 @@ first_follow.txt
 grammar_slots.txt
 symbols.txt
 .vscode
+cpu.prof
+profile*.png

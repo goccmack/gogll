@@ -78,7 +78,7 @@ func usage() {
 
     -CPUProf : Optional. Generate a CPU profile. Default false.
         The generated CPU profile is in <cpu.prof>. 
-        Use "go tools pprof cpu.prof" to analyse the profile.
+        Use "go tool pprof cpu.prof" to analyse the profile.
 
     -h : Optional. Display this help.
 
