@@ -406,7 +406,7 @@ type AnyOf struct {
 func (g *Grammar) NewAnyOf(b bsr.BSR, s string) *AnyOf {
 	a := &AnyOf{
 		bsr: b,
-		Set: stringset.New(newString(s)...),
+		Set: stringset.New(newString(s[1 : len(s)-1])...),
 	}
 	g.Terminals[a.GetSymbol()] = true
 	return a
@@ -484,7 +484,7 @@ type Not struct {
 func (g *Grammar) NewNot(b bsr.BSR, s string) *Not {
 	n := &Not{
 		bsr: b,
-		Set: stringset.New(newString(s)...),
+		Set: stringset.New(newString(s[1 : len(s)-1])...),
 	}
 	g.Terminals[n.GetSymbol()] = true
 	return n

@@ -120,5 +120,5 @@ Sep
     |   SepChar Sep
     ;
 
-SepChar : space | anyof "\t\n\t" ;
+SepChar : space | anyof "\t\n\r" ;
 ```
