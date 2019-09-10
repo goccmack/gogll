@@ -3,6 +3,10 @@
 Copyright 2019 Marius Ackerman. See [Apache license](LICENSE).
 
 # News
+## 2019-09-10
+V2.0.0: The last vestige of the gocc bootstrap compiler is remove from the grammar accepted by gogll v2.
+Empty alternates are now indicated by `empty`, not `emptyAlt` as in v0 and v1.
+
 ## 2019-09-09
 The performance of the BSR has been improved. The time for gogll to compile gogll.md is reduced from
 1.3s to 0.2s
