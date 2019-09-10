@@ -65,7 +65,6 @@ package bsr
 import (
 	"fmt"
 	"os"
-	"sort"
 	"strings"
 	"unicode/utf8"
 
@@ -188,16 +187,6 @@ func GetRoots() (roots []BSR) {
 	return
 }
 
-// GetNTSlot returns all slot entries of the NT, 'nt'
-func GetNTSlot(nt string) (slots []BSR) {
-	for bsr := range set.slotEntries {
-		if bsr.Label.Head() == nt {
-			slots = append(slots, bsr)
-		}
-	}
-	return
-}
-
 func getString(l slot.Label, leftExtent, rightExtent int) stringBSR {
 	for str, _ := range set.stringEntries {
 		if str.Label == l && str.leftExtent == leftExtent && str.rightExtent == rightExtent {
@@ -249,8 +238,8 @@ func (b BSR) GetNTChild(nt string, i int) BSR {
 	return bsrs[0]
 }
 
-// GetNTChildI returns the BSR of NT symbol[i] in s.
-// GetNTChildI fails if s has ambiguous subtrees of NT i.
+// GetNTChildI returns the BSR of NT symbol[i] in the BSR set.
+// GetNTChildI fails if the BSR set has ambiguous subtrees of NT i.
 func (b BSR) GetNTChildI(i int) BSR {
 	bsrs := b.GetNTChildrenI(i)
 	if len(bsrs) != 1 {
@@ -306,6 +295,8 @@ func (b BSR) GetString() string {
 	return string(set.I[b.LeftExtent():b.RightExtent()])
 }
 
+// Ignore removes NT slot 'b' from the BSR set. Ignore() is typically called by 
+// disambiguration code to remove an ambiguous BSR entry.
 func (b BSR) Ignore() {
 	// fmt.Printf("bsr.Ignore %s\n", b)
 	delete(set.slotEntries, b)
@@ -367,6 +358,7 @@ func (s stringBSR) Empty() bool {
 	return s.leftExtent == s.pivot && s.pivot == s.rightExtent
 }
 
+// String returns a string representation of s
 func (s stringBSR) String() string {
 	// fmt.Printf("bsr.stringBSR.stringBSR(): %s, %d, %d, %d\n",
 	// 	s.Label.Symbols(), s.leftExtent, s.pivot, s.rightExtent)
@@ -376,67 +368,9 @@ func (s stringBSR) String() string {
 		s.rightExtent, set.I[s.LeftExtent():s.RightExtent()])
 }
 
-func Dump() {
-	DumpSlots()
-	DumpStrings()
-}
-
-func DumpSlots() {
-	fmt.Printf("Slots (%d)\n", len(getSlots()))
-	for _, s := range getSlots() {
-		DumpSlot(s)
-	}
-}
-
-func DumpSlot(s BSR) {
-	fmt.Println(s)
-}
-
-func DumpStrings() {
-	fmt.Printf("Strings(%d)\n", len(getStrings()))
-	for _, s := range getStrings() {
-		dumpString(s)
-	}
-}
-
-func dumpString(s stringBSR) {
-	fmt.Println(s)
-}
-
-func getSlots() (slots []BSR) {
-	for s := range set.slotEntries {
-		slots = append(slots, s)
-	}
-	sort.Slice(slots,
-		func(i, j int) bool {
-			return slots[i].Label < slots[j].Label
-		})
-	return
-}
-
-func getStrings() (strings []stringBSR) {
-	for s := range set.stringEntries {
-		strings = append(strings, s)
-	}
-	sort.Slice(strings,
-		func(i, j int) bool {
-			return strings[i].Label < strings[j].Label
-		})
-	return
-}
-
 func getNTSlot(nt string, leftExtent, rightExtent int) (bsrs []BSR) {
 	return set.ntSlotEntries[ntSlot{nt, leftExtent, rightExtent}]
 }
-
-// func getNTSlot(nt string, leftExtent, rightExtent int) (bsrs []BSR) {
-// 	for sl, _ := range set.slotEntries {
-// 		if sl.Label.Head() == nt && sl.leftExtent == leftExtent && sl.rightExtent == rightExtent {
-// 			bsrs = append(bsrs, sl)
-// 		}
-// 	}
-// 	return
-// }
 
 func fail(b BSR, format string, a ...interface{}) {
 	msg := fmt.Sprintf(format, a...)
