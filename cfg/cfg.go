@@ -21,19 +21,27 @@ import (
 	"path"
 )
 
+// Version is the version of this compiler
+const Version = "v2.0.0"
+
 var (
 	BaseDir    string
 	SrcFile    string
 	Verbose    bool
-	help       = flag.Bool("h", false, "")
-	CPUProfile = flag.Bool("CPUProf", false, "")
-	verbose    = flag.Bool("v", false, "")
+	help       = flag.Bool("h", false, "Print help")
+	CPUProfile = flag.Bool("CPUProf", false, "Generate CPU profile")
+	verbose    = flag.Bool("v", false, "Verbose")
+	version    = flag.Bool("version", false, "Version")
 )
 
 func GetParams() {
 	flag.Parse()
 	if *help {
 		usage()
+		os.Exit(0)
+	}
+	if *version {
+		fmt.Println("gogll", Version)
 		os.Exit(0)
 	}
 	getSourceFile()
@@ -62,10 +70,20 @@ func fail(msg string) {
 }
 
 func usage() {
-	msg := `use: gogll [-CPUProf] <source file>
-	<source file> : Mandatory. Name of the source file to be processed. 
-					If the file extension is ".md" the bnf is extracted from markdown code segments
-					enclosed in triple backticks.
-    -CPUProf : Optional. Generate a CPU profile. Default false`
+	msg := `use: gogll [-h][-version][-v][-CPUProf] <source file>
+    
+    <source file> : Mandatory. Name of the source file to be processed. 
+        If the file extension is ".md" the bnf is extracted from markdown code 
+        segments enclosed in triple backticks.
+
+    -CPUProf : Optional. Generate a CPU profile. Default false.
+        The generated CPU profile is in <cpu.prof>. 
+        Use "go tools pprof cpu.prof" to analyse the profile.
+
+    -h : Optional. Display this help.
+
+    -v : Optional. Verbose: generate additional information files.
+    
+    -version : Optional. Display the version of this compiler`
 	fmt.Println(msg)
 }
