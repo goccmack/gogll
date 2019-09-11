@@ -153,9 +153,10 @@ func getSymbolCondition(sym string) string {
 	// return fmt.Sprintf("r == '%s'", strings.TrimPrefix(sym, "\\"))
 }
 
-const testSelectTmpl = `var testSelect = map[slot.Label]func()bool{ {{range $i, $ts := .TestSelect}}
-slot.{{$ts.Label}}:func()bool{
-    return {{range $i, $c := $ts.Conditions}}{{$c.Cond}} {{if not $c.Last}}||{{end}}
+const testSelectTmpl = `var testSelect = []func()bool { {{range $i, $ts := .TestSelect}}
+    // slot.{{$ts.Label}}
+    func()bool{
+        return {{range $i, $c := $ts.Conditions}}{{$c.Cond}} {{if not $c.Last}}||{{end}}
     {{end}} },
 {{end}} }
 

@@ -1419,8 +1419,9 @@ func runeToString(r rune) string {
 
 /*** TestSelect ***/
 
-var testSelect = map[slot.Label]func() bool{
-	slot.Alternate0R0: func() bool {
+var testSelect = []func() bool{
+	// slot.Alternate0R0
+	func() bool {
 		return r == '"' ||
 			r == '\'' ||
 			r == 'a' ||
@@ -1431,41 +1432,49 @@ var testSelect = map[slot.Label]func() bool{
 			r == 'u'
 	},
 
-	slot.Alternate0R1: func() bool {
+	// slot.Alternate0R1
+	func() bool {
 		return r == ';' ||
 			anyof(r, "\n\r\t") ||
 			space(r) ||
 			r == '|'
 	},
 
-	slot.Alternate1R0: func() bool {
+	// slot.Alternate1R0
+	func() bool {
 		return r == 'e'
 	},
 
-	slot.Alternate1R1: func() bool {
+	// slot.Alternate1R1
+	func() bool {
 		return r == 'm'
 	},
 
-	slot.Alternate1R2: func() bool {
+	// slot.Alternate1R2
+	func() bool {
 		return r == 'p'
 	},
 
-	slot.Alternate1R3: func() bool {
+	// slot.Alternate1R3
+	func() bool {
 		return r == 't'
 	},
 
-	slot.Alternate1R4: func() bool {
+	// slot.Alternate1R4
+	func() bool {
 		return r == 'y'
 	},
 
-	slot.Alternate1R5: func() bool {
+	// slot.Alternate1R5
+	func() bool {
 		return r == ';' ||
 			anyof(r, "\n\r\t") ||
 			space(r) ||
 			r == '|'
 	},
 
-	slot.Alternates0R0: func() bool {
+	// slot.Alternates0R0
+	func() bool {
 		return r == '"' ||
 			r == '\'' ||
 			r == 'a' ||
@@ -1477,13 +1486,15 @@ var testSelect = map[slot.Label]func() bool{
 			r == 'u'
 	},
 
-	slot.Alternates0R1: func() bool {
+	// slot.Alternates0R1
+	func() bool {
 		return r == ';' ||
 			anyof(r, "\n\r\t") ||
 			space(r)
 	},
 
-	slot.Alternates1R0: func() bool {
+	// slot.Alternates1R0
+	func() bool {
 		return r == '"' ||
 			r == '\'' ||
 			r == 'a' ||
@@ -1495,17 +1506,20 @@ var testSelect = map[slot.Label]func() bool{
 			r == 'u'
 	},
 
-	slot.Alternates1R1: func() bool {
+	// slot.Alternates1R1
+	func() bool {
 		return anyof(r, "\n\r\t") ||
 			space(r) ||
 			r == '|'
 	},
 
-	slot.Alternates1R2: func() bool {
+	// slot.Alternates1R2
+	func() bool {
 		return r == '|'
 	},
 
-	slot.Alternates1R3: func() bool {
+	// slot.Alternates1R3
+	func() bool {
 		return r == '"' ||
 			r == '\'' ||
 			r == 'a' ||
@@ -1519,7 +1533,8 @@ var testSelect = map[slot.Label]func() bool{
 			r == 'u'
 	},
 
-	slot.Alternates1R4: func() bool {
+	// slot.Alternates1R4
+	func() bool {
 		return r == '"' ||
 			r == '\'' ||
 			r == 'a' ||
@@ -1531,173 +1546,208 @@ var testSelect = map[slot.Label]func() bool{
 			r == 'u'
 	},
 
-	slot.Alternates1R5: func() bool {
+	// slot.Alternates1R5
+	func() bool {
 		return r == ';' ||
 			anyof(r, "\n\r\t") ||
 			space(r)
 	},
 
-	slot.CharLiteral0R0: func() bool {
+	// slot.CharLiteral0R0
+	func() bool {
 		return r == '\''
 	},
 
-	slot.CharLiteral0R1: func() bool {
+	// slot.CharLiteral0R1
+	func() bool {
 		return r == '\\'
 	},
 
-	slot.CharLiteral0R2: func() bool {
+	// slot.CharLiteral0R2
+	func() bool {
 		return anyof(r, "'\"\\nrt")
 	},
 
-	slot.CharLiteral0R3: func() bool {
+	// slot.CharLiteral0R3
+	func() bool {
 		return r == '\''
 	},
 
-	slot.CharLiteral0R4: func() bool {
+	// slot.CharLiteral0R4
+	func() bool {
 		return r == ';' ||
 			anyof(r, "\n\r\t") ||
 			space(r) ||
 			r == '|'
 	},
 
-	slot.CharLiteral1R0: func() bool {
+	// slot.CharLiteral1R0
+	func() bool {
 		return r == '\''
 	},
 
-	slot.CharLiteral1R1: func() bool {
+	// slot.CharLiteral1R1
+	func() bool {
 		return true
 	},
 
-	slot.CharLiteral1R2: func() bool {
+	// slot.CharLiteral1R2
+	func() bool {
 		return r == '\''
 	},
 
-	slot.CharLiteral1R3: func() bool {
+	// slot.CharLiteral1R3
+	func() bool {
 		return r == ';' ||
 			anyof(r, "\n\r\t") ||
 			space(r) ||
 			r == '|'
 	},
 
-	slot.EscapedChar0R0: func() bool {
+	// slot.EscapedChar0R0
+	func() bool {
 		return r == '"'
 	},
 
-	slot.EscapedChar0R1: func() bool {
+	// slot.EscapedChar0R1
+	func() bool {
 		return r == '"' ||
 			r == '\\' ||
 			not(r, "\"\\")
 	},
 
-	slot.EscapedChar1R0: func() bool {
+	// slot.EscapedChar1R0
+	func() bool {
 		return r == 'n'
 	},
 
-	slot.EscapedChar1R1: func() bool {
+	// slot.EscapedChar1R1
+	func() bool {
 		return r == '"' ||
 			r == '\\' ||
 			not(r, "\"\\")
 	},
 
-	slot.EscapedChar2R0: func() bool {
+	// slot.EscapedChar2R0
+	func() bool {
 		return r == 'r'
 	},
 
-	slot.EscapedChar2R1: func() bool {
+	// slot.EscapedChar2R1
+	func() bool {
 		return r == '"' ||
 			r == '\\' ||
 			not(r, "\"\\")
 	},
 
-	slot.EscapedChar3R0: func() bool {
+	// slot.EscapedChar3R0
+	func() bool {
 		return r == 't'
 	},
 
-	slot.EscapedChar3R1: func() bool {
+	// slot.EscapedChar3R1
+	func() bool {
 		return r == '"' ||
 			r == '\\' ||
 			not(r, "\"\\")
 	},
 
-	slot.EscapedChar4R0: func() bool {
+	// slot.EscapedChar4R0
+	func() bool {
 		return r == '\\'
 	},
 
-	slot.EscapedChar4R1: func() bool {
+	// slot.EscapedChar4R1
+	func() bool {
 		return r == '"' ||
 			r == '\\' ||
 			not(r, "\"\\")
 	},
 
-	slot.EscapedChar5R0: func() bool {
+	// slot.EscapedChar5R0
+	func() bool {
 		return r == '\''
 	},
 
-	slot.EscapedChar5R1: func() bool {
+	// slot.EscapedChar5R1
+	func() bool {
 		return r == '"' ||
 			r == '\\' ||
 			not(r, "\"\\")
 	},
 
-	slot.GoGLL0R0: func() bool {
+	// slot.GoGLL0R0
+	func() bool {
 		return anyof(r, "\n\r\t") ||
 			r == 'p' ||
 			space(r)
 	},
 
-	slot.GoGLL0R1: func() bool {
+	// slot.GoGLL0R1
+	func() bool {
 		return r == 'p'
 	},
 
-	slot.GoGLL0R2: func() bool {
+	// slot.GoGLL0R2
+	func() bool {
 		return anyof(r, "\n\r\t") ||
 			space(r)
 	},
 
-	slot.GoGLL0R3: func() bool {
+	// slot.GoGLL0R3
+	func() bool {
 		return r == '*' ||
 			letter(r)
 	},
 
-	slot.GoGLL0R4: func() bool {
+	// slot.GoGLL0R4
+	func() bool {
 		return anyof(r, "\n\r\t") ||
 			space(r) ||
 			r == '$'
 	},
 
-	slot.GoGLL0R5: func() bool {
+	// slot.GoGLL0R5
+	func() bool {
 		return r == '$'
 	},
 
-	slot.Head0R0: func() bool {
+	// slot.Head0R0
+	func() bool {
 		return r == '*'
 	},
 
-	slot.Head0R1: func() bool {
+	// slot.Head0R1
+	func() bool {
 		return letter(r)
 	},
 
-	slot.Head0R2: func() bool {
+	// slot.Head0R2
+	func() bool {
 		return r == ':' ||
 			anyof(r, "\n\r\t") ||
 			space(r)
 	},
 
-	slot.Head1R0: func() bool {
+	// slot.Head1R0
+	func() bool {
 		return letter(r)
 	},
 
-	slot.Head1R1: func() bool {
+	// slot.Head1R1
+	func() bool {
 		return r == ':' ||
 			anyof(r, "\n\r\t") ||
 			space(r)
 	},
 
-	slot.NTChar0R0: func() bool {
+	// slot.NTChar0R0
+	func() bool {
 		return letter(r)
 	},
 
-	slot.NTChar0R1: func() bool {
+	// slot.NTChar0R1
+	func() bool {
 		return r == ':' ||
 			r == ';' ||
 			anyof(r, "!#$%&*+-=@^_") ||
@@ -1708,11 +1758,13 @@ var testSelect = map[slot.Label]func() bool{
 			r == '|'
 	},
 
-	slot.NTChar1R0: func() bool {
+	// slot.NTChar1R0
+	func() bool {
 		return number(r)
 	},
 
-	slot.NTChar1R1: func() bool {
+	// slot.NTChar1R1
+	func() bool {
 		return r == ':' ||
 			r == ';' ||
 			anyof(r, "!#$%&*+-=@^_") ||
@@ -1723,11 +1775,13 @@ var testSelect = map[slot.Label]func() bool{
 			r == '|'
 	},
 
-	slot.NTChar2R0: func() bool {
+	// slot.NTChar2R0
+	func() bool {
 		return anyof(r, "!#$%&*+-=@^_")
 	},
 
-	slot.NTChar2R1: func() bool {
+	// slot.NTChar2R1
+	func() bool {
 		return r == ':' ||
 			r == ';' ||
 			anyof(r, "!#$%&*+-=@^_") ||
@@ -1738,13 +1792,15 @@ var testSelect = map[slot.Label]func() bool{
 			r == '|'
 	},
 
-	slot.NTChars0R0: func() bool {
+	// slot.NTChars0R0
+	func() bool {
 		return anyof(r, "!#$%&*+-=@^_") ||
 			letter(r) ||
 			number(r)
 	},
 
-	slot.NTChars0R1: func() bool {
+	// slot.NTChars0R1
+	func() bool {
 		return r == ':' ||
 			r == ';' ||
 			anyof(r, "\n\r\t") ||
@@ -1752,19 +1808,22 @@ var testSelect = map[slot.Label]func() bool{
 			r == '|'
 	},
 
-	slot.NTChars1R0: func() bool {
+	// slot.NTChars1R0
+	func() bool {
 		return anyof(r, "!#$%&*+-=@^_") ||
 			letter(r) ||
 			number(r)
 	},
 
-	slot.NTChars1R1: func() bool {
+	// slot.NTChars1R1
+	func() bool {
 		return anyof(r, "!#$%&*+-=@^_") ||
 			letter(r) ||
 			number(r)
 	},
 
-	slot.NTChars1R2: func() bool {
+	// slot.NTChars1R2
+	func() bool {
 		return r == ':' ||
 			r == ';' ||
 			anyof(r, "\n\r\t") ||
@@ -1772,11 +1831,13 @@ var testSelect = map[slot.Label]func() bool{
 			r == '|'
 	},
 
-	slot.NTID0R0: func() bool {
+	// slot.NTID0R0
+	func() bool {
 		return letter(r)
 	},
 
-	slot.NTID0R1: func() bool {
+	// slot.NTID0R1
+	func() bool {
 		return r == ':' ||
 			r == ';' ||
 			anyof(r, "\n\r\t") ||
@@ -1784,17 +1845,20 @@ var testSelect = map[slot.Label]func() bool{
 			r == '|'
 	},
 
-	slot.NTID1R0: func() bool {
+	// slot.NTID1R0
+	func() bool {
 		return letter(r)
 	},
 
-	slot.NTID1R1: func() bool {
+	// slot.NTID1R1
+	func() bool {
 		return anyof(r, "!#$%&*+-=@^_") ||
 			letter(r) ||
 			number(r)
 	},
 
-	slot.NTID1R2: func() bool {
+	// slot.NTID1R2
+	func() bool {
 		return r == ':' ||
 			r == ';' ||
 			anyof(r, "\n\r\t") ||
@@ -1802,75 +1866,91 @@ var testSelect = map[slot.Label]func() bool{
 			r == '|'
 	},
 
-	slot.NonTerminal0R0: func() bool {
+	// slot.NonTerminal0R0
+	func() bool {
 		return letter(r)
 	},
 
-	slot.NonTerminal0R1: func() bool {
+	// slot.NonTerminal0R1
+	func() bool {
 		return r == ';' ||
 			anyof(r, "\n\r\t") ||
 			space(r) ||
 			r == '|'
 	},
 
-	slot.Package0R0: func() bool {
+	// slot.Package0R0
+	func() bool {
 		return r == 'p'
 	},
 
-	slot.Package0R1: func() bool {
+	// slot.Package0R1
+	func() bool {
 		return r == 'a'
 	},
 
-	slot.Package0R2: func() bool {
+	// slot.Package0R2
+	func() bool {
 		return r == 'c'
 	},
 
-	slot.Package0R3: func() bool {
+	// slot.Package0R3
+	func() bool {
 		return r == 'k'
 	},
 
-	slot.Package0R4: func() bool {
+	// slot.Package0R4
+	func() bool {
 		return r == 'a'
 	},
 
-	slot.Package0R5: func() bool {
+	// slot.Package0R5
+	func() bool {
 		return r == 'g'
 	},
 
-	slot.Package0R6: func() bool {
+	// slot.Package0R6
+	func() bool {
 		return r == 'e'
 	},
 
-	slot.Package0R7: func() bool {
+	// slot.Package0R7
+	func() bool {
 		return anyof(r, "\n\r\t") ||
 			space(r)
 	},
 
-	slot.Package0R8: func() bool {
+	// slot.Package0R8
+	func() bool {
 		return r == '"'
 	},
 
-	slot.Package0R9: func() bool {
+	// slot.Package0R9
+	func() bool {
 		return anyof(r, "\n\r\t") ||
 			space(r)
 	},
 
-	slot.Rule0R0: func() bool {
+	// slot.Rule0R0
+	func() bool {
 		return r == '*' ||
 			letter(r)
 	},
 
-	slot.Rule0R1: func() bool {
+	// slot.Rule0R1
+	func() bool {
 		return r == ':' ||
 			anyof(r, "\n\r\t") ||
 			space(r)
 	},
 
-	slot.Rule0R2: func() bool {
+	// slot.Rule0R2
+	func() bool {
 		return r == ':'
 	},
 
-	slot.Rule0R3: func() bool {
+	// slot.Rule0R3
+	func() bool {
 		return r == '"' ||
 			r == '\'' ||
 			r == 'a' ||
@@ -1884,7 +1964,8 @@ var testSelect = map[slot.Label]func() bool{
 			r == 'u'
 	},
 
-	slot.Rule0R4: func() bool {
+	// slot.Rule0R4
+	func() bool {
 		return r == '"' ||
 			r == '\'' ||
 			r == 'a' ||
@@ -1896,17 +1977,20 @@ var testSelect = map[slot.Label]func() bool{
 			r == 'u'
 	},
 
-	slot.Rule0R5: func() bool {
+	// slot.Rule0R5
+	func() bool {
 		return r == ';' ||
 			anyof(r, "\n\r\t") ||
 			space(r)
 	},
 
-	slot.Rule0R6: func() bool {
+	// slot.Rule0R6
+	func() bool {
 		return r == ';'
 	},
 
-	slot.Rule0R7: func() bool {
+	// slot.Rule0R7
+	func() bool {
 		return r == '$' ||
 			r == '*' ||
 			anyof(r, "\n\r\t") ||
@@ -1914,74 +1998,54 @@ var testSelect = map[slot.Label]func() bool{
 			space(r)
 	},
 
-	slot.Rules0R0: func() bool {
+	// slot.Rules0R0
+	func() bool {
 		return r == '*' ||
 			letter(r)
 	},
 
-	slot.Rules0R1: func() bool {
+	// slot.Rules0R1
+	func() bool {
 		return r == '$' ||
 			anyof(r, "\n\r\t") ||
 			space(r)
 	},
 
-	slot.Rules1R0: func() bool {
+	// slot.Rules1R0
+	func() bool {
 		return r == '*' ||
 			letter(r)
 	},
 
-	slot.Rules1R1: func() bool {
+	// slot.Rules1R1
+	func() bool {
 		return r == '*' ||
 			anyof(r, "\n\r\t") ||
 			letter(r) ||
 			space(r)
 	},
 
-	slot.Rules1R2: func() bool {
+	// slot.Rules1R2
+	func() bool {
 		return r == '*' ||
 			letter(r)
 	},
 
-	slot.Rules1R3: func() bool {
+	// slot.Rules1R3
+	func() bool {
 		return r == '$' ||
 			anyof(r, "\n\r\t") ||
 			space(r)
 	},
 
-	slot.Sep0R0: func() bool {
+	// slot.Sep0R0
+	func() bool {
 		return anyof(r, "\n\r\t") ||
 			space(r)
 	},
 
-	slot.Sep0R1: func() bool {
-		return r == '$' ||
-			r == '*' ||
-			r == ':' ||
-			r == ';' ||
-			r == '"' ||
-			r == '\'' ||
-			r == 'a' ||
-			r == 'e' ||
-			r == 'l' ||
-			letter(r) ||
-			r == 'n' ||
-			r == 'p' ||
-			r == 's' ||
-			r == 'u' ||
-			r == '|'
-	},
-
-	slot.Sep1R0: func() bool {
-		return anyof(r, "\n\r\t") ||
-			space(r)
-	},
-
-	slot.Sep1R1: func() bool {
-		return anyof(r, "\n\r\t") ||
-			space(r)
-	},
-
-	slot.Sep1R2: func() bool {
+	// slot.Sep0R1
+	func() bool {
 		return r == '$' ||
 			r == '*' ||
 			r == ':' ||
@@ -1999,11 +2063,44 @@ var testSelect = map[slot.Label]func() bool{
 			r == '|'
 	},
 
-	slot.SepChar0R0: func() bool {
+	// slot.Sep1R0
+	func() bool {
+		return anyof(r, "\n\r\t") ||
+			space(r)
+	},
+
+	// slot.Sep1R1
+	func() bool {
+		return anyof(r, "\n\r\t") ||
+			space(r)
+	},
+
+	// slot.Sep1R2
+	func() bool {
+		return r == '$' ||
+			r == '*' ||
+			r == ':' ||
+			r == ';' ||
+			r == '"' ||
+			r == '\'' ||
+			r == 'a' ||
+			r == 'e' ||
+			r == 'l' ||
+			letter(r) ||
+			r == 'n' ||
+			r == 'p' ||
+			r == 's' ||
+			r == 'u' ||
+			r == '|'
+	},
+
+	// slot.SepChar0R0
+	func() bool {
 		return space(r)
 	},
 
-	slot.SepChar0R1: func() bool {
+	// slot.SepChar0R1
+	func() bool {
 		return r == '$' ||
 			r == '*' ||
 			r == ':' ||
@@ -2023,11 +2120,13 @@ var testSelect = map[slot.Label]func() bool{
 			r == '|'
 	},
 
-	slot.SepChar1R0: func() bool {
+	// slot.SepChar1R0
+	func() bool {
 		return anyof(r, "\n\r\t")
 	},
 
-	slot.SepChar1R1: func() bool {
+	// slot.SepChar1R1
+	func() bool {
 		return r == '$' ||
 			r == '*' ||
 			r == ':' ||
@@ -2047,12 +2146,14 @@ var testSelect = map[slot.Label]func() bool{
 			r == '|'
 	},
 
-	slot.SepE0R0: func() bool {
+	// slot.SepE0R0
+	func() bool {
 		return anyof(r, "\n\r\t") ||
 			space(r)
 	},
 
-	slot.SepE0R1: func() bool {
+	// slot.SepE0R1
+	func() bool {
 		return r == '$' ||
 			r == '*' ||
 			r == ':' ||
@@ -2070,7 +2171,8 @@ var testSelect = map[slot.Label]func() bool{
 			r == '|'
 	},
 
-	slot.SepE1R0: func() bool {
+	// slot.SepE1R0
+	func() bool {
 		return r == '$' ||
 			r == '*' ||
 			r == ':' ||
@@ -2088,46 +2190,55 @@ var testSelect = map[slot.Label]func() bool{
 			r == '|'
 	},
 
-	slot.String0R0: func() bool {
+	// slot.String0R0
+	func() bool {
 		return r == '"'
 	},
 
-	slot.String0R1: func() bool {
+	// slot.String0R1
+	func() bool {
 		return r == '"' ||
 			r == '\\' ||
 			not(r, "\"\\")
 	},
 
-	slot.String0R2: func() bool {
+	// slot.String0R2
+	func() bool {
 		return r == '"'
 	},
 
-	slot.String0R3: func() bool {
+	// slot.String0R3
+	func() bool {
 		return r == ';' ||
 			anyof(r, "\n\r\t") ||
 			space(r) ||
 			r == '|'
 	},
 
-	slot.StringChars0R0: func() bool {
+	// slot.StringChars0R0
+	func() bool {
 		return not(r, "\"\\")
 	},
 
-	slot.StringChars0R1: func() bool {
+	// slot.StringChars0R1
+	func() bool {
 		return r == '\\' ||
 			not(r, "\"\\") ||
 			r == '"'
 	},
 
-	slot.StringChars0R2: func() bool {
+	// slot.StringChars0R2
+	func() bool {
 		return r == '"'
 	},
 
-	slot.StringChars1R0: func() bool {
+	// slot.StringChars1R0
+	func() bool {
 		return r == '\\'
 	},
 
-	slot.StringChars1R1: func() bool {
+	// slot.StringChars1R1
+	func() bool {
 		return r == '"' ||
 			r == '\'' ||
 			r == '\\' ||
@@ -2136,32 +2247,38 @@ var testSelect = map[slot.Label]func() bool{
 			r == 't'
 	},
 
-	slot.StringChars1R2: func() bool {
+	// slot.StringChars1R2
+	func() bool {
 		return r == '\\' ||
 			not(r, "\"\\") ||
 			r == '"'
 	},
 
-	slot.StringChars1R3: func() bool {
+	// slot.StringChars1R3
+	func() bool {
 		return r == '"'
 	},
 
-	slot.StringChars2R0: func() bool {
+	// slot.StringChars2R0
+	func() bool {
 		return r == '"'
 	},
 
-	slot.Symbol0R0: func() bool {
+	// slot.Symbol0R0
+	func() bool {
 		return letter(r)
 	},
 
-	slot.Symbol0R1: func() bool {
+	// slot.Symbol0R1
+	func() bool {
 		return r == ';' ||
 			anyof(r, "\n\r\t") ||
 			space(r) ||
 			r == '|'
 	},
 
-	slot.Symbol1R0: func() bool {
+	// slot.Symbol1R0
+	func() bool {
 		return r == '"' ||
 			r == '\'' ||
 			r == 'a' ||
@@ -2171,14 +2288,16 @@ var testSelect = map[slot.Label]func() bool{
 			r == 'u'
 	},
 
-	slot.Symbol1R1: func() bool {
+	// slot.Symbol1R1
+	func() bool {
 		return r == ';' ||
 			anyof(r, "\n\r\t") ||
 			space(r) ||
 			r == '|'
 	},
 
-	slot.Symbols0R0: func() bool {
+	// slot.Symbols0R0
+	func() bool {
 		return r == '"' ||
 			r == '\'' ||
 			r == 'a' ||
@@ -2189,12 +2308,14 @@ var testSelect = map[slot.Label]func() bool{
 			r == 'u'
 	},
 
-	slot.Symbols0R1: func() bool {
+	// slot.Symbols0R1
+	func() bool {
 		return anyof(r, "\n\r\t") ||
 			space(r)
 	},
 
-	slot.Symbols0R2: func() bool {
+	// slot.Symbols0R2
+	func() bool {
 		return r == '"' ||
 			r == '\'' ||
 			r == 'a' ||
@@ -2205,14 +2326,16 @@ var testSelect = map[slot.Label]func() bool{
 			r == 'u'
 	},
 
-	slot.Symbols0R3: func() bool {
+	// slot.Symbols0R3
+	func() bool {
 		return r == ';' ||
 			anyof(r, "\n\r\t") ||
 			space(r) ||
 			r == '|'
 	},
 
-	slot.Symbols1R0: func() bool {
+	// slot.Symbols1R0
+	func() bool {
 		return r == '"' ||
 			r == '\'' ||
 			r == 'a' ||
@@ -2223,267 +2346,325 @@ var testSelect = map[slot.Label]func() bool{
 			r == 'u'
 	},
 
-	slot.Symbols1R1: func() bool {
+	// slot.Symbols1R1
+	func() bool {
 		return r == ';' ||
 			anyof(r, "\n\r\t") ||
 			space(r) ||
 			r == '|'
 	},
 
-	slot.Terminal0R0: func() bool {
+	// slot.Terminal0R0
+	func() bool {
 		return r == 'a'
 	},
 
-	slot.Terminal0R1: func() bool {
+	// slot.Terminal0R1
+	func() bool {
 		return r == 'n'
 	},
 
-	slot.Terminal0R2: func() bool {
+	// slot.Terminal0R2
+	func() bool {
 		return r == 'y'
 	},
 
-	slot.Terminal0R3: func() bool {
+	// slot.Terminal0R3
+	func() bool {
 		return r == ';' ||
 			anyof(r, "\n\r\t") ||
 			space(r) ||
 			r == '|'
 	},
 
-	slot.Terminal1R0: func() bool {
+	// slot.Terminal1R0
+	func() bool {
 		return r == 'a'
 	},
 
-	slot.Terminal1R1: func() bool {
+	// slot.Terminal1R1
+	func() bool {
 		return r == 'n'
 	},
 
-	slot.Terminal1R2: func() bool {
+	// slot.Terminal1R2
+	func() bool {
 		return r == 'y'
 	},
 
-	slot.Terminal1R3: func() bool {
+	// slot.Terminal1R3
+	func() bool {
 		return r == 'o'
 	},
 
-	slot.Terminal1R4: func() bool {
+	// slot.Terminal1R4
+	func() bool {
 		return r == 'f'
 	},
 
-	slot.Terminal1R5: func() bool {
+	// slot.Terminal1R5
+	func() bool {
 		return anyof(r, "\n\r\t") ||
 			space(r)
 	},
 
-	slot.Terminal1R6: func() bool {
+	// slot.Terminal1R6
+	func() bool {
 		return r == '"'
 	},
 
-	slot.Terminal1R7: func() bool {
+	// slot.Terminal1R7
+	func() bool {
 		return r == ';' ||
 			anyof(r, "\n\r\t") ||
 			space(r) ||
 			r == '|'
 	},
 
-	slot.Terminal2R0: func() bool {
+	// slot.Terminal2R0
+	func() bool {
 		return r == 'l'
 	},
 
-	slot.Terminal2R1: func() bool {
+	// slot.Terminal2R1
+	func() bool {
 		return r == 'e'
 	},
 
-	slot.Terminal2R2: func() bool {
+	// slot.Terminal2R2
+	func() bool {
 		return r == 't'
 	},
 
-	slot.Terminal2R3: func() bool {
+	// slot.Terminal2R3
+	func() bool {
 		return r == 't'
 	},
 
-	slot.Terminal2R4: func() bool {
+	// slot.Terminal2R4
+	func() bool {
 		return r == 'e'
 	},
 
-	slot.Terminal2R5: func() bool {
+	// slot.Terminal2R5
+	func() bool {
 		return r == 'r'
 	},
 
-	slot.Terminal2R6: func() bool {
+	// slot.Terminal2R6
+	func() bool {
 		return r == ';' ||
 			anyof(r, "\n\r\t") ||
 			space(r) ||
 			r == '|'
 	},
 
-	slot.Terminal3R0: func() bool {
+	// slot.Terminal3R0
+	func() bool {
 		return r == 'n'
 	},
 
-	slot.Terminal3R1: func() bool {
+	// slot.Terminal3R1
+	func() bool {
 		return r == 'u'
 	},
 
-	slot.Terminal3R2: func() bool {
+	// slot.Terminal3R2
+	func() bool {
 		return r == 'm'
 	},
 
-	slot.Terminal3R3: func() bool {
+	// slot.Terminal3R3
+	func() bool {
 		return r == 'b'
 	},
 
-	slot.Terminal3R4: func() bool {
+	// slot.Terminal3R4
+	func() bool {
 		return r == 'e'
 	},
 
-	slot.Terminal3R5: func() bool {
+	// slot.Terminal3R5
+	func() bool {
 		return r == 'r'
 	},
 
-	slot.Terminal3R6: func() bool {
+	// slot.Terminal3R6
+	func() bool {
 		return r == ';' ||
 			anyof(r, "\n\r\t") ||
 			space(r) ||
 			r == '|'
 	},
 
-	slot.Terminal4R0: func() bool {
+	// slot.Terminal4R0
+	func() bool {
 		return r == 's'
 	},
 
-	slot.Terminal4R1: func() bool {
+	// slot.Terminal4R1
+	func() bool {
 		return r == 'p'
 	},
 
-	slot.Terminal4R2: func() bool {
+	// slot.Terminal4R2
+	func() bool {
 		return r == 'a'
 	},
 
-	slot.Terminal4R3: func() bool {
+	// slot.Terminal4R3
+	func() bool {
 		return r == 'c'
 	},
 
-	slot.Terminal4R4: func() bool {
+	// slot.Terminal4R4
+	func() bool {
 		return r == 'e'
 	},
 
-	slot.Terminal4R5: func() bool {
+	// slot.Terminal4R5
+	func() bool {
 		return r == ';' ||
 			anyof(r, "\n\r\t") ||
 			space(r) ||
 			r == '|'
 	},
 
-	slot.Terminal5R0: func() bool {
+	// slot.Terminal5R0
+	func() bool {
 		return r == 'u'
 	},
 
-	slot.Terminal5R1: func() bool {
+	// slot.Terminal5R1
+	func() bool {
 		return r == 'p'
 	},
 
-	slot.Terminal5R2: func() bool {
+	// slot.Terminal5R2
+	func() bool {
 		return r == 'c'
 	},
 
-	slot.Terminal5R3: func() bool {
+	// slot.Terminal5R3
+	func() bool {
 		return r == 'a'
 	},
 
-	slot.Terminal5R4: func() bool {
+	// slot.Terminal5R4
+	func() bool {
 		return r == 's'
 	},
 
-	slot.Terminal5R5: func() bool {
+	// slot.Terminal5R5
+	func() bool {
 		return r == 'e'
 	},
 
-	slot.Terminal5R6: func() bool {
+	// slot.Terminal5R6
+	func() bool {
 		return r == ';' ||
 			anyof(r, "\n\r\t") ||
 			space(r) ||
 			r == '|'
 	},
 
-	slot.Terminal6R0: func() bool {
+	// slot.Terminal6R0
+	func() bool {
 		return r == 'l'
 	},
 
-	slot.Terminal6R1: func() bool {
+	// slot.Terminal6R1
+	func() bool {
 		return r == 'o'
 	},
 
-	slot.Terminal6R2: func() bool {
+	// slot.Terminal6R2
+	func() bool {
 		return r == 'w'
 	},
 
-	slot.Terminal6R3: func() bool {
+	// slot.Terminal6R3
+	func() bool {
 		return r == 'c'
 	},
 
-	slot.Terminal6R4: func() bool {
+	// slot.Terminal6R4
+	func() bool {
 		return r == 'a'
 	},
 
-	slot.Terminal6R5: func() bool {
+	// slot.Terminal6R5
+	func() bool {
 		return r == 's'
 	},
 
-	slot.Terminal6R6: func() bool {
+	// slot.Terminal6R6
+	func() bool {
 		return r == 'e'
 	},
 
-	slot.Terminal6R7: func() bool {
+	// slot.Terminal6R7
+	func() bool {
 		return r == ';' ||
 			anyof(r, "\n\r\t") ||
 			space(r) ||
 			r == '|'
 	},
 
-	slot.Terminal7R0: func() bool {
+	// slot.Terminal7R0
+	func() bool {
 		return r == 'n'
 	},
 
-	slot.Terminal7R1: func() bool {
+	// slot.Terminal7R1
+	func() bool {
 		return r == 'o'
 	},
 
-	slot.Terminal7R2: func() bool {
+	// slot.Terminal7R2
+	func() bool {
 		return r == 't'
 	},
 
-	slot.Terminal7R3: func() bool {
+	// slot.Terminal7R3
+	func() bool {
 		return anyof(r, "\n\r\t") ||
 			space(r)
 	},
 
-	slot.Terminal7R4: func() bool {
+	// slot.Terminal7R4
+	func() bool {
 		return r == '"'
 	},
 
-	slot.Terminal7R5: func() bool {
+	// slot.Terminal7R5
+	func() bool {
 		return r == ';' ||
 			anyof(r, "\n\r\t") ||
 			space(r) ||
 			r == '|'
 	},
 
-	slot.Terminal8R0: func() bool {
+	// slot.Terminal8R0
+	func() bool {
 		return r == '\''
 	},
 
-	slot.Terminal8R1: func() bool {
+	// slot.Terminal8R1
+	func() bool {
 		return r == ';' ||
 			anyof(r, "\n\r\t") ||
 			space(r) ||
 			r == '|'
 	},
 
-	slot.Terminal9R0: func() bool {
+	// slot.Terminal9R0
+	func() bool {
 		return r == '"'
 	},
 
-	slot.Terminal9R1: func() bool {
+	// slot.Terminal9R1
+	func() bool {
 		return r == ';' ||
 			anyof(r, "\n\r\t") ||
 			space(r) ||
