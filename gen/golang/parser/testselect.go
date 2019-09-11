@@ -17,11 +17,12 @@ package parser
 import (
 	"bytes"
 	"fmt"
-	"github.com/goccmack/gogll/frstflw"
-	"github.com/goccmack/gogll/gslot"
 	"os"
 	"strings"
 	"text/template"
+
+	"github.com/goccmack/gogll/frstflw"
+	"github.com/goccmack/gogll/gslot"
 )
 
 func (g *gen) genTestSelect() string {
@@ -153,13 +154,12 @@ func getSymbolCondition(sym string) string {
 }
 
 const testSelectTmpl = `var testSelect = map[slot.Label]func()bool{ {{range $i, $ts := .TestSelect}}
-	slot.{{$ts.Label}}:func()bool{
-		return {{range $i, $c := $ts.Conditions}}{{$c.Cond}} {{if not $c.Last}}||{{end}}
-		{{end}} },
+slot.{{$ts.Label}}:func()bool{
+    return {{range $i, $c := $ts.Conditions}}{{$c.Cond}} {{if not $c.Last}}||{{end}}
+    {{end}} },
 {{end}} }
 
-var follow = map[string]func()bool{ {{range $i, $flw := .Follow}}
-	"{{$flw.Label}}":func()bool{
-		return {{range $i, $c := $flw.Conditions}}{{$c.Cond}} {{if not $c.Last}}||{{end}}
-	{{end}} },
-{{end}} }`
+{{range $i, $flw := .Follow}}func follow{{$flw.Label}} () bool {
+    return {{range $i, $c := $flw.Conditions}}{{$c.Cond}} {{if not $c.Last}}||{{end}}
+{{end}} }
+{{end}}`

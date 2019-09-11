@@ -101,7 +101,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			call(slot.Alternate0R1, cU, cI)
 		case slot.Alternate0R1: // Alternate : Symbols ∙
 
-			if follow["Alternate"]() {
+			if followAlternate() {
 				rtn("Alternate", cU, cI)
 			}
 		case slot.Alternate1R0: // Alternate : ∙e m p t y
@@ -141,7 +141,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			bsr.Add(slot.Alternate1R5, cU, cI, cI+sz)
 			cI += sz
 			nextI, r, sz = decodeRune(I[cI:])
-			if follow["Alternate"]() {
+			if followAlternate() {
 				rtn("Alternate", cU, cI)
 			}
 		case slot.Alternates0R0: // Alternates : ∙Alternate
@@ -149,7 +149,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			call(slot.Alternates0R1, cU, cI)
 		case slot.Alternates0R1: // Alternates : Alternate ∙
 
-			if follow["Alternates"]() {
+			if followAlternates() {
 				rtn("Alternates", cU, cI)
 			}
 		case slot.Alternates1R0: // Alternates : ∙Alternate SepE | SepE Alternates
@@ -189,7 +189,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			call(slot.Alternates1R5, cU, cI)
 		case slot.Alternates1R5: // Alternates : Alternate SepE | SepE Alternates ∙
 
-			if follow["Alternates"]() {
+			if followAlternates() {
 				rtn("Alternates", cU, cI)
 			}
 		case slot.CharLiteral0R0: // CharLiteral : ∙\' \\ anyof('\"\\nrt) \'
@@ -221,7 +221,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			bsr.Add(slot.CharLiteral0R4, cU, cI, cI+sz)
 			cI += sz
 			nextI, r, sz = decodeRune(I[cI:])
-			if follow["CharLiteral"]() {
+			if followCharLiteral() {
 				rtn("CharLiteral", cU, cI)
 			}
 		case slot.CharLiteral1R0: // CharLiteral : ∙\' any \'
@@ -245,7 +245,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			bsr.Add(slot.CharLiteral1R3, cU, cI, cI+sz)
 			cI += sz
 			nextI, r, sz = decodeRune(I[cI:])
-			if follow["CharLiteral"]() {
+			if followCharLiteral() {
 				rtn("CharLiteral", cU, cI)
 			}
 		case slot.EscapedChar0R0: // EscapedChar : ∙"
@@ -253,7 +253,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			bsr.Add(slot.EscapedChar0R1, cU, cI, cI+sz)
 			cI += sz
 			nextI, r, sz = decodeRune(I[cI:])
-			if follow["EscapedChar"]() {
+			if followEscapedChar() {
 				rtn("EscapedChar", cU, cI)
 			}
 		case slot.EscapedChar1R0: // EscapedChar : ∙n
@@ -261,7 +261,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			bsr.Add(slot.EscapedChar1R1, cU, cI, cI+sz)
 			cI += sz
 			nextI, r, sz = decodeRune(I[cI:])
-			if follow["EscapedChar"]() {
+			if followEscapedChar() {
 				rtn("EscapedChar", cU, cI)
 			}
 		case slot.EscapedChar2R0: // EscapedChar : ∙r
@@ -269,7 +269,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			bsr.Add(slot.EscapedChar2R1, cU, cI, cI+sz)
 			cI += sz
 			nextI, r, sz = decodeRune(I[cI:])
-			if follow["EscapedChar"]() {
+			if followEscapedChar() {
 				rtn("EscapedChar", cU, cI)
 			}
 		case slot.EscapedChar3R0: // EscapedChar : ∙t
@@ -277,7 +277,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			bsr.Add(slot.EscapedChar3R1, cU, cI, cI+sz)
 			cI += sz
 			nextI, r, sz = decodeRune(I[cI:])
-			if follow["EscapedChar"]() {
+			if followEscapedChar() {
 				rtn("EscapedChar", cU, cI)
 			}
 		case slot.EscapedChar4R0: // EscapedChar : ∙\\
@@ -285,7 +285,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			bsr.Add(slot.EscapedChar4R1, cU, cI, cI+sz)
 			cI += sz
 			nextI, r, sz = decodeRune(I[cI:])
-			if follow["EscapedChar"]() {
+			if followEscapedChar() {
 				rtn("EscapedChar", cU, cI)
 			}
 		case slot.EscapedChar5R0: // EscapedChar : ∙\'
@@ -293,7 +293,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			bsr.Add(slot.EscapedChar5R1, cU, cI, cI+sz)
 			cI += sz
 			nextI, r, sz = decodeRune(I[cI:])
-			if follow["EscapedChar"]() {
+			if followEscapedChar() {
 				rtn("EscapedChar", cU, cI)
 			}
 		case slot.GoGLL0R0: // GoGLL : ∙SepE Package Sep Rules SepE
@@ -333,7 +333,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			call(slot.GoGLL0R5, cU, cI)
 		case slot.GoGLL0R5: // GoGLL : SepE Package Sep Rules SepE ∙
 
-			if follow["GoGLL"]() {
+			if followGoGLL() {
 				rtn("GoGLL", cU, cI)
 			}
 		case slot.Head0R0: // Head : ∙* NTID
@@ -349,7 +349,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			call(slot.Head0R2, cU, cI)
 		case slot.Head0R2: // Head : * NTID ∙
 
-			if follow["Head"]() {
+			if followHead() {
 				rtn("Head", cU, cI)
 			}
 		case slot.Head1R0: // Head : ∙NTID
@@ -357,7 +357,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			call(slot.Head1R1, cU, cI)
 		case slot.Head1R1: // Head : NTID ∙
 
-			if follow["Head"]() {
+			if followHead() {
 				rtn("Head", cU, cI)
 			}
 		case slot.NTChar0R0: // NTChar : ∙letter
@@ -365,7 +365,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			bsr.Add(slot.NTChar0R1, cU, cI, cI+sz)
 			cI += sz
 			nextI, r, sz = decodeRune(I[cI:])
-			if follow["NTChar"]() {
+			if followNTChar() {
 				rtn("NTChar", cU, cI)
 			}
 		case slot.NTChar1R0: // NTChar : ∙number
@@ -373,7 +373,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			bsr.Add(slot.NTChar1R1, cU, cI, cI+sz)
 			cI += sz
 			nextI, r, sz = decodeRune(I[cI:])
-			if follow["NTChar"]() {
+			if followNTChar() {
 				rtn("NTChar", cU, cI)
 			}
 		case slot.NTChar2R0: // NTChar : ∙anyof(!#$%&*+-=@^_)
@@ -381,7 +381,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			bsr.Add(slot.NTChar2R1, cU, cI, cI+sz)
 			cI += sz
 			nextI, r, sz = decodeRune(I[cI:])
-			if follow["NTChar"]() {
+			if followNTChar() {
 				rtn("NTChar", cU, cI)
 			}
 		case slot.NTChars0R0: // NTChars : ∙NTChar
@@ -389,7 +389,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			call(slot.NTChars0R1, cU, cI)
 		case slot.NTChars0R1: // NTChars : NTChar ∙
 
-			if follow["NTChars"]() {
+			if followNTChars() {
 				rtn("NTChars", cU, cI)
 			}
 		case slot.NTChars1R0: // NTChars : ∙NTChar NTChars
@@ -405,7 +405,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			call(slot.NTChars1R2, cU, cI)
 		case slot.NTChars1R2: // NTChars : NTChar NTChars ∙
 
-			if follow["NTChars"]() {
+			if followNTChars() {
 				rtn("NTChars", cU, cI)
 			}
 		case slot.NTID0R0: // NTID : ∙letter
@@ -413,7 +413,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			bsr.Add(slot.NTID0R1, cU, cI, cI+sz)
 			cI += sz
 			nextI, r, sz = decodeRune(I[cI:])
-			if follow["NTID"]() {
+			if followNTID() {
 				rtn("NTID", cU, cI)
 			}
 		case slot.NTID1R0: // NTID : ∙letter NTChars
@@ -429,7 +429,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			call(slot.NTID1R2, cU, cI)
 		case slot.NTID1R2: // NTID : letter NTChars ∙
 
-			if follow["NTID"]() {
+			if followNTID() {
 				rtn("NTID", cU, cI)
 			}
 		case slot.NonTerminal0R0: // NonTerminal : ∙NTID
@@ -437,7 +437,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			call(slot.NonTerminal0R1, cU, cI)
 		case slot.NonTerminal0R1: // NonTerminal : NTID ∙
 
-			if follow["NonTerminal"]() {
+			if followNonTerminal() {
 				rtn("NonTerminal", cU, cI)
 			}
 		case slot.Package0R0: // Package : ∙p a c k a g e Sep String
@@ -509,7 +509,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			call(slot.Package0R9, cU, cI)
 		case slot.Package0R9: // Package : p a c k a g e Sep String ∙
 
-			if follow["Package"]() {
+			if followPackage() {
 				rtn("Package", cU, cI)
 			}
 		case slot.Rule0R0: // Rule : ∙Head SepE : SepE Alternates SepE ;
@@ -565,7 +565,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			bsr.Add(slot.Rule0R7, cU, cI, cI+sz)
 			cI += sz
 			nextI, r, sz = decodeRune(I[cI:])
-			if follow["Rule"]() {
+			if followRule() {
 				rtn("Rule", cU, cI)
 			}
 		case slot.Rules0R0: // Rules : ∙Rule
@@ -573,7 +573,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			call(slot.Rules0R1, cU, cI)
 		case slot.Rules0R1: // Rules : Rule ∙
 
-			if follow["Rules"]() {
+			if followRules() {
 				rtn("Rules", cU, cI)
 			}
 		case slot.Rules1R0: // Rules : ∙Rule SepE Rules
@@ -597,7 +597,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			call(slot.Rules1R3, cU, cI)
 		case slot.Rules1R3: // Rules : Rule SepE Rules ∙
 
-			if follow["Rules"]() {
+			if followRules() {
 				rtn("Rules", cU, cI)
 			}
 		case slot.Sep0R0: // Sep : ∙SepChar
@@ -605,7 +605,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			call(slot.Sep0R1, cU, cI)
 		case slot.Sep0R1: // Sep : SepChar ∙
 
-			if follow["Sep"]() {
+			if followSep() {
 				rtn("Sep", cU, cI)
 			}
 		case slot.Sep1R0: // Sep : ∙SepChar Sep
@@ -621,7 +621,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			call(slot.Sep1R2, cU, cI)
 		case slot.Sep1R2: // Sep : SepChar Sep ∙
 
-			if follow["Sep"]() {
+			if followSep() {
 				rtn("Sep", cU, cI)
 			}
 		case slot.SepChar0R0: // SepChar : ∙space
@@ -629,7 +629,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			bsr.Add(slot.SepChar0R1, cU, cI, cI+sz)
 			cI += sz
 			nextI, r, sz = decodeRune(I[cI:])
-			if follow["SepChar"]() {
+			if followSepChar() {
 				rtn("SepChar", cU, cI)
 			}
 		case slot.SepChar1R0: // SepChar : ∙anyof(\n\r\t)
@@ -637,7 +637,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			bsr.Add(slot.SepChar1R1, cU, cI, cI+sz)
 			cI += sz
 			nextI, r, sz = decodeRune(I[cI:])
-			if follow["SepChar"]() {
+			if followSepChar() {
 				rtn("SepChar", cU, cI)
 			}
 		case slot.SepE0R0: // SepE : ∙Sep
@@ -645,13 +645,13 @@ func Parse(I []byte) (error, []*ParseError) {
 			call(slot.SepE0R1, cU, cI)
 		case slot.SepE0R1: // SepE : Sep ∙
 
-			if follow["SepE"]() {
+			if followSepE() {
 				rtn("SepE", cU, cI)
 			}
 		case slot.SepE1R0: // SepE : ∙
 			bsr.AddEmpty(slot.SepE1R0, cI)
 
-			if follow["SepE"]() {
+			if followSepE() {
 				rtn("SepE", cU, cI)
 			}
 		case slot.String0R0: // String : ∙\" StringChars \"
@@ -675,7 +675,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			bsr.Add(slot.String0R3, cU, cI, cI+sz)
 			cI += sz
 			nextI, r, sz = decodeRune(I[cI:])
-			if follow["String"]() {
+			if followString() {
 				rtn("String", cU, cI)
 			}
 		case slot.StringChars0R0: // StringChars : ∙not(\"\\) StringChars
@@ -691,7 +691,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			call(slot.StringChars0R2, cU, cI)
 		case slot.StringChars0R2: // StringChars : not(\"\\) StringChars ∙
 
-			if follow["StringChars"]() {
+			if followStringChars() {
 				rtn("StringChars", cU, cI)
 			}
 		case slot.StringChars1R0: // StringChars : ∙\\ EscapedChar StringChars
@@ -715,13 +715,13 @@ func Parse(I []byte) (error, []*ParseError) {
 			call(slot.StringChars1R3, cU, cI)
 		case slot.StringChars1R3: // StringChars : \\ EscapedChar StringChars ∙
 
-			if follow["StringChars"]() {
+			if followStringChars() {
 				rtn("StringChars", cU, cI)
 			}
 		case slot.StringChars2R0: // StringChars : ∙
 			bsr.AddEmpty(slot.StringChars2R0, cI)
 
-			if follow["StringChars"]() {
+			if followStringChars() {
 				rtn("StringChars", cU, cI)
 			}
 		case slot.Symbol0R0: // Symbol : ∙NonTerminal
@@ -729,7 +729,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			call(slot.Symbol0R1, cU, cI)
 		case slot.Symbol0R1: // Symbol : NonTerminal ∙
 
-			if follow["Symbol"]() {
+			if followSymbol() {
 				rtn("Symbol", cU, cI)
 			}
 		case slot.Symbol1R0: // Symbol : ∙Terminal
@@ -737,7 +737,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			call(slot.Symbol1R1, cU, cI)
 		case slot.Symbol1R1: // Symbol : Terminal ∙
 
-			if follow["Symbol"]() {
+			if followSymbol() {
 				rtn("Symbol", cU, cI)
 			}
 		case slot.Symbols0R0: // Symbols : ∙Symbol Sep Symbols
@@ -761,7 +761,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			call(slot.Symbols0R3, cU, cI)
 		case slot.Symbols0R3: // Symbols : Symbol Sep Symbols ∙
 
-			if follow["Symbols"]() {
+			if followSymbols() {
 				rtn("Symbols", cU, cI)
 			}
 		case slot.Symbols1R0: // Symbols : ∙Symbol
@@ -769,7 +769,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			call(slot.Symbols1R1, cU, cI)
 		case slot.Symbols1R1: // Symbols : Symbol ∙
 
-			if follow["Symbols"]() {
+			if followSymbols() {
 				rtn("Symbols", cU, cI)
 			}
 		case slot.Terminal0R0: // Terminal : ∙a n y
@@ -793,7 +793,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			bsr.Add(slot.Terminal0R3, cU, cI, cI+sz)
 			cI += sz
 			nextI, r, sz = decodeRune(I[cI:])
-			if follow["Terminal"]() {
+			if followTerminal() {
 				rtn("Terminal", cU, cI)
 			}
 		case slot.Terminal1R0: // Terminal : ∙a n y o f Sep String
@@ -849,7 +849,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			call(slot.Terminal1R7, cU, cI)
 		case slot.Terminal1R7: // Terminal : a n y o f Sep String ∙
 
-			if follow["Terminal"]() {
+			if followTerminal() {
 				rtn("Terminal", cU, cI)
 			}
 		case slot.Terminal2R0: // Terminal : ∙l e t t e r
@@ -897,7 +897,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			bsr.Add(slot.Terminal2R6, cU, cI, cI+sz)
 			cI += sz
 			nextI, r, sz = decodeRune(I[cI:])
-			if follow["Terminal"]() {
+			if followTerminal() {
 				rtn("Terminal", cU, cI)
 			}
 		case slot.Terminal3R0: // Terminal : ∙n u m b e r
@@ -945,7 +945,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			bsr.Add(slot.Terminal3R6, cU, cI, cI+sz)
 			cI += sz
 			nextI, r, sz = decodeRune(I[cI:])
-			if follow["Terminal"]() {
+			if followTerminal() {
 				rtn("Terminal", cU, cI)
 			}
 		case slot.Terminal4R0: // Terminal : ∙s p a c e
@@ -985,7 +985,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			bsr.Add(slot.Terminal4R5, cU, cI, cI+sz)
 			cI += sz
 			nextI, r, sz = decodeRune(I[cI:])
-			if follow["Terminal"]() {
+			if followTerminal() {
 				rtn("Terminal", cU, cI)
 			}
 		case slot.Terminal5R0: // Terminal : ∙u p c a s e
@@ -1033,7 +1033,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			bsr.Add(slot.Terminal5R6, cU, cI, cI+sz)
 			cI += sz
 			nextI, r, sz = decodeRune(I[cI:])
-			if follow["Terminal"]() {
+			if followTerminal() {
 				rtn("Terminal", cU, cI)
 			}
 		case slot.Terminal6R0: // Terminal : ∙l o w c a s e
@@ -1089,7 +1089,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			bsr.Add(slot.Terminal6R7, cU, cI, cI+sz)
 			cI += sz
 			nextI, r, sz = decodeRune(I[cI:])
-			if follow["Terminal"]() {
+			if followTerminal() {
 				rtn("Terminal", cU, cI)
 			}
 		case slot.Terminal7R0: // Terminal : ∙n o t Sep String
@@ -1129,7 +1129,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			call(slot.Terminal7R5, cU, cI)
 		case slot.Terminal7R5: // Terminal : n o t Sep String ∙
 
-			if follow["Terminal"]() {
+			if followTerminal() {
 				rtn("Terminal", cU, cI)
 			}
 		case slot.Terminal8R0: // Terminal : ∙CharLiteral
@@ -1137,7 +1137,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			call(slot.Terminal8R1, cU, cI)
 		case slot.Terminal8R1: // Terminal : CharLiteral ∙
 
-			if follow["Terminal"]() {
+			if followTerminal() {
 				rtn("Terminal", cU, cI)
 			}
 		case slot.Terminal9R0: // Terminal : ∙String
@@ -1145,7 +1145,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			call(slot.Terminal9R1, cU, cI)
 		case slot.Terminal9R1: // Terminal : String ∙
 
-			if follow["Terminal"]() {
+			if followTerminal() {
 				rtn("Terminal", cU, cI)
 			}
 
@@ -2491,183 +2491,161 @@ var testSelect = map[slot.Label]func() bool{
 	},
 }
 
-var follow = map[string]func() bool{
-	"Alternate": func() bool {
-		return r == ';' ||
-			anyof(r, "\n\r\t") ||
-			space(r) ||
-			r == '|'
-	},
-
-	"Alternates": func() bool {
-		return r == ';' ||
-			anyof(r, "\n\r\t") ||
-			space(r)
-	},
-
-	"CharLiteral": func() bool {
-		return r == ';' ||
-			anyof(r, "\n\r\t") ||
-			space(r) ||
-			r == '|'
-	},
-
-	"EscapedChar": func() bool {
-		return r == '"' ||
-			r == '\\' ||
-			not(r, "\"\\")
-	},
-
-	"GoGLL": func() bool {
-		return r == '$'
-	},
-
-	"Head": func() bool {
-		return r == ':' ||
-			anyof(r, "\n\r\t") ||
-			space(r)
-	},
-
-	"NTChar": func() bool {
-		return r == ':' ||
-			r == ';' ||
-			anyof(r, "!#$%&*+-=@^_") ||
-			anyof(r, "\n\r\t") ||
-			letter(r) ||
-			number(r) ||
-			space(r) ||
-			r == '|'
-	},
-
-	"NTChars": func() bool {
-		return r == ':' ||
-			r == ';' ||
-			anyof(r, "\n\r\t") ||
-			space(r) ||
-			r == '|'
-	},
-
-	"NTID": func() bool {
-		return r == ':' ||
-			r == ';' ||
-			anyof(r, "\n\r\t") ||
-			space(r) ||
-			r == '|'
-	},
-
-	"NonTerminal": func() bool {
-		return r == ';' ||
-			anyof(r, "\n\r\t") ||
-			space(r) ||
-			r == '|'
-	},
-
-	"Package": func() bool {
-		return anyof(r, "\n\r\t") ||
-			space(r)
-	},
-
-	"Rule": func() bool {
-		return r == '$' ||
-			r == '*' ||
-			anyof(r, "\n\r\t") ||
-			letter(r) ||
-			space(r)
-	},
-
-	"Rules": func() bool {
-		return r == '$' ||
-			anyof(r, "\n\r\t") ||
-			space(r)
-	},
-
-	"Sep": func() bool {
-		return r == '$' ||
-			r == '*' ||
-			r == ':' ||
-			r == ';' ||
-			r == '"' ||
-			r == '\'' ||
-			r == 'a' ||
-			r == 'e' ||
-			r == 'l' ||
-			letter(r) ||
-			r == 'n' ||
-			r == 'p' ||
-			r == 's' ||
-			r == 'u' ||
-			r == '|'
-	},
-
-	"SepChar": func() bool {
-		return r == '$' ||
-			r == '*' ||
-			r == ':' ||
-			r == ';' ||
-			r == '"' ||
-			r == '\'' ||
-			r == 'a' ||
-			anyof(r, "\n\r\t") ||
-			r == 'e' ||
-			r == 'l' ||
-			letter(r) ||
-			r == 'n' ||
-			r == 'p' ||
-			r == 's' ||
-			space(r) ||
-			r == 'u' ||
-			r == '|'
-	},
-
-	"SepE": func() bool {
-		return r == '$' ||
-			r == '*' ||
-			r == ':' ||
-			r == ';' ||
-			r == '"' ||
-			r == '\'' ||
-			r == 'a' ||
-			r == 'e' ||
-			r == 'l' ||
-			letter(r) ||
-			r == 'n' ||
-			r == 'p' ||
-			r == 's' ||
-			r == 'u' ||
-			r == '|'
-	},
-
-	"String": func() bool {
-		return r == ';' ||
-			anyof(r, "\n\r\t") ||
-			space(r) ||
-			r == '|'
-	},
-
-	"StringChars": func() bool {
-		return r == '"'
-	},
-
-	"Symbol": func() bool {
-		return r == ';' ||
-			anyof(r, "\n\r\t") ||
-			space(r) ||
-			r == '|'
-	},
-
-	"Symbols": func() bool {
-		return r == ';' ||
-			anyof(r, "\n\r\t") ||
-			space(r) ||
-			r == '|'
-	},
-
-	"Terminal": func() bool {
-		return r == ';' ||
-			anyof(r, "\n\r\t") ||
-			space(r) ||
-			r == '|'
-	},
+func followAlternate() bool {
+	return r == ';' ||
+		anyof(r, "\n\r\t") ||
+		space(r) ||
+		r == '|'
+}
+func followAlternates() bool {
+	return r == ';' ||
+		anyof(r, "\n\r\t") ||
+		space(r)
+}
+func followCharLiteral() bool {
+	return r == ';' ||
+		anyof(r, "\n\r\t") ||
+		space(r) ||
+		r == '|'
+}
+func followEscapedChar() bool {
+	return r == '"' ||
+		r == '\\' ||
+		not(r, "\"\\")
+}
+func followGoGLL() bool {
+	return r == '$'
+}
+func followHead() bool {
+	return r == ':' ||
+		anyof(r, "\n\r\t") ||
+		space(r)
+}
+func followNTChar() bool {
+	return r == ':' ||
+		r == ';' ||
+		anyof(r, "!#$%&*+-=@^_") ||
+		anyof(r, "\n\r\t") ||
+		letter(r) ||
+		number(r) ||
+		space(r) ||
+		r == '|'
+}
+func followNTChars() bool {
+	return r == ':' ||
+		r == ';' ||
+		anyof(r, "\n\r\t") ||
+		space(r) ||
+		r == '|'
+}
+func followNTID() bool {
+	return r == ':' ||
+		r == ';' ||
+		anyof(r, "\n\r\t") ||
+		space(r) ||
+		r == '|'
+}
+func followNonTerminal() bool {
+	return r == ';' ||
+		anyof(r, "\n\r\t") ||
+		space(r) ||
+		r == '|'
+}
+func followPackage() bool {
+	return anyof(r, "\n\r\t") ||
+		space(r)
+}
+func followRule() bool {
+	return r == '$' ||
+		r == '*' ||
+		anyof(r, "\n\r\t") ||
+		letter(r) ||
+		space(r)
+}
+func followRules() bool {
+	return r == '$' ||
+		anyof(r, "\n\r\t") ||
+		space(r)
+}
+func followSep() bool {
+	return r == '$' ||
+		r == '*' ||
+		r == ':' ||
+		r == ';' ||
+		r == '"' ||
+		r == '\'' ||
+		r == 'a' ||
+		r == 'e' ||
+		r == 'l' ||
+		letter(r) ||
+		r == 'n' ||
+		r == 'p' ||
+		r == 's' ||
+		r == 'u' ||
+		r == '|'
+}
+func followSepChar() bool {
+	return r == '$' ||
+		r == '*' ||
+		r == ':' ||
+		r == ';' ||
+		r == '"' ||
+		r == '\'' ||
+		r == 'a' ||
+		anyof(r, "\n\r\t") ||
+		r == 'e' ||
+		r == 'l' ||
+		letter(r) ||
+		r == 'n' ||
+		r == 'p' ||
+		r == 's' ||
+		space(r) ||
+		r == 'u' ||
+		r == '|'
+}
+func followSepE() bool {
+	return r == '$' ||
+		r == '*' ||
+		r == ':' ||
+		r == ';' ||
+		r == '"' ||
+		r == '\'' ||
+		r == 'a' ||
+		r == 'e' ||
+		r == 'l' ||
+		letter(r) ||
+		r == 'n' ||
+		r == 'p' ||
+		r == 's' ||
+		r == 'u' ||
+		r == '|'
+}
+func followString() bool {
+	return r == ';' ||
+		anyof(r, "\n\r\t") ||
+		space(r) ||
+		r == '|'
+}
+func followStringChars() bool {
+	return r == '"'
+}
+func followSymbol() bool {
+	return r == ';' ||
+		anyof(r, "\n\r\t") ||
+		space(r) ||
+		r == '|'
+}
+func followSymbols() bool {
+	return r == ';' ||
+		anyof(r, "\n\r\t") ||
+		space(r) ||
+		r == '|'
+}
+func followTerminal() bool {
+	return r == ';' ||
+		anyof(r, "\n\r\t") ||
+		space(r) ||
+		r == '|'
 }
 
 /*** Unicode functions ***/

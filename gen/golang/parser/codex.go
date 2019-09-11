@@ -15,9 +15,10 @@ package parser
 
 import (
 	"bytes"
+	"text/template"
+
 	"github.com/goccmack/gogll/ast"
 	"github.com/goccmack/gogll/gslot"
-	"text/template"
 )
 
 func (g *gen) genAlternatesCode() string {
@@ -111,7 +112,7 @@ case slot.{{$slot.PostLabel}}: // {{$slot.Comment}}
 			{{else}}bsr.Add(slot.{{$slot.PostLabel}}, cU, cI, cI+sz)
 			cI += sz 
 			nextI, r, sz = decodeRune(I[cI:]){{end}}{{end}}{{end}}
-			if follow["{{.NT}}"](){
+			if follow{{.NT}}(){
 				rtn("{{.NT}}", cU, cI)
 			}
 	`
