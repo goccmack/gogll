@@ -3,16 +3,14 @@
 Copyright 2019 Marius Ackerman. See [Apache license](LICENSE).
 
 # News
-## 2019-09-10
-V2.0.0: The last vestige of the gocc bootstrap compiler is remove from the grammar accepted by gogll v2.
-Empty alternates are now indicated by `empty`, not `emptyAlt` as in v0 and v1.
-
-## 2019-09-09
-The performance of the BSR has been improved. The time for gogll to compile gogll.md is reduced from
-1.3s to 0.2s
+## 2019-09-13
+1. Documentation added on how to walk the parse forest. [See](doc/bsr/bsr.md)
 
 # Gogll
 Gogll generates scannerless, clustered nonterminal parsers (CNP) following [Scott et al 2019](#Scott-et-al-2019). CNP is a version of generalised LL parsing (GLL)[Scott & Johnstone 2016](#Scott-et-al-2016). GLL parsers can parse all context free (CF) languages.
+
+# Walking the parse forest
+Gogll produces a binary subtree representation [(BSR)](#Scott-et-al-2019) set of the parse forest of a successful parse. See [Walking the BSR Parse Forest](doc/bsr/bsr.md)
 
 # Benefits and disadvantages
 The following table compares GLL parsers with LL-k/LR-k parsers and [PEGs](#Ford-2004)

@@ -101,7 +101,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			bsr.Add(slot.A0R1, cU, cI, cI+sz)
 			cI += sz
 			nextI, r, sz = decodeRune(I[cI:])
-			if follow["A"]() {
+			if followA() {
 				rtn("A", cU, cI)
 			}
 		case slot.B0R0: // B : ∙letter
@@ -109,7 +109,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			bsr.Add(slot.B0R1, cU, cI, cI+sz)
 			cI += sz
 			nextI, r, sz = decodeRune(I[cI:])
-			if follow["B"]() {
+			if followB() {
 				rtn("B", cU, cI)
 			}
 		case slot.S0R0: // S : ∙A S
@@ -125,7 +125,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			call(slot.S0R2, cU, cI)
 		case slot.S0R2: // S : A S ∙
 
-			if follow["S"]() {
+			if followS() {
 				rtn("S", cU, cI)
 			}
 		case slot.S1R0: // S : ∙B S
@@ -141,13 +141,13 @@ func Parse(I []byte) (error, []*ParseError) {
 			call(slot.S1R2, cU, cI)
 		case slot.S1R2: // S : B S ∙
 
-			if follow["S"]() {
+			if followS() {
 				rtn("S", cU, cI)
 			}
 		case slot.S2R0: // S : ∙
 			bsr.AddEmpty(slot.S2R0, cI)
 
-			if follow["S"]() {
+			if followS() {
 				rtn("S", cU, cI)
 			}
 
@@ -421,76 +421,83 @@ func runeToString(r rune) string {
 
 /*** TestSelect ***/
 
-var testSelect = map[slot.Label]func() bool{
-	slot.A0R0: func() bool {
+var testSelect = []func() bool{
+	// slot.A0R0
+	func() bool {
 		return r == 'a'
 	},
 
-	slot.A0R1: func() bool {
+	// slot.A0R1
+	func() bool {
 		return r == '$' ||
 			r == 'a' ||
 			letter(r)
 	},
 
-	slot.B0R0: func() bool {
+	// slot.B0R0
+	func() bool {
 		return letter(r)
 	},
 
-	slot.B0R1: func() bool {
+	// slot.B0R1
+	func() bool {
 		return r == '$' ||
 			r == 'a' ||
 			letter(r)
 	},
 
-	slot.S0R0: func() bool {
+	// slot.S0R0
+	func() bool {
 		return r == 'a'
 	},
 
-	slot.S0R1: func() bool {
+	// slot.S0R1
+	func() bool {
 		return r == 'a' ||
 			letter(r) ||
 			r == '$'
 	},
 
-	slot.S0R2: func() bool {
+	// slot.S0R2
+	func() bool {
 		return r == '$'
 	},
 
-	slot.S1R0: func() bool {
+	// slot.S1R0
+	func() bool {
 		return letter(r)
 	},
 
-	slot.S1R1: func() bool {
+	// slot.S1R1
+	func() bool {
 		return r == 'a' ||
 			letter(r) ||
 			r == '$'
 	},
 
-	slot.S1R2: func() bool {
+	// slot.S1R2
+	func() bool {
 		return r == '$'
 	},
 
-	slot.S2R0: func() bool {
+	// slot.S2R0
+	func() bool {
 		return r == '$'
 	},
 }
 
-var follow = map[string]func() bool{
-	"A": func() bool {
-		return r == '$' ||
-			r == 'a' ||
-			letter(r)
-	},
-
-	"B": func() bool {
-		return r == '$' ||
-			r == 'a' ||
-			letter(r)
-	},
-
-	"S": func() bool {
-		return r == '$'
-	},
+func followA() bool {
+	return r == '$' ||
+		r == 'a' ||
+		letter(r)
+}
+func followB() bool {
+	return r == '$' ||
+		r == 'a' ||
+		letter(r)
+}
+func followS() bool {
+	return r == '$'
 }
 
 /*** Unicode functions ***/

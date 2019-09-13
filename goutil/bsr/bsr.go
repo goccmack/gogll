@@ -27,7 +27,6 @@ package bsr
 
 import (
 	"fmt"
-	"os"
 	"strings"
 	"unicode/utf8"
 
@@ -338,13 +337,11 @@ func getNTSlot(nt string, leftExtent, rightExtent int) (bsrs []BSR) {
 func fail(b BSR, format string, a ...interface{}) {
 	msg := fmt.Sprintf(format, a...)
 	line, col := getLineColumn(b.LeftExtent(), set.I)
-	fmt.Printf("Error in BSR: %s at line %d col %d\n", msg, line, col)
-	os.Exit(1)
+	panic(fmt.Sprintf("Error in BSR: %s at line %d col %d\n", msg, line, col))
 }
 
 func failf(format string, args ...interface{}) {
-	fmt.Printf("Error in BSR: %s\n", fmt.Sprintf(format, args...))
-	os.Exit(1)
+	panic(fmt.Sprintf("Error in BSR: %s\n", fmt.Sprintf(format, args...)))
 }
 
 func decodeRune(str []byte) (string, rune, int) {

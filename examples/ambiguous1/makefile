@@ -3,6 +3,8 @@
 all: 
 	gogll g.md
 	go test -v
+	dot -Tpng beforeDA.dot -o beforeDA.png
+	dot -Tpng afterDA.dot -o afterDA.png
 
 clean:
 	rm *.txt; \
