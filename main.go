@@ -18,10 +18,11 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"runtime/pprof"
 	"time"
+
+	"github.com/goccmack/gogll/goutil/ioutil"
 
 	"github.com/goccmack/gogll/cfg"
 	"github.com/goccmack/gogll/da"
@@ -30,6 +31,7 @@ import (
 	"github.com/goccmack/gogll/gen/golang"
 	"github.com/goccmack/gogll/gen/slots"
 	"github.com/goccmack/gogll/gen/symbols"
+	"github.com/goccmack/gogll/goutil/md"
 	"github.com/goccmack/gogll/gslot"
 	"github.com/goccmack/gogll/parser"
 	"github.com/goccmack/gogll/sa"
@@ -44,6 +46,7 @@ var (
 
 func main() {
 	cfg.GetParams()
+	dumpProcessedMDFile()
 	if *cfg.CPUProfile {
 		f, err := os.Create("cpu.prof")
 		if err != nil {
@@ -93,6 +96,14 @@ func main() {
 		float64(genDur)/float64(time.Millisecond))
 }
 
+func dumpProcessedMDFile() {
+	src, err := md.GetSource(cfg.SrcFile)
+	if err != nil {
+		panic(err)
+	}
+	ioutil.WriteFile(cfg.SrcFile+".stripped", []byte(src))
+}
+
 func fail(err error, errs []*parser.ParseError) {
 	fmt.Printf("ParseError: %s\n", err)
 	// parser.DumpCRF(errs[0].InputPos)
@@ -102,10 +113,10 @@ func fail(err error, errs []*parser.ParseError) {
 	}
 }
 
-func getInput() string {
-	buf, err := ioutil.ReadFile(cfg.SrcFile)
-	if err != nil {
-		panic(err)
-	}
-	return string(buf)
-}
+// func getInput() string {
+// 	buf, err := ioutil.Write(cfg.SrcFile)
+// 	if err != nil {
+// 		panic(err)
+// 	}
+// 	return string(buf)
+// }

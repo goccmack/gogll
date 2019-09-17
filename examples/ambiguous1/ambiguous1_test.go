@@ -26,6 +26,8 @@ import (
 	"github.com/goccmack/gogll/examples/ambiguous1/parser"
 )
 
+type disambiguator int
+
 type dotWriter struct {
 	fname       string
 	w           *bytes.Buffer
@@ -38,43 +40,8 @@ type link struct {
 	from, to string
 }
 
-func newDotWriter(fname string) *dotWriter {
-	dw := &dotWriter{
-		fname:       fname,
-		w:           new(bytes.Buffer),
-		nodeNameMap: make(map[string]string),
-		linkMap:     make(map[link]bool),
-	}
-	fmt.Fprintf(dw.w, "digraph %s {\n", strings.Split(fname, ".")[0])
-	return dw
-}
-
-func (dw *dotWriter) newNodeName(b bsr.BSR) string {
-	if nnm, exist := dw.nodeNameMap[b.String()]; exist {
-		return nnm
-	}
-
-	nodeName := fmt.Sprintf("Node%d", dw.nodeNum)
-	dw.nodeNum++
-	dw.nodeNameMap[b.String()] = nodeName
-	return nodeName
-}
-
-func (dw *dotWriter) do(s, parent bsr.BSR) {
-	nnm := dw.newNodeName(s)
-	fmt.Fprintf(dw.w, "%s [label=\"%s\"]\n", nnm, s)
-	if parent != nilBSR {
-		lnk := link{parent.String(), s.String()}
-		if _, exist := dw.linkMap[lnk]; !exist {
-			fmt.Fprintf(dw.w, "%s -> %s\n", dw.nodeNameMap[parent.String()], nnm)
-			dw.linkMap[lnk] = true
-		}
-	}
-}
-
-func (dw *dotWriter) close() {
-	fmt.Fprintln(dw.w, "}")
-	ioutil.WriteFile(dw.fname, dw.w.Bytes())
+type walker interface {
+	do(node, parent bsr.BSR)
 }
 
 var nilBSR = bsr.BSR{}
@@ -99,7 +66,38 @@ func Test1(t *testing.T) {
 	dw.close()
 }
 
-type disambiguator int
+/*** BSR walker ***/
+
+func walk(node bsr.BSR, w walker, parent bsr.BSR) {
+	w.do(node, parent)
+	switch node.Label.Head() {
+	case "S":
+		switch node.Alternate() {
+		case 0: // S : A S
+			for _, a := range node.GetNTChildren("A", 0) {
+				walk(a, w, node)
+			}
+			for _, s := range node.GetNTChildren("S", 0) {
+				walk(s, w, node)
+			}
+		case 1: // S : B S
+			for _, b1 := range node.GetNTChildren("B", 0) {
+				walk(b1, w, node)
+			}
+			for _, s := range node.GetNTChildren("S", 0) {
+				walk(s, w, node)
+			}
+		case 2: // S : empty
+			// ignore
+		}
+	case "A":
+		// ignore
+	case "B":
+		// ignore
+	}
+}
+
+/*** Disabiguate BSR set ***/
 
 func (da disambiguator) do(s, parent bsr.BSR) {
 	switch s.Label.Head() {
@@ -145,35 +143,43 @@ func daB(b bsr.BSR) {
 	}
 }
 
-type walker interface {
-	do(node, parent bsr.BSR)
+/*** Write dot files***/
+
+func newDotWriter(fname string) *dotWriter {
+	dw := &dotWriter{
+		fname:       fname,
+		w:           new(bytes.Buffer),
+		nodeNameMap: make(map[string]string),
+		linkMap:     make(map[link]bool),
+	}
+	fmt.Fprintf(dw.w, "digraph %s {\n", strings.Split(fname, ".")[0])
+	return dw
 }
 
-func walk(node bsr.BSR, w walker, parent bsr.BSR) {
-	w.do(node, parent)
-	switch node.Label.Head() {
-	case "S":
-		switch node.Alternate() {
-		case 0: // S : A S
-			for _, a := range node.GetNTChildren("A", 0) {
-				walk(a, w, node)
-			}
-			for _, s := range node.GetNTChildren("S", 0) {
-				walk(s, w, node)
-			}
-		case 1: // S : B S
-			for _, b1 := range node.GetNTChildren("B", 0) {
-				walk(b1, w, node)
-			}
-			for _, s := range node.GetNTChildren("S", 0) {
-				walk(s, w, node)
-			}
-		case 2: // S : empty
-			// ignore
-		}
-	case "A":
-		// ignore
-	case "B":
-		// ignore
+func (dw *dotWriter) newNodeName(b bsr.BSR) string {
+	if nnm, exist := dw.nodeNameMap[b.String()]; exist {
+		return nnm
 	}
+
+	nodeName := fmt.Sprintf("Node%d", dw.nodeNum)
+	dw.nodeNum++
+	dw.nodeNameMap[b.String()] = nodeName
+	return nodeName
+}
+
+func (dw *dotWriter) do(s, parent bsr.BSR) {
+	nnm := dw.newNodeName(s)
+	fmt.Fprintf(dw.w, "%s [label=\"%s\"]\n", nnm, s)
+	if parent != nilBSR {
+		lnk := link{parent.String(), s.String()}
+		if _, exist := dw.linkMap[lnk]; !exist {
+			fmt.Fprintf(dw.w, "%s -> %s\n", dw.nodeNameMap[parent.String()], nnm)
+			dw.linkMap[lnk] = true
+		}
+	}
+}
+
+func (dw *dotWriter) close() {
+	fmt.Fprintln(dw.w, "}")
+	ioutil.WriteFile(dw.fname, dw.w.Bytes())
 }
