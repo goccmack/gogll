@@ -46,7 +46,7 @@ var (
 
 func main() {
 	cfg.GetParams()
-	dumpProcessedMDFile()
+	// dumpProcessedMDFile()
 	if *cfg.CPUProfile {
 		f, err := os.Create("cpu.prof")
 		if err != nil {
@@ -112,11 +112,3 @@ func fail(err error, errs []*parser.ParseError) {
 		fmt.Println("", e)
 	}
 }
-
-// func getInput() string {
-// 	buf, err := ioutil.Write(cfg.SrcFile)
-// 	if err != nil {
-// 		panic(err)
-// 	}
-// 	return string(buf)
-// }

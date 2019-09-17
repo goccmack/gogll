@@ -106,10 +106,11 @@ func writeSpec(in *strings.Reader, out *strings.Builder) {
 					return
 				}
 				out.WriteString("\u0060\u0060")
+				// out.WriteRune(ch)
 			} else {
 				out.WriteString("\u0060")
+				// out.WriteRune(ch)
 			}
-			return
 		default:
 			out.WriteRune(ch)
 			ch = next(in)
