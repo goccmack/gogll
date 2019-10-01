@@ -30,6 +30,7 @@ var (
 	Verbose    bool
 	help       = flag.Bool("h", false, "Print help")
 	CPUProfile = flag.Bool("CPUProf", false, "Generate CPU profile")
+	outDir     = flag.String("o", "", "")
 	verbose    = flag.Bool("v", false, "Verbose")
 	version    = flag.Bool("version", false, "Version")
 )
@@ -50,9 +51,13 @@ func GetParams() {
 }
 
 func getFileBase() {
-	BaseDir, _ = path.Split(SrcFile)
-	if BaseDir == "" {
-		BaseDir = "."
+	if *outDir != "" {
+		BaseDir = *outDir
+	} else {
+		BaseDir, _ = path.Split(SrcFile)
+		if BaseDir == "" {
+			BaseDir = "."
+		}
 	}
 }
 
@@ -70,7 +75,10 @@ func fail(msg string) {
 }
 
 func usage() {
-	msg := `use: gogll [-h][-version][-v][-CPUProf] <source file>
+	msg := `use: gogll [-h][-version][-v][-CPUProf] [-o <out dir>] <source file>
+    
+    -o <out dir>: Optional. The directory to which code will be generated.
+                  Default: the same directory as <source file>.
     
     <source file> : Mandatory. Name of the source file to be processed. 
         If the file extension is ".md" the bnf is extracted from markdown code 
