@@ -28,6 +28,7 @@ var (
 	BaseDir    string
 	SrcFile    string
 	Verbose    bool
+	BSRStats   = flag.Bool("bs", false, "Print BSR stats")
 	help       = flag.Bool("h", false, "Print help")
 	CPUProfile = flag.Bool("CPUProf", false, "Generate CPU profile")
 	outDir     = flag.String("o", "", "")
@@ -89,6 +90,8 @@ func usage() {
         Use "go tool pprof cpu.prof" to analyse the profile.
 
     -h : Optional. Display this help.
+
+    -bs: Optional. Print BSR statistics.
 
     -v : Optional. Verbose: generate additional information files.
     
