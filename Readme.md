@@ -2,12 +2,15 @@
 
 Copyright 2019 Marius Ackerman. See [Apache license](LICENSE).
 
+# Gogll
+Gogll generates scannerless, clustered nonterminal parsers (CNP) following [Scott et al 2019](#Scott-et-al-2019). CNP is a version of generalised LL parsing (GLL)[Scott & Johnstone 2016](#Scott-et-al-2016). GLL parsers can parse all context free (CF) languages.
+
 # News
 ## 2019-09-13
 1. Documentation added on how to walk the parse forest. [See](doc/bsr/bsr.md)
 
-# Gogll
-Gogll generates scannerless, clustered nonterminal parsers (CNP) following [Scott et al 2019](#Scott-et-al-2019). CNP is a version of generalised LL parsing (GLL)[Scott & Johnstone 2016](#Scott-et-al-2016). GLL parsers can parse all context free (CF) languages.
+# Issues
+1. The current version of gogll does not handle plain BNF files correctly. Currently all grammars must be in an MD file. For an example see [gogll.md](gogll.md). Assume currently that all grammars in the `test` directory won't work.
 
 # Walking the parse forest
 Gogll produces a binary subtree representation [(BSR)](#Scott-et-al-2019) set of the parse forest of a successful parse. See [Walking the BSR Parse Forest](doc/bsr/bsr.md)
