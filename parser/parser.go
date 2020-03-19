@@ -192,7 +192,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			if followAlternates() {
 				rtn("Alternates", cU, cI)
 			}
-		case slot.CharLiteral0R0: // CharLiteral : ∙\' \\ anyof('\"\\nrt) \'
+		case slot.CharLiteral0R0: // CharLiteral : ∙' \\ anyof('\"\\\n\r\t) '
 
 			bsr.Add(slot.CharLiteral0R1, cU, cI, cI+sz)
 			cI += sz
@@ -224,7 +224,7 @@ func Parse(I []byte) (error, []*ParseError) {
 			if followCharLiteral() {
 				rtn("CharLiteral", cU, cI)
 			}
-		case slot.CharLiteral1R0: // CharLiteral : ∙\' any \'
+		case slot.CharLiteral1R0: // CharLiteral : ∙' any '
 
 			bsr.Add(slot.CharLiteral1R1, cU, cI, cI+sz)
 			cI += sz
@@ -283,14 +283,6 @@ func Parse(I []byte) (error, []*ParseError) {
 		case slot.EscapedChar4R0: // EscapedChar : ∙\\
 
 			bsr.Add(slot.EscapedChar4R1, cU, cI, cI+sz)
-			cI += sz
-			nextI, r, sz = decodeRune(I[cI:])
-			if followEscapedChar() {
-				rtn("EscapedChar", cU, cI)
-			}
-		case slot.EscapedChar5R0: // EscapedChar : ∙\'
-
-			bsr.Add(slot.EscapedChar5R1, cU, cI, cI+sz)
 			cI += sz
 			nextI, r, sz = decodeRune(I[cI:])
 			if followEscapedChar() {
@@ -1422,8 +1414,8 @@ func runeToString(r rune) string {
 var testSelect = []func() bool{
 	// slot.Alternate0R0
 	func() bool {
-		return r == '"' ||
-			r == '\'' ||
+		return r == '\'' ||
+			r == '"' ||
 			r == 'a' ||
 			r == 'l' ||
 			letter(r) ||
@@ -1475,8 +1467,8 @@ var testSelect = []func() bool{
 
 	// slot.Alternates0R0
 	func() bool {
-		return r == '"' ||
-			r == '\'' ||
+		return r == '\'' ||
+			r == '"' ||
 			r == 'a' ||
 			r == 'e' ||
 			r == 'l' ||
@@ -1495,8 +1487,8 @@ var testSelect = []func() bool{
 
 	// slot.Alternates1R0
 	func() bool {
-		return r == '"' ||
-			r == '\'' ||
+		return r == '\'' ||
+			r == '"' ||
 			r == 'a' ||
 			r == 'e' ||
 			r == 'l' ||
@@ -1520,8 +1512,8 @@ var testSelect = []func() bool{
 
 	// slot.Alternates1R3
 	func() bool {
-		return r == '"' ||
-			r == '\'' ||
+		return r == '\'' ||
+			r == '"' ||
 			r == 'a' ||
 			anyof(r, "\n\r\t") ||
 			r == 'e' ||
@@ -1535,8 +1527,8 @@ var testSelect = []func() bool{
 
 	// slot.Alternates1R4
 	func() bool {
-		return r == '"' ||
-			r == '\'' ||
+		return r == '\'' ||
+			r == '"' ||
 			r == 'a' ||
 			r == 'e' ||
 			r == 'l' ||
@@ -1565,7 +1557,7 @@ var testSelect = []func() bool{
 
 	// slot.CharLiteral0R2
 	func() bool {
-		return anyof(r, "'\"\\nrt")
+		return anyof(r, "'\"\\\n\r\t")
 	},
 
 	// slot.CharLiteral0R3
@@ -1658,18 +1650,6 @@ var testSelect = []func() bool{
 	},
 
 	// slot.EscapedChar4R1
-	func() bool {
-		return r == '"' ||
-			r == '\\' ||
-			not(r, "\"\\")
-	},
-
-	// slot.EscapedChar5R0
-	func() bool {
-		return r == '\''
-	},
-
-	// slot.EscapedChar5R1
 	func() bool {
 		return r == '"' ||
 			r == '\\' ||
@@ -1951,8 +1931,8 @@ var testSelect = []func() bool{
 
 	// slot.Rule0R3
 	func() bool {
-		return r == '"' ||
-			r == '\'' ||
+		return r == '\'' ||
+			r == '"' ||
 			r == 'a' ||
 			anyof(r, "\n\r\t") ||
 			r == 'e' ||
@@ -1966,8 +1946,8 @@ var testSelect = []func() bool{
 
 	// slot.Rule0R4
 	func() bool {
-		return r == '"' ||
-			r == '\'' ||
+		return r == '\'' ||
+			r == '"' ||
 			r == 'a' ||
 			r == 'e' ||
 			r == 'l' ||
@@ -2047,11 +2027,11 @@ var testSelect = []func() bool{
 	// slot.Sep0R1
 	func() bool {
 		return r == '$' ||
+			r == '\'' ||
 			r == '*' ||
 			r == ':' ||
 			r == ';' ||
 			r == '"' ||
-			r == '\'' ||
 			r == 'a' ||
 			r == 'e' ||
 			r == 'l' ||
@@ -2078,11 +2058,11 @@ var testSelect = []func() bool{
 	// slot.Sep1R2
 	func() bool {
 		return r == '$' ||
+			r == '\'' ||
 			r == '*' ||
 			r == ':' ||
 			r == ';' ||
 			r == '"' ||
-			r == '\'' ||
 			r == 'a' ||
 			r == 'e' ||
 			r == 'l' ||
@@ -2102,11 +2082,11 @@ var testSelect = []func() bool{
 	// slot.SepChar0R1
 	func() bool {
 		return r == '$' ||
+			r == '\'' ||
 			r == '*' ||
 			r == ':' ||
 			r == ';' ||
 			r == '"' ||
-			r == '\'' ||
 			r == 'a' ||
 			anyof(r, "\n\r\t") ||
 			r == 'e' ||
@@ -2128,11 +2108,11 @@ var testSelect = []func() bool{
 	// slot.SepChar1R1
 	func() bool {
 		return r == '$' ||
+			r == '\'' ||
 			r == '*' ||
 			r == ':' ||
 			r == ';' ||
 			r == '"' ||
-			r == '\'' ||
 			r == 'a' ||
 			anyof(r, "\n\r\t") ||
 			r == 'e' ||
@@ -2155,11 +2135,11 @@ var testSelect = []func() bool{
 	// slot.SepE0R1
 	func() bool {
 		return r == '$' ||
+			r == '\'' ||
 			r == '*' ||
 			r == ':' ||
 			r == ';' ||
 			r == '"' ||
-			r == '\'' ||
 			r == 'a' ||
 			r == 'e' ||
 			r == 'l' ||
@@ -2174,11 +2154,11 @@ var testSelect = []func() bool{
 	// slot.SepE1R0
 	func() bool {
 		return r == '$' ||
+			r == '\'' ||
 			r == '*' ||
 			r == ':' ||
 			r == ';' ||
 			r == '"' ||
-			r == '\'' ||
 			r == 'a' ||
 			r == 'e' ||
 			r == 'l' ||
@@ -2240,7 +2220,6 @@ var testSelect = []func() bool{
 	// slot.StringChars1R1
 	func() bool {
 		return r == '"' ||
-			r == '\'' ||
 			r == '\\' ||
 			r == 'n' ||
 			r == 'r' ||
@@ -2279,8 +2258,8 @@ var testSelect = []func() bool{
 
 	// slot.Symbol1R0
 	func() bool {
-		return r == '"' ||
-			r == '\'' ||
+		return r == '\'' ||
+			r == '"' ||
 			r == 'a' ||
 			r == 'l' ||
 			r == 'n' ||
@@ -2298,8 +2277,8 @@ var testSelect = []func() bool{
 
 	// slot.Symbols0R0
 	func() bool {
-		return r == '"' ||
-			r == '\'' ||
+		return r == '\'' ||
+			r == '"' ||
 			r == 'a' ||
 			r == 'l' ||
 			letter(r) ||
@@ -2316,8 +2295,8 @@ var testSelect = []func() bool{
 
 	// slot.Symbols0R2
 	func() bool {
-		return r == '"' ||
-			r == '\'' ||
+		return r == '\'' ||
+			r == '"' ||
 			r == 'a' ||
 			r == 'l' ||
 			letter(r) ||
@@ -2336,8 +2315,8 @@ var testSelect = []func() bool{
 
 	// slot.Symbols1R0
 	func() bool {
-		return r == '"' ||
-			r == '\'' ||
+		return r == '\'' ||
+			r == '"' ||
 			r == 'a' ||
 			r == 'l' ||
 			letter(r) ||
@@ -2750,11 +2729,11 @@ func followRules() bool {
 }
 func followSep() bool {
 	return r == '$' ||
+		r == '\'' ||
 		r == '*' ||
 		r == ':' ||
 		r == ';' ||
 		r == '"' ||
-		r == '\'' ||
 		r == 'a' ||
 		r == 'e' ||
 		r == 'l' ||
@@ -2767,11 +2746,11 @@ func followSep() bool {
 }
 func followSepChar() bool {
 	return r == '$' ||
+		r == '\'' ||
 		r == '*' ||
 		r == ':' ||
 		r == ';' ||
 		r == '"' ||
-		r == '\'' ||
 		r == 'a' ||
 		anyof(r, "\n\r\t") ||
 		r == 'e' ||
@@ -2786,11 +2765,11 @@ func followSepChar() bool {
 }
 func followSepE() bool {
 	return r == '$' ||
+		r == '\'' ||
 		r == '*' ||
 		r == ':' ||
 		r == ';' ||
 		r == '"' ||
-		r == '\'' ||
 		r == 'a' ||
 		r == 'e' ||
 		r == 'l' ||

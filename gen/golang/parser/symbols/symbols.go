@@ -23,18 +23,30 @@ import (
 	"github.com/goccmack/gogll/goutil/ioutil"
 )
 
+type Data struct {
+    NonTerminals []string
+    ReservedWords []string
+}
+
 func Gen(fname string, g *ast.Grammar) {
 	tmpl, err := template.New("symbols").Parse(src)
 	if err != nil {
 		panic(err)
 	}
 	buf := new(bytes.Buffer)
-	if err := tmpl.Execute(buf, g.GetNonTerminals()); err != nil {
+	if err := tmpl.Execute(buf, getData(g)); err != nil {
 		panic(err)
 	}
 	if err := ioutil.WriteFile(fname, buf.Bytes()); err != nil {
 		panic(err)
 	}
+}
+
+func getData(g *ast.Grammar) *Data {
+    return &Data{
+        NonTerminals: g.GetNonTerminals(),
+        ReservedWords: g.GetReservedWords(),
+    }
 }
 
 const src = `
@@ -64,7 +76,12 @@ func IsTerminal(symbol string) bool {
 	return !nonTerminals[symbol]
 }
 
-var nonTerminals = map[string]bool{ {{range $i, $sym := .}}
+var nonTerminals = map[string]bool{ {{range $i, $sym := .NonTerminals}}
 	"{{$sym}}":true,{{end}}
 }
+
+var reservedWords = map[string]bool{ {{range $i, $sym := .ReservedWords}}
+	{{$sym}}:true,{{end}}
+}
+
 `

@@ -22,7 +22,6 @@ import (
 	"runtime/pprof"
 	"time"
 
-	"github.com/goccmack/gogll/goutil/bsr"
 	"github.com/goccmack/gogll/goutil/ioutil"
 
 	"github.com/goccmack/gogll/cfg"
@@ -95,11 +94,11 @@ func main() {
 		float64(daDur)/float64(time.Millisecond),
 		float64(saDur)/float64(time.Millisecond),
 		float64(genDur)/float64(time.Millisecond))
-	if *cfg.BSRStats {
-		for r, c := range bsr.Stats() {
-			fmt.Println(r, c)
-		}
-	}
+	// if *cfg.BSRStats {
+	// 	for r, c := range bsr.Stats() {
+	// 		fmt.Println(r, c)
+	// 	}
+	// }
 }
 
 func dumpProcessedMDFile() {

@@ -223,6 +223,25 @@ func (b BSR) Alternate() int {
 	return b.Label.Alternate()
 }
 
+// GetLineColumn returns the line and column of the left extent of b
+func (b BSR) GetLineColumn() (line, col int) {
+	line, col = 1, 1
+	for j := 0; j < b.LeftExtent(); {
+		_, r, sz := decodeRune(set.I[j:])
+		switch r {
+		case '\n':
+			line++
+			col = 1
+		case '\t':
+			col += 4
+		default:
+			col++
+		}
+		j += sz
+	}
+	return
+}
+
 // GetNTChild returns the BSR of occurrence i of nt in s.
 // GetNTChild fails if s has ambiguous subtrees of occurrence i of nt.
 func (b BSR) GetNTChild(nt string, i int) BSR {

@@ -30,12 +30,14 @@ type Grammar struct {
 	Package      string
 	Rules        []*Rule
 	StartSymbol  string
-	CharLiterals []string
+    CharLiterals []string
+    ReservedWords map[string]bool
 	Terminals    map[string]bool
 }
 
 func New() *Grammar {
 	return &Grammar{
+        ReservedWords: make(map[string]bool),
 		Terminals: map[string]bool{
 			// "any":     true,
 			// "letter":  true,
@@ -49,6 +51,10 @@ func New() *Grammar {
 
 func (g *Grammar) AddPackage(p string) {
 	g.Package = p[1 : len(p)-1]
+}
+
+func (g *Grammar) AddReservedWord(w string) {
+    g.ReservedWords[w] = true
 }
 
 func (g *Grammar) AddRule(r *Rule) error {
@@ -70,6 +76,13 @@ func (g *Grammar) GetNonTerminals() (nts []string) {
 	}
 	sort.Strings(nts)
 	return
+}
+
+func (g *Grammar) GetReservedWords() (rws []string) {
+    for rw := range g.ReservedWords {
+        rws = append(rws, rw)
+    }
+    return
 }
 
 func (g *Grammar) GetRule(head string) *Rule {

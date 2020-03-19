@@ -140,6 +140,8 @@ func getSymbolCondition(sym string) string {
 		return "space(r)"
 	case "\\\"":
 		return `r == '"'`
+	case "'":
+		return `r == '\''`
 	}
 	if strings.HasPrefix(sym, "not(") {
 		set := strings.TrimSuffix(strings.TrimPrefix(sym, "not("), ")")

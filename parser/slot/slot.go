@@ -147,8 +147,6 @@ const(
 	EscapedChar3R1
 	EscapedChar4R0
 	EscapedChar4R1
-	EscapedChar5R0
-	EscapedChar5R1
 	GoGLL0R0
 	GoGLL0R1
 	GoGLL0R2
@@ -312,15 +310,15 @@ var slots = map[Label]*Slot{
 	Alternates1R3:&Slot{"Alternates", 1, 3, []string{ `Alternate`,`SepE`,`|`,`SepE`,`Alternates` }, Alternates1R3 },
 	Alternates1R4:&Slot{"Alternates", 1, 4, []string{ `Alternate`,`SepE`,`|`,`SepE`,`Alternates` }, Alternates1R4 },
 	Alternates1R5:&Slot{"Alternates", 1, 5, []string{ `Alternate`,`SepE`,`|`,`SepE`,`Alternates` }, Alternates1R5 },
-	CharLiteral0R0:&Slot{"CharLiteral", 0, 0, []string{ `\'`,`\\`,`anyof('\"\\nrt)`,`\'` }, CharLiteral0R0 },
-	CharLiteral0R1:&Slot{"CharLiteral", 0, 1, []string{ `\'`,`\\`,`anyof('\"\\nrt)`,`\'` }, CharLiteral0R1 },
-	CharLiteral0R2:&Slot{"CharLiteral", 0, 2, []string{ `\'`,`\\`,`anyof('\"\\nrt)`,`\'` }, CharLiteral0R2 },
-	CharLiteral0R3:&Slot{"CharLiteral", 0, 3, []string{ `\'`,`\\`,`anyof('\"\\nrt)`,`\'` }, CharLiteral0R3 },
-	CharLiteral0R4:&Slot{"CharLiteral", 0, 4, []string{ `\'`,`\\`,`anyof('\"\\nrt)`,`\'` }, CharLiteral0R4 },
-	CharLiteral1R0:&Slot{"CharLiteral", 1, 0, []string{ `\'`,`any`,`\'` }, CharLiteral1R0 },
-	CharLiteral1R1:&Slot{"CharLiteral", 1, 1, []string{ `\'`,`any`,`\'` }, CharLiteral1R1 },
-	CharLiteral1R2:&Slot{"CharLiteral", 1, 2, []string{ `\'`,`any`,`\'` }, CharLiteral1R2 },
-	CharLiteral1R3:&Slot{"CharLiteral", 1, 3, []string{ `\'`,`any`,`\'` }, CharLiteral1R3 },
+	CharLiteral0R0:&Slot{"CharLiteral", 0, 0, []string{ `'`,`\\`,`anyof('\"\\\n\r\t)`,`'` }, CharLiteral0R0 },
+	CharLiteral0R1:&Slot{"CharLiteral", 0, 1, []string{ `'`,`\\`,`anyof('\"\\\n\r\t)`,`'` }, CharLiteral0R1 },
+	CharLiteral0R2:&Slot{"CharLiteral", 0, 2, []string{ `'`,`\\`,`anyof('\"\\\n\r\t)`,`'` }, CharLiteral0R2 },
+	CharLiteral0R3:&Slot{"CharLiteral", 0, 3, []string{ `'`,`\\`,`anyof('\"\\\n\r\t)`,`'` }, CharLiteral0R3 },
+	CharLiteral0R4:&Slot{"CharLiteral", 0, 4, []string{ `'`,`\\`,`anyof('\"\\\n\r\t)`,`'` }, CharLiteral0R4 },
+	CharLiteral1R0:&Slot{"CharLiteral", 1, 0, []string{ `'`,`any`,`'` }, CharLiteral1R0 },
+	CharLiteral1R1:&Slot{"CharLiteral", 1, 1, []string{ `'`,`any`,`'` }, CharLiteral1R1 },
+	CharLiteral1R2:&Slot{"CharLiteral", 1, 2, []string{ `'`,`any`,`'` }, CharLiteral1R2 },
+	CharLiteral1R3:&Slot{"CharLiteral", 1, 3, []string{ `'`,`any`,`'` }, CharLiteral1R3 },
 	EscapedChar0R0:&Slot{"EscapedChar", 0, 0, []string{ `"` }, EscapedChar0R0 },
 	EscapedChar0R1:&Slot{"EscapedChar", 0, 1, []string{ `"` }, EscapedChar0R1 },
 	EscapedChar1R0:&Slot{"EscapedChar", 1, 0, []string{ `n` }, EscapedChar1R0 },
@@ -331,8 +329,6 @@ var slots = map[Label]*Slot{
 	EscapedChar3R1:&Slot{"EscapedChar", 3, 1, []string{ `t` }, EscapedChar3R1 },
 	EscapedChar4R0:&Slot{"EscapedChar", 4, 0, []string{ `\\` }, EscapedChar4R0 },
 	EscapedChar4R1:&Slot{"EscapedChar", 4, 1, []string{ `\\` }, EscapedChar4R1 },
-	EscapedChar5R0:&Slot{"EscapedChar", 5, 0, []string{ `\'` }, EscapedChar5R0 },
-	EscapedChar5R1:&Slot{"EscapedChar", 5, 1, []string{ `\'` }, EscapedChar5R1 },
 	GoGLL0R0:&Slot{"GoGLL", 0, 0, []string{ `SepE`,`Package`,`Sep`,`Rules`,`SepE` }, GoGLL0R0 },
 	GoGLL0R1:&Slot{"GoGLL", 0, 1, []string{ `SepE`,`Package`,`Sep`,`Rules`,`SepE` }, GoGLL0R1 },
 	GoGLL0R2:&Slot{"GoGLL", 0, 2, []string{ `SepE`,`Package`,`Sep`,`Rules`,`SepE` }, GoGLL0R2 },
@@ -515,8 +511,6 @@ var slotIndex = map[Index]Label {
 	Index{ "EscapedChar",3,1 }: EscapedChar3R1,
 	Index{ "EscapedChar",4,0 }: EscapedChar4R0,
 	Index{ "EscapedChar",4,1 }: EscapedChar4R1,
-	Index{ "EscapedChar",5,0 }: EscapedChar5R0,
-	Index{ "EscapedChar",5,1 }: EscapedChar5R1,
 	Index{ "GoGLL",0,0 }: GoGLL0R0,
 	Index{ "GoGLL",0,1 }: GoGLL0R1,
 	Index{ "GoGLL",0,2 }: GoGLL0R2,
@@ -679,7 +673,7 @@ var alternates = map[string][]Label{
 	"NTChar":[]Label{ NTChar0R0,NTChar1R0,NTChar2R0 },
 	"Terminal":[]Label{ Terminal0R0,Terminal1R0,Terminal2R0,Terminal3R0,Terminal4R0,Terminal5R0,Terminal6R0,Terminal7R0,Terminal8R0,Terminal9R0 },
 	"CharLiteral":[]Label{ CharLiteral0R0,CharLiteral1R0 },
-	"EscapedChar":[]Label{ EscapedChar0R0,EscapedChar1R0,EscapedChar2R0,EscapedChar3R0,EscapedChar4R0,EscapedChar5R0 },
+	"EscapedChar":[]Label{ EscapedChar0R0,EscapedChar1R0,EscapedChar2R0,EscapedChar3R0,EscapedChar4R0 },
 	"String":[]Label{ String0R0 },
 	"StringChars":[]Label{ StringChars0R0,StringChars1R0,StringChars2R0 },
 	"SepE":[]Label{ SepE0R0,SepE1R0 },

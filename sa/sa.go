@@ -19,6 +19,7 @@ package sa
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/goccmack/gogll/ast"
 	"github.com/goccmack/gogll/goutil/bsr"
@@ -213,7 +214,12 @@ func (a *sa) terminal(b bsr.BSR) (ts []ast.Terminal) {
 	case 8:
 		ts = []ast.Terminal{a.grammar.NewCharLiteral(b, b.GetNTChild("CharLiteral", 0).GetString())}
 	case 9:
-		ts = a.grammar.NewString(b, b.GetNTChild("String", 0).GetString())
+		str := b.GetNTChild("String", 0).GetString()
+		if err := checkStringLit(str); err != nil {
+			a.Error(b, err)
+		}
+		ts = a.grammar.NewString(b, str)
+		a.grammar.AddReservedWord(str)
 	default:
 		panic(fmt.Sprintf("Invalid alternate %d", b.Alternate()))
 	}
@@ -221,6 +227,34 @@ func (a *sa) terminal(b bsr.BSR) (ts []ast.Terminal) {
 		a.grammar.AddTerminal(t)
 	}
 	return
+}
+
+func checkStringLit(s string) error {
+	rdr := strings.NewReader(s)
+	for rdr.Len() > 0 {
+		r, _, err := rdr.ReadRune()
+		if err != nil {
+			return (err)
+		}
+		if r == '\\' {
+			r, _, err = rdr.ReadRune()
+			if err != nil {
+				return (err)
+			}
+			if !validEscapedStringChar(r) {
+				return fmt.Errorf("Invalid escaped char (%c)", r)
+			}
+		}
+	}
+	return nil
+}
+
+func validEscapedStringChar(r rune) bool {
+	return r == '\\' ||
+		r == '"' ||
+		r == 'n' ||
+		r == 'r' ||
+		r == 't'
 }
 
 /*** Error ***/

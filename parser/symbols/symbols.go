@@ -48,3 +48,27 @@ var nonTerminals = map[string]bool{
 	"Symbols":true,
 	"Terminal":true,
 }
+
+var reservedWords = map[string]bool{ 
+	"*":true,
+	"empty":true,
+	"\\":true,
+	"t":true,
+	"\"":true,
+	"package":true,
+	"space":true,
+	"lowcase":true,
+	"'":true,
+	"n":true,
+	"|":true,
+	"anyof":true,
+	"number":true,
+	"letter":true,
+	"upcase":true,
+	"not":true,
+	"r":true,
+	":":true,
+	";":true,
+	"any":true,
+}
+
