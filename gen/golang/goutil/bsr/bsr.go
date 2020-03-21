@@ -65,12 +65,12 @@ package bsr
 
 import (
 	"bytes"
-	"lex/parser/symbols"
 	"fmt"
 	"strings"
 	"unicode/utf8"
 
-	"lex/parser/slot"
+	"{{.}}/parser/slot"
+	"{{.}}/parser/symbols"
 )
 
 type bsr interface {
