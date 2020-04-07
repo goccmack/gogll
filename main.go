@@ -72,6 +72,9 @@ func main() {
 	da.Go()
 	daDur = time.Now().Sub(startTime)
 
+	// fmt.Println("Ambiguous BSRs after disambiguation")
+	// da.Report()
+
 	startTime = time.Now()
 	g, errs := sa.Go()
 	saDur = time.Now().Sub(startTime)
