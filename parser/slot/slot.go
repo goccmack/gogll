@@ -154,85 +154,85 @@ func (s *Slot) String() string {
 }
 
 var slots = map[Label]*Slot{ 
-    Alternate0R0: &Slot{
+    Alternate0R0: {
         symbols.NT_Alternate, 0, 0, 
         symbols.Symbols{  
             symbols.NT_Symbols,
         }, 
         Alternate0R0, 
     },
-    Alternate0R1: &Slot{
+    Alternate0R1: {
         symbols.NT_Alternate, 0, 1, 
         symbols.Symbols{  
             symbols.NT_Symbols,
         }, 
         Alternate0R1, 
     },
-    Alternate1R0: &Slot{
+    Alternate1R0: {
         symbols.NT_Alternate, 1, 0, 
         symbols.Symbols{  
             symbols.T_2,
         }, 
         Alternate1R0, 
     },
-    Alternate1R1: &Slot{
+    Alternate1R1: {
         symbols.NT_Alternate, 1, 1, 
         symbols.Symbols{  
             symbols.T_2,
         }, 
         Alternate1R1, 
     },
-    Alternates0R0: &Slot{
+    Alternates0R0: {
         symbols.NT_Alternates, 0, 0, 
         symbols.Symbols{  
             symbols.NT_Alternate,
         }, 
         Alternates0R0, 
     },
-    Alternates0R1: &Slot{
+    Alternates0R1: {
         symbols.NT_Alternates, 0, 1, 
         symbols.Symbols{  
             symbols.NT_Alternate,
         }, 
         Alternates0R1, 
     },
-    Alternates1R0: &Slot{
+    Alternates1R0: {
         symbols.NT_Alternates, 1, 0, 
         symbols.Symbols{  
-            symbols.NT_Alternates, 
+            symbols.NT_Alternate, 
             symbols.T_7, 
-            symbols.NT_Alternate,
+            symbols.NT_Alternates,
         }, 
         Alternates1R0, 
     },
-    Alternates1R1: &Slot{
+    Alternates1R1: {
         symbols.NT_Alternates, 1, 1, 
         symbols.Symbols{  
-            symbols.NT_Alternates, 
+            symbols.NT_Alternate, 
             symbols.T_7, 
-            symbols.NT_Alternate,
+            symbols.NT_Alternates,
         }, 
         Alternates1R1, 
     },
-    Alternates1R2: &Slot{
+    Alternates1R2: {
         symbols.NT_Alternates, 1, 2, 
         symbols.Symbols{  
-            symbols.NT_Alternates, 
+            symbols.NT_Alternate, 
             symbols.T_7, 
-            symbols.NT_Alternate,
+            symbols.NT_Alternates,
         }, 
         Alternates1R2, 
     },
-    Alternates1R3: &Slot{
+    Alternates1R3: {
         symbols.NT_Alternates, 1, 3, 
         symbols.Symbols{  
-            symbols.NT_Alternates, 
+            symbols.NT_Alternate, 
             symbols.T_7, 
-            symbols.NT_Alternate,
+            symbols.NT_Alternates,
         }, 
         Alternates1R3, 
     },
-    GoGLL0R0: &Slot{
+    GoGLL0R0: {
         symbols.NT_GoGLL, 0, 0, 
         symbols.Symbols{  
             symbols.NT_Package, 
@@ -240,7 +240,7 @@ var slots = map[Label]*Slot{
         }, 
         GoGLL0R0, 
     },
-    GoGLL0R1: &Slot{
+    GoGLL0R1: {
         symbols.NT_GoGLL, 0, 1, 
         symbols.Symbols{  
             symbols.NT_Package, 
@@ -248,7 +248,7 @@ var slots = map[Label]*Slot{
         }, 
         GoGLL0R1, 
     },
-    GoGLL0R2: &Slot{
+    GoGLL0R2: {
         symbols.NT_GoGLL, 0, 2, 
         symbols.Symbols{  
             symbols.NT_Package, 
@@ -256,21 +256,21 @@ var slots = map[Label]*Slot{
         }, 
         GoGLL0R2, 
     },
-    NT0R0: &Slot{
+    NT0R0: {
         symbols.NT_NT, 0, 0, 
         symbols.Symbols{  
             symbols.T_3,
         }, 
         NT0R0, 
     },
-    NT0R1: &Slot{
+    NT0R1: {
         symbols.NT_NT, 0, 1, 
         symbols.Symbols{  
             symbols.T_3,
         }, 
         NT0R1, 
     },
-    Package0R0: &Slot{
+    Package0R0: {
         symbols.NT_Package, 0, 0, 
         symbols.Symbols{  
             symbols.T_4, 
@@ -278,7 +278,7 @@ var slots = map[Label]*Slot{
         }, 
         Package0R0, 
     },
-    Package0R1: &Slot{
+    Package0R1: {
         symbols.NT_Package, 0, 1, 
         symbols.Symbols{  
             symbols.T_4, 
@@ -286,7 +286,7 @@ var slots = map[Label]*Slot{
         }, 
         Package0R1, 
     },
-    Package0R2: &Slot{
+    Package0R2: {
         symbols.NT_Package, 0, 2, 
         symbols.Symbols{  
             symbols.T_4, 
@@ -294,7 +294,7 @@ var slots = map[Label]*Slot{
         }, 
         Package0R2, 
     },
-    Rule0R0: &Slot{
+    Rule0R0: {
         symbols.NT_Rule, 0, 0, 
         symbols.Symbols{  
             symbols.NT_NT, 
@@ -304,7 +304,7 @@ var slots = map[Label]*Slot{
         }, 
         Rule0R0, 
     },
-    Rule0R1: &Slot{
+    Rule0R1: {
         symbols.NT_Rule, 0, 1, 
         symbols.Symbols{  
             symbols.NT_NT, 
@@ -314,7 +314,7 @@ var slots = map[Label]*Slot{
         }, 
         Rule0R1, 
     },
-    Rule0R2: &Slot{
+    Rule0R2: {
         symbols.NT_Rule, 0, 2, 
         symbols.Symbols{  
             symbols.NT_NT, 
@@ -324,7 +324,7 @@ var slots = map[Label]*Slot{
         }, 
         Rule0R2, 
     },
-    Rule0R3: &Slot{
+    Rule0R3: {
         symbols.NT_Rule, 0, 3, 
         symbols.Symbols{  
             symbols.NT_NT, 
@@ -334,7 +334,7 @@ var slots = map[Label]*Slot{
         }, 
         Rule0R3, 
     },
-    Rule0R4: &Slot{
+    Rule0R4: {
         symbols.NT_Rule, 0, 4, 
         symbols.Symbols{  
             symbols.NT_NT, 
@@ -344,21 +344,21 @@ var slots = map[Label]*Slot{
         }, 
         Rule0R4, 
     },
-    Rules0R0: &Slot{
+    Rules0R0: {
         symbols.NT_Rules, 0, 0, 
         symbols.Symbols{  
             symbols.NT_Rule,
         }, 
         Rules0R0, 
     },
-    Rules0R1: &Slot{
+    Rules0R1: {
         symbols.NT_Rules, 0, 1, 
         symbols.Symbols{  
             symbols.NT_Rule,
         }, 
         Rules0R1, 
     },
-    Rules1R0: &Slot{
+    Rules1R0: {
         symbols.NT_Rules, 1, 0, 
         symbols.Symbols{  
             symbols.NT_Rules, 
@@ -366,7 +366,7 @@ var slots = map[Label]*Slot{
         }, 
         Rules1R0, 
     },
-    Rules1R1: &Slot{
+    Rules1R1: {
         symbols.NT_Rules, 1, 1, 
         symbols.Symbols{  
             symbols.NT_Rules, 
@@ -374,7 +374,7 @@ var slots = map[Label]*Slot{
         }, 
         Rules1R1, 
     },
-    Rules1R2: &Slot{
+    Rules1R2: {
         symbols.NT_Rules, 1, 2, 
         symbols.Symbols{  
             symbols.NT_Rules, 
@@ -382,83 +382,83 @@ var slots = map[Label]*Slot{
         }, 
         Rules1R2, 
     },
-    Symbol0R0: &Slot{
+    Symbol0R0: {
         symbols.NT_Symbol, 0, 0, 
         symbols.Symbols{  
             symbols.NT_NT,
         }, 
         Symbol0R0, 
     },
-    Symbol0R1: &Slot{
+    Symbol0R1: {
         symbols.NT_Symbol, 0, 1, 
         symbols.Symbols{  
             symbols.NT_NT,
         }, 
         Symbol0R1, 
     },
-    Symbol1R0: &Slot{
+    Symbol1R0: {
         symbols.NT_Symbol, 1, 0, 
         symbols.Symbols{  
             symbols.T_6,
         }, 
         Symbol1R0, 
     },
-    Symbol1R1: &Slot{
+    Symbol1R1: {
         symbols.NT_Symbol, 1, 1, 
         symbols.Symbols{  
             symbols.T_6,
         }, 
         Symbol1R1, 
     },
-    Symbol2R0: &Slot{
+    Symbol2R0: {
         symbols.NT_Symbol, 2, 0, 
         symbols.Symbols{  
             symbols.T_5,
         }, 
         Symbol2R0, 
     },
-    Symbol2R1: &Slot{
+    Symbol2R1: {
         symbols.NT_Symbol, 2, 1, 
         symbols.Symbols{  
             symbols.T_5,
         }, 
         Symbol2R1, 
     },
-    Symbols0R0: &Slot{
+    Symbols0R0: {
         symbols.NT_Symbols, 0, 0, 
         symbols.Symbols{  
             symbols.NT_Symbol,
         }, 
         Symbols0R0, 
     },
-    Symbols0R1: &Slot{
+    Symbols0R1: {
         symbols.NT_Symbols, 0, 1, 
         symbols.Symbols{  
             symbols.NT_Symbol,
         }, 
         Symbols0R1, 
     },
-    Symbols1R0: &Slot{
+    Symbols1R0: {
         symbols.NT_Symbols, 1, 0, 
         symbols.Symbols{  
             symbols.NT_Symbols, 
-            symbols.NT_Symbol,
+            symbols.NT_Symbols,
         }, 
         Symbols1R0, 
     },
-    Symbols1R1: &Slot{
+    Symbols1R1: {
         symbols.NT_Symbols, 1, 1, 
         symbols.Symbols{  
             symbols.NT_Symbols, 
-            symbols.NT_Symbol,
+            symbols.NT_Symbols,
         }, 
         Symbols1R1, 
     },
-    Symbols1R2: &Slot{
+    Symbols1R2: {
         symbols.NT_Symbols, 1, 2, 
         symbols.Symbols{  
             symbols.NT_Symbols, 
-            symbols.NT_Symbol,
+            symbols.NT_Symbols,
         }, 
         Symbols1R2, 
     },
