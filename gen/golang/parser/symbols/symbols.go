@@ -20,15 +20,15 @@ import (
 	"text/template"
 
 	"github.com/goccmack/gogll/ast"
-	"github.com/goccmack/gogll/goutil/ioutil"
+	"github.com/goccmack/goutil/ioutil"
 )
 
 type Data struct {
-    NonTerminals []string
-    ReservedWords []string
+	NonTerminals []string
+	Terminals    []string
 }
 
-func Gen(fname string, g *ast.Grammar) {
+func Gen(fname string, g *ast.GoGLL) {
 	tmpl, err := template.New("symbols").Parse(src)
 	if err != nil {
 		panic(err)
@@ -42,11 +42,11 @@ func Gen(fname string, g *ast.Grammar) {
 	}
 }
 
-func getData(g *ast.Grammar) *Data {
-    return &Data{
-        NonTerminals: g.GetNonTerminals(),
-        ReservedWords: g.GetReservedWords(),
-    }
+func getData(g *ast.GoGLL) *Data {
+	return &Data{
+		NonTerminals: g.NonTerminals.ElementsSorted(),
+		Terminals:    g.Terminals.ElementsSorted(),
+	}
 }
 
 const src = `
@@ -68,20 +68,62 @@ const src = `
 
 package symbols
 
-func IsNonTerminal(symbol string) bool {
-	return nonTerminals[symbol]
+type Symbol interface{
+    isSymbol()
+    IsNonTerminal() bool
+    String() string
 }
 
-func IsTerminal(symbol string) bool {
-	return !nonTerminals[symbol]
+func (NT) isSymbol() {}
+func (T) isSymbol() {}
+
+// NT is the type of non-terminals symbols
+type NT int
+const( {{range $i, $nt := .NonTerminals}}
+    NT_{{$nt}} {{if not $i}}NT = iota{{end}}{{end}}
+)
+
+// T is the type of terminals symbols
+type T int
+const( {{range $i, $t := .Terminals}}
+    T_{{$i}} {{if not $i}}T = iota{{end}} // {{$t}} {{end}}
+)
+
+type Symbols []Symbol
+
+func (ss Symbols) Strings() []string {
+    strs := make([]string, len(ss))
+    for i, s := range ss {
+        strs[i] = s.String()
+    }
+    return strs
 }
 
-var nonTerminals = map[string]bool{ {{range $i, $sym := .NonTerminals}}
-	"{{$sym}}":true,{{end}}
+func (NT) IsNonTerminal() bool {
+    return true
 }
 
-var reservedWords = map[string]bool{ {{range $i, $sym := .ReservedWords}}
-	{{$sym}}:true,{{end}}
+func (T) IsNonTerminal() bool {
+    return false
 }
 
+func (nt NT) String() string {
+    return ntToString[nt]
+}
+
+func (t T) String() string {
+    return tToString[t]
+}
+
+var ntToString = []string { {{range $nt := .NonTerminals}}
+    "{{$nt}}", /* NT_{{$nt}} */{{end}} 
+}
+
+var tToString = []string { {{range $i, $t := .Terminals}}
+    "{{$t}}", /* T_{{$i}} */{{end}} 
+}
+
+var stringNT = map[string]NT{ {{range $i, $sym := .NonTerminals}}
+	"{{$sym}}":NT_{{$sym}},{{end}}
+}
 `

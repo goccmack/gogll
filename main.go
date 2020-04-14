@@ -20,28 +20,20 @@ import (
 	"fmt"
 	"os"
 	"runtime/pprof"
-	"time"
 
-	"github.com/goccmack/gogll/goutil/ioutil"
-
-	"github.com/goccmack/gogll/cfg"
-	"github.com/goccmack/gogll/da"
+	"github.com/goccmack/gogll/ast"
 	"github.com/goccmack/gogll/frstflw"
 	genff "github.com/goccmack/gogll/gen/firstfollow"
 	"github.com/goccmack/gogll/gen/golang"
 	"github.com/goccmack/gogll/gen/slots"
-	"github.com/goccmack/gogll/gen/symbols"
-	"github.com/goccmack/gogll/goutil/md"
+	gensymbols "github.com/goccmack/gogll/gen/symbols"
 	"github.com/goccmack/gogll/gslot"
-	"github.com/goccmack/gogll/parser"
-	"github.com/goccmack/gogll/sa"
-)
+	"github.com/goccmack/gogll/lexer"
+	"github.com/goccmack/gogll/symbols"
 
-var (
-	parseDur time.Duration
-	daDur    time.Duration
-	saDur    time.Duration
-	genDur   time.Duration
+	"github.com/goccmack/gogll/cfg"
+	"github.com/goccmack/gogll/parser"
+	"github.com/goccmack/goutil/md"
 )
 
 func main() {
@@ -60,63 +52,34 @@ func main() {
 		}
 		defer pprof.StopCPUProfile()
 	}
-	startTime := time.Now()
-	if err, errs := parser.ParseFile(cfg.SrcFile); err != nil {
-		fail(err, errs)
+	src, err := md.GetSource(cfg.SrcFile)
+	if err != nil {
+		fail(err)
 	}
-	parseDur = time.Now().Sub(startTime)
-
-	// da.Report()
-
-	startTime = time.Now()
-	da.Go()
-	daDur = time.Now().Sub(startTime)
-
-	// fmt.Println("Ambiguous BSRs after disambiguation")
-	// da.Report()
-
-	startTime = time.Now()
-	g, errs := sa.Go()
-	saDur = time.Now().Sub(startTime)
-	startTime = time.Now()
-	if errs != nil {
-		for _, err := range errs {
-			fmt.Println(err)
-		}
-		os.Exit(1)
+	t, err := parser.NewParser().Parse(lexer.NewLexer([]byte(src)))
+	if err != nil {
+		fail(err)
 	}
-	symbols.Gen(g)
+	g := t.(*ast.GoGLL)
+	symbols.Init(g)
+
+	gensymbols.Gen(g)
 	ff := frstflw.New(g)
 	genff.Gen(g, ff)
 	gs := gslot.New(g, ff)
 	slots.Gen(gs)
 	golang.Gen(g, gs, ff)
-	genDur = time.Now().Sub(startTime)
-	fmt.Printf("parse %.3f ms, da %.3f ms, sa %.3f ms, gen %.3f ms\n",
-		float64(parseDur)/float64(time.Millisecond),
-		float64(daDur)/float64(time.Millisecond),
-		float64(saDur)/float64(time.Millisecond),
-		float64(genDur)/float64(time.Millisecond))
-	// if *cfg.BSRStats {
-	// 	for r, c := range bsr.Stats() {
-	// 		fmt.Println(r, c)
-	// 	}
-	// }
 }
 
-func dumpProcessedMDFile() {
-	src, err := md.GetSource(cfg.SrcFile)
-	if err != nil {
-		panic(err)
-	}
-	ioutil.WriteFile(cfg.SrcFile+".stripped", []byte(src))
-}
+// func dumpProcessedMDFile() {
+// 	src, err := md.GetSource(cfg.SrcFile)
+// 	if err != nil {
+// 		panic(err)
+// 	}
+// 	ioutil.WriteFile(cfg.SrcFile+".stripped", []byte(src))
+// }
 
-func fail(err error, errs []*parser.ParseError) {
-	fmt.Printf("ParseError: %s\n", err)
-	// parser.DumpCRF(errs[0].InputPos)
-	// bsr.Dump()
-	for _, e := range errs {
-		fmt.Println("", e)
-	}
+func fail(err error) {
+	fmt.Printf("Error: %s\n", err)
+	os.Exit(1)
 }

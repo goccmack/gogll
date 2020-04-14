@@ -1,6 +1,7 @@
+![Apache 2.0 License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)
 ![](https://travis-ci.org/goccmack/gogll.svg?branch=master)
 
-Copyright 2019 Marius Ackerman. See [Apache license](LICENSE).
+Copyright 2019 Marius Ackerman. 
 
 # Gogll
 Gogll generates scannerless, clustered nonterminal parsers (CNP) following [Scott et al 2019](#Scott-et-al-2019). CNP is a version of generalised LL parsing (GLL)[Scott & Johnstone 2016](#Scott-et-al-2016). GLL parsers can parse all context free (CF) languages.

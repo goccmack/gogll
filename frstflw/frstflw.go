@@ -16,8 +16,8 @@ package frstflw
 
 import (
 	"github.com/goccmack/gogll/ast"
-	"github.com/goccmack/gogll/goutil/stringset"
-	"github.com/goccmack/gogll/goutil/stringslice"
+	"github.com/goccmack/goutil/stringset"
+	"github.com/goccmack/goutil/stringslice"
 )
 
 const Empty = "ϵ"
@@ -29,10 +29,10 @@ type FF struct {
 	// Key=NonTerminal, Value is follow set of NonTerminal
 	followSets map[string]*stringset.StringSet
 
-	g *ast.Grammar
+	g *ast.GoGLL
 }
 
-func New(g *ast.Grammar) *FF {
+func New(g *ast.GoGLL) *FF {
 	ff := &FF{
 		g: g,
 	}
@@ -88,14 +88,16 @@ func (ff *FF) genFirstSets() {
 		for _, s := range ff.g.GetSymbols() {
 			// println(" ", s)
 			fs := ff.getFirstOfSymbol(s)
+			// fmt.Printf("  fs=%s eq=%t\n", fs.Elements(), ff.firstSets[s].Equal(fs))
 			if !ff.firstSets[s].Equal(fs) {
+				// fmt.Printf(" changed\n")
 				ff.firstSets[s] = fs
 				again = true
 			}
 		}
 	}
-	// for sym, fs := range firstSets {
-	// 	fmt.Printf("First(\"%s\"):%s\n", sym, fs)
+	// for sym, fs := range ff.firstSets {
+	// 	fmt.Printf("First(\"%s\"):%s\n", sym, fs.Elements())
 	// }
 }
 
@@ -108,12 +110,14 @@ func (ff *FF) initFirstSets() {
 
 func (ff *FF) getFirstOfSymbol(s string) *stringset.StringSet {
 	// fmt.Println("getFirstOfSymbol: ", s)
-	if ff.g.IsTerminal(s) {
+	if ff.g.Terminals.Contain(s) {
+		fst := stringset.New(s)
 		// fmt.Println("  T: ", stringset.New(s))
-		return stringset.New(s)
+		return fst
 	}
-	// fmt.Println("  NT", getFirstOfNonTerminal(s))
-	return ff.getFirstOfNonTerminal(s)
+	fst := ff.getFirstOfNonTerminal(s)
+	// fmt.Println("  NT", fst)
+	return fst
 }
 
 func (ff *FF) getFirstOfAlternate(a *ast.Alternate) *stringset.StringSet {
@@ -140,7 +144,7 @@ func (ff *FF) genFollow() {
 	for again := true; again; {
 		again = false
 		numSets := len(ff.followSets)
-		for _, nt := range ff.g.GetNonTerminals() {
+		for _, nt := range ff.g.NonTerminals.Elements() {
 			f := ff.genFollowOf(nt)
 			if f.Len() != ff.followSets[nt].Len() {
 				again = true
@@ -161,13 +165,13 @@ func (ff *FF) genFollowOf(nt string) *stringset.StringSet {
 	follow := stringset.New()
 	for _, r := range ff.g.Rules {
 		for _, a := range r.Alternates {
-			bs := stringslice.StringSlice(a.GetSymbols())
-			for _, idx := range bs.Find(nt) {
+			bs := a.GetSymbols()
+			for _, idx := range stringslice.Find(bs, nt) {
 				first := ff.FirstOfString(bs[idx+1:])
 				follow.AddSet(first)
 				if first.Contain(Empty) {
 					// fmt.Printf("  add folow(%s)\n", r.Head.StringValue())
-					follow.AddSet(ff.Follow(r.Head.NT))
+					follow.AddSet(ff.Follow(r.Head.Token()))
 				}
 			}
 		}
@@ -179,9 +183,9 @@ func (ff *FF) genFollowOf(nt string) *stringset.StringSet {
 
 func (ff *FF) initFollowSets() {
 	ff.followSets = make(map[string]*stringset.StringSet)
-	for _, nt := range ff.g.GetNonTerminals() {
-		if nt == ff.g.StartSymbol {
-			ff.followSets[nt] = stringset.New("$")
+	for _, nt := range ff.g.NonTerminals.Elements() {
+		if nt == ff.g.StartSymbol() {
+			ff.followSets[nt] = stringset.New("EOF")
 		} else {
 			ff.followSets[nt] = stringset.New()
 		}

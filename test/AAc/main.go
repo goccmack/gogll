@@ -15,9 +15,9 @@
 package main
 
 import (
-	"github.com/goccmack/gogll/test/AAc/parser/sppf"
 	"github.com/goccmack/gogll/test/AAc/parser"
-	"github.com/goccmack/gogll/goutil/ioutil"
+	"github.com/goccmack/gogll/test/AAc/parser/sppf"
+	"github.com/goccmack/goutil/ioutil"
 )
 
 func main() {

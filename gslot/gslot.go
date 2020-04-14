@@ -18,10 +18,11 @@ package gslot
 import (
 	"bytes"
 	"fmt"
+	"sort"
+
 	"github.com/goccmack/gogll/ast"
 	"github.com/goccmack/gogll/frstflw"
 	"github.com/goccmack/gogll/symbols"
-	"sort"
 )
 
 type Label struct {
@@ -35,12 +36,12 @@ type Label struct {
 type Slots []Label
 
 type GSlot struct {
-	g     *ast.Grammar
+	g     *ast.GoGLL
 	ff    *frstflw.FF
 	slots map[Label]symbols.Symbols
 }
 
-func New(g *ast.Grammar, ff *frstflw.FF) *GSlot {
+func New(g *ast.GoGLL, ff *frstflw.FF) *GSlot {
 	gs := &GSlot{
 		g:     g,
 		ff:    ff,
@@ -83,7 +84,7 @@ func (s Label) IsFiR() bool {
 	if s.Pos > 1 || len(symbols) <= 1 {
 		return false
 	}
-	if s.ff.FirstOfSymbol(symbols[0]).Contain(frstflw.Empty) &&
+	if s.ff.FirstOfSymbol(symbols[0].Literal()).Contain(frstflw.Empty) &&
 		symbols[0] == symbols[1] {
 		return false
 	}
@@ -155,21 +156,21 @@ func (gs *GSlot) genSlots() {
 
 func (gs *GSlot) genSlotsOfRule(r *ast.Rule) {
 	for i, a := range r.Alternates {
-		gs.genSlotsOfAlternate(r.Head.NT, i, a.GetSymbols()...)
+		gs.genSlotsOfAlternate(r.Head.Token(), i, getSymbols(a.GetSymbols())...)
 	}
 }
 
-func (gs *GSlot) genSlotsOfAlternate(nt string, altI int, symbols ...string) {
-	if len(symbols) == 0 {
-		gs.genSlot(nt, altI, 0, []string{}...)
+func (gs *GSlot) genSlotsOfAlternate(nt string, altI int, symbls ...symbols.Symbol) {
+	if len(symbls) == 0 {
+		gs.genSlot(nt, altI, 0, []symbols.Symbol{}...)
 	} else {
-		for pos := 0; pos <= len(symbols); pos++ {
-			gs.genSlot(nt, altI, pos, symbols...)
+		for pos := 0; pos <= len(symbls); pos++ {
+			gs.genSlot(nt, altI, pos, symbls...)
 		}
 	}
 }
 
-func (gs *GSlot) genSlot(nt string, altI, pos int, symbols ...string) {
+func (gs *GSlot) genSlot(nt string, altI, pos int, symbols ...symbols.Symbol) {
 	slot := Label{
 		Head:      nt,
 		Alternate: altI,
@@ -178,4 +179,13 @@ func (gs *GSlot) genSlot(nt string, altI, pos int, symbols ...string) {
 		ff:        gs.ff,
 	}
 	gs.slots[slot] = symbols
+}
+
+// getSymbols translates AST symbol strings to symbols.Symbol
+func getSymbols(astSymbols []string) []symbols.Symbol {
+	symbls := make([]symbols.Symbol, len(astSymbols))
+	for i, s := range astSymbols {
+		symbls[i] = symbols.FromASTString(s)
+	}
+	return symbls
 }

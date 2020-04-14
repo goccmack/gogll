@@ -23,8 +23,8 @@ import (
 	"path/filepath"
 
 	"github.com/goccmack/gogll/cfg"
-	"github.com/goccmack/gogll/goutil/ioutil"
 	"github.com/goccmack/gogll/gslot"
+	"github.com/goccmack/goutil/ioutil"
 )
 
 func Gen(gs *gslot.GSlot) {

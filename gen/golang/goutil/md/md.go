@@ -15,7 +15,7 @@
 package md
 
 import (
-	"github.com/goccmack/gogll/goutil/ioutil"
+	"github.com/goccmack/goutil/ioutil"
 )
 
 func Gen(file string) {

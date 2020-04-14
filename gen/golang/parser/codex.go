@@ -23,7 +23,7 @@ import (
 
 func (g *gen) genAlternatesCode() string {
 	buf := new(bytes.Buffer)
-	for _, nt := range g.g.GetNonTerminals() {
+	for _, nt := range g.g.NonTerminals.Elements() {
 		rule := g.g.GetRule(nt)
 		for i, alt := range rule.Alternates {
 			buf.WriteString(g.getAlternateCode(nt, alt, i))
@@ -84,7 +84,7 @@ func (g *gen) getSlotData(nt string, altI int, symbol string, pos int) *SlotData
 		Comment:   postLabel.String(),
 		Head:      nt,
 	}
-	sd.IsNT = !g.g.IsTerminal(symbol)
+	sd.IsNT = !g.g.Terminals.Contain(symbol)
 	// fmt.Printf("getSlotData: altlabel:%s, pre:%s, post:%s\n",
 	// 	sd.AltLabel, sd.PreLabel, sd.PostLabel)
 	return sd
@@ -101,18 +101,17 @@ type SlotData struct {
 
 const altCodeTmpl = `		case slot.{{.AltLabel}}: // {{.AltComment}}{{if .Empty}}
 			bsr.AddEmpty(slot.{{.AltLabel}},cI)
-		{{else}}{{range $i, $slot := .Slots}}
-			{{if $i}}if !testSelect[slot.{{$slot.PreLabel}}](){ 
+        {{else}}{{range $i, $slot := .Slots}}
+            {{if $i}}if !testSelect(slot.{{$slot.PreLabel}}){ 
 				parseError(slot.{{$slot.PreLabel}}, cI)
 				break 
 			}
 			{{end}}
 			{{if $slot.IsNT}}call(slot.{{$slot.PostLabel}}, cU, cI)
 case slot.{{$slot.PostLabel}}: // {{$slot.Comment}} 
-			{{else}}bsr.Add(slot.{{$slot.PostLabel}}, cU, cI, cI+sz)
-			cI += sz 
-			nextI, r, sz = decodeRune(I[cI:]){{end}}{{end}}{{end}}
-			if follow{{.NT}}(){
-				rtn("{{.NT}}", cU, cI)
+			{{else}}bsr.Add(slot.{{$slot.PostLabel}}, cU, cI, cI+1)
+			cI++ {{end}}{{end}}{{end}}
+			if follow(symbols.NT_{{.NT}}) {
+				rtn(symbols.NT_{{.NT}}, cU, cI)
 			}
 	`

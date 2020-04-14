@@ -24,10 +24,10 @@ import (
 	"github.com/goccmack/gogll/ast"
 	"github.com/goccmack/gogll/cfg"
 	"github.com/goccmack/gogll/frstflw"
-	"github.com/goccmack/gogll/goutil/ioutil"
+	"github.com/goccmack/goutil/ioutil"
 )
 
-func Gen(g *ast.Grammar, ff *frstflw.FF) {
+func Gen(g *ast.GoGLL, ff *frstflw.FF) {
 	if !cfg.Verbose {
 		return
 	}
@@ -41,7 +41,7 @@ func Gen(g *ast.Grammar, ff *frstflw.FF) {
 	}
 }
 
-func genFirstSets(w io.Writer, g *ast.Grammar, ff *frstflw.FF) {
+func genFirstSets(w io.Writer, g *ast.GoGLL, ff *frstflw.FF) {
 	for _, s := range g.GetSymbols() {
 		genFirstSet(w, s, ff)
 	}
@@ -55,8 +55,8 @@ func genFirstSet(w io.Writer, symbol string, ff *frstflw.FF) {
 	fmt.Fprintln(w)
 }
 
-func genFollowSets(w io.Writer, g *ast.Grammar, ff *frstflw.FF) {
-	for _, s := range g.GetNonTerminals() {
+func genFollowSets(w io.Writer, g *ast.GoGLL, ff *frstflw.FF) {
+	for _, s := range g.NonTerminals.Elements() {
 		genFollowSet(w, s, ff)
 	}
 }

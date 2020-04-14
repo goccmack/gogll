@@ -25,23 +25,25 @@ import (
 
 	"github.com/goccmack/gogll/ast"
 	"github.com/goccmack/gogll/frstflw"
+	"github.com/goccmack/gogll/gen/golang/parser/bsr"
 	"github.com/goccmack/gogll/gen/golang/parser/slots"
 	"github.com/goccmack/gogll/gen/golang/parser/symbols"
-	"github.com/goccmack/gogll/goutil/ioutil"
 	"github.com/goccmack/gogll/gslot"
+	"github.com/goccmack/goutil/ioutil"
 )
 
 /*** Main parser section ***/
 
 type gen struct {
-	g  *ast.Grammar
+	g  *ast.GoGLL
 	gs *gslot.GSlot
 	ff *frstflw.FF
 }
 
-func Gen(parserDir string, g *ast.Grammar, gs *gslot.GSlot, ff *frstflw.FF) {
+func Gen(parserDir string, g *ast.GoGLL, gs *gslot.GSlot, ff *frstflw.FF) {
 	gn := &gen{g, gs, ff}
 	gn.genParser(parserDir)
+	bsr.Gen(filepath.Join(parserDir, "bsr", "bsr.go"), g.Package.GetString())
 	slots.Gen(filepath.Join(parserDir, "slot", "slot.go"), g, gs, ff)
 	symbols.Gen(filepath.Join(parserDir, "symbols", "symbols.go"), g)
 }
@@ -69,7 +71,6 @@ func (g *gen) genParser(parserDir string) {
 
 type Data struct {
 	Package     string
-	Imports     []string
 	StartSymbol string
 	CodeX       string
 	TestSelect  string
@@ -77,19 +78,12 @@ type Data struct {
 
 func (g *gen) getData(baseDir string) *Data {
 	data := &Data{
-		Package:     g.g.Package,
-		Imports:     getImports(baseDir),
-		StartSymbol: g.g.StartSymbol,
+		Package:     g.g.Package.GetString(),
+		StartSymbol: g.g.StartSymbol(),
 		CodeX:       g.genAlternatesCode(),
 		TestSelect:  g.genTestSelect(),
 	}
 	return data
-}
-
-func getImports(baseDir string) []string {
-	return []string{
-		"io/ioutil",
-	}
 }
 
 func parseErrorError(err error) {
@@ -121,41 +115,17 @@ import(
 	"fmt"
 	"os"
 	"sort"
-	"strings"
-	"unicode"
-	"unicode/utf8"
 
-	"{{.Package}}/goutil/bsr"
-	"{{.Package}}/goutil/md"
-	"{{.Package}}/parser/slot"
-	{{range $i, $import := .Imports}}
-	"{{$import}}" {{end}}
+	"{{.Package}}/parser/bsr"
+	"{{.Package}}/lexer"
+	"{{.Package}}/parser/bsr"
+    "{{.Package}}/parser/slot"
+    "{{.Package}}/parser/symbols"
+    "{{.Package}}/token"
 )
-
-func ParseFile(fname string) (error, []*ParseError) {
-	var buf []byte
-	var err error
-	if strings.HasSuffix(fname, ".md") {
-		var str string
-		str, err = md.GetSource(fname)
-		if err != nil {
-			parseErrorError(err)
-		}
-		buf = []byte(str)
-	} else {
-		buf, err = ioutil.ReadFile(fname)
-		if err != nil {
-			parseErrorError(err)
-		}
-	}
-	return Parse(buf)
-}
 
 var (
 	cI    = 0
-	sz    = 0
-	nextI = ""
-	r	rune
 
 	R *descriptors
 	U *descriptors
@@ -164,33 +134,31 @@ var (
 	crf			map[clusterNode][]*crfNode
 	crfNodes	map[crfNode]*crfNode
 
-	input []byte
+	lex         *lexer.Lexer
 	parseErrors []*ParseError
 )
 
-func initParser(I []byte) {
-	input = I
-	cI, nextI, sz = 0, "", 0
+func initParser(l *lexer.Lexer) {
+	lex = l
+	cI = 0
 	R, U = &descriptors{}, &descriptors{}
 	popped = make(map[poppedNode]bool)
 	crf = map[clusterNode][]*crfNode{
-		{"{{.StartSymbol}}", 0}:{},
+		{symbols.NT_{{.StartSymbol}}, 0}:{},
 	}
 	crfNodes = map[crfNode]*crfNode{}
-	bsr.Init("{{.StartSymbol}}", I)
+	bsr.Init(symbols.NT_{{.StartSymbol}}, lex.I)
 	parseErrors = nil
 }
 
-func Parse(I []byte) (error, []*ParseError) {
-	initParser(I)
+func Parse(l *lexer.Lexer) (error, []*ParseError) {
+	initParser(l)
 	var L slot.Label
-	m, cU := len(I), 0
-	nextI, r, sz = decodeRune(I[cI:])
-	ntAdd("{{.StartSymbol}}", 0)
+	m, cU := len(l.Tokens), 0
+	ntAdd(symbols.NT_{{.StartSymbol}}, 0)
 	// DumpDescriptors()
 	for !R.empty() {
 		L, cU, cI = R.remove()
-		nextI, r, sz = decodeRune(I[cI:])
 
 		// fmt.Println()
 		// fmt.Printf("L:%s, cI:%d, I[cI]:%s, cU:%d\n", L, cI, nextI, cU)
@@ -203,20 +171,20 @@ func Parse(I []byte) (error, []*ParseError) {
 			panic("This must not happen")
 		}
 	}
-	if !bsr.Contain("{{.StartSymbol}}",0,m) {
-		sortParseErrors(I)
+	if !bsr.Contain(symbols.NT_{{.StartSymbol}},0,m) {
+		sortParseErrors()
 		err := fmt.Errorf("Error: Parse Failed right extent=%d, m=%d", 
-			bsr.GetRightExtent(), len(I))
+			bsr.GetRightExtent(), len(l.Tokens))
 		return err, parseErrors
 	}
 	return nil, nil
 }
 
-func ntAdd(nt string, j int) {
+func ntAdd(nt symbols.NT, j int) {
 	// fmt.Printf("ntAdd(%s, %d)\n", nt, j)
 	failed := true
 	for _, l := range slot.GetAlternates(nt) {
-		if testSelect[l]() {
+		if testSelect(l) {
 			dscAdd(l, j, j)
 		} else {
 			failed = false
@@ -232,12 +200,12 @@ func ntAdd(nt string, j int) {
 /*** Call Return Forest ***/
 
 type poppedNode struct {
-	X    string
+	X    symbols.NT
 	k, j int
 }
 
 type clusterNode struct {
-	X string
+	X symbols.NT
 	k int
 }
 
@@ -273,7 +241,7 @@ func call(L slot.Label, i, j int) {
 		u = &crfNode{L, i}
 		crfNodes[*u] = u
 	}
-	X := L.Symbols()[L.Pos()-1]
+	X := L.Symbols()[L.Pos()-1].(symbols.NT)
 	ndV := clusterNode{X, j}
 	v, exist := crf[ndV]
 	if !exist {
@@ -305,7 +273,7 @@ func existEdge(nds []*crfNode, nd *crfNode) bool {
 	return false
 }
 
-func rtn(X string, k, j int) {
+func rtn(X symbols.NT, k, j int) {
 	// fmt.Printf("rtn(%s,%d,%d)\n", X,k,j)
 	p := poppedNode{X, k, j}
 	if _, exist := popped[p]; !exist {
@@ -424,143 +392,47 @@ func DumpU() {
 	}
 }
 
-/*** Rune decoding ***/
-func decodeRune(str []byte) (string, rune, int) {
-	if len(str) == 0 {
-		return "$", '$', 0
-	}
-	r, sz := utf8.DecodeRune(str)
-	if r == utf8.RuneError {
-		panic(fmt.Sprintf("Rune error: %s", str))
-	}
-	switch r {
-	case '\\':
-		r, sz = utf8.DecodeRune(str)
-		if r == utf8.RuneError {
-			panic(fmt.Sprintf("Rune error: %s", str))
-		}
-		switch r {
-		case '"':
-			return "\"", r, sz
-		case 'n':
-			return "n", r, sz
-		case 'r':
-			return "r", r, sz
-		case 't':
-			return "t", r, sz
-		case '\\':
-			return "\\", r, sz
-		case '\'':
-			return "'", r, sz
-		}
-	case '\t', ' ':
-		return "space", r, sz
-	case '\n':
-		return "\\n", r, sz
-	}
-	return string(str[:sz]), r, sz
-}
-
-func runeToString(r rune) string {
-	buf := make([]byte, utf8.RuneLen(r))
-	utf8.EncodeRune(buf, r)
-	return string(buf)
-}
-
 /*** TestSelect ***/
+
+func follow(nt symbols.NT) bool {
+    _, exist := followSets[nt][lex.Tokens[cI].Type]
+    return exist
+}
+
+func testSelect(l slot.Label) bool {
+    _, exist := first[l][lex.Tokens[cI].Type]
+    return exist
+}
 
 {{.TestSelect}}
 
-/*** Unicode functions ***/
-
-func any(r rune) bool {
-	return true
-}
-	
-func anyof(r rune, set string) bool {
-	return strings.ContainsRune(set, r)
-}
-
-func letter(r rune) bool {
-	return unicode.IsLetter(r)
-}
-	
-func number(r rune) bool {
-	return unicode.IsNumber(r)
-}
-	
-func upcase(r rune) bool {
-	return unicode.IsUpper(r)
-}
-	
-func lowcase(r rune) bool {
-	return unicode.IsLower(r)
-}
-	
-func not(r rune, set string) bool {
-	bs := []byte(set)
-	for i := 0; i < len(set); {
-		r1, sz := utf8.DecodeRune(bs[i:])
-		if r1 == utf8.RuneError {
-			panic(fmt.Sprintf("Rune error: %s", set))
-		}
-		if r1 == r {
-			return false
-		} 
-		i += sz
-	}
-	return true
-}
-	
-func space(r rune) bool {
-	return unicode.IsSpace(r)
-}
 	
 /*** Errors ***/
 
 type ParseError struct {
 	Slot         slot.Label
-	InputPos     int
-	Char string
+	Token        *token.Token
 	Line, Column int
 }
 
 func (pe *ParseError) String() string {
-	return fmt.Sprintf("Parse Error: %s cI=%d I[cI]=%s at line %d col %d", 
-		pe.Slot, pe.InputPos, pe.Char, pe.Line, pe.Column)
+	return fmt.Sprintf("Parse Error: %s I[cI]=%s at line %d col %d", 
+		pe.Slot, pe.Token, pe.Line, pe.Column)
 }
 
-func parseError(slot slot.Label, I int) {
-	pe := &ParseError{Slot: slot, InputPos: I, Char: nextI}
+func parseError(slot slot.Label, i int) {
+	pe := &ParseError{Slot: slot, Token: lex.Tokens[i]}
 	parseErrors = append(parseErrors, pe)
 }
 
-func sortParseErrors(I []byte) {
+func sortParseErrors() {
 	sort.Slice(parseErrors,
 		func(i, j int) bool {
-			return parseErrors[j].InputPos < parseErrors[i].InputPos
+			return parseErrors[j].Token.Lext < parseErrors[i].Token.Lext
 		})
 	for _, pe := range parseErrors {
-		pe.Line, pe.Column = GetLineColumn(pe.InputPos)
+		pe.Line, pe.Column = lex.GetLineColumn(pe.Token.Lext)
 	}
-}
-
-func GetLineColumn(cI int) (line, col int) {
-	line, col = 1, 1
-	for j := 0; j < cI; {
-		_, r, sz := decodeRune(input[j:])
-		switch r {
-		case '\n':
-			line++
-			col = 1
-		case '\t':
-			col += 4
-		default:
-			col++
-		}
-		j += sz
-	}
-	return
 }
 
 func parseErrorError(err error) {

@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/goccmack/gogll/test/s0/parser/sppf"
-	"github.com/goccmack/gogll/goutil/ioutil"
 	"github.com/goccmack/gogll/test/s0/parser"
+	"github.com/goccmack/gogll/test/s0/parser/sppf"
+	"github.com/goccmack/goutil/ioutil"
 )
 
 const src = `bac`

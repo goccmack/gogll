@@ -22,10 +22,10 @@ import (
 
 	"github.com/goccmack/gogll/ast"
 	"github.com/goccmack/gogll/cfg"
-	"github.com/goccmack/gogll/goutil/ioutil"
+	"github.com/goccmack/goutil/ioutil"
 )
 
-func Gen(g *ast.Grammar) {
+func Gen(g *ast.GoGLL) {
 	if !cfg.Verbose {
 		return
 	}

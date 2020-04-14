@@ -20,7 +20,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/goccmack/gogll/goutil/ioutil"
+	"github.com/goccmack/goutil/ioutil"
 
 	"github.com/goccmack/gogll/examples/ambiguous1/goutil/bsr"
 	"github.com/goccmack/gogll/examples/ambiguous1/parser"

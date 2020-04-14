@@ -18,10 +18,11 @@ import (
 	"bytes"
 	"fmt"
 	"os"
-	"strings"
+	"sort"
 	"text/template"
 
 	"github.com/goccmack/gogll/frstflw"
+	"github.com/goccmack/gogll/gen/golang/token"
 	"github.com/goccmack/gogll/gslot"
 )
 
@@ -42,15 +43,21 @@ type TestSelectData struct {
 	Follow     []*TSData
 }
 
-type TSData struct {
-	Label      string
-	Conditions []*Condition
+type Symbol struct {
+	TokType string
+	Label   string
 }
 
-type Condition struct {
-	Cond string
-	Last bool
+type TSData struct {
+	Label   string
+	Symbols []*Symbol
+	// Conditions []*Condition
 }
+
+// type Condition struct {
+// 	Cond string
+// 	Last bool
+// }
 
 func (g *gen) getTestSelectData() *TestSelectData {
 	return &TestSelectData{
@@ -60,7 +67,7 @@ func (g *gen) getTestSelectData() *TestSelectData {
 }
 
 func (g *gen) getFollowData() (data []*TSData) {
-	for _, nt := range g.g.GetNonTerminals() {
+	for _, nt := range g.g.NonTerminals.Elements() {
 		data = append(data, g.getFollowDataForNT(nt))
 	}
 	return
@@ -68,8 +75,8 @@ func (g *gen) getFollowData() (data []*TSData) {
 
 func (g *gen) getFollowDataForNT(nt string) *TSData {
 	d := &TSData{
-		Label:      nt,
-		Conditions: g.getFollowConditions(nt),
+		Label:   nt,
+		Symbols: g.getFollowConditions(nt),
 	}
 	// fmt.Printf("getFollowDataForNT(%s): %d\n", nt, len(d.Conditions))
 	return d
@@ -82,80 +89,74 @@ func (g *gen) getTSData() (data []*TSData) {
 	return
 }
 
-func (g *gen) getSlotTSData(s gslot.Label) *TSData {
+func (g *gen) getSlotTSData(l gslot.Label) *TSData {
 	return &TSData{
-		Label:      s.Label(),
-		Conditions: g.getSlotTSConditions(s),
+		Label:   l.String(),
+		Symbols: g.getFirst(l),
+		// Conditions: g.getSlotTSConditions(s),
 	}
 }
 
-func (g *gen) getSlotTSConditions(s gslot.Label) (data []*Condition) {
-	// fmt.Printf("testselect.getSlotTSConditions(%s)\n", s)
-	ss := s.Symbols()[s.Pos:]
-	frst := g.ff.FirstOfString(ss)
+func (g *gen) getFirst(l gslot.Label) (tokens []*Symbol) {
+	ss := l.Symbols()[l.Pos:]
+	frst := g.ff.FirstOfString(ss.Strings())
+	firstSymbols := frst.Elements()
+	sort.Slice(
+		firstSymbols,
+		func(i, j int) bool { return firstSymbols[i] < firstSymbols[j] })
+	tokMap := token.GetTokenMap(g.g)
 	// fmt.Printf("  first: %s\n", frst)
-	for _, sym := range frst.Elements() {
+	for _, sym := range firstSymbols {
 		if sym != frstflw.Empty {
-			data = append(data, &Condition{Cond: getSymbolCondition(sym)})
+			tokens = append(tokens,
+				&Symbol{
+					TokType: tokMap[sym],
+					Label:   sym,
+				})
 		}
 	}
 	if frst.Contain(frstflw.Empty) {
-		data = append(data, g.getFollowConditions(s.Head)...)
+		tokens = append(tokens, g.getFollowConditions(l.Head)...)
 	}
-	data[len(data)-1].Last = true
 	return
 }
 
-func (g *gen) getFollowConditions(nt string) (data []*Condition) {
+func (g *gen) getFollowConditions(nt string) (tokens []*Symbol) {
 	// fmt.Printf("testselect.getFollowConditions(%s)\n", nt)
 	flw := g.ff.Follow(nt)
 	if flw.Len() == 0 {
 		fmt.Printf("Production %s has empty follow set. It is never called\n", nt)
 		os.Exit(1)
 	}
+	tokMap := token.GetTokenMap(g.g)
 	for _, sym := range flw.Elements() {
-		data = append(data, &Condition{Cond: getSymbolCondition(sym)})
+		tokens = append(tokens,
+			&Symbol{
+				TokType: tokMap[sym],
+				Label:   sym,
+			})
 	}
-	data[len(data)-1].Last = true
 	return
 }
 
-func getSymbolCondition(sym string) string {
-	// fmt.Printf("testselect.getSymbolCondition(%s)\n", sym)
-	if sym == `'\\'` {
-		panic(`'\\'`)
-	}
-	switch sym {
-	case "any":
-		return "true"
-	case "letter":
-		return "letter(r)"
-	case "number":
-		return "number(r)"
-	case "upcase":
-		return "upcase(r)"
-	case "lowcase":
-		return "lowcase(r)"
-	case "space":
-		return "space(r)"
-	case "\\\"":
-		return `r == '"'`
-	case "'":
-		return `r == '\''`
-	}
-	if strings.HasPrefix(sym, "not(") {
-		set := strings.TrimSuffix(strings.TrimPrefix(sym, "not("), ")")
-		return fmt.Sprintf(`not(r, "%s")`, set)
-	}
-	if strings.HasPrefix(sym, "anyof(") {
-		set := strings.TrimSuffix(strings.TrimPrefix(sym, "anyof("), ")")
-		return fmt.Sprintf(`anyof(r, "%s")`, set)
-	}
-	return fmt.Sprintf("r == '%s'", sym)
-	// return fmt.Sprintf("r == '%s'", strings.TrimPrefix(sym, "\\"))
+const testSelectTmpl = `
+var first = []map[token.Type]string { {{range $ts := .TestSelect}}
+    // {{$ts.Label}}
+    map[token.Type]string{ {{range $sym := $ts.Symbols}}
+        token.{{$sym.TokType}}:"{{$sym.Label}}",{{end}}
+    },{{end}}
 }
 
-const testSelectTmpl = `var testSelect = []func()bool { {{range $i, $ts := .TestSelect}}
+var followSets = []map[token.Type]string { {{range $flw := .Follow}}
+    // {{$flw.Label}}
+    map[token.Type]string{ {{range $sym := $flw.Symbols}}
+        token.{{$sym.TokType}}:"{{$sym.Label}}",{{end}}
+    },{{end}}
+} 
+`
+
+/*
+var testSelect = []func()bool { {{range $i, $ts := .TestSelect}}
     // slot.{{$ts.Label}}
     func()bool{
         return {{range $i, $c := $ts.Conditions}}{{$c.Cond}} {{if not $c.Last}}||{{end}}
@@ -165,4 +166,4 @@ const testSelectTmpl = `var testSelect = []func()bool { {{range $i, $ts := .Test
 {{range $i, $flw := .Follow}}func follow{{$flw.Label}} () bool {
     return {{range $i, $c := $flw.Conditions}}{{$c.Cond}} {{if not $c.Last}}||{{end}}
 {{end}} }
-{{end}}`
+*/

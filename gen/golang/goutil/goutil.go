@@ -14,15 +14,14 @@
 package goutil
 
 import (
+	"path/filepath"
+
 	"github.com/goccmack/gogll/ast"
-	"github.com/goccmack/gogll/gen/golang/goutil/bsr"
 	"github.com/goccmack/gogll/gen/golang/goutil/md"
 	"github.com/goccmack/gogll/gen/golang/goutil/stringset"
-	"path/filepath"
 )
 
-func Gen(utilDir string, g *ast.Grammar) {
-	bsr.Gen(filepath.Join(utilDir, "bsr", "bsr.go"), g.Package)
+func Gen(utilDir string, g *ast.GoGLL) {
 	stringset.Gen(filepath.Join(utilDir, "stringset", "stringset.go"))
 	md.Gen(filepath.Join(utilDir, "md", "md.go"))
 }
