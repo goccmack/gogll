@@ -135,7 +135,7 @@ var (
 	crfNodes	map[crfNode]*crfNode
 
 	lex         *lexer.Lexer
-	parseErrors []*ParseError
+	parseErrors []*Error
 )
 
 func initParser(l *lexer.Lexer) {
@@ -151,17 +151,17 @@ func initParser(l *lexer.Lexer) {
 	parseErrors = nil
 }
 
-func Parse(l *lexer.Lexer) (error, []*ParseError) {
+func Parse(l *lexer.Lexer) (error, []*Error) {
 	initParser(l)
 	var L slot.Label
-	m, cU := len(l.Tokens), 0
+	m, cU := len(l.Tokens)-1, 0
 	ntAdd(symbols.NT_{{.StartSymbol}}, 0)
 	// DumpDescriptors()
 	for !R.empty() {
 		L, cU, cI = R.remove()
 
 		// fmt.Println()
-		// fmt.Printf("L:%s, cI:%d, I[cI]:%s, cU:%d\n", L, cI, nextI, cU)
+		// fmt.Printf("L:%s, cI:%d, I[cI]:%s, cU:%d\n", L, cI, lex.Tokens[cI], cU)
 		// DumpDescriptors()
 
 		switch L { 
@@ -186,7 +186,6 @@ func ntAdd(nt symbols.NT, j int) {
 	for _, l := range slot.GetAlternates(nt) {
 		if testSelect(l) {
 			dscAdd(l, j, j)
-		} else {
 			failed = false
 		}
 	}
@@ -401,6 +400,7 @@ func follow(nt symbols.NT) bool {
 
 func testSelect(l slot.Label) bool {
     _, exist := first[l][lex.Tokens[cI].Type]
+    // fmt.Printf("testSelect(%s) = %t\n", l, exist)
     return exist
 }
 
@@ -409,19 +409,20 @@ func testSelect(l slot.Label) bool {
 	
 /*** Errors ***/
 
-type ParseError struct {
+type Error struct {
+    cI           int
 	Slot         slot.Label
 	Token        *token.Token
 	Line, Column int
 }
 
-func (pe *ParseError) String() string {
-	return fmt.Sprintf("Parse Error: %s I[cI]=%s at line %d col %d", 
-		pe.Slot, pe.Token, pe.Line, pe.Column)
+func (pe *Error) String() string {
+	return fmt.Sprintf("Parse Error: %s I[%d]=%s at line %d col %d", 
+		pe.Slot, pe.cI, pe.Token, pe.Line, pe.Column)
 }
 
 func parseError(slot slot.Label, i int) {
-	pe := &ParseError{Slot: slot, Token: lex.Tokens[i]}
+	pe := &Error{cI: i, Slot: slot, Token: lex.Tokens[i]}
 	parseErrors = append(parseErrors, pe)
 }
 

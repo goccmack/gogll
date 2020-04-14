@@ -90,6 +90,15 @@ var StringToType = map[string] int {
     "{{$tok}}": Type{{$i}},{{end}}
 }
 
+func New(t Type, lext, rext int, lit []rune) *Token {
+    return &Token{
+        Type: t,
+        Lext: lext,
+        Rext: rext,
+        Literal: string(lit),
+    }
+}
+
 func (t *Token) String() string {
 	return fmt.Sprintf("%s (%d,%d) %s",
 		TypeToString[t.Type], t.Lext, t.Rext, t.Literal)

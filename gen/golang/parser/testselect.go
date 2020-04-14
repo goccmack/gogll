@@ -67,7 +67,7 @@ func (g *gen) getTestSelectData() *TestSelectData {
 }
 
 func (g *gen) getFollowData() (data []*TSData) {
-	for _, nt := range g.g.NonTerminals.Elements() {
+	for _, nt := range g.g.NonTerminals.ElementsSorted() {
 		data = append(data, g.getFollowDataForNT(nt))
 	}
 	return
@@ -98,6 +98,7 @@ func (g *gen) getSlotTSData(l gslot.Label) *TSData {
 }
 
 func (g *gen) getFirst(l gslot.Label) (tokens []*Symbol) {
+	// fmt.Printf("testSelect.getFirst(%s)\n", l)
 	ss := l.Symbols()[l.Pos:]
 	frst := g.ff.FirstOfString(ss.Strings())
 	firstSymbols := frst.Elements()
