@@ -33,6 +33,10 @@ type Symbol interface {
 	// Literal returns the literal value of the symbol in the grammar
 	Literal() string
 
+	// GoString returns the Go representation of the symbol that is used
+	// for code generation
+	GoString() string
+
 	// String returns the string representation of the symbol that is used
 	// for code generation
 	String() string
@@ -115,12 +119,20 @@ func (nt NT) Literal() string {
 	return ntToLiteral[nt]
 }
 
+// GoString returns the Go representation of nt used by code generation modules
+func (nt NT) GoString() string {
+	if !initialisized {
+		panic("Uninitialised")
+	}
+	return ntToString[nt]
+}
+
 // String returns the string representation of nt used by code generation modules
 func (nt NT) String() string {
 	if !initialisized {
 		panic("Uninitialised")
 	}
-	return ntToString[nt]
+	return ntToLiteral[nt]
 }
 
 // IsNonTerminal always returns false if the symbol is a terminal
@@ -139,12 +151,20 @@ func (t T) Literal() string {
 	return tToLiteral[t]
 }
 
+// GoString returns the Go representation of t used by code generation modules
+func (t T) GoString() string {
+	if !initialisized {
+		panic("Uninitialised")
+	}
+	return tToString[t]
+}
+
 // String returns the string representation of t used by code generation modules
 func (t T) String() string {
 	if !initialisized {
 		panic("Uninitialised")
 	}
-	return tToString[t]
+	return tToLiteral[t]
 }
 
 // GetNonTerminals returns the list of non-terminals used by code generation modules
@@ -171,8 +191,20 @@ func (ss Symbols) Empty() bool {
 }
 
 /*
-Strings returns a slice containing the string representation of the the
+GoStrings returns a slice containing the Go representation of the the
 symbols in ss used by code generation modules
+*/
+func (ss Symbols) GoStrings() []string {
+	strs := make([]string, len(ss))
+	for i, s := range ss {
+		strs[i] = s.GoString()
+	}
+	return strs
+}
+
+/*
+Strings returns a slice containing the string representation of the the
+symbols in ss used for printing
 */
 func (ss Symbols) Strings() []string {
 	strs := make([]string, len(ss))

@@ -21,7 +21,6 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/goccmack/gogll/lexer"
 	"github.com/goccmack/gogll/token"
 	"github.com/goccmack/goutil/stringset"
 )
@@ -30,9 +29,7 @@ type GoGLL struct {
 	Package      *Package
 	Rules        []*Rule
 	Terminals    *stringset.StringSet
-    NonTerminals *stringset.StringSet
-
-    lex *lexer.Lexer
+	NonTerminals *stringset.StringSet
 }
 
 type Alternate struct {
@@ -59,7 +56,7 @@ type StringLit struct {
 
 type Symbol interface {
 	isSymbol()
-	Pos() int
+	Pos() token.Pos
 	Token() string
 	String() string
 }
@@ -110,7 +107,7 @@ func NewNT(nt interface{}) (*NT, error) {
 	n := &NT{
 		tok: nt.(*token.Token),
 	}
-	n.Literal = n.tok.Literal
+	n.Literal = n.tok.IDValue()
 	return n, nil
 }
 
@@ -190,7 +187,7 @@ func (g *GoGLL) nonTerminals() *stringset.StringSet {
 	nts := stringset.New()
 	for _, r := range g.Rules {
 		if nts.Contain(r.Head.Token()) {
-			g.fail(fmt.Errorf("Duplicate rule %s", r.Head.Token()), r.Head.Pos())
+			fail(fmt.Errorf("Duplicate rule %s", r.Head.Token()), r.Head.Pos())
 		} else {
 			nts.Add(r.Head.Token())
 		}
@@ -225,42 +222,41 @@ func (n *NT) Token() string {
 	return n.Literal
 }
 
-func (n *NT) Pos() int {
-	return n.tok.Lext
+func (n *NT) Pos() token.Pos {
+	return n.tok.Pos
 }
 
 func (p *Package) GetString() string {
-	return p.tok.Literal
+	return p.tok.StringValue()
 }
 
 func (s *StringLit) String() string {
-	return s.tok.Literal[1:len(s.tok.Literal)-1]
+	return s.tok.StringValue()
 }
 
 func (s *StringLit) Token() string {
-	return s.tok.Literal
+	return s.tok.StringValue()
 }
 
-func (s *StringLit) Pos() int {
-	return s.tok.Lext
+func (s *StringLit) Pos() token.Pos {
+	return s.tok.Pos
 }
 
 func (t *TokID) String() string {
-	return t.tok.Literal
+	return t.tok.IDValue()
 }
 
 func (t *TokID) Token() string {
-	return t.tok.Literal
+	return t.tok.IDValue()
 }
 
-func (t *TokID) Pos() int {
-	return t.tok.Lext
+func (t *TokID) Pos() token.Pos {
+	return t.tok.Pos
 }
 
 /*** Errors ***/
 
-func (g *GoGLL) fail(err error, pos int) {
-    ln, col := g.lex.GetLineColumn(pos)
-	fmt.Printf("Error: %s at line %d col %d\n", err, ln, col)
+func fail(err error, pos token.Pos) {
+	fmt.Printf("Error: %s at line %d col %d\n", err, pos.Line, pos.Column)
 	os.Exit(1)
 }

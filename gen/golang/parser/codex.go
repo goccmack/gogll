@@ -38,6 +38,7 @@ type AltData struct {
 	AltComment string
 	Empty      bool
 	Slots      []*SlotData
+	LastSlot   *SlotData
 }
 
 func (g *gen) getAlternateCode(nt string, alt *ast.Alternate, altI int) string {
@@ -62,6 +63,7 @@ func (g *gen) getAltData(nt string, alt *ast.Alternate, altI int) *AltData {
 	}
 	if !alt.Empty() {
 		d.Slots = g.getSlotsData(nt, alt, altI)
+		d.LastSlot = d.Slots[len(d.Slots)-1]
 	}
 	return d
 }
@@ -112,6 +114,8 @@ case slot.{{$slot.PostLabel}}: // {{$slot.Comment}}
 			{{else}}bsr.Add(slot.{{$slot.PostLabel}}, cU, cI, cI+1)
 			cI++ {{end}}{{end}}{{end}}
 			if follow(symbols.NT_{{.NT}}) {
-				rtn(symbols.NT_{{.NT}}, cU, cI)
-			}
+                rtn(symbols.NT_{{.NT}}, cU, cI)
+            } else {
+                parseError(slot.{{.LastSlot.PreLabel}}, cI)
+            }
 	`

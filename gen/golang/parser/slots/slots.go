@@ -90,7 +90,7 @@ func getSlotData(gs *gslot.GSlot) (data []*SlotData) {
 			NT:      s.Head,
 			Alt:     s.Alternate,
 			Pos:     s.Pos,
-			Symbols: s.Symbols().Strings(),
+			Symbols: s.Symbols().GoStrings(),
 		}
 		data = append(data, d)
 	}
@@ -215,7 +215,7 @@ func (s *Slot) String() string {
 }
 
 var slots = map[Label]*Slot{ {{range $i, $s := .Slots}}
-    {{$s.Label}}: &Slot{
+    {{$s.Label}}: {
         symbols.NT_{{$s.NT}}, {{$s.Alt}}, {{$s.Pos}}, 
         symbols.Symbols{ {{range $sym := $s.Symbols}} 
             symbols.{{$sym}},{{end}}
