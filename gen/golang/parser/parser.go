@@ -147,7 +147,7 @@ func initParser(l *lexer.Lexer) {
 		{symbols.NT_{{.StartSymbol}}, 0}:{},
 	}
 	crfNodes = map[crfNode]*crfNode{}
-	bsr.Init(symbols.NT_{{.StartSymbol}}, lex.I)
+	bsr.Init(symbols.NT_{{.StartSymbol}}, lex)
 	parseErrors = nil
 }
 
