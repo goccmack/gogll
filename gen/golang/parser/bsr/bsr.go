@@ -58,6 +58,7 @@ import (
 	"{{.}}/lexer"
 	"{{.}}/parser/slot"
 	"{{.}}/parser/symbols"
+	"{{.}}/token"
 )
 
 type bsr interface {
@@ -320,8 +321,20 @@ func (b BSR) GetNTChildrenI(i int) []BSR {
 	return getNTSlot(b.Label.Symbols()[i], str.pivot, str.rightExtent)
 }
 
-func (b BSR) GetString() string {
-	return set.lex.GetString(b.LeftExtent(),b.RightExtent())
+// func (b BSR) GetString() string {
+// 	return set.lex.GetString(b.LeftExtent(),b.RightExtent())
+// }
+
+// GetTChildI returns the terminal symbol at position i in b.
+// GetTChildI panics if symbol i is not a valid terminal
+func (b BSR) GetTChildI(i int) *token.Token {
+	if i >= len(b.Label.Symbols()) {
+		panic(fmt.Sprintf("%s has no T child %d", b, i))
+	}
+	if b.Label.Symbols()[i].IsNonTerminal() {
+		panic(fmt.Sprintf("symbol %d in %s is an NT"))
+	}
+	return set.lex.Tokens[b.LeftExtent()+i]
 }
 
 // Ignore removes NT slot 'b' from the BSR set. Ignore() is typically called by 
