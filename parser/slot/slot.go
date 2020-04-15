@@ -361,24 +361,24 @@ var slots = map[Label]*Slot{
     Rules1R0: {
         symbols.NT_Rules, 1, 0, 
         symbols.Symbols{  
-            symbols.NT_Rules, 
-            symbols.NT_Rule,
+            symbols.NT_Rule, 
+            symbols.NT_Rules,
         }, 
         Rules1R0, 
     },
     Rules1R1: {
         symbols.NT_Rules, 1, 1, 
         symbols.Symbols{  
-            symbols.NT_Rules, 
-            symbols.NT_Rule,
+            symbols.NT_Rule, 
+            symbols.NT_Rules,
         }, 
         Rules1R1, 
     },
     Rules1R2: {
         symbols.NT_Rules, 1, 2, 
         symbols.Symbols{  
-            symbols.NT_Rules, 
-            symbols.NT_Rule,
+            symbols.NT_Rule, 
+            symbols.NT_Rules,
         }, 
         Rules1R2, 
     },

@@ -22,19 +22,18 @@ import (
 	"runtime/pprof"
 	"time"
 
-	// "github.com/goccmack/gogll/ast"
-	// "github.com/goccmack/gogll/frstflw"
-	// genff "github.com/goccmack/gogll/gen/firstfollow"
-	// "github.com/goccmack/gogll/gen/golang"
-	// "github.com/goccmack/gogll/gen/slots"
-	// gensymbols "github.com/goccmack/gogll/gen/symbols"
-	// "github.com/goccmack/gogll/gslot"
-	"github.com/goccmack/gogll/lexer"
-	"github.com/goccmack/gogll/parser/bsr"
-
-	// "github.com/goccmack/gogll/symbols"
+	"github.com/goccmack/gogll/ast/build"
 	"github.com/goccmack/gogll/cfg"
+	"github.com/goccmack/gogll/frstflw"
+	genff "github.com/goccmack/gogll/gen/firstfollow"
+	"github.com/goccmack/gogll/gen/golang"
+	"github.com/goccmack/gogll/gen/slots"
+	gensymbols "github.com/goccmack/gogll/gen/symbols"
+	"github.com/goccmack/gogll/gslot"
+	"github.com/goccmack/gogll/lexer"
 	"github.com/goccmack/gogll/parser"
+	"github.com/goccmack/gogll/parser/bsr"
+	"github.com/goccmack/gogll/symbols"
 )
 
 func main() {
@@ -61,18 +60,17 @@ func main() {
 	}
 	fmt.Printf("Parse duration %s\n", time.Now().Sub(start))
 
-	bsr.Report()
-	// bsr.Dump()
+	// bsr.Report()
+	g := build.From(bsr.GetRoot(), lex)
 
-	// g := t.(*ast.GoGLL)
-	// symbols.Init(g)
+	symbols.Init(g)
 
-	// gensymbols.Gen(g)
-	// ff := frstflw.New(g)
-	// genff.Gen(g, ff)
-	// gs := gslot.New(g, ff)
-	// slots.Gen(gs)
-	// golang.Gen(g, gs, ff)
+	gensymbols.Gen(g)
+	ff := frstflw.New(g)
+	genff.Gen(g, ff)
+	gs := gslot.New(g, ff)
+	slots.Gen(gs)
+	golang.Gen(g, gs, ff)
 }
 
 func fail(err error) {

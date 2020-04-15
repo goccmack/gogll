@@ -14,7 +14,7 @@ Package : "package" string_lit ;
 
 Rules
     :   Rule            
-    |   Rules Rule      
+    |   Rule Rules
     ;
 
 Rule : NT ":" Alternates ";"  ;
