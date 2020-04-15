@@ -18,6 +18,7 @@ import (
 	"strings"
 	"unicode/utf8"
 
+	"github.com/goccmack/gogll/lexer"
 	"github.com/goccmack/gogll/parser/slot"
 	"github.com/goccmack/gogll/parser/symbols"
 )
@@ -39,7 +40,7 @@ type bsrSet struct {
 	ignoredSlots  map[BSR]bool
 	stringEntries map[stringBSR]bool
 	rightExtent   int
-	I             []rune
+	lex           *lexer.Lexer
 }
 
 type ntSlot struct {
@@ -63,14 +64,14 @@ type stringBSR struct {
 	rightExtent int
 }
 
-func newSet(I []rune) *bsrSet {
+func newSet(l *lexer.Lexer) *bsrSet {
 	return &bsrSet{
 		slotEntries:   make(map[BSR]bool),
 		ntSlotEntries: make(map[ntSlot][]BSR),
 		ignoredSlots:  make(map[BSR]bool),
 		stringEntries: make(map[stringBSR]bool),
 		rightExtent:   0,
-		I:             I,
+		lex:           l,
 	}
 }
 
@@ -176,8 +177,8 @@ func getString(l slot.Label, leftExtent, rightExtent int) stringBSR {
 	panic("must not happen")
 }
 
-func Init(startSymbol symbols.NT, I []rune) {
-	set = newSet(I)
+func Init(startSymbol symbols.NT, l *lexer.Lexer) {
+	set = newSet(l)
 	startSym = startSymbol
 }
 
@@ -283,7 +284,7 @@ func (b BSR) GetNTChildrenI(i int) []BSR {
 }
 
 func (b BSR) GetString() string {
-	return string(set.I[b.LeftExtent():b.RightExtent()])
+	return set.lex.GetString(b.LeftExtent(),b.RightExtent())
 }
 
 // Ignore removes NT slot 'b' from the BSR set. Ignore() is typically called by 
@@ -330,7 +331,8 @@ func (s BSR) Pivot() int {
 }
 
 func (s BSR) String() string {
-	return fmt.Sprintf("%s,%d,%d,%d - %s", s.Label, s.leftExtent, s.pivot, s.rightExtent, set.I[s.LeftExtent():s.RightExtent()])
+    return fmt.Sprintf("%s,%d,%d,%d - %s", s.Label, s.leftExtent, s.pivot, s.rightExtent, 
+        set.lex.GetString(s.LeftExtent(), s.RightExtent()))
 }
 
 func (s stringBSR) LeftExtent() int {
@@ -356,13 +358,13 @@ func (s stringBSR) String() string {
 	ss := s.Label.Symbols()[:s.Label.Pos()].Strings()
 	str := strings.Join(ss, " ")
 	return fmt.Sprintf("%s,%d,%d,%d - %s", str, s.leftExtent, s.pivot,
-		s.rightExtent, set.I[s.LeftExtent():s.RightExtent()])
+		s.rightExtent, set.lex.GetString(s.LeftExtent(),s.RightExtent()))
 }
 
 func getNTSlot(sym symbols.Symbol, leftExtent, rightExtent int) (bsrs []BSR) {
     nt, ok := sym.(symbols.NT)
     if !ok {
-        line, col := getLineColumn(leftExtent, set.I)
+        line, col := getLineColumn(leftExtent)
         failf("%s is not an NT at line %d col %d", sym, line, col)
     }
 	return set.ntSlotEntries[ntSlot{nt, leftExtent, rightExtent}]
@@ -370,7 +372,7 @@ func getNTSlot(sym symbols.Symbol, leftExtent, rightExtent int) (bsrs []BSR) {
 
 func fail(b BSR, format string, a ...interface{}) {
 	msg := fmt.Sprintf(format, a...)
-	line, col := getLineColumn(b.LeftExtent(), set.I)
+	line, col := getLineColumn(b.LeftExtent())
 	panic(fmt.Sprintf("Error in BSR: %s at line %d col %d\n", msg, line, col))
 }
 
@@ -395,18 +397,36 @@ func decodeRune(str []byte) (string, rune, int) {
 	return string(str[:sz]), r, sz
 }
 
-func getLineColumn(cI int, I []rune) (line, col int) {
-    line, col = 1, 1
-    for r := range I[:cI] {
-		switch r {
-		case '\n':
-			line++
-			col = 1
-		case '\t':
-			col += 4
-		default:
-			col++
+func getLineColumn(cI int) (line, col int) {
+    return set.lex.GetLineColumnOfToken(cI)
+}
+
+// Report lists the ambiguous subtrees of the parse forest
+func Report() {
+	rts := GetRoots()
+	if len(rts) != 1 {
+		fmt.Println(len(rts), "ambiguous BSR roots")
+	}
+	for i, b := range GetRoots() {
+		fmt.Println("Root", i)
+		report(b)
+	}
+}
+
+func report(b BSR) {
+	for i, s := range b.Label.Symbols() {
+		ln, col := getLineColumn(b.LeftExtent())
+		if s.IsNonTerminal() {
+			if len(b.GetNTChildrenI(i)) != 1 {
+				fmt.Printf("  Ambigous: in %s: NT %s (%d) at line %d col %d \n", b, s, i, ln, col)
+				fmt.Println("   Children:")
+				for _, c := range b.GetNTChildrenI(i) {
+					fmt.Printf("     %s\n", c)
+				}
+			}
+			for _, b1 := range b.GetNTChildrenI(i) {
+				report(b1)
+			}
 		}
 	}
-	return
 }

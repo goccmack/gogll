@@ -30,6 +30,8 @@ import (
 	// gensymbols "github.com/goccmack/gogll/gen/symbols"
 	// "github.com/goccmack/gogll/gslot"
 	"github.com/goccmack/gogll/lexer"
+	"github.com/goccmack/gogll/parser/bsr"
+
 	// "github.com/goccmack/gogll/symbols"
 	"github.com/goccmack/gogll/cfg"
 	"github.com/goccmack/gogll/parser"
@@ -58,6 +60,10 @@ func main() {
 		parseErrors(errs)
 	}
 	fmt.Printf("Parse duration %s\n", time.Now().Sub(start))
+
+	bsr.Report()
+	// bsr.Dump()
+
 	// g := t.(*ast.GoGLL)
 	// symbols.Init(g)
 

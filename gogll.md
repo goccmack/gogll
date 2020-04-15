@@ -33,7 +33,7 @@ Alternate
 
 Symbols
     :   Symbol                      
-    |   Symbols Symbols              
+    |   Symbol Symbols              
     ;
 
 Symbol : NT | tokid | string_lit ;

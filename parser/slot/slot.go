@@ -441,7 +441,7 @@ var slots = map[Label]*Slot{
     Symbols1R0: {
         symbols.NT_Symbols, 1, 0, 
         symbols.Symbols{  
-            symbols.NT_Symbols, 
+            symbols.NT_Symbol, 
             symbols.NT_Symbols,
         }, 
         Symbols1R0, 
@@ -449,7 +449,7 @@ var slots = map[Label]*Slot{
     Symbols1R1: {
         symbols.NT_Symbols, 1, 1, 
         symbols.Symbols{  
-            symbols.NT_Symbols, 
+            symbols.NT_Symbol, 
             symbols.NT_Symbols,
         }, 
         Symbols1R1, 
@@ -457,7 +457,7 @@ var slots = map[Label]*Slot{
     Symbols1R2: {
         symbols.NT_Symbols, 1, 2, 
         symbols.Symbols{  
-            symbols.NT_Symbols, 
+            symbols.NT_Symbol, 
             symbols.NT_Symbols,
         }, 
         Symbols1R2, 

@@ -86,4 +86,10 @@ func (l *Lexer) GetLineColumn(i int) (line, col int) {
 	}
 	return
 }
+
+// GetString returns the input string from the left extent of Token[lext] to
+// the right extent of Token[rext]
+func (l *Lexer) GetString(lext, rext int) string {
+    return string(l.I[l.Tokens[lext].Lext:l.Tokens[rext].Rext])
+}
 `
