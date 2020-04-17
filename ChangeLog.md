@@ -1,5 +1,9 @@
 # Change Log
 
+# 2020-04-17 
+1. GoGLL v3.0.0 is the basic bootstrap version of GoGLL v3. 
+This version is made with Gocc and generates syntax-only GoGLL v3.0.1 parser.
+
 # 2019-09-13
 1. Documentation added on how to walk the parse forest. [See](doc/bsr/bsr.md)
 
