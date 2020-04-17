@@ -4,11 +4,13 @@
 Copyright 2019 Marius Ackerman. 
 
 # Gogll
-Gogll generates scannerless, clustered nonterminal parsers (CNP) following [Scott et al 2019](#Scott-et-al-2019). CNP is a version of generalised LL parsing (GLL)[Scott & Johnstone 2016](#Scott-et-al-2016). GLL parsers can parse all context free (CF) languages.
+GoGLL v3 generates GLL parsers (following [Scott et al 2019](#Scott-et-al-2019)) with matching linear time scanners (following [Grune et al 2012](#Grune-et_al-2012)).
+
+GoGLL v2 generates scannerless, clustered nonterminal parsers (CNP) following [Scott et al 2019](#Scott-et-al-2019). CNP is a version of generalised LL parsing (GLL)[Scott & Johnstone 2016](#Scott-et-al-2016). GLL parsers can parse all context free (CF) languages.
 
 # News
-## 2019-09-13
-1. Documentation added on how to walk the parse forest. [See](doc/bsr/bsr.md)
+## GoGLL V3
+This version generates a GLL parser with a matching linear-time finite state automaton scanner.
 
 # Issues
 1. The current version of gogll does not handle plain BNF files correctly. Currently all grammars must be in an MD file. For an example see [gogll.md](gogll.md). Assume currently that all grammars in the `test` directory won't work.
@@ -76,6 +78,11 @@ from which the `parser` for this version of `gogll` was generated. `gogll/da` di
 [see](ChangeLog.md)
 
 # Bibliography
+<a name="Grune-et_al-2012"></a>
+* Dick Grune, Kees van Reeuwijk, Henri E. Bal, Ceriel J.H. Jacobs and Koen Langedoen.
+Modern Compiler Design. Second Edition.
+Springer 2012
+
 <a name="Scott-et-al-2019"></a>
 * Elizabeth Scott, Adrian Johnstone and L. Thomas van Binsbergen.  
 Derivation representation using binary subtree sets.  
