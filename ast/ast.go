@@ -20,6 +20,7 @@ package ast
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/goccmack/gogll/token"
 	"github.com/goccmack/goutil/stringset"
@@ -214,6 +215,30 @@ func (a *Alternate) Empty() bool {
 	return len(a.Symbols) == 0
 }
 
+// func (a *Any) Pos() token.Pos {
+// 	return a.tok.Pos
+// }
+
+// func (a *Any) String() string {
+// 	return "any"
+// }
+
+// func (a *Any) Token() string {
+// 	return "any"
+// }
+
+// func (*Not) String() string {
+// 	return "not"
+// }
+
+// func (*Not) Token() string {
+// 	return "not"
+// }
+
+// func (n *Not) Pos() token.Pos {
+// 	return n.tok.Pos
+// }
+
 func (n *NT) String() string {
 	return n.Literal
 }
@@ -252,6 +277,40 @@ func (t *TokID) Token() string {
 
 func (t *TokID) Pos() token.Pos {
 	return t.tok.Pos
+}
+
+/*** Util ***/
+
+// parse not "..." or any "..." and return a set representing the characters
+func stringToSet(str string) *stringset.StringSet {
+	i := strings.Index(str, "\"")
+	rs := []rune(str[i:])
+	ss := stringset.New()
+	for j := 0; j < len(rs)-1; {
+		r := rs[j]
+		j++
+		if r == '\\' {
+			r = rs[j]
+			j++
+			switch r {
+			case '\\':
+				ss.Add("\\")
+			case 'n':
+				ss.Add("\n")
+			case 'r':
+				ss.Add("\r")
+			case 't':
+				ss.Add("\t")
+			case '"':
+				ss.Add("\"")
+			default:
+				panic(fmt.Sprintf("Invalid %c", r))
+			}
+		} else {
+			ss.Add(fmt.Sprintf("%s", r))
+		}
+	}
+	return ss
 }
 
 /*** Errors ***/

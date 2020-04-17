@@ -15,9 +15,11 @@ tokid : _lowcase _id_char {_id_char} ;
 
 _esc_char : '\\' ('\\' | '\'' | '"' | 'n' | 'r' | 't');
 _string_char : _esc_char | . ;
-string_lit : '"' _string_char {_string_char} '"' ;
+_string_lit : '"' _string_char {_string_char} '"' ;
+string_lit : _string_lit;
 
-!whitespace : ' ' | '\t' | '\n' | '\r' ;
+_ws : ' ' | '\t' | '\n' | '\r' ;
+!whitespace : _ws ;
 
 ```
 char_literal : '\'' ('\\' _esc_char | .) '\'' ;
