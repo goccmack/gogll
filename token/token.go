@@ -24,11 +24,10 @@ const(
     Type0 // :
     Type1 // ;
     Type2 // empty
-    Type3 // nt
+    Type3 // id
     Type4 // package
     Type5 // string_lit
-    Type6 // tokid
-    Type7 // |
+    Type6 // |
 )
 
 var TypeToString = []string{
@@ -37,10 +36,9 @@ var TypeToString = []string{
     ":",
     ";",
     "empty",
-    "nt",
+    "id",
     "package",
     "string_lit",
-    "tokid",
     "|",
 }
 
@@ -50,11 +48,10 @@ var StringToType = map[string] int {
     ":": Type0,
     ";": Type1,
     "empty": Type2,
-    "nt": Type3,
+    "id": Type3,
     "package": Type4,
     "string_lit": Type5,
-    "tokid": Type6,
-    "|": Type7,
+    "|": Type6,
 }
 
 func New(t Type, lext, rext int, lit []rune) *Token {

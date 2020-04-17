@@ -67,7 +67,7 @@ import(
 type Token struct {
     Type Type
     Lext, Rext int
-    Literal string
+    Literal []rune
 }
 
 // Type is the token type
@@ -95,12 +95,31 @@ func New(t Type, lext, rext int, lit []rune) *Token {
         Type: t,
         Lext: lext,
         Rext: rext,
-        Literal: string(lit),
+        Literal: lit,
     }
+}
+
+func (t *Token) CharValue() rune {
+	if t.Literal[1] != '\\' {
+		return t.Literal[1]
+	}
+	switch t.Literal[2] {
+	case '\\':
+		return '\\'
+	case '\'':
+		return '\''
+	case 'n':
+		return '\n'
+	case 'r':
+		return '\r'
+	case 't':
+		return '\t'
+	}
+	panic(fmt.Sprintf("invalid escaped char: %s", string(t.Literal)))
 }
 
 func (t *Token) String() string {
 	return fmt.Sprintf("%s (%d,%d) %s",
-		TypeToString[t.Type], t.Lext, t.Rext, t.Literal)
+		TypeToString[t.Type], t.Lext, t.Rext, string(t.Literal))
 }
 `

@@ -4,6 +4,7 @@ package build
 import (
 	"fmt"
 	"os"
+	"unicode"
 
 	"github.com/goccmack/gogll/ast"
 	"github.com/goccmack/gogll/lexer"
@@ -57,6 +58,12 @@ func (bld *builder) alternates(b bsr.BSR) []*ast.Alternate {
 	return alts
 }
 
+func (bld *builder) any(tok *token.Token) *ast.Any {
+	return &ast.Any{
+		Tok: tok,
+	}
+}
+
 func (bld *builder) nonTerminals(rules []*ast.Rule) *stringset.StringSet {
 	nts := stringset.New()
 	for _, r := range rules {
@@ -69,11 +76,20 @@ func (bld *builder) nonTerminals(rules []*ast.Rule) *stringset.StringSet {
 	return nts
 }
 
-// NT : nt  ;
+func (bld *builder) not(tok *token.Token) *ast.Not {
+	return &ast.Not{
+		Tok: tok,
+	}
+}
+
+// NT : id  ;
 func (bld *builder) nt(b bsr.BSR) *ast.NT {
 	tok := b.GetTChildI(0)
-	if tok.Type != token.StringToType["nt"] {
+	if tok.Type != token.StringToType["id"] {
 		bld.fail(fmt.Errorf("expected non-terminal ID"), b.LeftExtent())
+	}
+	if !unicode.IsUpper([]rune(tok.Literal)[0]) {
+		bld.fail(fmt.Errorf("id does not start with uppercase"), b.LeftExtent())
 	}
 	return &ast.NT{
 		Tok: tok,
@@ -118,15 +134,19 @@ func (bld *builder) stringLit(tok *token.Token) *ast.StringLit {
 	}
 }
 
-// Symbol : NT | tokid | string_lit ;
+// Symbol : NT | TokID | string_lit | "any" | "not" ;
 func (bld *builder) symbol(b bsr.BSR) ast.Symbol {
 	switch b.Alternate() {
 	case 0:
 		return bld.nt(b.GetNTChildI(0))
 	case 1:
-		return bld.tokID(b.GetTChildI(0))
+		return bld.tokID(b.GetNTChildI(0))
 	case 2:
 		return bld.stringLit(b.GetTChildI(0))
+	case 3:
+		return bld.any(b.GetTChildI(0))
+	case 4:
+		return bld.not(b.GetTChildI(0))
 	}
 	panic(fmt.Sprintf("invalid alternate %d", b.Alternate()))
 }
@@ -158,8 +178,10 @@ func (bld *builder) terminals(rules []*ast.Rule) *stringset.StringSet {
 	return terminals
 }
 
-func (bld *builder) tokID(tok *token.Token) *ast.TokID {
-	if tok.Type != token.StringToType["tokid"] {
+// TokID : id ;
+func (bld *builder) tokID(b bsr.BSR) *ast.TokID {
+	tok := b.GetTChildI(0)
+	if tok.Type != token.StringToType["id"] {
 		bld.fail(
 			fmt.Errorf("expected tokid but got %s", token.TypeToString[tok.Type]),
 			tok.Lext)

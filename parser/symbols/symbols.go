@@ -38,6 +38,7 @@ const(
     NT_Rules 
     NT_Symbol 
     NT_Symbols 
+    NT_TokID 
 )
 
 // T is the type of terminals symbols
@@ -46,11 +47,10 @@ const(
     T_0 T = iota // : 
     T_1  // ; 
     T_2  // empty 
-    T_3  // nt 
+    T_3  // id 
     T_4  // package 
     T_5  // string_lit 
-    T_6  // tokid 
-    T_7  // | 
+    T_6  // | 
 )
 
 type Symbols []Symbol
@@ -88,18 +88,18 @@ var ntToString = []string {
     "Rule", /* NT_Rule */
     "Rules", /* NT_Rules */
     "Symbol", /* NT_Symbol */
-    "Symbols", /* NT_Symbols */ 
+    "Symbols", /* NT_Symbols */
+    "TokID", /* NT_TokID */ 
 }
 
 var tToString = []string { 
     ":", /* T_0 */
     ";", /* T_1 */
     "empty", /* T_2 */
-    "nt", /* T_3 */
+    "id", /* T_3 */
     "package", /* T_4 */
     "string_lit", /* T_5 */
-    "tokid", /* T_6 */
-    "|", /* T_7 */ 
+    "|", /* T_6 */ 
 }
 
 var stringNT = map[string]NT{ 
@@ -112,4 +112,5 @@ var stringNT = map[string]NT{
 	"Rules":NT_Rules,
 	"Symbol":NT_Symbol,
 	"Symbols":NT_Symbols,
+	"TokID":NT_TokID,
 }

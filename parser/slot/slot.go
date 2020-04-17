@@ -65,6 +65,8 @@ const(
 	Symbols1R0
 	Symbols1R1
 	Symbols1R2
+	TokID0R0
+	TokID0R1
 )
 
 type Slot struct {
@@ -200,7 +202,7 @@ var slots = map[Label]*Slot{
         symbols.NT_Alternates, 1, 0, 
         symbols.Symbols{  
             symbols.NT_Alternate, 
-            symbols.T_7, 
+            symbols.T_6, 
             symbols.NT_Alternates,
         }, 
         Alternates1R0, 
@@ -209,7 +211,7 @@ var slots = map[Label]*Slot{
         symbols.NT_Alternates, 1, 1, 
         symbols.Symbols{  
             symbols.NT_Alternate, 
-            symbols.T_7, 
+            symbols.T_6, 
             symbols.NT_Alternates,
         }, 
         Alternates1R1, 
@@ -218,7 +220,7 @@ var slots = map[Label]*Slot{
         symbols.NT_Alternates, 1, 2, 
         symbols.Symbols{  
             symbols.NT_Alternate, 
-            symbols.T_7, 
+            symbols.T_6, 
             symbols.NT_Alternates,
         }, 
         Alternates1R2, 
@@ -227,7 +229,7 @@ var slots = map[Label]*Slot{
         symbols.NT_Alternates, 1, 3, 
         symbols.Symbols{  
             symbols.NT_Alternate, 
-            symbols.T_7, 
+            symbols.T_6, 
             symbols.NT_Alternates,
         }, 
         Alternates1R3, 
@@ -399,14 +401,14 @@ var slots = map[Label]*Slot{
     Symbol1R0: {
         symbols.NT_Symbol, 1, 0, 
         symbols.Symbols{  
-            symbols.T_6,
+            symbols.NT_TokID,
         }, 
         Symbol1R0, 
     },
     Symbol1R1: {
         symbols.NT_Symbol, 1, 1, 
         symbols.Symbols{  
-            symbols.T_6,
+            symbols.NT_TokID,
         }, 
         Symbol1R1, 
     },
@@ -462,6 +464,20 @@ var slots = map[Label]*Slot{
         }, 
         Symbols1R2, 
     },
+    TokID0R0: {
+        symbols.NT_TokID, 0, 0, 
+        symbols.Symbols{  
+            symbols.T_3,
+        }, 
+        TokID0R0, 
+    },
+    TokID0R1: {
+        symbols.NT_TokID, 0, 1, 
+        symbols.Symbols{  
+            symbols.T_3,
+        }, 
+        TokID0R1, 
+    },
 }
 
 var slotIndex = map[Index]Label { 
@@ -504,6 +520,8 @@ var slotIndex = map[Index]Label {
 	Index{ symbols.NT_Symbols,1,0 }: Symbols1R0,
 	Index{ symbols.NT_Symbols,1,1 }: Symbols1R1,
 	Index{ symbols.NT_Symbols,1,2 }: Symbols1R2,
+	Index{ symbols.NT_TokID,0,0 }: TokID0R0,
+	Index{ symbols.NT_TokID,0,1 }: TokID0R1,
 }
 
 var alternates = map[symbols.NT][]Label{ 
@@ -516,5 +534,6 @@ var alternates = map[symbols.NT][]Label{
 	symbols.NT_Alternate:[]Label{ Alternate0R0,Alternate1R0 },
 	symbols.NT_Symbols:[]Label{ Symbols0R0,Symbols1R0 },
 	symbols.NT_Symbol:[]Label{ Symbol0R0,Symbol1R0,Symbol2R0 },
+	symbols.NT_TokID:[]Label{ TokID0R0 },
 }
 

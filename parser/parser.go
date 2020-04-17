@@ -97,89 +97,39 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 			} else {
 				parseError(slot.Symbols1R1, cI)
 			}
-		case slot.Symbol0R0: // Symbol : ∙NT
+		case slot.GoGLL0R0: // GoGLL : ∙Package Rules
 
-			call(slot.Symbol0R1, cU, cI)
-		case slot.Symbol0R1: // Symbol : NT ∙
+			call(slot.GoGLL0R1, cU, cI)
+		case slot.GoGLL0R1: // GoGLL : Package ∙Rules
 
-			if follow(symbols.NT_Symbol) {
-				rtn(symbols.NT_Symbol, cU, cI)
-			} else {
-				parseError(slot.Symbol0R0, cI)
-			}
-		case slot.Symbol1R0: // Symbol : ∙tokid
-
-			bsr.Add(slot.Symbol1R1, cU, cI, cI+1)
-			cI++
-			if follow(symbols.NT_Symbol) {
-				rtn(symbols.NT_Symbol, cU, cI)
-			} else {
-				parseError(slot.Symbol1R0, cI)
-			}
-		case slot.Symbol2R0: // Symbol : ∙string_lit
-
-			bsr.Add(slot.Symbol2R1, cU, cI, cI+1)
-			cI++
-			if follow(symbols.NT_Symbol) {
-				rtn(symbols.NT_Symbol, cU, cI)
-			} else {
-				parseError(slot.Symbol2R0, cI)
-			}
-		case slot.Rules0R0: // Rules : ∙Rule
-
-			call(slot.Rules0R1, cU, cI)
-		case slot.Rules0R1: // Rules : Rule ∙
-
-			if follow(symbols.NT_Rules) {
-				rtn(symbols.NT_Rules, cU, cI)
-			} else {
-				parseError(slot.Rules0R0, cI)
-			}
-		case slot.Rules1R0: // Rules : ∙Rule Rules
-
-			call(slot.Rules1R1, cU, cI)
-		case slot.Rules1R1: // Rules : Rule ∙Rules
-
-			if !testSelect(slot.Rules1R1) {
-				parseError(slot.Rules1R1, cI)
+			if !testSelect(slot.GoGLL0R1) {
+				parseError(slot.GoGLL0R1, cI)
 				break
 			}
 
-			call(slot.Rules1R2, cU, cI)
-		case slot.Rules1R2: // Rules : Rule Rules ∙
+			call(slot.GoGLL0R2, cU, cI)
+		case slot.GoGLL0R2: // GoGLL : Package Rules ∙
 
-			if follow(symbols.NT_Rules) {
-				rtn(symbols.NT_Rules, cU, cI)
+			if follow(symbols.NT_GoGLL) {
+				rtn(symbols.NT_GoGLL, cU, cI)
 			} else {
-				parseError(slot.Rules1R1, cI)
+				parseError(slot.GoGLL0R1, cI)
 			}
-		case slot.NT0R0: // NT : ∙nt
+		case slot.Package0R0: // Package : ∙package string_lit
 
-			bsr.Add(slot.NT0R1, cU, cI, cI+1)
+			bsr.Add(slot.Package0R1, cU, cI, cI+1)
 			cI++
-			if follow(symbols.NT_NT) {
-				rtn(symbols.NT_NT, cU, cI)
-			} else {
-				parseError(slot.NT0R0, cI)
+			if !testSelect(slot.Package0R1) {
+				parseError(slot.Package0R1, cI)
+				break
 			}
-		case slot.Alternate0R0: // Alternate : ∙Symbols
 
-			call(slot.Alternate0R1, cU, cI)
-		case slot.Alternate0R1: // Alternate : Symbols ∙
-
-			if follow(symbols.NT_Alternate) {
-				rtn(symbols.NT_Alternate, cU, cI)
-			} else {
-				parseError(slot.Alternate0R0, cI)
-			}
-		case slot.Alternate1R0: // Alternate : ∙empty
-
-			bsr.Add(slot.Alternate1R1, cU, cI, cI+1)
+			bsr.Add(slot.Package0R2, cU, cI, cI+1)
 			cI++
-			if follow(symbols.NT_Alternate) {
-				rtn(symbols.NT_Alternate, cU, cI)
+			if follow(symbols.NT_Package) {
+				rtn(symbols.NT_Package, cU, cI)
 			} else {
-				parseError(slot.Alternate1R0, cI)
+				parseError(slot.Package0R1, cI)
 			}
 		case slot.Alternates0R0: // Alternates : ∙Alternate
 
@@ -216,39 +166,61 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 			} else {
 				parseError(slot.Alternates1R2, cI)
 			}
-		case slot.GoGLL0R0: // GoGLL : ∙Package Rules
+		case slot.Alternate0R0: // Alternate : ∙Symbols
 
-			call(slot.GoGLL0R1, cU, cI)
-		case slot.GoGLL0R1: // GoGLL : Package ∙Rules
+			call(slot.Alternate0R1, cU, cI)
+		case slot.Alternate0R1: // Alternate : Symbols ∙
 
-			if !testSelect(slot.GoGLL0R1) {
-				parseError(slot.GoGLL0R1, cI)
+			if follow(symbols.NT_Alternate) {
+				rtn(symbols.NT_Alternate, cU, cI)
+			} else {
+				parseError(slot.Alternate0R0, cI)
+			}
+		case slot.Alternate1R0: // Alternate : ∙empty
+
+			bsr.Add(slot.Alternate1R1, cU, cI, cI+1)
+			cI++
+			if follow(symbols.NT_Alternate) {
+				rtn(symbols.NT_Alternate, cU, cI)
+			} else {
+				parseError(slot.Alternate1R0, cI)
+			}
+		case slot.TokID0R0: // TokID : ∙id
+
+			bsr.Add(slot.TokID0R1, cU, cI, cI+1)
+			cI++
+			if follow(symbols.NT_TokID) {
+				rtn(symbols.NT_TokID, cU, cI)
+			} else {
+				parseError(slot.TokID0R0, cI)
+			}
+		case slot.Rules0R0: // Rules : ∙Rule
+
+			call(slot.Rules0R1, cU, cI)
+		case slot.Rules0R1: // Rules : Rule ∙
+
+			if follow(symbols.NT_Rules) {
+				rtn(symbols.NT_Rules, cU, cI)
+			} else {
+				parseError(slot.Rules0R0, cI)
+			}
+		case slot.Rules1R0: // Rules : ∙Rule Rules
+
+			call(slot.Rules1R1, cU, cI)
+		case slot.Rules1R1: // Rules : Rule ∙Rules
+
+			if !testSelect(slot.Rules1R1) {
+				parseError(slot.Rules1R1, cI)
 				break
 			}
 
-			call(slot.GoGLL0R2, cU, cI)
-		case slot.GoGLL0R2: // GoGLL : Package Rules ∙
+			call(slot.Rules1R2, cU, cI)
+		case slot.Rules1R2: // Rules : Rule Rules ∙
 
-			if follow(symbols.NT_GoGLL) {
-				rtn(symbols.NT_GoGLL, cU, cI)
+			if follow(symbols.NT_Rules) {
+				rtn(symbols.NT_Rules, cU, cI)
 			} else {
-				parseError(slot.GoGLL0R1, cI)
-			}
-		case slot.Package0R0: // Package : ∙package string_lit
-
-			bsr.Add(slot.Package0R1, cU, cI, cI+1)
-			cI++
-			if !testSelect(slot.Package0R1) {
-				parseError(slot.Package0R1, cI)
-				break
-			}
-
-			bsr.Add(slot.Package0R2, cU, cI, cI+1)
-			cI++
-			if follow(symbols.NT_Package) {
-				rtn(symbols.NT_Package, cU, cI)
-			} else {
-				parseError(slot.Package0R1, cI)
+				parseError(slot.Rules1R1, cI)
 			}
 		case slot.Rule0R0: // Rule : ∙NT : Alternates ;
 
@@ -281,6 +253,44 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 				rtn(symbols.NT_Rule, cU, cI)
 			} else {
 				parseError(slot.Rule0R3, cI)
+			}
+		case slot.NT0R0: // NT : ∙id
+
+			bsr.Add(slot.NT0R1, cU, cI, cI+1)
+			cI++
+			if follow(symbols.NT_NT) {
+				rtn(symbols.NT_NT, cU, cI)
+			} else {
+				parseError(slot.NT0R0, cI)
+			}
+		case slot.Symbol0R0: // Symbol : ∙NT
+
+			call(slot.Symbol0R1, cU, cI)
+		case slot.Symbol0R1: // Symbol : NT ∙
+
+			if follow(symbols.NT_Symbol) {
+				rtn(symbols.NT_Symbol, cU, cI)
+			} else {
+				parseError(slot.Symbol0R0, cI)
+			}
+		case slot.Symbol1R0: // Symbol : ∙TokID
+
+			call(slot.Symbol1R1, cU, cI)
+		case slot.Symbol1R1: // Symbol : TokID ∙
+
+			if follow(symbols.NT_Symbol) {
+				rtn(symbols.NT_Symbol, cU, cI)
+			} else {
+				parseError(slot.Symbol1R0, cI)
+			}
+		case slot.Symbol2R0: // Symbol : ∙string_lit
+
+			bsr.Add(slot.Symbol2R1, cU, cI, cI+1)
+			cI++
+			if follow(symbols.NT_Symbol) {
+				rtn(symbols.NT_Symbol, cU, cI)
+			} else {
+				parseError(slot.Symbol2R0, cI)
 			}
 
 		default:
@@ -523,14 +533,13 @@ func testSelect(l slot.Label) bool {
 var first = []map[token.Type]string{
 	// Alternate : ∙Symbols
 	map[token.Type]string{
-		token.Type3: "nt",
+		token.Type3: "id",
 		token.Type5: "string_lit",
-		token.Type6: "tokid",
 	},
 	// Alternate : Symbols ∙
 	map[token.Type]string{
 		token.Type1: ";",
-		token.Type7: "|",
+		token.Type6: "|",
 	},
 	// Alternate : ∙empty
 	map[token.Type]string{
@@ -539,14 +548,13 @@ var first = []map[token.Type]string{
 	// Alternate : empty ∙
 	map[token.Type]string{
 		token.Type1: ";",
-		token.Type7: "|",
+		token.Type6: "|",
 	},
 	// Alternates : ∙Alternate
 	map[token.Type]string{
 		token.Type2: "empty",
-		token.Type3: "nt",
+		token.Type3: "id",
 		token.Type5: "string_lit",
-		token.Type6: "tokid",
 	},
 	// Alternates : Alternate ∙
 	map[token.Type]string{
@@ -555,20 +563,18 @@ var first = []map[token.Type]string{
 	// Alternates : ∙Alternate | Alternates
 	map[token.Type]string{
 		token.Type2: "empty",
-		token.Type3: "nt",
+		token.Type3: "id",
 		token.Type5: "string_lit",
-		token.Type6: "tokid",
 	},
 	// Alternates : Alternate ∙| Alternates
 	map[token.Type]string{
-		token.Type7: "|",
+		token.Type6: "|",
 	},
 	// Alternates : Alternate | ∙Alternates
 	map[token.Type]string{
 		token.Type2: "empty",
-		token.Type3: "nt",
+		token.Type3: "id",
 		token.Type5: "string_lit",
-		token.Type6: "tokid",
 	},
 	// Alternates : Alternate | Alternates ∙
 	map[token.Type]string{
@@ -580,24 +586,23 @@ var first = []map[token.Type]string{
 	},
 	// GoGLL : Package ∙Rules
 	map[token.Type]string{
-		token.Type3: "nt",
+		token.Type3: "id",
 	},
 	// GoGLL : Package Rules ∙
 	map[token.Type]string{
 		token.EOF: "EOF",
 	},
-	// NT : ∙nt
+	// NT : ∙id
 	map[token.Type]string{
-		token.Type3: "nt",
+		token.Type3: "id",
 	},
-	// NT : nt ∙
+	// NT : id ∙
 	map[token.Type]string{
-		token.Type7: "|",
+		token.Type3: "id",
 		token.Type5: "string_lit",
-		token.Type3: "nt",
-		token.Type6: "tokid",
-		token.Type1: ";",
 		token.Type0: ":",
+		token.Type6: "|",
+		token.Type1: ";",
 	},
 	// Package : ∙package string_lit
 	map[token.Type]string{
@@ -609,11 +614,11 @@ var first = []map[token.Type]string{
 	},
 	// Package : package string_lit ∙
 	map[token.Type]string{
-		token.Type3: "nt",
+		token.Type3: "id",
 	},
 	// Rule : ∙NT : Alternates ;
 	map[token.Type]string{
-		token.Type3: "nt",
+		token.Type3: "id",
 	},
 	// Rule : NT ∙: Alternates ;
 	map[token.Type]string{
@@ -622,9 +627,8 @@ var first = []map[token.Type]string{
 	// Rule : NT : ∙Alternates ;
 	map[token.Type]string{
 		token.Type2: "empty",
-		token.Type3: "nt",
+		token.Type3: "id",
 		token.Type5: "string_lit",
-		token.Type6: "tokid",
 	},
 	// Rule : NT : Alternates ∙;
 	map[token.Type]string{
@@ -633,11 +637,11 @@ var first = []map[token.Type]string{
 	// Rule : NT : Alternates ; ∙
 	map[token.Type]string{
 		token.EOF:   "EOF",
-		token.Type3: "nt",
+		token.Type3: "id",
 	},
 	// Rules : ∙Rule
 	map[token.Type]string{
-		token.Type3: "nt",
+		token.Type3: "id",
 	},
 	// Rules : Rule ∙
 	map[token.Type]string{
@@ -645,11 +649,11 @@ var first = []map[token.Type]string{
 	},
 	// Rules : ∙Rule Rules
 	map[token.Type]string{
-		token.Type3: "nt",
+		token.Type3: "id",
 	},
 	// Rules : Rule ∙Rules
 	map[token.Type]string{
-		token.Type3: "nt",
+		token.Type3: "id",
 	},
 	// Rules : Rule Rules ∙
 	map[token.Type]string{
@@ -657,27 +661,25 @@ var first = []map[token.Type]string{
 	},
 	// Symbol : ∙NT
 	map[token.Type]string{
-		token.Type3: "nt",
+		token.Type3: "id",
 	},
 	// Symbol : NT ∙
 	map[token.Type]string{
-		token.Type6: "tokid",
+		token.Type6: "|",
 		token.Type1: ";",
-		token.Type7: "|",
+		token.Type3: "id",
 		token.Type5: "string_lit",
-		token.Type3: "nt",
 	},
-	// Symbol : ∙tokid
+	// Symbol : ∙TokID
 	map[token.Type]string{
-		token.Type6: "tokid",
+		token.Type3: "id",
 	},
-	// Symbol : tokid ∙
+	// Symbol : TokID ∙
 	map[token.Type]string{
+		token.Type6: "|",
 		token.Type1: ";",
-		token.Type7: "|",
+		token.Type3: "id",
 		token.Type5: "string_lit",
-		token.Type3: "nt",
-		token.Type6: "tokid",
 	},
 	// Symbol : ∙string_lit
 	map[token.Type]string{
@@ -685,39 +687,46 @@ var first = []map[token.Type]string{
 	},
 	// Symbol : string_lit ∙
 	map[token.Type]string{
+		token.Type6: "|",
 		token.Type1: ";",
-		token.Type7: "|",
+		token.Type3: "id",
 		token.Type5: "string_lit",
-		token.Type3: "nt",
-		token.Type6: "tokid",
 	},
 	// Symbols : ∙Symbol
 	map[token.Type]string{
-		token.Type3: "nt",
+		token.Type3: "id",
 		token.Type5: "string_lit",
-		token.Type6: "tokid",
 	},
 	// Symbols : Symbol ∙
 	map[token.Type]string{
 		token.Type1: ";",
-		token.Type7: "|",
+		token.Type6: "|",
 	},
 	// Symbols : ∙Symbol Symbols
 	map[token.Type]string{
-		token.Type3: "nt",
+		token.Type3: "id",
 		token.Type5: "string_lit",
-		token.Type6: "tokid",
 	},
 	// Symbols : Symbol ∙Symbols
 	map[token.Type]string{
-		token.Type3: "nt",
+		token.Type3: "id",
 		token.Type5: "string_lit",
-		token.Type6: "tokid",
 	},
 	// Symbols : Symbol Symbols ∙
 	map[token.Type]string{
-		token.Type7: "|",
 		token.Type1: ";",
+		token.Type6: "|",
+	},
+	// TokID : ∙id
+	map[token.Type]string{
+		token.Type3: "id",
+	},
+	// TokID : id ∙
+	map[token.Type]string{
+		token.Type6: "|",
+		token.Type1: ";",
+		token.Type3: "id",
+		token.Type5: "string_lit",
 	},
 }
 
@@ -725,7 +734,7 @@ var followSets = []map[token.Type]string{
 	// Alternate
 	map[token.Type]string{
 		token.Type1: ";",
-		token.Type7: "|",
+		token.Type6: "|",
 	},
 	// Alternates
 	map[token.Type]string{
@@ -737,21 +746,20 @@ var followSets = []map[token.Type]string{
 	},
 	// NT
 	map[token.Type]string{
-		token.Type7: "|",
-		token.Type5: "string_lit",
-		token.Type3: "nt",
-		token.Type6: "tokid",
-		token.Type1: ";",
 		token.Type0: ":",
+		token.Type6: "|",
+		token.Type1: ";",
+		token.Type3: "id",
+		token.Type5: "string_lit",
 	},
 	// Package
 	map[token.Type]string{
-		token.Type3: "nt",
+		token.Type3: "id",
 	},
 	// Rule
 	map[token.Type]string{
 		token.EOF:   "EOF",
-		token.Type3: "nt",
+		token.Type3: "id",
 	},
 	// Rules
 	map[token.Type]string{
@@ -759,16 +767,22 @@ var followSets = []map[token.Type]string{
 	},
 	// Symbol
 	map[token.Type]string{
-		token.Type1: ";",
-		token.Type7: "|",
 		token.Type5: "string_lit",
-		token.Type3: "nt",
-		token.Type6: "tokid",
+		token.Type6: "|",
+		token.Type1: ";",
+		token.Type3: "id",
 	},
 	// Symbols
 	map[token.Type]string{
 		token.Type1: ";",
-		token.Type7: "|",
+		token.Type6: "|",
+	},
+	// TokID
+	map[token.Type]string{
+		token.Type6: "|",
+		token.Type1: ";",
+		token.Type3: "id",
+		token.Type5: "string_lit",
 	},
 }
 

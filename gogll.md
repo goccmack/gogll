@@ -1,4 +1,4 @@
-# Gogll v3
+# Gogll v3.0
 
 [Copyright 2019 Marius Ackerman](License.txt)
 
@@ -19,7 +19,7 @@ Rules
 
 Rule : NT ":" Alternates ";"  ;
 
-NT : nt  ;
+NT : id  ;
 
 Alternates
     :   Alternate                   
@@ -36,7 +36,9 @@ Symbols
     |   Symbol Symbols              
     ;
 
-Symbol : NT | tokid | string_lit ;
+Symbol : NT | TokID | string_lit ;
+
+TokID : id ;
 
 ```
 

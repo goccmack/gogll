@@ -33,6 +33,14 @@ type Alternate struct {
 	Symbols []Symbol
 }
 
+type Any struct {
+	Tok *token.Token
+}
+
+type Not struct {
+	Tok *token.Token
+}
+
 type NT struct {
 	Tok *token.Token
 }
@@ -61,6 +69,8 @@ type Symbol interface {
 func (*NT) isSymbol() {}
 
 // Terminals
+func (*Any) isSymbol()       {}
+func (*Not) isSymbol()       {}
 func (*TokID) isSymbol()     {}
 func (*StringLit) isSymbol() {}
 
@@ -80,6 +90,30 @@ func (a *Alternate) GetSymbols() []string {
 		symbols[i] = s.Token()
 	}
 	return symbols
+}
+
+func (a *Any) Lext() int {
+	return a.Tok.Lext
+}
+
+func (a *Any) String() string {
+	return "any"
+}
+
+func (a *Any) Token() string {
+	return "any"
+}
+
+func (n *Not) Lext() int {
+	return n.Tok.Lext
+}
+
+func (n *Not) String() string {
+	return "not"
+}
+
+func (n *Not) Token() string {
+	return "not"
 }
 
 func (g *GoGLL) GetRule(nt string) *Rule {
@@ -104,11 +138,11 @@ func (a *Alternate) Empty() bool {
 }
 
 func (n *NT) String() string {
-	return n.Tok.Literal
+	return string(n.Tok.Literal)
 }
 
 func (n *NT) Token() string {
-	return n.Tok.Literal
+	return string(n.Tok.Literal)
 }
 
 func (n *NT) Lext() int {
@@ -117,19 +151,19 @@ func (n *NT) Lext() int {
 
 // ID returns the identifier of n
 func (n *NT) ID() string {
-	return n.Tok.Literal
+	return string(n.Tok.Literal)
 }
 
 func (p *Package) GetString() string {
-	return p.Tok.Literal[1 : len(p.Tok.Literal)-1]
+	return string(p.Tok.Literal[1 : len(p.Tok.Literal)-1])
 }
 
 func (s *StringLit) String() string {
-	return s.Tok.Literal[1 : len(s.Tok.Literal)-1]
+	return string(s.Tok.Literal[1 : len(s.Tok.Literal)-1])
 }
 
 func (s *StringLit) Token() string {
-	return s.Tok.Literal[1 : len(s.Tok.Literal)-1]
+	return string(s.Tok.Literal[1 : len(s.Tok.Literal)-1])
 }
 
 func (s *StringLit) Lext() int {
@@ -137,11 +171,11 @@ func (s *StringLit) Lext() int {
 }
 
 func (t *TokID) String() string {
-	return t.Tok.Literal
+	return string(t.Tok.Literal)
 }
 
 func (t *TokID) Token() string {
-	return t.Tok.Literal
+	return string(t.Tok.Literal)
 }
 
 func (t *TokID) Lext() int {

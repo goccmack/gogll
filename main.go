@@ -24,6 +24,7 @@ import (
 
 	"github.com/goccmack/gogll/ast/build"
 	"github.com/goccmack/gogll/cfg"
+	"github.com/goccmack/gogll/da"
 	"github.com/goccmack/gogll/frstflw"
 	genff "github.com/goccmack/gogll/gen/firstfollow"
 	"github.com/goccmack/gogll/gen/golang"
@@ -60,7 +61,16 @@ func main() {
 	}
 	fmt.Printf("Parse duration %s\n", time.Now().Sub(start))
 
+	// fmt.Println("Before DA:")
 	// bsr.Report()
+	// fmt.Println()
+
+	da.Go()
+
+	// fmt.Println("After DA:")
+	// bsr.Report()
+	// fmt.Println()
+
 	g := build.From(bsr.GetRoot(), lex)
 
 	symbols.Init(g)

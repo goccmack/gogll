@@ -17,11 +17,6 @@ func New(input []rune) *Lexer {
 	return lex
 }
 
-func (l *Lexer) add(t token.Type, lext, rext int) {
-	l.Tokens = append(l.Tokens,
-		token.New(t, lext, rext, l.I[lext:rext]))
-}
-
 func (l *Lexer) scan() {
 	for l.pos < len(l.I) {
 		l.skipWhiteSpace()
@@ -36,17 +31,14 @@ func (l *Lexer) scan() {
 			l.add(token.Type0, lext, l.pos)
 		case ';':
 			l.add(token.Type1, lext, l.pos)
-		case '|':
-			l.add(token.Type7, lext, l.pos)
 		case '"':
 			l.scanStringLiteral(lext)
+		case '|':
+			l.add(token.Type6, lext, l.pos)
 		default:
-			switch {
-			case unicode.IsLower(l.I[lext]):
-				l.scanTokIDOrReserevedWord(lext)
-			case unicode.IsUpper((l.I[lext])):
-				l.scanNT(lext)
-			default:
+			if unicode.IsLetter(l.I[lext]) {
+				l.scanIDOrReservedWord(lext)
+			} else {
 				l.add(token.Error, lext, l.pos)
 			}
 		}
@@ -60,7 +52,7 @@ func (l *Lexer) scanNT(lext int) {
 	l.add(token.Type3, lext, l.pos)
 }
 
-func (l *Lexer) scanTokIDOrReserevedWord(lext int) {
+func (l *Lexer) scanIDOrReservedWord(lext int) {
 	for l.isIDChar() {
 		l.pos++
 	}
@@ -69,8 +61,8 @@ func (l *Lexer) scanTokIDOrReserevedWord(lext int) {
 		l.add(token.Type2, lext, l.pos)
 	case "package":
 		l.add(token.Type4, lext, l.pos)
-	default:
-		l.add(token.Type6, lext, l.pos)
+	default: // id
+		l.add(token.Type3, lext, l.pos)
 	}
 }
 
@@ -91,11 +83,5 @@ func (l *Lexer) scanStringLiteral(lext int) {
 	} else {
 		l.pos++
 		l.add(token.Type5, lext, l.pos)
-	}
-}
-
-func (l *Lexer) skipWhiteSpace() {
-	for l.pos < len(l.I) && unicode.IsSpace(l.I[l.pos]) {
-		l.pos++
 	}
 }
