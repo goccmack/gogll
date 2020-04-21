@@ -19,40 +19,39 @@ package main
 import (
 	"fmt"
 	"os"
-	"runtime/pprof"
 	"time"
 
-	// "github.com/goccmack/gogll/ast"
-	// "github.com/goccmack/gogll/frstflw"
-	// genff "github.com/goccmack/gogll/gen/firstfollow"
-	// "github.com/goccmack/gogll/gen/golang"
-	// "github.com/goccmack/gogll/gen/slots"
-	// gensymbols "github.com/goccmack/gogll/gen/symbols"
-	// "github.com/goccmack/gogll/gslot"
-	"github.com/goccmack/gogll/lexer"
-	"github.com/goccmack/gogll/parser/bsr"
-
-	// "github.com/goccmack/gogll/symbols"
+	"github.com/goccmack/gogll/ast"
 	"github.com/goccmack/gogll/cfg"
+	"github.com/goccmack/gogll/frstflw"
+	genff "github.com/goccmack/gogll/gen/firstfollow"
+	"github.com/goccmack/gogll/gen/golang"
+	"github.com/goccmack/gogll/gen/slots"
+	gensymbols "github.com/goccmack/gogll/gen/symbols"
+	"github.com/goccmack/gogll/gslot"
+	"github.com/goccmack/gogll/lex/items"
+	"github.com/goccmack/gogll/lexer"
 	"github.com/goccmack/gogll/parser"
+	"github.com/goccmack/gogll/parser/bsr"
+	"github.com/goccmack/gogll/symbols"
 )
 
 func main() {
 	cfg.GetParams()
 	// dumpProcessedMDFile()
-	if *cfg.CPUProfile {
-		f, err := os.Create("cpu.prof")
-		if err != nil {
-			fmt.Println("could not create CPU profile: ", err)
-			os.Exit(1)
-		}
-		defer f.Close()
-		if err := pprof.StartCPUProfile(f); err != nil {
-			fmt.Println("could not start CPU profile: ", err)
-			os.Exit(1)
-		}
-		defer pprof.StopCPUProfile()
-	}
+	// if *cfg.CPUProfile {
+	// 	f, err := os.Create("cpu.prof")
+	// 	if err != nil {
+	// 		fmt.Println("could not create CPU profile: ", err)
+	// 		os.Exit(1)
+	// 	}
+	// 	defer f.Close()
+	// 	if err := pprof.StartCPUProfile(f); err != nil {
+	// 		fmt.Println("could not start CPU profile: ", err)
+	// 		os.Exit(1)
+	// 	}
+	// 	defer pprof.StopCPUProfile()
+	// }
 	start := time.Now()
 	lex := lexer.NewFile(cfg.SrcFile)
 	if err, errs := parser.Parse(lex); err != nil {
@@ -64,15 +63,28 @@ func main() {
 	bsr.Report()
 	// bsr.Dump()
 
-	// g := t.(*ast.GoGLL)
-	// symbols.Init(g)
+	g := ast.Build(bsr.GetRoot(), lex)
+	symbols.Init(g)
 
-	// gensymbols.Gen(g)
-	// ff := frstflw.New(g)
-	// genff.Gen(g, ff)
-	// gs := gslot.New(g, ff)
-	// slots.Gen(gs)
-	// golang.Gen(g, gs, ff)
+	gensymbols.Gen(g)
+	ff := frstflw.New(g)
+	genff.Gen(g, ff)
+	gs := gslot.New(g, ff)
+	slots.Gen(gs)
+
+	lexSets := items.New(g)
+	for i := 0; i < lexSets.Len(); i++ {
+		fmt.Println("Set", i, ":")
+		for _, item := range lexSets.Set(i).Items() {
+			fmt.Println(item, item.Pos)
+		}
+		fmt.Println("  Transitions:")
+		for _, t := range lexSets.Set(i).Transitions {
+			fmt.Printf("    %s -> S%d\n", t.Event, t.To.No)
+		}
+	}
+
+	golang.Gen(g, gs, ff)
 }
 
 func fail(err error) {
@@ -82,8 +94,11 @@ func fail(err error) {
 
 func parseErrors(errs []*parser.Error) {
 	fmt.Println("Parse Errors:")
+	ln := errs[0].Line
 	for _, err := range errs {
-		fmt.Println(err)
+		if err.Line == ln {
+			fmt.Println(err)
+		}
 	}
 	os.Exit(1)
 }

@@ -18,54 +18,25 @@ Package ast is an Abstract Syntax Tree for gogll, used for code generation.
 package ast
 
 import (
-	"fmt"
-	"os"
-
 	"github.com/goccmack/gogll/token"
 	"github.com/goccmack/goutil/stringset"
 )
 
 type GoGLL struct {
 	Package      *Package
-	Rules        []*Rule
+	LexRules     []*LexRule
+	SyntaxRules  []*SyntaxRule
 	Terminals    *stringset.StringSet
 	NonTerminals *stringset.StringSet
 }
 
-type Alternate struct {
-	Symbols []Symbol
-}
-
 type NT struct {
-	tok     *token.Token
-	Literal string
+	tok *token.Token
 }
 
 type Package struct {
 	tok *token.Token
 }
-
-type Rule struct {
-	Head       *NT
-	Alternates []*Alternate
-}
-
-type StringLit struct {
-	tok *token.Token
-}
-
-type Symbol interface {
-	isSymbol()
-	Pos() token.Pos
-	Token() string
-	String() string
-}
-
-func (*NT) isSymbol() {}
-
-// Terminals
-func (*TokID) isSymbol()     {}
-func (*StringLit) isSymbol() {}
 
 type TokID struct {
 	tok *token.Token
@@ -75,188 +46,75 @@ type Terminal interface {
 	isTerminal()
 }
 
-func NewGoGLL(pkg, rules interface{}) (*GoGLL, error) {
-	gogll := &GoGLL{
-		Package: pkg.(*Package),
-		Rules:   rules.([]*Rule),
-	}
-	gogll.NonTerminals = gogll.nonTerminals()
-	gogll.Terminals = gogll.terminals()
-	return gogll, nil
-}
-
-func NewAlternate(alt interface{}) (*Alternate, error) {
-	a := &Alternate{}
-	if symbols, ok := alt.([]Symbol); ok {
-		a.Symbols = symbols
-	}
-	return a, nil
-}
-
-func NewAlternates(alt interface{}) ([]*Alternate, error) {
-	alts := []*Alternate{alt.(*Alternate)}
-	return alts, nil
-}
-
-func AddAlternate(alts, alt interface{}) ([]*Alternate, error) {
-	as := append(alts.([]*Alternate), alt.(*Alternate))
-	return as, nil
-}
-
-func NewNT(nt interface{}) (*NT, error) {
-	n := &NT{
-		tok: nt.(*token.Token),
-	}
-	n.Literal = n.tok.IDValue()
-	return n, nil
-}
-
-func NewPackage(pkg interface{}) (*Package, error) {
-	p := &Package{tok: pkg.(*token.Token)}
-	return p, nil
-}
-
-func NewRule(nt, alts interface{}) (*Rule, error) {
-	r := &Rule{
-		Head:       nt.(*NT),
-		Alternates: alts.([]*Alternate),
-	}
-	return r, nil
-}
-
-func NewRules(rule interface{}) ([]*Rule, error) {
-	rs := []*Rule{rule.(*Rule)}
-	return rs, nil
-}
-
-func AddRule(rules, rule interface{}) ([]*Rule, error) {
-	rs := append(rules.([]*Rule), rule.(*Rule))
-	return rs, nil
-}
-
-func NewStringLit(s interface{}) (*StringLit, error) {
-	str := &StringLit{tok: s.(*token.Token)}
-	return str, nil
-}
-
-func NewSymbols(sym interface{}) ([]Symbol, error) {
-	ss := []Symbol{sym.(Symbol)}
-	return ss, nil
-}
-
-func AddSymbol(symbols, symbol interface{}) ([]Symbol, error) {
-	ss := append(symbols.([]Symbol), symbol.(Symbol))
-	return ss, nil
-}
-
-func NewTokID(tid interface{}) (*TokID, error) {
-	tokId := &TokID{
-		tok: tid.(*token.Token),
-	}
-	return tokId, nil
-}
-
 /*** Methods ***/
 
-func (a *Alternate) GetSymbols() []string {
-	symbols := make([]string, len(a.Symbols))
-	for i, s := range a.Symbols {
-		symbols[i] = s.Token()
+func (g *GoGLL) GetLexRule(id string) *LexRule {
+	for _, r := range g.LexRules {
+		if r.TokID.Token() == id {
+			return r
+		}
 	}
-	return symbols
+	return nil
 }
 
-func (g *GoGLL) GetRule(nt string) *Rule {
-	for _, r := range g.Rules {
+func (g *GoGLL) GetSyntaxRule(nt string) *SyntaxRule {
+	for _, r := range g.SyntaxRules {
 		if r.Head.Token() == nt {
 			return r
 		}
 	}
-	panic("No rule " + nt)
+	return nil
 }
 
 func (g *GoGLL) GetSymbols() []string {
-	return append(g.terminals().Elements(), g.nonTerminals().Elements()...)
+	return append(g.Terminals.Elements(), g.NonTerminals.Elements()...)
 }
 
 func (g *GoGLL) StartSymbol() string {
-	return g.Rules[0].Head.Token()
-}
-
-func (g *GoGLL) nonTerminals() *stringset.StringSet {
-	nts := stringset.New()
-	for _, r := range g.Rules {
-		if nts.Contain(r.Head.Token()) {
-			fail(fmt.Errorf("Duplicate rule %s", r.Head.Token()), r.Head.Pos())
-		} else {
-			nts.Add(r.Head.Token())
-		}
-	}
-	return nts
-}
-
-func (g *GoGLL) terminals() *stringset.StringSet {
-	terminals := stringset.New()
-	for _, r := range g.Rules {
-		for _, a := range r.Alternates {
-			for _, s := range a.Symbols {
-				switch t := s.(type) {
-				case *TokID, *StringLit:
-					terminals.Add(t.Token())
-				}
-			}
-		}
-	}
-	return terminals
-}
-
-func (a *Alternate) Empty() bool {
-	return len(a.Symbols) == 0
+	return g.SyntaxRules[0].Head.Token()
 }
 
 func (n *NT) String() string {
-	return n.Literal
+	return string(n.tok.Literal)
 }
 
 func (n *NT) Token() string {
-	return n.Literal
+	return string(n.tok.Literal)
 }
 
-func (n *NT) Pos() token.Pos {
-	return n.tok.Pos
+func (n *NT) Lext() int {
+	return n.tok.Lext
+}
+
+// ID returns the identifier of n
+func (n *NT) ID() string {
+	return string(n.tok.Literal)
 }
 
 func (p *Package) GetString() string {
-	return p.tok.StringValue()
+	return string(p.tok.Literal[1 : len(p.tok.Literal)-1])
 }
 
 func (s *StringLit) String() string {
-	return s.tok.StringValue()
+	return string(s.tok.Literal[1 : len(s.tok.Literal)-1])
 }
 
 func (s *StringLit) Token() string {
-	return s.tok.StringValue()
+	return string(s.tok.Literal[1 : len(s.tok.Literal)-1])
 }
 
-func (s *StringLit) Pos() token.Pos {
-	return s.tok.Pos
+func (s *StringLit) Lext() int {
+	return s.tok.Lext
 }
 
 func (t *TokID) String() string {
-	return t.tok.IDValue()
+	return string(t.tok.Literal)
 }
 
 func (t *TokID) Token() string {
-	return t.tok.IDValue()
+	return string(t.tok.Literal)
 }
 
-func (t *TokID) Pos() token.Pos {
-	return t.tok.Pos
-}
-
-/*** Errors ***/
-
-func fail(err error, pos token.Pos) {
-	fmt.Printf("Error: %s at line %d col %d\n", err, pos.Line, pos.Column)
-	os.Exit(1)
+func (t *TokID) Lext() int {
+	return t.tok.Lext
 }

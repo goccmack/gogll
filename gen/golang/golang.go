@@ -19,7 +19,6 @@ import (
 	"github.com/goccmack/gogll/ast"
 	"github.com/goccmack/gogll/cfg"
 	"github.com/goccmack/gogll/frstflw"
-	"github.com/goccmack/gogll/gen/golang/goutil"
 	"github.com/goccmack/gogll/gen/golang/lexer"
 	"github.com/goccmack/gogll/gen/golang/parser"
 	"github.com/goccmack/gogll/gen/golang/token"
@@ -29,6 +28,5 @@ import (
 func Gen(g *ast.GoGLL, gs *gslot.GSlot, ff *frstflw.FF) {
 	token.Gen(g)
 	lexer.Gen(path.Join(cfg.BaseDir, "lexer"), g)
-	goutil.Gen(path.Join(cfg.BaseDir, "goutil"), g)
 	parser.Gen(path.Join(cfg.BaseDir, "parser"), g, gs, ff)
 }

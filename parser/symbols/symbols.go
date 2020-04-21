@@ -29,28 +29,57 @@ func (T) isSymbol() {}
 // NT is the type of non-terminals symbols
 type NT int
 const( 
-    NT_Alternate NT = iota
-    NT_Alternates 
-    NT_GoGLL 
+    NT_GoGLL NT = iota
+    NT_LexAlternates 
+    NT_LexBracket 
+    NT_LexGroup 
+    NT_LexOneOrMore 
+    NT_LexOptional 
+    NT_LexRule 
+    NT_LexSymbol 
+    NT_LexZeroOrMore 
     NT_NT 
     NT_Package 
+    NT_RegExp 
     NT_Rule 
     NT_Rules 
-    NT_Symbol 
-    NT_Symbols 
+    NT_SyntaxAlternate 
+    NT_SyntaxAlternates 
+    NT_SyntaxRule 
+    NT_SyntaxSymbol 
+    NT_SyntaxSymbols 
+    NT_TokID 
+    NT_UnicodeClass 
 )
 
 // T is the type of terminals symbols
 type T int
 const( 
-    T_0 T = iota // : 
-    T_1  // ; 
-    T_2  // empty 
-    T_3  // nt 
-    T_4  // package 
-    T_5  // string_lit 
-    T_6  // tokid 
-    T_7  // | 
+    T_0 T = iota // ( 
+    T_1  // ) 
+    T_2  // . 
+    T_3  // : 
+    T_4  // ; 
+    T_5  // < 
+    T_6  // > 
+    T_7  // [ 
+    T_8  // ] 
+    T_9  // any 
+    T_10  // char_lit 
+    T_11  // empty 
+    T_12  // letter 
+    T_13  // lowcase 
+    T_14  // not 
+    T_15  // nt 
+    T_16  // number 
+    T_17  // package 
+    T_18  // space 
+    T_19  // string_lit 
+    T_20  // tokid 
+    T_21  // upcase 
+    T_22  // { 
+    T_23  // | 
+    T_24  // } 
 )
 
 type Symbols []Symbol
@@ -80,36 +109,77 @@ func (t T) String() string {
 }
 
 var ntToString = []string { 
-    "Alternate", /* NT_Alternate */
-    "Alternates", /* NT_Alternates */
     "GoGLL", /* NT_GoGLL */
+    "LexAlternates", /* NT_LexAlternates */
+    "LexBracket", /* NT_LexBracket */
+    "LexGroup", /* NT_LexGroup */
+    "LexOneOrMore", /* NT_LexOneOrMore */
+    "LexOptional", /* NT_LexOptional */
+    "LexRule", /* NT_LexRule */
+    "LexSymbol", /* NT_LexSymbol */
+    "LexZeroOrMore", /* NT_LexZeroOrMore */
     "NT", /* NT_NT */
     "Package", /* NT_Package */
+    "RegExp", /* NT_RegExp */
     "Rule", /* NT_Rule */
     "Rules", /* NT_Rules */
-    "Symbol", /* NT_Symbol */
-    "Symbols", /* NT_Symbols */ 
+    "SyntaxAlternate", /* NT_SyntaxAlternate */
+    "SyntaxAlternates", /* NT_SyntaxAlternates */
+    "SyntaxRule", /* NT_SyntaxRule */
+    "SyntaxSymbol", /* NT_SyntaxSymbol */
+    "SyntaxSymbols", /* NT_SyntaxSymbols */
+    "TokID", /* NT_TokID */
+    "UnicodeClass", /* NT_UnicodeClass */ 
 }
 
 var tToString = []string { 
-    ":", /* T_0 */
-    ";", /* T_1 */
-    "empty", /* T_2 */
-    "nt", /* T_3 */
-    "package", /* T_4 */
-    "string_lit", /* T_5 */
-    "tokid", /* T_6 */
-    "|", /* T_7 */ 
+    "(", /* T_0 */
+    ")", /* T_1 */
+    ".", /* T_2 */
+    ":", /* T_3 */
+    ";", /* T_4 */
+    "<", /* T_5 */
+    ">", /* T_6 */
+    "[", /* T_7 */
+    "]", /* T_8 */
+    "any", /* T_9 */
+    "char_lit", /* T_10 */
+    "empty", /* T_11 */
+    "letter", /* T_12 */
+    "lowcase", /* T_13 */
+    "not", /* T_14 */
+    "nt", /* T_15 */
+    "number", /* T_16 */
+    "package", /* T_17 */
+    "space", /* T_18 */
+    "string_lit", /* T_19 */
+    "tokid", /* T_20 */
+    "upcase", /* T_21 */
+    "{", /* T_22 */
+    "|", /* T_23 */
+    "}", /* T_24 */ 
 }
 
 var stringNT = map[string]NT{ 
-	"Alternate":NT_Alternate,
-	"Alternates":NT_Alternates,
 	"GoGLL":NT_GoGLL,
+	"LexAlternates":NT_LexAlternates,
+	"LexBracket":NT_LexBracket,
+	"LexGroup":NT_LexGroup,
+	"LexOneOrMore":NT_LexOneOrMore,
+	"LexOptional":NT_LexOptional,
+	"LexRule":NT_LexRule,
+	"LexSymbol":NT_LexSymbol,
+	"LexZeroOrMore":NT_LexZeroOrMore,
 	"NT":NT_NT,
 	"Package":NT_Package,
+	"RegExp":NT_RegExp,
 	"Rule":NT_Rule,
 	"Rules":NT_Rules,
-	"Symbol":NT_Symbol,
-	"Symbols":NT_Symbols,
+	"SyntaxAlternate":NT_SyntaxAlternate,
+	"SyntaxAlternates":NT_SyntaxAlternates,
+	"SyntaxRule":NT_SyntaxRule,
+	"SyntaxSymbol":NT_SyntaxSymbol,
+	"SyntaxSymbols":NT_SyntaxSymbols,
+	"TokID":NT_TokID,
+	"UnicodeClass":NT_UnicodeClass,
 }

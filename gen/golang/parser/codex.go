@@ -24,7 +24,7 @@ import (
 func (g *gen) genAlternatesCode() string {
 	buf := new(bytes.Buffer)
 	for _, nt := range g.g.NonTerminals.Elements() {
-		rule := g.g.GetRule(nt)
+		rule := g.g.GetSyntaxRule(nt)
 		for i, alt := range rule.Alternates {
 			buf.WriteString(g.getAlternateCode(nt, alt, i))
 		}
@@ -41,7 +41,7 @@ type AltData struct {
 	LastSlot   *SlotData
 }
 
-func (g *gen) getAlternateCode(nt string, alt *ast.Alternate, altI int) string {
+func (g *gen) getAlternateCode(nt string, alt *ast.SyntaxAlternate, altI int) string {
 	tmpl, err := template.New("Alternate").Parse(altCodeTmpl)
 	if err != nil {
 		panic(err)
@@ -53,7 +53,7 @@ func (g *gen) getAlternateCode(nt string, alt *ast.Alternate, altI int) string {
 	return buf.String()
 }
 
-func (g *gen) getAltData(nt string, alt *ast.Alternate, altI int) *AltData {
+func (g *gen) getAltData(nt string, alt *ast.SyntaxAlternate, altI int) *AltData {
 	L := gslot.NewLabel(nt, altI, 0, g.gs, g.ff)
 	d := &AltData{
 		NT:         nt,
@@ -68,7 +68,7 @@ func (g *gen) getAltData(nt string, alt *ast.Alternate, altI int) *AltData {
 	return d
 }
 
-func (g *gen) getSlotsData(nt string, alt *ast.Alternate, altI int) (data []*SlotData) {
+func (g *gen) getSlotsData(nt string, alt *ast.SyntaxAlternate, altI int) (data []*SlotData) {
 	for i, sym := range alt.Symbols {
 		// fmt.Printf("getSlotsData(%s) %s\n", nt, getSlotData(nt, altI, sym, i))
 		data = append(data, g.getSlotData(nt, altI, sym.String(), i))
