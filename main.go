@@ -19,6 +19,8 @@ package main
 import (
 	"fmt"
 	"os"
+	"path/filepath"
+	"runtime/pprof"
 	"time"
 
 	"github.com/goccmack/gogll/ast"
@@ -26,9 +28,11 @@ import (
 	"github.com/goccmack/gogll/frstflw"
 	genff "github.com/goccmack/gogll/gen/firstfollow"
 	"github.com/goccmack/gogll/gen/golang"
+	"github.com/goccmack/gogll/gen/lexfsa"
 	"github.com/goccmack/gogll/gen/slots"
 	gensymbols "github.com/goccmack/gogll/gen/symbols"
 	"github.com/goccmack/gogll/gslot"
+	"github.com/goccmack/gogll/im/tokens"
 	"github.com/goccmack/gogll/lex/items"
 	"github.com/goccmack/gogll/lexer"
 	"github.com/goccmack/gogll/parser"
@@ -38,20 +42,19 @@ import (
 
 func main() {
 	cfg.GetParams()
-	// dumpProcessedMDFile()
-	// if *cfg.CPUProfile {
-	// 	f, err := os.Create("cpu.prof")
-	// 	if err != nil {
-	// 		fmt.Println("could not create CPU profile: ", err)
-	// 		os.Exit(1)
-	// 	}
-	// 	defer f.Close()
-	// 	if err := pprof.StartCPUProfile(f); err != nil {
-	// 		fmt.Println("could not start CPU profile: ", err)
-	// 		os.Exit(1)
-	// 	}
-	// 	defer pprof.StopCPUProfile()
-	// }
+	if *cfg.CPUProfile {
+		f, err := os.Create("cpu.prof")
+		if err != nil {
+			fmt.Println("could not create CPU profile: ", err)
+			os.Exit(1)
+		}
+		defer f.Close()
+		if err := pprof.StartCPUProfile(f); err != nil {
+			fmt.Println("could not start CPU profile: ", err)
+			os.Exit(1)
+		}
+		defer pprof.StopCPUProfile()
+	}
 	start := time.Now()
 	lex := lexer.NewFile(cfg.SrcFile)
 	if err, errs := parser.Parse(lex); err != nil {
@@ -71,20 +74,25 @@ func main() {
 	genff.Gen(g, ff)
 	gs := gslot.New(g, ff)
 	slots.Gen(gs)
+	ts := tokens.New(g)
 
 	lexSets := items.New(g)
-	for i := 0; i < lexSets.Len(); i++ {
-		fmt.Println("Set", i, ":")
-		for _, item := range lexSets.Set(i).Items() {
-			fmt.Println(item, item.Pos)
-		}
-		fmt.Println("  Transitions:")
-		for _, t := range lexSets.Set(i).Transitions {
-			fmt.Printf("    %s -> S%d\n", t.Event, t.To.No)
-		}
+	if cfg.Verbose {
+		lexfsa.Gen(filepath.Join(cfg.BaseDir, "lexfsa.txt"), lexSets)
 	}
+	// for i := 0; i < lexSets.Len(); i++ {
+	// 	fmt.Println("Set", i, ":")
+	// 	for _, item := range lexSets.Set(i).Items() {
+	// 		fmt.Println(item, item.Pos)
+	// 	}
+	// 	fmt.Println("  Transitions:")
+	// 	for _, t := range lexSets.Set(i).Transitions {
+	// 		fmt.Printf("    %s -> S%d\n", t.Event, t.To.No)
+	// 	}
+	// }
+	// fmt.Println()
 
-	golang.Gen(g, gs, ff)
+	golang.Gen(g, gs, ff, lexSets, ts)
 }
 
 func fail(err error) {

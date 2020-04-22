@@ -35,6 +35,7 @@ func Build(root bsr.BSR, l *lexer.Lexer) *GoGLL {
 	gogll := bld.gogll(root)
 	gogll.NonTerminals = bld.nonTerminals(gogll.SyntaxRules)
 	gogll.Terminals = bld.terminals(gogll)
+	gogll.StringLiterals = bld.getStringLiterals(gogll.SyntaxRules)
 	return gogll
 }
 

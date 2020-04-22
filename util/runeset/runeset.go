@@ -1,6 +1,10 @@
 package runeset
 
-import "sort"
+import (
+	"bytes"
+	"fmt"
+	"sort"
+)
 
 // RuneSet holds a set of rune
 type RuneSet struct {
@@ -73,4 +77,33 @@ func (rs *RuneSet) Subset(rs1 *RuneSet) bool {
 		}
 	}
 	return true
+}
+
+func (rs *RuneSet) String() string {
+	w := new(bytes.Buffer)
+	fmt.Fprintf(w, "[]rune{")
+	for i, r := range rs.Elements() {
+		if i > 0 {
+			fmt.Fprint(w, ",")
+		}
+		fmt.Fprintf(w, "'%s'", escape(r))
+	}
+	fmt.Fprint(w, "}")
+	return w.String()
+}
+
+func escape(r rune) string {
+	switch r {
+	case '\\':
+		return "\\\\"
+	case '\'':
+		return "\\'"
+	case '\r':
+		return "\\r"
+	case '\n':
+		return "\\n"
+	case '\t':
+		return "\\t"
+	}
+	return string(r)
 }

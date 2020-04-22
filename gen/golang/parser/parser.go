@@ -29,6 +29,7 @@ import (
 	"github.com/goccmack/gogll/gen/golang/parser/slots"
 	"github.com/goccmack/gogll/gen/golang/parser/symbols"
 	"github.com/goccmack/gogll/gslot"
+	"github.com/goccmack/gogll/im/tokens"
 	"github.com/goccmack/goutil/ioutil"
 )
 
@@ -38,10 +39,11 @@ type gen struct {
 	g  *ast.GoGLL
 	gs *gslot.GSlot
 	ff *frstflw.FF
+	ts *tokens.Tokens
 }
 
-func Gen(parserDir string, g *ast.GoGLL, gs *gslot.GSlot, ff *frstflw.FF) {
-	gn := &gen{g, gs, ff}
+func Gen(parserDir string, g *ast.GoGLL, gs *gslot.GSlot, ff *frstflw.FF, ts *tokens.Tokens) {
+	gn := &gen{g, gs, ff, ts}
 	gn.genParser(parserDir)
 	bsr.Gen(filepath.Join(parserDir, "bsr", "bsr.go"), g.Package.GetString())
 	slots.Gen(filepath.Join(parserDir, "slot", "slot.go"), g, gs, ff)

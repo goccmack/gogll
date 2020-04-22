@@ -33,7 +33,7 @@ type Transition struct {
 }
 
 func New(g *ast.GoGLL) *Sets {
-	s0 := set0(g.LexRules)
+	s0 := set0(g)
 	s0.No = 0
 	sets := new(Sets).add(s0)
 	i, changed := 0, true
@@ -51,6 +51,18 @@ func New(g *ast.GoGLL) *Sets {
 		i++
 	}
 	return sets
+}
+
+// Accept returns the token type accepted by the first reduce item in set
+func (set *Set) Accept() string {
+	// fmt.Printf("items.Set.Accept S%d\n", set.No)
+	for _, item := range set.set {
+		// fmt.Printf("  %d: %s (%s)\n", i, item, item.Rule.ID())
+		if item.IsReduce() {
+			return item.Rule.ID()
+		}
+	}
+	return "Error"
 }
 
 func (set *Set) Add(items ...*item.Item) {
@@ -141,10 +153,17 @@ func (sets *Sets) Set(i int) *Set {
 	return sets.sets[i]
 }
 
-func set0(rules []*ast.LexRule) *Set {
+func (sets *Sets) Sets() []*Set {
+	return sets.sets
+}
+
+func set0(g *ast.GoGLL) *Set {
 	s0 := &Set{}
-	for _, rule := range rules {
+	for _, rule := range g.LexRules {
 		s0.add(item.New(rule).Emoves()...)
+	}
+	for _, sl := range g.StringLiterals.ElementsSorted() {
+		s0.add(item.New(stringLitToRule(sl)))
 	}
 	return s0
 }
@@ -167,4 +186,19 @@ func (set *Set) cloneItems() []*item.Item {
 func (sets *Sets) add(set *Set) *Sets {
 	sets.sets = append(sets.sets, set)
 	return sets
+}
+
+func stringLitToRule(sl string) *ast.LexRule {
+	return &ast.LexRule{ast.StringLitToTokID(sl), stringLitToRegExp(sl)}
+}
+
+func stringLitToRegExp(sl string) *ast.RegExp {
+	return &ast.RegExp{stringLitToLexSymbols(sl)}
+}
+
+func stringLitToLexSymbols(sl string) (symbols []ast.LexSymbol) {
+	for _, r := range []rune(sl) {
+		symbols = append(symbols, ast.RuneToCharLit(r))
+	}
+	return
 }

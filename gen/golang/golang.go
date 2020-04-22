@@ -23,10 +23,12 @@ import (
 	"github.com/goccmack/gogll/gen/golang/parser"
 	"github.com/goccmack/gogll/gen/golang/token"
 	"github.com/goccmack/gogll/gslot"
+	"github.com/goccmack/gogll/im/tokens"
+	lexitems "github.com/goccmack/gogll/lex/items"
 )
 
-func Gen(g *ast.GoGLL, gs *gslot.GSlot, ff *frstflw.FF) {
-	token.Gen(g)
-	lexer.Gen(path.Join(cfg.BaseDir, "lexer"), g)
-	parser.Gen(path.Join(cfg.BaseDir, "parser"), g, gs, ff)
+func Gen(g *ast.GoGLL, gs *gslot.GSlot, ff *frstflw.FF, ls *lexitems.Sets, ts *tokens.Tokens) {
+	token.Gen(g, ts)
+	lexer.Gen(path.Join(cfg.BaseDir, "lexer"), g, ls, ts)
+	parser.Gen(path.Join(cfg.BaseDir, "parser"), g, gs, ff, ts)
 }

@@ -23,11 +23,12 @@ import (
 )
 
 type GoGLL struct {
-	Package      *Package
-	LexRules     []*LexRule
-	SyntaxRules  []*SyntaxRule
-	Terminals    *stringset.StringSet
-	NonTerminals *stringset.StringSet
+	Package        *Package
+	LexRules       []*LexRule
+	SyntaxRules    []*SyntaxRule
+	Terminals      *stringset.StringSet
+	NonTerminals   *stringset.StringSet
+	StringLiterals *stringset.StringSet
 }
 
 type NT struct {

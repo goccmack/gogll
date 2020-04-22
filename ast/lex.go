@@ -176,6 +176,10 @@ func (c *CharLiteral) Lext() int {
 	return c.tok.Lext
 }
 
+func (c *CharLiteral) Literal() []rune {
+	return c.tok.Literal
+}
+
 func (l *LexBracket) LeftBracket() string {
 	switch l.Type {
 	case LexGroup:
@@ -290,4 +294,22 @@ func (n *Not) String() string {
 
 func (u *UnicodeClass) String() string {
 	return string(u.tok.Literal)
+}
+
+/*** Utils ***/
+
+// StringLitToTokID returns a dummy TokID with ID = id
+func StringLitToTokID(id string) *TokID {
+	return &TokID{&token.Token{
+		Type:    token.StringToType["tokid"],
+		Literal: []rune(id),
+	}}
+}
+
+// RuneToCharLit returns a dummy CharLiteral with Literal [r]
+func RuneToCharLit(r rune) *CharLiteral {
+	return &CharLiteral{&token.Token{
+		Type:    token.StringToType["char_lit"],
+		Literal: []rune{'\'', r, '\''},
+	}}
 }
