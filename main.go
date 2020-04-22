@@ -20,8 +20,11 @@ import (
 	"fmt"
 	"os"
 	"runtime/pprof"
+	"time"
 
-	"github.com/goccmack/gogll/ast"
+	"github.com/goccmack/gogll/ast/build"
+	"github.com/goccmack/gogll/cfg"
+	"github.com/goccmack/gogll/da"
 	"github.com/goccmack/gogll/frstflw"
 	genff "github.com/goccmack/gogll/gen/firstfollow"
 	"github.com/goccmack/gogll/gen/golang"
@@ -29,11 +32,9 @@ import (
 	gensymbols "github.com/goccmack/gogll/gen/symbols"
 	"github.com/goccmack/gogll/gslot"
 	"github.com/goccmack/gogll/lexer"
-	"github.com/goccmack/gogll/symbols"
-
-	"github.com/goccmack/gogll/cfg"
 	"github.com/goccmack/gogll/parser"
-	"github.com/goccmack/goutil/md"
+	"github.com/goccmack/gogll/parser/bsr"
+	"github.com/goccmack/gogll/symbols"
 )
 
 func main() {
@@ -52,15 +53,26 @@ func main() {
 		}
 		defer pprof.StopCPUProfile()
 	}
-	src, err := md.GetSource(cfg.SrcFile)
-	if err != nil {
-		fail(err)
+	start := time.Now()
+	lex := lexer.NewFile(cfg.SrcFile)
+	if err, errs := parser.Parse(lex); err != nil {
+		fmt.Println(err)
+		parseErrors(errs)
 	}
-	t, err := parser.NewParser().Parse(lexer.NewLexer([]byte(src)))
-	if err != nil {
-		fail(err)
-	}
-	g := t.(*ast.GoGLL)
+	fmt.Printf("Parse duration %s\n", time.Now().Sub(start))
+
+	// fmt.Println("Before DA:")
+	// bsr.Report()
+	// fmt.Println()
+
+	da.Go()
+
+	// fmt.Println("After DA:")
+	// bsr.Report()
+	// fmt.Println()
+
+	g := build.From(bsr.GetRoot(), lex)
+
 	symbols.Init(g)
 
 	gensymbols.Gen(g)
@@ -71,15 +83,15 @@ func main() {
 	golang.Gen(g, gs, ff)
 }
 
-// func dumpProcessedMDFile() {
-// 	src, err := md.GetSource(cfg.SrcFile)
-// 	if err != nil {
-// 		panic(err)
-// 	}
-// 	ioutil.WriteFile(cfg.SrcFile+".stripped", []byte(src))
-// }
-
 func fail(err error) {
 	fmt.Printf("Error: %s\n", err)
+	os.Exit(1)
+}
+
+func parseErrors(errs []*parser.Error) {
+	fmt.Println("Parse Errors:")
+	for _, err := range errs {
+		fmt.Println(err)
+	}
 	os.Exit(1)
 }

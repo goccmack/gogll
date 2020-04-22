@@ -56,7 +56,7 @@ func (ff *FF) FirstOfString(str []string) *stringset.StringSet {
 			break
 		}
 	}
-	// fmt.Printf("FirstOfString(%s): %s\n", strings.Join(str, " "), first)
+	// fmt.Printf("FirstOfString(%s): %v\n", strings.Join(str, " "), first)
 	return first
 }
 

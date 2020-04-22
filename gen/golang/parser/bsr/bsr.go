@@ -148,27 +148,27 @@ func Contain(nt symbols.NT, left, right int) bool {
 Dump prints the NT symbols of the parse forest.
 */
 func Dump() {
-    for _, root := range GetRoots() {
-        dump(root, 0)
-    }
+	for _, root := range GetRoots() {
+		dump(root, 0)
+	}
 }
 
 func dump(b BSR, level int) {
-    fmt.Print(indent(level, " "))
-    fmt.Println(b)
-    for _, cn := range b.GetAllNTChildren() {
-        for _, c := range cn {
-            dump(c, level+1)
-        }
-    }
+	fmt.Print(indent(level, " "))
+	fmt.Println(b)
+	for _, cn := range b.GetAllNTChildren() {
+		for _, c := range cn {
+			dump(c, level+1)
+		}
+	}
 }
 
 func indent(n int, c string) string {
-    buf := new(bytes.Buffer)
-    for i := 0; i < 4*n; i++ {
-        fmt.Fprint(buf,c)
-    }
-    return buf.String()
+	buf := new(bytes.Buffer)
+	for i := 0; i < 4*n; i++ {
+		fmt.Fprint(buf, c)
+	}
+	return buf.String()
 }
 
 // GetAll returns all BSR grammar slot entries
@@ -241,13 +241,13 @@ func (b BSR) Alternate() int {
 	return b.Label.Alternate()
 }
 
-// GetAllNTChildren returns all the NT Children of b. If an NT child of b has 
+// GetAllNTChildren returns all the NT Children of b. If an NT child of b has
 // ambiguous parses then all parses of that child are returned.
 func (b BSR) GetAllNTChildren() [][]BSR {
 	children := [][]BSR{}
 	for i, s := range b.Label.Symbols() {
-		if s.IsNonTerminal()  {
-            s_children := b.GetNTChildrenI(i)
+		if s.IsNonTerminal() {
+			s_children := b.GetNTChildrenI(i)
 			children = append(children, s_children)
 		}
 	}
@@ -337,7 +337,7 @@ func (b BSR) GetTChildI(i int) *token.Token {
 	return set.lex.Tokens[b.LeftExtent()+i]
 }
 
-// Ignore removes NT slot 'b' from the BSR set. Ignore() is typically called by 
+// Ignore removes NT slot 'b' from the BSR set. Ignore() is typically called by
 // disambiguration code to remove an ambiguous BSR entry.
 func (b BSR) Ignore() {
 	// fmt.Printf("bsr.Ignore %s\n", b)
@@ -381,8 +381,13 @@ func (s BSR) Pivot() int {
 }
 
 func (s BSR) String() string {
+<<<<<<< HEAD
     return fmt.Sprintf("%s,%d,%d,%d - %s", s.Label, s.leftExtent, s.pivot, s.rightExtent, 
         set.lex.GetString(s.LeftExtent(), s.RightExtent()))
+=======
+	return fmt.Sprintf("%s,%d,%d,%d - %s", s.Label, s.leftExtent, s.pivot, s.rightExtent,
+		set.lex.GetString(s.LeftExtent(), s.RightExtent()))
+>>>>>>> v3_0_1
 }
 
 func (s stringBSR) LeftExtent() int {
@@ -408,6 +413,7 @@ func (s stringBSR) String() string {
 	ss := s.Label.Symbols()[:s.Label.Pos()].Strings()
 	str := strings.Join(ss, " ")
 	return fmt.Sprintf("%s,%d,%d,%d - %s", str, s.leftExtent, s.pivot,
+<<<<<<< HEAD
 		s.rightExtent, set.lex.GetString(s.LeftExtent(),s.RightExtent()))
 }
 
@@ -417,6 +423,17 @@ func getNTSlot(sym symbols.Symbol, leftExtent, rightExtent int) (bsrs []BSR) {
         line, col := getLineColumn(leftExtent)
         failf("%s is not an NT at line %d col %d", sym, line, col)
     }
+=======
+		s.rightExtent, set.lex.GetString(s.LeftExtent(), s.RightExtent()))
+}
+
+func getNTSlot(sym symbols.Symbol, leftExtent, rightExtent int) (bsrs []BSR) {
+	nt, ok := sym.(symbols.NT)
+	if !ok {
+		line, col := getLineColumn(leftExtent)
+		failf("%s is not an NT at line %d col %d", sym, line, col)
+	}
+>>>>>>> v3_0_1
 	return set.ntSlotEntries[ntSlot{nt, leftExtent, rightExtent}]
 }
 
@@ -448,7 +465,11 @@ func decodeRune(str []byte) (string, rune, int) {
 }
 
 func getLineColumn(cI int) (line, col int) {
+<<<<<<< HEAD
     return set.lex.GetLineColumnOfToken(cI)
+=======
+	return set.lex.GetLineColumnOfToken(cI)
+>>>>>>> v3_0_1
 }
 
 // Report lists the ambiguous subtrees of the parse forest
