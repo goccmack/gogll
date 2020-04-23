@@ -10,6 +10,7 @@ import (
 	"github.com/goccmack/gogll/im/tokens"
 	"github.com/goccmack/gogll/lex/items"
 	"github.com/goccmack/goutil/ioutil"
+	"github.com/goccmack/goutil/stringset"
 )
 
 type Data struct {
@@ -38,9 +39,10 @@ func Gen(lexDir string, g *ast.GoGLL, ls *items.Sets, ts *tokens.Tokens) {
 	}
 }
 
-func getAccept(ls *items.Sets, ts *tokens.Tokens) (tokTypes []string) {
+// slits is the set of StringLiterals from the AST
+func getAccept(ls *items.Sets, ts *tokens.Tokens, slits *stringset.StringSet) (tokTypes []string) {
 	for _, s := range ls.Sets() {
-		tok := s.Accept()
+		tok := s.Accept(slits)
 		tokTypes = append(tokTypes, ts.LiteralToString[tok])
 	}
 	return
@@ -49,7 +51,7 @@ func getAccept(ls *items.Sets, ts *tokens.Tokens) (tokTypes []string) {
 func getData(g *ast.GoGLL, ls *items.Sets, ts *tokens.Tokens) *Data {
 	return &Data{
 		Package:     g.Package.GetString(),
-		Accept:      getAccept(ls, ts),
+		Accept:      getAccept(ls, ts, g.StringLiterals),
 		Transitions: getTransitions(ls),
 	}
 }
@@ -165,18 +167,64 @@ func New(input []rune) *Lexer {
 	return lex
 }
 
+// func (l *Lexer) scan(i int) *token.Token {
+// 	fmt.Printf("lexer.scan\n")
+// 	s, tok := state(0), token.New(token.Error, i, i, nil)
+// 	for s != nullState {
+// 		fmt.Printf(" scan: state=%d tok=%s \"%s\"\n", s, tok, string(l.I[tok.Lext:tok.Rext]))
+// 		if tok.Rext >= len(l.I) {
+// 			s = nullState
+// 		} else {
+// 			tok.Type = accept[s]
+// 			s = nextState[s](l.I[tok.Rext])
+// 			if s != nullState {
+// 				tok.Rext++
+// 			}
+// 		}
+// 	}
+// 	tok.Literal = l.I[tok.Lext:tok.Rext]
+// 	fmt.Printf(" scan: state=%d tok=%s\n", s, tok)
+// 	return tok
+// }
+
 func (l *Lexer) scan(i int) *token.Token {
+	fmt.Printf("lexer.scan\n")
 	s, tok := state(0), token.New(token.Error, i, i, nil)
 	for s != nullState {
 		if tok.Rext >= len(l.I) {
+			fmt.Printf(" scan: state=%d tok=%s \"%s\" r=EOF\n", s, tok, string(l.I[tok.Lext:tok.Rext]))
+		} else {
+			fmt.Printf(" scan: state=%d tok=%s \"%s\" r='%s'\n", s, tok, string(l.I[tok.Lext:tok.Rext]), escape(l.I[tok.Rext]))
+		}
+		if tok.Rext >= len(l.I) {
 			s = nullState
 		} else {
-			s = nextState[s](l.I[tok.Rext])
-			tok.Rext++
 			tok.Type = accept[s]
+			s = nextState[s](l.I[tok.Rext])
+			if s != nullState {
+				tok.Rext++
+			}
 		}
 	}
+	tok.Literal = l.I[tok.Lext:tok.Rext]
+	fmt.Printf(" scan: state=%d tok=%s\n", s, tok)
 	return tok
+}
+
+func escape(r rune) string {
+	switch r {
+	case '"':
+		return "\""
+	case '\\':
+		return "\\\\"
+	case '\r':
+		return "\\r"
+	case '\n':
+		return "\\n"
+	case '\t':
+		return "\\t"
+	}
+	return string(r)
 }
 
 // GetLineColumn returns the line and column of rune[i] in the input
@@ -202,9 +250,9 @@ func (l *Lexer) GetLineColumnOfToken(i int) (line, col int) {
 
 // GetString returns the input string from the left extent of Token[lext] to
 // the right extent of Token[rext]
-// func (l *Lexer) GetString(lext, rext int) string {
-// 	return string(l.I[l.Tokens[lext].Lext:l.Tokens[rext].Rext])
-// }
+func (l *Lexer) GetString(lext, rext int) string {
+	return string(l.I[l.Tokens[lext].Lext:l.Tokens[rext].Rext])
+}
 
 func (l *Lexer) add(t token.Type, lext, rext int) {
 	l.addToken(token.New(t, lext, rext, l.I[lext:rext]))
@@ -243,7 +291,7 @@ var nextState = []func(r rune) state{ {{range $i, $set := .Transitions}}
 		case {{$cond.Condition}}:
 			return {{$cond.NextState}} {{end}}
 		}
-		panic(fmt.Sprintf("Unexpected rune '%c' in state S{{$i}}", r))
+		return nullState
 	}, {{end}}
 }
 `

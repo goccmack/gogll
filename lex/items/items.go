@@ -9,9 +9,14 @@ Section 2.6
 package items
 
 import (
+	"fmt"
+	"os"
+	"sort"
+
 	"github.com/goccmack/gogll/ast"
 	"github.com/goccmack/gogll/lex/item"
 	"github.com/goccmack/gogll/lex/items/event"
+	"github.com/goccmack/goutil/stringset"
 )
 
 type Event interface {
@@ -54,15 +59,36 @@ func New(g *ast.GoGLL) *Sets {
 }
 
 // Accept returns the token type accepted by the first reduce item in set
-func (set *Set) Accept() string {
-	// fmt.Printf("items.Set.Accept S%d\n", set.No)
-	for _, item := range set.set {
-		// fmt.Printf("  %d: %s (%s)\n", i, item, item.Rule.ID())
-		if item.IsReduce() {
-			return item.Rule.ID()
+// slits is the set of string literals from the AST
+func (set *Set) Accept(slits *stringset.StringSet) string {
+	// acceptItems is sorted with string literals first
+	acceptItems := set.acceptItems(slits)
+
+	// Check for accepting multiple string literals
+	if len(acceptItems) > 1 && slits.Contain(acceptItems[1].Rule.ID()) {
+		fmt.Printf("Error in lex item sets: S%d accepts multiple string literals", set.No)
+		os.Exit(1)
+	}
+
+	if len(acceptItems) > 0 {
+		return acceptItems[0].Rule.ID()
+	}
+
+	return "Error"
+}
+
+// slits is the set of string literals from the AST
+func (set *Set) acceptItems(slits *stringset.StringSet) (items []*item.Item) {
+	for _, itm := range set.Items() {
+		if itm.IsReduce() {
+			items = append(items, itm)
 		}
 	}
-	return "Error"
+	sort.Slice(items, func(i, j int) bool {
+		return slits.Contain(items[i].Rule.ID()) &&
+			!slits.Clone().Contain(items[j].Rule.ID())
+	})
+	return
 }
 
 func (set *Set) Add(items ...*item.Item) {
@@ -111,18 +137,19 @@ nextSets returns the next set for each possible event transition in set
 */
 func (set *Set) nextSets() (sets []*Set) {
 	events := event.GetOrdered(set.Items()...)
-	for _, event := range events {
+	for _, ev := range events {
 		newSet := &Set{}
 		for _, item := range set.set {
 			if sym := item.Symbol(); sym != nil {
-				if event.Equal(sym.(ast.LexBase)) {
+				if event.Subset(ev, sym.(ast.LexBase)) == event.True {
+					// if event.Equal(sym.(ast.LexBase)) {
 					newSet.Add(item.Next().Emoves()...)
 				}
 			}
 		}
 		set.Transitions = append(set.Transitions,
 			&Transition{
-				Event: event,
+				Event: ev,
 				To:    newSet,
 			})
 		sets = append(sets, newSet)

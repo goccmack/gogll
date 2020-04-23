@@ -15,7 +15,8 @@ import (
 )
 
 type builder struct {
-	lex *lexer.Lexer
+	lex          *lexer.Lexer
+	charLiterals *stringset.StringSet
 }
 
 // builder rule
@@ -30,7 +31,8 @@ func (*SyntaxRule) isBrule() {}
 //
 func Build(root bsr.BSR, l *lexer.Lexer) *GoGLL {
 	bld := &builder{
-		lex: l,
+		lex:          l,
+		charLiterals: stringset.New(),
 	}
 	gogll := bld.gogll(root)
 	gogll.NonTerminals = bld.nonTerminals(gogll.SyntaxRules)
@@ -99,6 +101,7 @@ func (bld *builder) nonTerminals(rules []*SyntaxRule) *stringset.StringSet {
 
 func (bld *builder) terminals(g *GoGLL) *stringset.StringSet {
 	terminals := bld.getLexRuleIDs(g.LexRules)
+	terminals.AddSet(bld.charLiterals)
 	terminals.AddSet(bld.getStringLiterals(g.SyntaxRules))
 	return terminals
 }
@@ -185,6 +188,18 @@ func (bld *builder) anyOf(any, strLit *token.Token) *AnyOf {
 }
 
 func (bld *builder) charLiteral(tok *token.Token) *CharLiteral {
+	switch tok.Literal[1] {
+	case '\\':
+		if tok.Literal[2] == '\'' {
+			bld.charLiterals.Add("'")
+		} else {
+			bld.charLiterals.Add(string(tok.Literal[1:3]))
+		}
+	case '"':
+		bld.charLiterals.Add("\\\"")
+	default:
+		bld.charLiterals.Add(string(tok.Literal[1:2]))
+	}
 	return &CharLiteral{
 		tok: tok,
 	}
@@ -382,7 +397,7 @@ func (bld *builder) addSyntaxRule(r *SyntaxRule, gogll *GoGLL) {
 // parse the string set from tokens any or not
 func (bld *builder) parseStringSet(strLit *token.Token) *runeset.RuneSet {
 	rs := runeset.New()
-	for i := 0; i < len(strLit.Literal); i++ {
+	for i := 1; i < len(strLit.Literal)-1; i++ {
 		if strLit.Literal[i] == '\\' {
 			i++
 			switch strLit.Literal[i] {
