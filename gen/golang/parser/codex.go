@@ -11,6 +11,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
+
 package parser
 
 import (
@@ -24,7 +25,7 @@ import (
 func (g *gen) genAlternatesCode() string {
 	buf := new(bytes.Buffer)
 	for _, nt := range g.g.NonTerminals.Elements() {
-		rule := g.g.GetRule(nt)
+		rule := g.g.GetSyntaxRule(nt)
 		for i, alt := range rule.Alternates {
 			buf.WriteString(g.getAlternateCode(nt, alt, i))
 		}
@@ -41,7 +42,7 @@ type AltData struct {
 	LastSlot   *SlotData
 }
 
-func (g *gen) getAlternateCode(nt string, alt *ast.Alternate, altI int) string {
+func (g *gen) getAlternateCode(nt string, alt *ast.SyntaxAlternate, altI int) string {
 	tmpl, err := template.New("Alternate").Parse(altCodeTmpl)
 	if err != nil {
 		panic(err)
@@ -53,7 +54,7 @@ func (g *gen) getAlternateCode(nt string, alt *ast.Alternate, altI int) string {
 	return buf.String()
 }
 
-func (g *gen) getAltData(nt string, alt *ast.Alternate, altI int) *AltData {
+func (g *gen) getAltData(nt string, alt *ast.SyntaxAlternate, altI int) *AltData {
 	L := gslot.NewLabel(nt, altI, 0, g.gs, g.ff)
 	d := &AltData{
 		NT:         nt,
@@ -68,7 +69,7 @@ func (g *gen) getAltData(nt string, alt *ast.Alternate, altI int) *AltData {
 	return d
 }
 
-func (g *gen) getSlotsData(nt string, alt *ast.Alternate, altI int) (data []*SlotData) {
+func (g *gen) getSlotsData(nt string, alt *ast.SyntaxAlternate, altI int) (data []*SlotData) {
 	for i, sym := range alt.Symbols {
 		// fmt.Printf("getSlotsData(%s) %s\n", nt, getSlotData(nt, altI, sym, i))
 		data = append(data, g.getSlotData(nt, altI, sym.String(), i))
@@ -103,8 +104,8 @@ type SlotData struct {
 
 const altCodeTmpl = `		case slot.{{.AltLabel}}: // {{.AltComment}}{{if .Empty}}
 			bsr.AddEmpty(slot.{{.AltLabel}},cI)
-        {{else}}{{range $i, $slot := .Slots}}
-            {{if $i}}if !testSelect(slot.{{$slot.PreLabel}}){ 
+		{{else}}{{range $i, $slot := .Slots}}
+			{{if $i}}if !testSelect(slot.{{$slot.PreLabel}}){ 
 				parseError(slot.{{$slot.PreLabel}}, cI)
 				break 
 			}
@@ -114,8 +115,8 @@ case slot.{{$slot.PostLabel}}: // {{$slot.Comment}}
 			{{else}}bsr.Add(slot.{{$slot.PostLabel}}, cU, cI, cI+1)
 			cI++ {{end}}{{end}}{{end}}
 			if follow(symbols.NT_{{.NT}}) {
-                rtn(symbols.NT_{{.NT}}, cU, cI)
-            } else {
-                parseError(slot.{{.LastSlot.PreLabel}}, cI)
-            }
+				rtn(symbols.NT_{{.NT}}, cU, cI)
+			} else {
+				parseError(slot.{{.LastSlot.PreLabel}}, cI)
+			}
 	`

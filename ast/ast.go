@@ -1,4 +1,4 @@
-//  Copyright 2019 Marius Ackerman
+//  Copyright 2020 Marius Ackerman
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -23,59 +23,24 @@ import (
 )
 
 type GoGLL struct {
-	Package      *Package
-	Rules        []*Rule
-	Terminals    *stringset.StringSet
-	NonTerminals *stringset.StringSet
-}
-
-type Alternate struct {
-	Symbols []Symbol
-}
-
-type Any struct {
-	Tok *token.Token
-}
-
-type Not struct {
-	Tok *token.Token
+	Package        *Package
+	LexRules       []*LexRule
+	SyntaxRules    []*SyntaxRule
+	Terminals      *stringset.StringSet
+	NonTerminals   *stringset.StringSet
+	StringLiterals *stringset.StringSet
 }
 
 type NT struct {
-	Tok *token.Token
+	tok *token.Token
 }
 
 type Package struct {
-	Tok *token.Token
+	tok *token.Token
 }
-
-type Rule struct {
-	Head       *NT
-	Alternates []*Alternate
-}
-
-type StringLit struct {
-	Tok *token.Token
-}
-
-type Symbol interface {
-	isSymbol()
-	// Lext returns the left extent of Symbol in the input string
-	Lext() int
-	Token() string
-	String() string
-}
-
-func (*NT) isSymbol() {}
-
-// Terminals
-func (*Any) isSymbol()       {}
-func (*Not) isSymbol()       {}
-func (*TokID) isSymbol()     {}
-func (*StringLit) isSymbol() {}
 
 type TokID struct {
-	Tok *token.Token
+	tok *token.Token
 }
 
 type Terminal interface {
@@ -84,45 +49,22 @@ type Terminal interface {
 
 /*** Methods ***/
 
-func (a *Alternate) GetSymbols() []string {
-	symbols := make([]string, len(a.Symbols))
-	for i, s := range a.Symbols {
-		symbols[i] = s.Token()
+func (g *GoGLL) GetLexRule(id string) *LexRule {
+	for _, r := range g.LexRules {
+		if r.TokID.Token() == id {
+			return r
+		}
 	}
-	return symbols
+	return nil
 }
 
-func (a *Any) Lext() int {
-	return a.Tok.Lext
-}
-
-func (a *Any) String() string {
-	return "any"
-}
-
-func (a *Any) Token() string {
-	return "any"
-}
-
-func (n *Not) Lext() int {
-	return n.Tok.Lext
-}
-
-func (n *Not) String() string {
-	return "not"
-}
-
-func (n *Not) Token() string {
-	return "not"
-}
-
-func (g *GoGLL) GetRule(nt string) *Rule {
-	for _, r := range g.Rules {
+func (g *GoGLL) GetSyntaxRule(nt string) *SyntaxRule {
+	for _, r := range g.SyntaxRules {
 		if r.Head.Token() == nt {
 			return r
 		}
 	}
-	panic("No rule " + nt)
+	return nil
 }
 
 func (g *GoGLL) GetSymbols() []string {
@@ -130,78 +72,50 @@ func (g *GoGLL) GetSymbols() []string {
 }
 
 func (g *GoGLL) StartSymbol() string {
-	return g.Rules[0].Head.Token()
+	return g.SyntaxRules[0].Head.Token()
 }
-
-func (a *Alternate) Empty() bool {
-	return len(a.Symbols) == 0
-}
-
-// func (a *Any) Pos() token.Pos {
-// 	return a.tok.Pos
-// }
-
-// func (a *Any) String() string {
-// 	return "any"
-// }
-
-// func (a *Any) Token() string {
-// 	return "any"
-// }
-
-// func (*Not) String() string {
-// 	return "not"
-// }
-
-// func (*Not) Token() string {
-// 	return "not"
-// }
-
-// func (n *Not) Pos() token.Pos {
-// 	return n.tok.Pos
-// }
 
 func (n *NT) String() string {
-	return string(n.Tok.Literal)
+	return string(n.tok.Literal)
 }
 
 func (n *NT) Token() string {
-	return string(n.Tok.Literal)
+	return string(n.tok.Literal)
 }
 
 func (n *NT) Lext() int {
-	return n.Tok.Lext
+	return n.tok.Lext
 }
 
 // ID returns the identifier of n
 func (n *NT) ID() string {
-	return string(n.Tok.Literal)
+	return string(n.tok.Literal)
 }
 
 func (p *Package) GetString() string {
-	return string(p.Tok.Literal[1 : len(p.Tok.Literal)-1])
+	return string(p.tok.Literal[1 : len(p.tok.Literal)-1])
 }
 
 func (s *StringLit) String() string {
-	return string(s.Tok.Literal[1 : len(s.Tok.Literal)-1])
+	return string(s.tok.Literal[1 : len(s.tok.Literal)-1])
 }
 
 func (s *StringLit) Token() string {
-	return string(s.Tok.Literal[1 : len(s.Tok.Literal)-1])
+	return string(s.tok.Literal[1 : len(s.tok.Literal)-1])
 }
 
 func (s *StringLit) Lext() int {
-	return s.Tok.Lext
+	return s.tok.Lext
 }
 
 func (t *TokID) String() string {
-	return string(t.Tok.Literal)
+	return string(t.tok.Literal)
 }
 
 func (t *TokID) Token() string {
-	return string(t.Tok.Literal)
+	return string(t.tok.Literal)
 }
 
 func (t *TokID) Lext() int {
-	return t.Tok.Lext
+	return t.tok.Lext
 }

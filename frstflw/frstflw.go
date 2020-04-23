@@ -56,7 +56,7 @@ func (ff *FF) FirstOfString(str []string) *stringset.StringSet {
 			break
 		}
 	}
-	// fmt.Printf("FirstOfString(%s): %v\n", strings.Join(str, " "), first)
+	// fmt.Printf("FirstOfString(%s): %s\n", strings.Join(str, " "), first)
 	return first
 }
 
@@ -120,7 +120,7 @@ func (ff *FF) getFirstOfSymbol(s string) *stringset.StringSet {
 	return fst
 }
 
-func (ff *FF) getFirstOfAlternate(a *ast.Alternate) *stringset.StringSet {
+func (ff *FF) getFirstOfAlternate(a *ast.SyntaxAlternate) *stringset.StringSet {
 	if a.Empty() {
 		return stringset.New(Empty)
 	}
@@ -129,7 +129,7 @@ func (ff *FF) getFirstOfAlternate(a *ast.Alternate) *stringset.StringSet {
 
 func (ff *FF) getFirstOfNonTerminal(s string) *stringset.StringSet {
 	first := stringset.New()
-	for _, a := range ff.g.GetRule(s).Alternates {
+	for _, a := range ff.g.GetSyntaxRule(s).Alternates {
 		f := ff.getFirstOfAlternate(a)
 		first.Add(f.Elements()...)
 	}
@@ -163,7 +163,7 @@ TODO: genFollow only processes syntax rules
 func (ff *FF) genFollowOf(nt string) *stringset.StringSet {
 	// fmt.Printf("genFollowOf(%s)=%s\n", nt, followSets[nt])
 	follow := stringset.New()
-	for _, r := range ff.g.Rules {
+	for _, r := range ff.g.SyntaxRules {
 		for _, a := range r.Alternates {
 			bs := a.GetSymbols()
 			for _, idx := range stringslice.Find(bs, nt) {

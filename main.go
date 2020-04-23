@@ -1,5 +1,5 @@
 /*
-Copyright 2019 Marius Ackerman
+Copyright 2020 Marius Ackerman
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -19,18 +19,21 @@ package main
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"runtime/pprof"
 	"time"
 
-	"github.com/goccmack/gogll/ast/build"
+	"github.com/goccmack/gogll/ast"
 	"github.com/goccmack/gogll/cfg"
-	"github.com/goccmack/gogll/da"
 	"github.com/goccmack/gogll/frstflw"
 	genff "github.com/goccmack/gogll/gen/firstfollow"
 	"github.com/goccmack/gogll/gen/golang"
+	"github.com/goccmack/gogll/gen/lexfsa"
 	"github.com/goccmack/gogll/gen/slots"
 	gensymbols "github.com/goccmack/gogll/gen/symbols"
 	"github.com/goccmack/gogll/gslot"
+	"github.com/goccmack/gogll/im/tokens"
+	"github.com/goccmack/gogll/lex/items"
 	"github.com/goccmack/gogll/lexer"
 	"github.com/goccmack/gogll/parser"
 	"github.com/goccmack/gogll/parser/bsr"
@@ -39,7 +42,6 @@ import (
 
 func main() {
 	cfg.GetParams()
-	// dumpProcessedMDFile()
 	if *cfg.CPUProfile {
 		f, err := os.Create("cpu.prof")
 		if err != nil {
@@ -61,26 +63,24 @@ func main() {
 	}
 	fmt.Printf("Parse duration %s\n", time.Now().Sub(start))
 
-	// fmt.Println("Before DA:")
-	// bsr.Report()
-	// fmt.Println()
+	bsr.ReportAmbiguous()
 
-	da.Go()
-
-	// fmt.Println("After DA:")
-	// bsr.Report()
-	// fmt.Println()
-
-	g := build.From(bsr.GetRoot(), lex)
-
+	g := ast.Build(bsr.GetRoot(), lex)
 	symbols.Init(g)
 
-	gensymbols.Gen(g)
 	ff := frstflw.New(g)
-	genff.Gen(g, ff)
 	gs := gslot.New(g, ff)
-	slots.Gen(gs)
-	golang.Gen(g, gs, ff)
+	ts := tokens.New(g)
+
+	lexSets := items.New(g)
+	if cfg.Verbose {
+		gensymbols.Gen(g)
+		genff.Gen(g, ff)
+		slots.Gen(gs)
+		lexfsa.Gen(filepath.Join(cfg.BaseDir, "lexfsa.txt"), lexSets)
+	}
+
+	golang.Gen(g, gs, ff, lexSets, ts)
 }
 
 func fail(err error) {
@@ -90,8 +90,11 @@ func fail(err error) {
 
 func parseErrors(errs []*parser.Error) {
 	fmt.Println("Parse Errors:")
+	ln := errs[0].Line
 	for _, err := range errs {
-		fmt.Println(err)
+		if err.Line == ln {
+			fmt.Println(err)
+		}
 	}
 	os.Exit(1)
 }

@@ -22,7 +22,6 @@ import (
 	"text/template"
 
 	"github.com/goccmack/gogll/frstflw"
-	"github.com/goccmack/gogll/gen/golang/token"
 	"github.com/goccmack/gogll/gslot"
 )
 
@@ -105,7 +104,7 @@ func (g *gen) getFirst(l gslot.Label) (tokens []*Symbol) {
 	sort.Slice(
 		firstSymbols,
 		func(i, j int) bool { return firstSymbols[i] < firstSymbols[j] })
-	tokMap := token.GetTokenMap(g.g)
+	tokMap := g.ts.LiteralToString
 	// fmt.Printf("  first: %s\n", frst)
 	for _, sym := range firstSymbols {
 		if sym != frstflw.Empty {
@@ -129,7 +128,7 @@ func (g *gen) getFollowConditions(nt string) (tokens []*Symbol) {
 		fmt.Printf("Production %s has empty follow set. It is never called\n", nt)
 		os.Exit(1)
 	}
-	tokMap := token.GetTokenMap(g.g)
+	tokMap := g.ts.LiteralToString
 	for _, sym := range flw.Elements() {
 		tokens = append(tokens,
 			&Symbol{
@@ -142,29 +141,29 @@ func (g *gen) getFollowConditions(nt string) (tokens []*Symbol) {
 
 const testSelectTmpl = `
 var first = []map[token.Type]string { {{range $ts := .TestSelect}}
-    // {{$ts.Label}}
-    map[token.Type]string{ {{range $sym := $ts.Symbols}}
-        token.{{$sym.TokType}}:"{{$sym.Label}}",{{end}}
-    },{{end}}
+	// {{$ts.Label}}
+	map[token.Type]string{ {{range $sym := $ts.Symbols}}
+		token.{{$sym.TokType}}:"{{$sym.Label}}",{{end}}
+	},{{end}}
 }
 
 var followSets = []map[token.Type]string { {{range $flw := .Follow}}
-    // {{$flw.Label}}
-    map[token.Type]string{ {{range $sym := $flw.Symbols}}
-        token.{{$sym.TokType}}:"{{$sym.Label}}",{{end}}
-    },{{end}}
+	// {{$flw.Label}}
+	map[token.Type]string{ {{range $sym := $flw.Symbols}}
+		token.{{$sym.TokType}}:"{{$sym.Label}}",{{end}}
+	},{{end}}
 } 
 `
 
 /*
 var testSelect = []func()bool { {{range $i, $ts := .TestSelect}}
-    // slot.{{$ts.Label}}
-    func()bool{
-        return {{range $i, $c := $ts.Conditions}}{{$c.Cond}} {{if not $c.Last}}||{{end}}
-    {{end}} },
+	// slot.{{$ts.Label}}
+	func()bool{
+		return {{range $i, $c := $ts.Conditions}}{{$c.Cond}} {{if not $c.Last}}||{{end}}
+	{{end}} },
 {{end}} }
 
 {{range $i, $flw := .Follow}}func follow{{$flw.Label}} () bool {
-    return {{range $i, $c := $flw.Conditions}}{{$c.Cond}} {{if not $c.Last}}||{{end}}
+	return {{range $i, $c := $flw.Conditions}}{{$c.Cond}} {{if not $c.Last}}||{{end}}
 {{end}} }
 */

@@ -1,4 +1,4 @@
-//  Copyright 2019 Marius Ackerman
+//  Copyright 2020 Marius Ackerman
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -12,6 +12,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
+// Package bsr generates a Go BSR package
 package bsr
 
 import (
@@ -166,7 +167,7 @@ func dump(b BSR, level int) {
 func indent(n int, c string) string {
 	buf := new(bytes.Buffer)
 	for i := 0; i < 4*n; i++ {
-		fmt.Fprint(buf, c)
+		fmt.Fprint(buf,c)
 	}
 	return buf.String()
 }
@@ -241,12 +242,12 @@ func (b BSR) Alternate() int {
 	return b.Label.Alternate()
 }
 
-// GetAllNTChildren returns all the NT Children of b. If an NT child of b has
+// GetAllNTChildren returns all the NT Children of b. If an NT child of b has 
 // ambiguous parses then all parses of that child are returned.
 func (b BSR) GetAllNTChildren() [][]BSR {
 	children := [][]BSR{}
 	for i, s := range b.Label.Symbols() {
-		if s.IsNonTerminal() {
+		if s.IsNonTerminal()  {
 			s_children := b.GetNTChildrenI(i)
 			children = append(children, s_children)
 		}
@@ -337,7 +338,7 @@ func (b BSR) GetTChildI(i int) *token.Token {
 	return set.lex.Tokens[b.LeftExtent()+i]
 }
 
-// Ignore removes NT slot 'b' from the BSR set. Ignore() is typically called by
+// Ignore removes NT slot 'b' from the BSR set. Ignore() is typically called by 
 // disambiguration code to remove an ambiguous BSR entry.
 func (b BSR) Ignore() {
 	// fmt.Printf("bsr.Ignore %s\n", b)
@@ -381,13 +382,8 @@ func (s BSR) Pivot() int {
 }
 
 func (s BSR) String() string {
-<<<<<<< HEAD
-    return fmt.Sprintf("%s,%d,%d,%d - %s", s.Label, s.leftExtent, s.pivot, s.rightExtent, 
-        set.lex.GetString(s.LeftExtent(), s.RightExtent()))
-=======
-	return fmt.Sprintf("%s,%d,%d,%d - %s", s.Label, s.leftExtent, s.pivot, s.rightExtent,
+	return fmt.Sprintf("%s,%d,%d,%d - %s", s.Label, s.leftExtent, s.pivot, s.rightExtent, 
 		set.lex.GetString(s.LeftExtent(), s.RightExtent()))
->>>>>>> v3_0_1
 }
 
 func (s stringBSR) LeftExtent() int {
@@ -413,18 +409,7 @@ func (s stringBSR) String() string {
 	ss := s.Label.Symbols()[:s.Label.Pos()].Strings()
 	str := strings.Join(ss, " ")
 	return fmt.Sprintf("%s,%d,%d,%d - %s", str, s.leftExtent, s.pivot,
-<<<<<<< HEAD
 		s.rightExtent, set.lex.GetString(s.LeftExtent(),s.RightExtent()))
-}
-
-func getNTSlot(sym symbols.Symbol, leftExtent, rightExtent int) (bsrs []BSR) {
-    nt, ok := sym.(symbols.NT)
-    if !ok {
-        line, col := getLineColumn(leftExtent)
-        failf("%s is not an NT at line %d col %d", sym, line, col)
-    }
-=======
-		s.rightExtent, set.lex.GetString(s.LeftExtent(), s.RightExtent()))
 }
 
 func getNTSlot(sym symbols.Symbol, leftExtent, rightExtent int) (bsrs []BSR) {
@@ -433,7 +418,6 @@ func getNTSlot(sym symbols.Symbol, leftExtent, rightExtent int) (bsrs []BSR) {
 		line, col := getLineColumn(leftExtent)
 		failf("%s is not an NT at line %d col %d", sym, line, col)
 	}
->>>>>>> v3_0_1
 	return set.ntSlotEntries[ntSlot{nt, leftExtent, rightExtent}]
 }
 
@@ -465,18 +449,15 @@ func decodeRune(str []byte) (string, rune, int) {
 }
 
 func getLineColumn(cI int) (line, col int) {
-<<<<<<< HEAD
-    return set.lex.GetLineColumnOfToken(cI)
-=======
 	return set.lex.GetLineColumnOfToken(cI)
->>>>>>> v3_0_1
 }
 
-// Report lists the ambiguous subtrees of the parse forest
-func Report() {
+// ReportAmbiguous lists the ambiguous subtrees of the parse forest
+func ReportAmbiguous() {
+	fmt.Println("Ambiguous BSR Subtrees:")
 	rts := GetRoots()
 	if len(rts) != 1 {
-		fmt.Println(len(rts), "ambiguous BSR roots")
+		fmt.Printf("BSR has %d ambigous roots\n", len(rts))
 	}
 	for i, b := range GetRoots() {
 		fmt.Println("Root", i)

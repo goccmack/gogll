@@ -1,4 +1,4 @@
-# Gogll v3.0
+# Gogll v3.0.2
 
 [Copyright 2019 Marius Ackerman](License.txt)
 
@@ -14,40 +14,69 @@ Package : "package" string_lit ;
 
 Rules
     :   Rule            
-    |   Rule Rules
+    |   Rule Rules  
     ;
 
-Rule : NT ":" Alternates ";"  ;
+Rule : LexRule | SyntaxRule ;
+```
 
-NT : id  ;
+# Lex Rules
+```
+LexRule : TokID ":" RegExp ";" ;
 
-Alternates
-    :   Alternate                   
-    |   Alternate "|" Alternates    
-    ;
+RegExp : LexSymbol | LexSymbol RegExp ;
 
-Alternate
-    :   Symbols                     
-    |   "empty"                     
-    ;
+LexSymbol : "." | "any" string_lit | char_lit | LexBracket | "not" string_lit | UnicodeClass ;
 
-Symbols
-    :   Symbol                      
-    |   Symbol Symbols              
-    ;
+LexBracket : LexGroup | LexOptional | LexZeroOrMore | LexOneOrMore ;
 
-Symbol : NT | TokID | string_lit ;
+LexGroup : "(" LexAlternates ")" ;
 
-TokID : id ;
+LexOptional : "[" LexAlternates "]" ;
+
+LexZeroOrMore : "{" LexAlternates "}" ;
+
+LexOneOrMore : "<" LexAlternates ">" ;
+
+LexAlternates : RegExp | RegExp "|" LexAlternates ;
+
+UnicodeClass : letter | upcase | lowcase | number | space ;
 
 ```
 
--   `any` accepts any character
--   `anyof String` accepts any character that is an element of `String`
+# Syntax Rules
+```
+SyntaxRule : NT ":" SyntaxAlternates ";"  ;
+
+NT : nt  ;
+
+SyntaxAlternates
+    :   SyntaxAlternate                   
+    |   SyntaxAlternate "|" SyntaxAlternates    
+    ;
+
+SyntaxAlternate
+    :   SyntaxSymbols                     
+    |   "empty"                     
+    ;
+
+SyntaxSymbols
+    :   SyntaxSymbol                      
+    |   SyntaxSymbol SyntaxSymbols              
+    ;
+
+SyntaxSymbol : NT | TokID | string_lit ;
+
+TokID : tokid ;
+
+```
+# Builtin tokens
+-   `.` accepts any character
+-   `any String` accepts any character that is an element of `String`
 -   `letter` accepts any character from the Unicode letter category
 -   `number` accepts any character from the Unicode number category
 -   `space` accepts any Unicode white space character
 -   `upcase` accepts any upper case letter
 -   `lowcase` accepts any lower case letter
--   `not "String"` accepts any character that is not an element of `String`
+-   `not String` accepts any character that is not an element of `String`
 

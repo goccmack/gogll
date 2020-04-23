@@ -149,12 +149,12 @@ func (ss Slots) Swap(i, j int) {
 }
 
 func (gs *GSlot) genSlots() {
-	for _, rule := range gs.g.Rules {
+	for _, rule := range gs.g.SyntaxRules {
 		gs.genSlotsOfRule(rule)
 	}
 }
 
-func (gs *GSlot) genSlotsOfRule(r *ast.Rule) {
+func (gs *GSlot) genSlotsOfRule(r *ast.SyntaxRule) {
 	for i, a := range r.Alternates {
 		gs.genSlotsOfAlternate(r.Head.Token(), i, getSymbols(a.GetSymbols())...)
 	}
