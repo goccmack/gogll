@@ -1,5 +1,5 @@
 /*
-Copyright 2019 Marius Ackerman
+Copyright 2020 Marius Ackerman
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -63,34 +63,22 @@ func main() {
 	}
 	fmt.Printf("Parse duration %s\n", time.Now().Sub(start))
 
-	bsr.Report()
-	// bsr.Dump()
+	bsr.ReportAmbiguous()
 
 	g := ast.Build(bsr.GetRoot(), lex)
 	symbols.Init(g)
 
-	gensymbols.Gen(g)
 	ff := frstflw.New(g)
-	genff.Gen(g, ff)
 	gs := gslot.New(g, ff)
-	slots.Gen(gs)
 	ts := tokens.New(g)
 
 	lexSets := items.New(g)
 	if cfg.Verbose {
+		gensymbols.Gen(g)
+		genff.Gen(g, ff)
+		slots.Gen(gs)
 		lexfsa.Gen(filepath.Join(cfg.BaseDir, "lexfsa.txt"), lexSets)
 	}
-	// for i := 0; i < lexSets.Len(); i++ {
-	// 	fmt.Println("Set", i, ":")
-	// 	for _, item := range lexSets.Set(i).Items() {
-	// 		fmt.Println(item, item.Pos)
-	// 	}
-	// 	fmt.Println("  Transitions:")
-	// 	for _, t := range lexSets.Set(i).Transitions {
-	// 		fmt.Printf("    %s -> S%d\n", t.Event, t.To.No)
-	// 	}
-	// }
-	// fmt.Println()
 
 	golang.Gen(g, gs, ff, lexSets, ts)
 }

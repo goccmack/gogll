@@ -1,3 +1,20 @@
+/*
+Copyright 2020 Marius Ackerman
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+// Package lexer generates a Go lexer
 package lexer
 
 import (
@@ -112,7 +129,7 @@ const tmplSrc = `
 package lexer
 
 import (
-	"fmt"
+	// "fmt"
 	"io/ioutil"
 	"strings"
 	"unicode"
@@ -167,34 +184,16 @@ func New(input []rune) *Lexer {
 	return lex
 }
 
-// func (l *Lexer) scan(i int) *token.Token {
-// 	fmt.Printf("lexer.scan\n")
-// 	s, tok := state(0), token.New(token.Error, i, i, nil)
-// 	for s != nullState {
-// 		fmt.Printf(" scan: state=%d tok=%s \"%s\"\n", s, tok, string(l.I[tok.Lext:tok.Rext]))
-// 		if tok.Rext >= len(l.I) {
-// 			s = nullState
-// 		} else {
-// 			tok.Type = accept[s]
-// 			s = nextState[s](l.I[tok.Rext])
-// 			if s != nullState {
-// 				tok.Rext++
-// 			}
-// 		}
-// 	}
-// 	tok.Literal = l.I[tok.Lext:tok.Rext]
-// 	fmt.Printf(" scan: state=%d tok=%s\n", s, tok)
-// 	return tok
-// }
-
 func (l *Lexer) scan(i int) *token.Token {
-	fmt.Printf("lexer.scan\n")
+	// fmt.Printf("lexer.scan\n")
 	s, tok := state(0), token.New(token.Error, i, i, nil)
 	for s != nullState {
 		if tok.Rext >= len(l.I) {
-			fmt.Printf(" scan: state=%d tok=%s \"%s\" r=EOF\n", s, tok, string(l.I[tok.Lext:tok.Rext]))
+			// fmt.Printf(" scan: state=%d tok=%s \"%s\" r=EOF\n", 
+			// s, tok, string(l.I[tok.Lext:tok.Rext]))
 		} else {
-			fmt.Printf(" scan: state=%d tok=%s \"%s\" r='%s'\n", s, tok, string(l.I[tok.Lext:tok.Rext]), escape(l.I[tok.Rext]))
+			// fmt.Printf(" scan: state=%d tok=%s \"%s\" r='%s'\n", 
+			// s, tok, string(l.I[tok.Lext:tok.Rext]), escape(l.I[tok.Rext]))
 		}
 		if tok.Rext >= len(l.I) {
 			s = nullState
@@ -207,7 +206,7 @@ func (l *Lexer) scan(i int) *token.Token {
 		}
 	}
 	tok.Literal = l.I[tok.Lext:tok.Rext]
-	fmt.Printf(" scan: state=%d tok=%s\n", s, tok)
+	// fmt.Printf(" scan: state=%d tok=%s\n", s, tok)
 	return tok
 }
 
@@ -281,7 +280,7 @@ func not(r rune, set []rune) bool {
 }
 
 var accept = []token.Type{ {{range $tok := .Accept}}
-    token.{{$tok}}, {{end}}
+	token.{{$tok}}, {{end}}
 }
 
 var nextState = []func(r rune) state{ {{range $i, $set := .Transitions}}

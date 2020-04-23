@@ -11,6 +11,7 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
+
 package parser
 
 import (
@@ -103,8 +104,8 @@ type SlotData struct {
 
 const altCodeTmpl = `		case slot.{{.AltLabel}}: // {{.AltComment}}{{if .Empty}}
 			bsr.AddEmpty(slot.{{.AltLabel}},cI)
-        {{else}}{{range $i, $slot := .Slots}}
-            {{if $i}}if !testSelect(slot.{{$slot.PreLabel}}){ 
+		{{else}}{{range $i, $slot := .Slots}}
+			{{if $i}}if !testSelect(slot.{{$slot.PreLabel}}){ 
 				parseError(slot.{{$slot.PreLabel}}, cI)
 				break 
 			}
@@ -114,8 +115,8 @@ case slot.{{$slot.PostLabel}}: // {{$slot.Comment}}
 			{{else}}bsr.Add(slot.{{$slot.PostLabel}}, cU, cI, cI+1)
 			cI++ {{end}}{{end}}{{end}}
 			if follow(symbols.NT_{{.NT}}) {
-                rtn(symbols.NT_{{.NT}}, cU, cI)
-            } else {
-                parseError(slot.{{.LastSlot.PreLabel}}, cI)
-            }
+				rtn(symbols.NT_{{.NT}}, cU, cI)
+			} else {
+				parseError(slot.{{.LastSlot.PreLabel}}, cI)
+			}
 	`
