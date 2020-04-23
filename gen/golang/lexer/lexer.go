@@ -110,7 +110,6 @@ const tmplSrc = `
 package lexer
 
 import (
-	"fmt"
 	"io/ioutil"
 	"strings"
 	"unicode"
@@ -171,11 +170,14 @@ func (l *Lexer) scan(i int) *token.Token {
 		if tok.Rext >= len(l.I) {
 			s = nullState
 		} else {
-			s = nextState[s](l.I[tok.Rext])
-			tok.Rext++
 			tok.Type = accept[s]
+			s = nextState[s](l.I[tok.Rext])
+			if s != nullState {
+				tok.Rext++
+			}
 		}
 	}
+	tok.Literal = l.I[tok.Lext:tok.Rext]
 	return tok
 }
 
@@ -202,9 +204,9 @@ func (l *Lexer) GetLineColumnOfToken(i int) (line, col int) {
 
 // GetString returns the input string from the left extent of Token[lext] to
 // the right extent of Token[rext]
-// func (l *Lexer) GetString(lext, rext int) string {
-// 	return string(l.I[l.Tokens[lext].Lext:l.Tokens[rext].Rext])
-// }
+func (l *Lexer) GetString(lext, rext int) string {
+	return string(l.I[l.Tokens[lext].Lext:l.Tokens[rext].Rext])
+}
 
 func (l *Lexer) add(t token.Type, lext, rext int) {
 	l.addToken(token.New(t, lext, rext, l.I[lext:rext]))
@@ -243,7 +245,7 @@ var nextState = []func(r rune) state{ {{range $i, $set := .Transitions}}
 		case {{$cond.Condition}}:
 			return {{$cond.NextState}} {{end}}
 		}
-		panic(fmt.Sprintf("Unexpected rune '%c' in state S{{$i}}", r))
+		return nullState
 	}, {{end}}
 }
 `
