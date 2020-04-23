@@ -1,4 +1,4 @@
-# Gogll v3.1
+# Gogll v3
 
 [Copyright 2019 Marius Ackerman](License.txt)
 

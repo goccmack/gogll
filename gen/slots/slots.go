@@ -14,6 +14,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
+// Package slots generates a text file, grammar_slots.txt, containing the grammar slots.
 package slots
 
 import (

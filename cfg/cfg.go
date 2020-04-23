@@ -1,4 +1,4 @@
-//  Copyright 2019 Marius Ackerman
+//  Copyright 2020 Marius Ackerman
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import (
 )
 
 // Version is the version of this compiler
-const Version = "v3.0.2"
+const Version = "v3.0.3"
 
 var (
 	BaseDir    string

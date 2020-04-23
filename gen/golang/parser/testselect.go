@@ -141,29 +141,29 @@ func (g *gen) getFollowConditions(nt string) (tokens []*Symbol) {
 
 const testSelectTmpl = `
 var first = []map[token.Type]string { {{range $ts := .TestSelect}}
-    // {{$ts.Label}}
-    map[token.Type]string{ {{range $sym := $ts.Symbols}}
-        token.{{$sym.TokType}}:"{{$sym.Label}}",{{end}}
-    },{{end}}
+	// {{$ts.Label}}
+	map[token.Type]string{ {{range $sym := $ts.Symbols}}
+		token.{{$sym.TokType}}:"{{$sym.Label}}",{{end}}
+	},{{end}}
 }
 
 var followSets = []map[token.Type]string { {{range $flw := .Follow}}
-    // {{$flw.Label}}
-    map[token.Type]string{ {{range $sym := $flw.Symbols}}
-        token.{{$sym.TokType}}:"{{$sym.Label}}",{{end}}
-    },{{end}}
+	// {{$flw.Label}}
+	map[token.Type]string{ {{range $sym := $flw.Symbols}}
+		token.{{$sym.TokType}}:"{{$sym.Label}}",{{end}}
+	},{{end}}
 } 
 `
 
 /*
 var testSelect = []func()bool { {{range $i, $ts := .TestSelect}}
-    // slot.{{$ts.Label}}
-    func()bool{
-        return {{range $i, $c := $ts.Conditions}}{{$c.Cond}} {{if not $c.Last}}||{{end}}
-    {{end}} },
+	// slot.{{$ts.Label}}
+	func()bool{
+		return {{range $i, $c := $ts.Conditions}}{{$c.Cond}} {{if not $c.Last}}||{{end}}
+	{{end}} },
 {{end}} }
 
 {{range $i, $flw := .Follow}}func follow{{$flw.Label}} () bool {
-    return {{range $i, $c := $flw.Conditions}}{{$c.Cond}} {{if not $c.Last}}||{{end}}
+	return {{range $i, $c := $flw.Conditions}}{{$c.Cond}} {{if not $c.Last}}||{{end}}
 {{end}} }
 */

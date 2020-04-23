@@ -1,3 +1,20 @@
+/*
+Copyright 2020 Marius Ackerman
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+// Package token generates a Go token package
 package token
 
 import (
@@ -97,7 +114,7 @@ type Token struct {
 }
 
 // Type is the token type
-type Type = int
+type Type int
 const({{range $i, $typ := .Types}}
 	{{$typ.Name}} {{if eq $i 0}} Type = iota {{end}} // {{$typ.Comment}} {{end}}
 )
@@ -106,7 +123,7 @@ var TypeToString = []string{ {{range $str := .TypeToString}}
 	"{{$str}}",{{end}}
 }
 
-var StringToType = map[string] int { {{range $typ := .TypeToString}}
+var StringToType = map[string] Type { {{range $typ := .TypeToString}}
 	"{{$typ}}" : {{$typ}}, {{end}}
 }
 
@@ -122,5 +139,9 @@ func New(t Type, lext, rext int, lit []rune) *Token {
 func (t *Token) String() string {
 	return fmt.Sprintf("%s (%d,%d) %s",
 		TypeToString[t.Type], t.Lext, t.Rext, string(t.Literal))
+}
+
+func (t Type) String() string {
+	return TypeToString[t]
 }
 `
