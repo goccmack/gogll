@@ -105,6 +105,7 @@ import(
 	"fmt"
 	"os"
 	"sort"
+	"strings"
 
 	"{{.Package}}/parser/bsr"
 	"{{.Package}}/lexer"
@@ -173,15 +174,20 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 func ntAdd(nt symbols.NT, j int) {
 	// fmt.Printf("ntAdd(%s, %d)\n", nt, j)
 	failed := true
+	expected := map[token.Type]string{}
 	for _, l := range slot.GetAlternates(nt) {
 		if testSelect(l) {
 			dscAdd(l, j, j)
 			failed = false
+		} else {
+			for k, v := range first[l] {
+				expected[k] = v
+			}
 		}
 	}
 	if failed {
 		for _, l := range slot.GetAlternates(nt) {
-			parseError(l, j)
+			parseError(l, j, expected)
 		}
 	}
 }
@@ -404,15 +410,23 @@ type Error struct {
 	Slot         slot.Label
 	Token        *token.Token
 	Line, Column int
+	Expected     map[token.Type]string
 }
 
 func (pe *Error) String() string {
-	return fmt.Sprintf("Parse Error: %s I[%d]=%s at line %d col %d", 
+	w := new(bytes.Buffer)
+	fmt.Fprintf(w, "Parse Error: %s I[%d]=%s at line %d col %d\n", 
 		pe.Slot, pe.cI, pe.Token, pe.Line, pe.Column)
+	exp := []string{}
+	for _, e := range pe.Expected {
+		exp = append(exp, e)
+	}
+	fmt.Fprintf(w, "Expected one of: [%s]", strings.Join(exp, ","))
+	return w.String()
 }
 
-func parseError(slot slot.Label, i int) {
-	pe := &Error{cI: i, Slot: slot, Token: lex.Tokens[i]}
+func parseError(slot slot.Label, i int, expected map[token.Type]string) {
+	pe := &Error{cI: i, Slot: slot, Token: lex.Tokens[i], Expected: expected}
 	parseErrors = append(parseErrors, pe)
 }
 

@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 	"sort"
+	"strings"
 
 	"github.com/goccmack/gogll/lexer"
 	"github.com/goccmack/gogll/parser/bsr"
@@ -56,6 +57,150 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 		// DumpDescriptors()
 
 		switch L {
+		case slot.Package0R0: // Package : ∙package string_lit
+
+			bsr.Add(slot.Package0R1, cU, cI, cI+1)
+			cI++
+			if !testSelect(slot.Package0R1) {
+				parseError(slot.Package0R1, cI, first[slot.Package0R1])
+				break
+			}
+
+			bsr.Add(slot.Package0R2, cU, cI, cI+1)
+			cI++
+			if follow(symbols.NT_Package) {
+				rtn(symbols.NT_Package, cU, cI)
+			} else {
+				parseError(slot.Package0R1, cI, followSets[symbols.NT_Package])
+			}
+		case slot.LexRule0R0: // LexRule : ∙TokID : RegExp ;
+
+			call(slot.LexRule0R1, cU, cI)
+		case slot.LexRule0R1: // LexRule : TokID ∙: RegExp ;
+
+			if !testSelect(slot.LexRule0R1) {
+				parseError(slot.LexRule0R1, cI, first[slot.LexRule0R1])
+				break
+			}
+
+			bsr.Add(slot.LexRule0R2, cU, cI, cI+1)
+			cI++
+			if !testSelect(slot.LexRule0R2) {
+				parseError(slot.LexRule0R2, cI, first[slot.LexRule0R2])
+				break
+			}
+
+			call(slot.LexRule0R3, cU, cI)
+		case slot.LexRule0R3: // LexRule : TokID : RegExp ∙;
+
+			if !testSelect(slot.LexRule0R3) {
+				parseError(slot.LexRule0R3, cI, first[slot.LexRule0R3])
+				break
+			}
+
+			bsr.Add(slot.LexRule0R4, cU, cI, cI+1)
+			cI++
+			if follow(symbols.NT_LexRule) {
+				rtn(symbols.NT_LexRule, cU, cI)
+			} else {
+				parseError(slot.LexRule0R3, cI, followSets[symbols.NT_LexRule])
+			}
+		case slot.LexGroup0R0: // LexGroup : ∙( LexAlternates )
+
+			bsr.Add(slot.LexGroup0R1, cU, cI, cI+1)
+			cI++
+			if !testSelect(slot.LexGroup0R1) {
+				parseError(slot.LexGroup0R1, cI, first[slot.LexGroup0R1])
+				break
+			}
+
+			call(slot.LexGroup0R2, cU, cI)
+		case slot.LexGroup0R2: // LexGroup : ( LexAlternates ∙)
+
+			if !testSelect(slot.LexGroup0R2) {
+				parseError(slot.LexGroup0R2, cI, first[slot.LexGroup0R2])
+				break
+			}
+
+			bsr.Add(slot.LexGroup0R3, cU, cI, cI+1)
+			cI++
+			if follow(symbols.NT_LexGroup) {
+				rtn(symbols.NT_LexGroup, cU, cI)
+			} else {
+				parseError(slot.LexGroup0R2, cI, followSets[symbols.NT_LexGroup])
+			}
+		case slot.LexOptional0R0: // LexOptional : ∙[ LexAlternates ]
+
+			bsr.Add(slot.LexOptional0R1, cU, cI, cI+1)
+			cI++
+			if !testSelect(slot.LexOptional0R1) {
+				parseError(slot.LexOptional0R1, cI, first[slot.LexOptional0R1])
+				break
+			}
+
+			call(slot.LexOptional0R2, cU, cI)
+		case slot.LexOptional0R2: // LexOptional : [ LexAlternates ∙]
+
+			if !testSelect(slot.LexOptional0R2) {
+				parseError(slot.LexOptional0R2, cI, first[slot.LexOptional0R2])
+				break
+			}
+
+			bsr.Add(slot.LexOptional0R3, cU, cI, cI+1)
+			cI++
+			if follow(symbols.NT_LexOptional) {
+				rtn(symbols.NT_LexOptional, cU, cI)
+			} else {
+				parseError(slot.LexOptional0R2, cI, followSets[symbols.NT_LexOptional])
+			}
+		case slot.LexZeroOrMore0R0: // LexZeroOrMore : ∙{ LexAlternates }
+
+			bsr.Add(slot.LexZeroOrMore0R1, cU, cI, cI+1)
+			cI++
+			if !testSelect(slot.LexZeroOrMore0R1) {
+				parseError(slot.LexZeroOrMore0R1, cI, first[slot.LexZeroOrMore0R1])
+				break
+			}
+
+			call(slot.LexZeroOrMore0R2, cU, cI)
+		case slot.LexZeroOrMore0R2: // LexZeroOrMore : { LexAlternates ∙}
+
+			if !testSelect(slot.LexZeroOrMore0R2) {
+				parseError(slot.LexZeroOrMore0R2, cI, first[slot.LexZeroOrMore0R2])
+				break
+			}
+
+			bsr.Add(slot.LexZeroOrMore0R3, cU, cI, cI+1)
+			cI++
+			if follow(symbols.NT_LexZeroOrMore) {
+				rtn(symbols.NT_LexZeroOrMore, cU, cI)
+			} else {
+				parseError(slot.LexZeroOrMore0R2, cI, followSets[symbols.NT_LexZeroOrMore])
+			}
+		case slot.LexOneOrMore0R0: // LexOneOrMore : ∙< LexAlternates >
+
+			bsr.Add(slot.LexOneOrMore0R1, cU, cI, cI+1)
+			cI++
+			if !testSelect(slot.LexOneOrMore0R1) {
+				parseError(slot.LexOneOrMore0R1, cI, first[slot.LexOneOrMore0R1])
+				break
+			}
+
+			call(slot.LexOneOrMore0R2, cU, cI)
+		case slot.LexOneOrMore0R2: // LexOneOrMore : < LexAlternates ∙>
+
+			if !testSelect(slot.LexOneOrMore0R2) {
+				parseError(slot.LexOneOrMore0R2, cI, first[slot.LexOneOrMore0R2])
+				break
+			}
+
+			bsr.Add(slot.LexOneOrMore0R3, cU, cI, cI+1)
+			cI++
+			if follow(symbols.NT_LexOneOrMore) {
+				rtn(symbols.NT_LexOneOrMore, cU, cI)
+			} else {
+				parseError(slot.LexOneOrMore0R2, cI, followSets[symbols.NT_LexOneOrMore])
+			}
 		case slot.Rule0R0: // Rule : ∙LexRule
 
 			call(slot.Rule0R1, cU, cI)
@@ -64,7 +209,7 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 			if follow(symbols.NT_Rule) {
 				rtn(symbols.NT_Rule, cU, cI)
 			} else {
-				parseError(slot.Rule0R0, cI)
+				parseError(slot.Rule0R0, cI, followSets[symbols.NT_Rule])
 			}
 		case slot.Rule1R0: // Rule : ∙SyntaxRule
 
@@ -74,469 +219,7 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 			if follow(symbols.NT_Rule) {
 				rtn(symbols.NT_Rule, cU, cI)
 			} else {
-				parseError(slot.Rule1R0, cI)
-			}
-		case slot.LexOptional0R0: // LexOptional : ∙[ LexAlternates ]
-
-			bsr.Add(slot.LexOptional0R1, cU, cI, cI+1)
-			cI++
-			if !testSelect(slot.LexOptional0R1) {
-				parseError(slot.LexOptional0R1, cI)
-				break
-			}
-
-			call(slot.LexOptional0R2, cU, cI)
-		case slot.LexOptional0R2: // LexOptional : [ LexAlternates ∙]
-
-			if !testSelect(slot.LexOptional0R2) {
-				parseError(slot.LexOptional0R2, cI)
-				break
-			}
-
-			bsr.Add(slot.LexOptional0R3, cU, cI, cI+1)
-			cI++
-			if follow(symbols.NT_LexOptional) {
-				rtn(symbols.NT_LexOptional, cU, cI)
-			} else {
-				parseError(slot.LexOptional0R2, cI)
-			}
-		case slot.LexOneOrMore0R0: // LexOneOrMore : ∙< LexAlternates >
-
-			bsr.Add(slot.LexOneOrMore0R1, cU, cI, cI+1)
-			cI++
-			if !testSelect(slot.LexOneOrMore0R1) {
-				parseError(slot.LexOneOrMore0R1, cI)
-				break
-			}
-
-			call(slot.LexOneOrMore0R2, cU, cI)
-		case slot.LexOneOrMore0R2: // LexOneOrMore : < LexAlternates ∙>
-
-			if !testSelect(slot.LexOneOrMore0R2) {
-				parseError(slot.LexOneOrMore0R2, cI)
-				break
-			}
-
-			bsr.Add(slot.LexOneOrMore0R3, cU, cI, cI+1)
-			cI++
-			if follow(symbols.NT_LexOneOrMore) {
-				rtn(symbols.NT_LexOneOrMore, cU, cI)
-			} else {
-				parseError(slot.LexOneOrMore0R2, cI)
-			}
-		case slot.SyntaxAlternates0R0: // SyntaxAlternates : ∙SyntaxAlternate
-
-			call(slot.SyntaxAlternates0R1, cU, cI)
-		case slot.SyntaxAlternates0R1: // SyntaxAlternates : SyntaxAlternate ∙
-
-			if follow(symbols.NT_SyntaxAlternates) {
-				rtn(symbols.NT_SyntaxAlternates, cU, cI)
-			} else {
-				parseError(slot.SyntaxAlternates0R0, cI)
-			}
-		case slot.SyntaxAlternates1R0: // SyntaxAlternates : ∙SyntaxAlternate | SyntaxAlternates
-
-			call(slot.SyntaxAlternates1R1, cU, cI)
-		case slot.SyntaxAlternates1R1: // SyntaxAlternates : SyntaxAlternate ∙| SyntaxAlternates
-
-			if !testSelect(slot.SyntaxAlternates1R1) {
-				parseError(slot.SyntaxAlternates1R1, cI)
-				break
-			}
-
-			bsr.Add(slot.SyntaxAlternates1R2, cU, cI, cI+1)
-			cI++
-			if !testSelect(slot.SyntaxAlternates1R2) {
-				parseError(slot.SyntaxAlternates1R2, cI)
-				break
-			}
-
-			call(slot.SyntaxAlternates1R3, cU, cI)
-		case slot.SyntaxAlternates1R3: // SyntaxAlternates : SyntaxAlternate | SyntaxAlternates ∙
-
-			if follow(symbols.NT_SyntaxAlternates) {
-				rtn(symbols.NT_SyntaxAlternates, cU, cI)
-			} else {
-				parseError(slot.SyntaxAlternates1R2, cI)
-			}
-		case slot.SyntaxSymbols0R0: // SyntaxSymbols : ∙SyntaxSymbol
-
-			call(slot.SyntaxSymbols0R1, cU, cI)
-		case slot.SyntaxSymbols0R1: // SyntaxSymbols : SyntaxSymbol ∙
-
-			if follow(symbols.NT_SyntaxSymbols) {
-				rtn(symbols.NT_SyntaxSymbols, cU, cI)
-			} else {
-				parseError(slot.SyntaxSymbols0R0, cI)
-			}
-		case slot.SyntaxSymbols1R0: // SyntaxSymbols : ∙SyntaxSymbol SyntaxSymbols
-
-			call(slot.SyntaxSymbols1R1, cU, cI)
-		case slot.SyntaxSymbols1R1: // SyntaxSymbols : SyntaxSymbol ∙SyntaxSymbols
-
-			if !testSelect(slot.SyntaxSymbols1R1) {
-				parseError(slot.SyntaxSymbols1R1, cI)
-				break
-			}
-
-			call(slot.SyntaxSymbols1R2, cU, cI)
-		case slot.SyntaxSymbols1R2: // SyntaxSymbols : SyntaxSymbol SyntaxSymbols ∙
-
-			if follow(symbols.NT_SyntaxSymbols) {
-				rtn(symbols.NT_SyntaxSymbols, cU, cI)
-			} else {
-				parseError(slot.SyntaxSymbols1R1, cI)
-			}
-		case slot.TokID0R0: // TokID : ∙tokid
-
-			bsr.Add(slot.TokID0R1, cU, cI, cI+1)
-			cI++
-			if follow(symbols.NT_TokID) {
-				rtn(symbols.NT_TokID, cU, cI)
-			} else {
-				parseError(slot.TokID0R0, cI)
-			}
-		case slot.LexBracket0R0: // LexBracket : ∙LexGroup
-
-			call(slot.LexBracket0R1, cU, cI)
-		case slot.LexBracket0R1: // LexBracket : LexGroup ∙
-
-			if follow(symbols.NT_LexBracket) {
-				rtn(symbols.NT_LexBracket, cU, cI)
-			} else {
-				parseError(slot.LexBracket0R0, cI)
-			}
-		case slot.LexBracket1R0: // LexBracket : ∙LexOptional
-
-			call(slot.LexBracket1R1, cU, cI)
-		case slot.LexBracket1R1: // LexBracket : LexOptional ∙
-
-			if follow(symbols.NT_LexBracket) {
-				rtn(symbols.NT_LexBracket, cU, cI)
-			} else {
-				parseError(slot.LexBracket1R0, cI)
-			}
-		case slot.LexBracket2R0: // LexBracket : ∙LexZeroOrMore
-
-			call(slot.LexBracket2R1, cU, cI)
-		case slot.LexBracket2R1: // LexBracket : LexZeroOrMore ∙
-
-			if follow(symbols.NT_LexBracket) {
-				rtn(symbols.NT_LexBracket, cU, cI)
-			} else {
-				parseError(slot.LexBracket2R0, cI)
-			}
-		case slot.LexBracket3R0: // LexBracket : ∙LexOneOrMore
-
-			call(slot.LexBracket3R1, cU, cI)
-		case slot.LexBracket3R1: // LexBracket : LexOneOrMore ∙
-
-			if follow(symbols.NT_LexBracket) {
-				rtn(symbols.NT_LexBracket, cU, cI)
-			} else {
-				parseError(slot.LexBracket3R0, cI)
-			}
-		case slot.LexGroup0R0: // LexGroup : ∙( LexAlternates )
-
-			bsr.Add(slot.LexGroup0R1, cU, cI, cI+1)
-			cI++
-			if !testSelect(slot.LexGroup0R1) {
-				parseError(slot.LexGroup0R1, cI)
-				break
-			}
-
-			call(slot.LexGroup0R2, cU, cI)
-		case slot.LexGroup0R2: // LexGroup : ( LexAlternates ∙)
-
-			if !testSelect(slot.LexGroup0R2) {
-				parseError(slot.LexGroup0R2, cI)
-				break
-			}
-
-			bsr.Add(slot.LexGroup0R3, cU, cI, cI+1)
-			cI++
-			if follow(symbols.NT_LexGroup) {
-				rtn(symbols.NT_LexGroup, cU, cI)
-			} else {
-				parseError(slot.LexGroup0R2, cI)
-			}
-		case slot.UnicodeClass0R0: // UnicodeClass : ∙letter
-
-			bsr.Add(slot.UnicodeClass0R1, cU, cI, cI+1)
-			cI++
-			if follow(symbols.NT_UnicodeClass) {
-				rtn(symbols.NT_UnicodeClass, cU, cI)
-			} else {
-				parseError(slot.UnicodeClass0R0, cI)
-			}
-		case slot.UnicodeClass1R0: // UnicodeClass : ∙upcase
-
-			bsr.Add(slot.UnicodeClass1R1, cU, cI, cI+1)
-			cI++
-			if follow(symbols.NT_UnicodeClass) {
-				rtn(symbols.NT_UnicodeClass, cU, cI)
-			} else {
-				parseError(slot.UnicodeClass1R0, cI)
-			}
-		case slot.UnicodeClass2R0: // UnicodeClass : ∙lowcase
-
-			bsr.Add(slot.UnicodeClass2R1, cU, cI, cI+1)
-			cI++
-			if follow(symbols.NT_UnicodeClass) {
-				rtn(symbols.NT_UnicodeClass, cU, cI)
-			} else {
-				parseError(slot.UnicodeClass2R0, cI)
-			}
-		case slot.UnicodeClass3R0: // UnicodeClass : ∙number
-
-			bsr.Add(slot.UnicodeClass3R1, cU, cI, cI+1)
-			cI++
-			if follow(symbols.NT_UnicodeClass) {
-				rtn(symbols.NT_UnicodeClass, cU, cI)
-			} else {
-				parseError(slot.UnicodeClass3R0, cI)
-			}
-		case slot.SyntaxRule0R0: // SyntaxRule : ∙NT : SyntaxAlternates ;
-
-			call(slot.SyntaxRule0R1, cU, cI)
-		case slot.SyntaxRule0R1: // SyntaxRule : NT ∙: SyntaxAlternates ;
-
-			if !testSelect(slot.SyntaxRule0R1) {
-				parseError(slot.SyntaxRule0R1, cI)
-				break
-			}
-
-			bsr.Add(slot.SyntaxRule0R2, cU, cI, cI+1)
-			cI++
-			if !testSelect(slot.SyntaxRule0R2) {
-				parseError(slot.SyntaxRule0R2, cI)
-				break
-			}
-
-			call(slot.SyntaxRule0R3, cU, cI)
-		case slot.SyntaxRule0R3: // SyntaxRule : NT : SyntaxAlternates ∙;
-
-			if !testSelect(slot.SyntaxRule0R3) {
-				parseError(slot.SyntaxRule0R3, cI)
-				break
-			}
-
-			bsr.Add(slot.SyntaxRule0R4, cU, cI, cI+1)
-			cI++
-			if follow(symbols.NT_SyntaxRule) {
-				rtn(symbols.NT_SyntaxRule, cU, cI)
-			} else {
-				parseError(slot.SyntaxRule0R3, cI)
-			}
-		case slot.SyntaxSymbol0R0: // SyntaxSymbol : ∙NT
-
-			call(slot.SyntaxSymbol0R1, cU, cI)
-		case slot.SyntaxSymbol0R1: // SyntaxSymbol : NT ∙
-
-			if follow(symbols.NT_SyntaxSymbol) {
-				rtn(symbols.NT_SyntaxSymbol, cU, cI)
-			} else {
-				parseError(slot.SyntaxSymbol0R0, cI)
-			}
-		case slot.SyntaxSymbol1R0: // SyntaxSymbol : ∙TokID
-
-			call(slot.SyntaxSymbol1R1, cU, cI)
-		case slot.SyntaxSymbol1R1: // SyntaxSymbol : TokID ∙
-
-			if follow(symbols.NT_SyntaxSymbol) {
-				rtn(symbols.NT_SyntaxSymbol, cU, cI)
-			} else {
-				parseError(slot.SyntaxSymbol1R0, cI)
-			}
-		case slot.SyntaxSymbol2R0: // SyntaxSymbol : ∙string_lit
-
-			bsr.Add(slot.SyntaxSymbol2R1, cU, cI, cI+1)
-			cI++
-			if follow(symbols.NT_SyntaxSymbol) {
-				rtn(symbols.NT_SyntaxSymbol, cU, cI)
-			} else {
-				parseError(slot.SyntaxSymbol2R0, cI)
-			}
-		case slot.Rules0R0: // Rules : ∙Rule
-
-			call(slot.Rules0R1, cU, cI)
-		case slot.Rules0R1: // Rules : Rule ∙
-
-			if follow(symbols.NT_Rules) {
-				rtn(symbols.NT_Rules, cU, cI)
-			} else {
-				parseError(slot.Rules0R0, cI)
-			}
-		case slot.Rules1R0: // Rules : ∙Rule Rules
-
-			call(slot.Rules1R1, cU, cI)
-		case slot.Rules1R1: // Rules : Rule ∙Rules
-
-			if !testSelect(slot.Rules1R1) {
-				parseError(slot.Rules1R1, cI)
-				break
-			}
-
-			call(slot.Rules1R2, cU, cI)
-		case slot.Rules1R2: // Rules : Rule Rules ∙
-
-			if follow(symbols.NT_Rules) {
-				rtn(symbols.NT_Rules, cU, cI)
-			} else {
-				parseError(slot.Rules1R1, cI)
-			}
-		case slot.LexAlternates0R0: // LexAlternates : ∙RegExp
-
-			call(slot.LexAlternates0R1, cU, cI)
-		case slot.LexAlternates0R1: // LexAlternates : RegExp ∙
-
-			if follow(symbols.NT_LexAlternates) {
-				rtn(symbols.NT_LexAlternates, cU, cI)
-			} else {
-				parseError(slot.LexAlternates0R0, cI)
-			}
-		case slot.LexAlternates1R0: // LexAlternates : ∙RegExp | LexAlternates
-
-			call(slot.LexAlternates1R1, cU, cI)
-		case slot.LexAlternates1R1: // LexAlternates : RegExp ∙| LexAlternates
-
-			if !testSelect(slot.LexAlternates1R1) {
-				parseError(slot.LexAlternates1R1, cI)
-				break
-			}
-
-			bsr.Add(slot.LexAlternates1R2, cU, cI, cI+1)
-			cI++
-			if !testSelect(slot.LexAlternates1R2) {
-				parseError(slot.LexAlternates1R2, cI)
-				break
-			}
-
-			call(slot.LexAlternates1R3, cU, cI)
-		case slot.LexAlternates1R3: // LexAlternates : RegExp | LexAlternates ∙
-
-			if follow(symbols.NT_LexAlternates) {
-				rtn(symbols.NT_LexAlternates, cU, cI)
-			} else {
-				parseError(slot.LexAlternates1R2, cI)
-			}
-		case slot.SyntaxAlternate0R0: // SyntaxAlternate : ∙SyntaxSymbols
-
-			call(slot.SyntaxAlternate0R1, cU, cI)
-		case slot.SyntaxAlternate0R1: // SyntaxAlternate : SyntaxSymbols ∙
-
-			if follow(symbols.NT_SyntaxAlternate) {
-				rtn(symbols.NT_SyntaxAlternate, cU, cI)
-			} else {
-				parseError(slot.SyntaxAlternate0R0, cI)
-			}
-		case slot.SyntaxAlternate1R0: // SyntaxAlternate : ∙empty
-
-			bsr.Add(slot.SyntaxAlternate1R1, cU, cI, cI+1)
-			cI++
-			if follow(symbols.NT_SyntaxAlternate) {
-				rtn(symbols.NT_SyntaxAlternate, cU, cI)
-			} else {
-				parseError(slot.SyntaxAlternate1R0, cI)
-			}
-		case slot.LexZeroOrMore0R0: // LexZeroOrMore : ∙{ LexAlternates }
-
-			bsr.Add(slot.LexZeroOrMore0R1, cU, cI, cI+1)
-			cI++
-			if !testSelect(slot.LexZeroOrMore0R1) {
-				parseError(slot.LexZeroOrMore0R1, cI)
-				break
-			}
-
-			call(slot.LexZeroOrMore0R2, cU, cI)
-		case slot.LexZeroOrMore0R2: // LexZeroOrMore : { LexAlternates ∙}
-
-			if !testSelect(slot.LexZeroOrMore0R2) {
-				parseError(slot.LexZeroOrMore0R2, cI)
-				break
-			}
-
-			bsr.Add(slot.LexZeroOrMore0R3, cU, cI, cI+1)
-			cI++
-			if follow(symbols.NT_LexZeroOrMore) {
-				rtn(symbols.NT_LexZeroOrMore, cU, cI)
-			} else {
-				parseError(slot.LexZeroOrMore0R2, cI)
-			}
-		case slot.NT0R0: // NT : ∙nt
-
-			bsr.Add(slot.NT0R1, cU, cI, cI+1)
-			cI++
-			if follow(symbols.NT_NT) {
-				rtn(symbols.NT_NT, cU, cI)
-			} else {
-				parseError(slot.NT0R0, cI)
-			}
-		case slot.GoGLL0R0: // GoGLL : ∙Package Rules
-
-			call(slot.GoGLL0R1, cU, cI)
-		case slot.GoGLL0R1: // GoGLL : Package ∙Rules
-
-			if !testSelect(slot.GoGLL0R1) {
-				parseError(slot.GoGLL0R1, cI)
-				break
-			}
-
-			call(slot.GoGLL0R2, cU, cI)
-		case slot.GoGLL0R2: // GoGLL : Package Rules ∙
-
-			if follow(symbols.NT_GoGLL) {
-				rtn(symbols.NT_GoGLL, cU, cI)
-			} else {
-				parseError(slot.GoGLL0R1, cI)
-			}
-		case slot.Package0R0: // Package : ∙package string_lit
-
-			bsr.Add(slot.Package0R1, cU, cI, cI+1)
-			cI++
-			if !testSelect(slot.Package0R1) {
-				parseError(slot.Package0R1, cI)
-				break
-			}
-
-			bsr.Add(slot.Package0R2, cU, cI, cI+1)
-			cI++
-			if follow(symbols.NT_Package) {
-				rtn(symbols.NT_Package, cU, cI)
-			} else {
-				parseError(slot.Package0R1, cI)
-			}
-		case slot.LexRule0R0: // LexRule : ∙TokID : RegExp ;
-
-			call(slot.LexRule0R1, cU, cI)
-		case slot.LexRule0R1: // LexRule : TokID ∙: RegExp ;
-
-			if !testSelect(slot.LexRule0R1) {
-				parseError(slot.LexRule0R1, cI)
-				break
-			}
-
-			bsr.Add(slot.LexRule0R2, cU, cI, cI+1)
-			cI++
-			if !testSelect(slot.LexRule0R2) {
-				parseError(slot.LexRule0R2, cI)
-				break
-			}
-
-			call(slot.LexRule0R3, cU, cI)
-		case slot.LexRule0R3: // LexRule : TokID : RegExp ∙;
-
-			if !testSelect(slot.LexRule0R3) {
-				parseError(slot.LexRule0R3, cI)
-				break
-			}
-
-			bsr.Add(slot.LexRule0R4, cU, cI, cI+1)
-			cI++
-			if follow(symbols.NT_LexRule) {
-				rtn(symbols.NT_LexRule, cU, cI)
-			} else {
-				parseError(slot.LexRule0R3, cI)
+				parseError(slot.Rule1R0, cI, followSets[symbols.NT_Rule])
 			}
 		case slot.RegExp0R0: // RegExp : ∙LexSymbol
 
@@ -546,7 +229,7 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 			if follow(symbols.NT_RegExp) {
 				rtn(symbols.NT_RegExp, cU, cI)
 			} else {
-				parseError(slot.RegExp0R0, cI)
+				parseError(slot.RegExp0R0, cI, followSets[symbols.NT_RegExp])
 			}
 		case slot.RegExp1R0: // RegExp : ∙LexSymbol RegExp
 
@@ -554,7 +237,7 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 		case slot.RegExp1R1: // RegExp : LexSymbol ∙RegExp
 
 			if !testSelect(slot.RegExp1R1) {
-				parseError(slot.RegExp1R1, cI)
+				parseError(slot.RegExp1R1, cI, first[slot.RegExp1R1])
 				break
 			}
 
@@ -564,7 +247,137 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 			if follow(symbols.NT_RegExp) {
 				rtn(symbols.NT_RegExp, cU, cI)
 			} else {
-				parseError(slot.RegExp1R1, cI)
+				parseError(slot.RegExp1R1, cI, followSets[symbols.NT_RegExp])
+			}
+		case slot.LexBracket0R0: // LexBracket : ∙LexGroup
+
+			call(slot.LexBracket0R1, cU, cI)
+		case slot.LexBracket0R1: // LexBracket : LexGroup ∙
+
+			if follow(symbols.NT_LexBracket) {
+				rtn(symbols.NT_LexBracket, cU, cI)
+			} else {
+				parseError(slot.LexBracket0R0, cI, followSets[symbols.NT_LexBracket])
+			}
+		case slot.LexBracket1R0: // LexBracket : ∙LexOptional
+
+			call(slot.LexBracket1R1, cU, cI)
+		case slot.LexBracket1R1: // LexBracket : LexOptional ∙
+
+			if follow(symbols.NT_LexBracket) {
+				rtn(symbols.NT_LexBracket, cU, cI)
+			} else {
+				parseError(slot.LexBracket1R0, cI, followSets[symbols.NT_LexBracket])
+			}
+		case slot.LexBracket2R0: // LexBracket : ∙LexZeroOrMore
+
+			call(slot.LexBracket2R1, cU, cI)
+		case slot.LexBracket2R1: // LexBracket : LexZeroOrMore ∙
+
+			if follow(symbols.NT_LexBracket) {
+				rtn(symbols.NT_LexBracket, cU, cI)
+			} else {
+				parseError(slot.LexBracket2R0, cI, followSets[symbols.NT_LexBracket])
+			}
+		case slot.LexBracket3R0: // LexBracket : ∙LexOneOrMore
+
+			call(slot.LexBracket3R1, cU, cI)
+		case slot.LexBracket3R1: // LexBracket : LexOneOrMore ∙
+
+			if follow(symbols.NT_LexBracket) {
+				rtn(symbols.NT_LexBracket, cU, cI)
+			} else {
+				parseError(slot.LexBracket3R0, cI, followSets[symbols.NT_LexBracket])
+			}
+		case slot.LexAlternates0R0: // LexAlternates : ∙RegExp
+
+			call(slot.LexAlternates0R1, cU, cI)
+		case slot.LexAlternates0R1: // LexAlternates : RegExp ∙
+
+			if follow(symbols.NT_LexAlternates) {
+				rtn(symbols.NT_LexAlternates, cU, cI)
+			} else {
+				parseError(slot.LexAlternates0R0, cI, followSets[symbols.NT_LexAlternates])
+			}
+		case slot.LexAlternates1R0: // LexAlternates : ∙RegExp | LexAlternates
+
+			call(slot.LexAlternates1R1, cU, cI)
+		case slot.LexAlternates1R1: // LexAlternates : RegExp ∙| LexAlternates
+
+			if !testSelect(slot.LexAlternates1R1) {
+				parseError(slot.LexAlternates1R1, cI, first[slot.LexAlternates1R1])
+				break
+			}
+
+			bsr.Add(slot.LexAlternates1R2, cU, cI, cI+1)
+			cI++
+			if !testSelect(slot.LexAlternates1R2) {
+				parseError(slot.LexAlternates1R2, cI, first[slot.LexAlternates1R2])
+				break
+			}
+
+			call(slot.LexAlternates1R3, cU, cI)
+		case slot.LexAlternates1R3: // LexAlternates : RegExp | LexAlternates ∙
+
+			if follow(symbols.NT_LexAlternates) {
+				rtn(symbols.NT_LexAlternates, cU, cI)
+			} else {
+				parseError(slot.LexAlternates1R2, cI, followSets[symbols.NT_LexAlternates])
+			}
+		case slot.NT0R0: // NT : ∙nt
+
+			bsr.Add(slot.NT0R1, cU, cI, cI+1)
+			cI++
+			if follow(symbols.NT_NT) {
+				rtn(symbols.NT_NT, cU, cI)
+			} else {
+				parseError(slot.NT0R0, cI, followSets[symbols.NT_NT])
+			}
+		case slot.SyntaxSymbols0R0: // SyntaxSymbols : ∙SyntaxSymbol
+
+			call(slot.SyntaxSymbols0R1, cU, cI)
+		case slot.SyntaxSymbols0R1: // SyntaxSymbols : SyntaxSymbol ∙
+
+			if follow(symbols.NT_SyntaxSymbols) {
+				rtn(symbols.NT_SyntaxSymbols, cU, cI)
+			} else {
+				parseError(slot.SyntaxSymbols0R0, cI, followSets[symbols.NT_SyntaxSymbols])
+			}
+		case slot.SyntaxSymbols1R0: // SyntaxSymbols : ∙SyntaxSymbol SyntaxSymbols
+
+			call(slot.SyntaxSymbols1R1, cU, cI)
+		case slot.SyntaxSymbols1R1: // SyntaxSymbols : SyntaxSymbol ∙SyntaxSymbols
+
+			if !testSelect(slot.SyntaxSymbols1R1) {
+				parseError(slot.SyntaxSymbols1R1, cI, first[slot.SyntaxSymbols1R1])
+				break
+			}
+
+			call(slot.SyntaxSymbols1R2, cU, cI)
+		case slot.SyntaxSymbols1R2: // SyntaxSymbols : SyntaxSymbol SyntaxSymbols ∙
+
+			if follow(symbols.NT_SyntaxSymbols) {
+				rtn(symbols.NT_SyntaxSymbols, cU, cI)
+			} else {
+				parseError(slot.SyntaxSymbols1R1, cI, followSets[symbols.NT_SyntaxSymbols])
+			}
+		case slot.GoGLL0R0: // GoGLL : ∙Package Rules
+
+			call(slot.GoGLL0R1, cU, cI)
+		case slot.GoGLL0R1: // GoGLL : Package ∙Rules
+
+			if !testSelect(slot.GoGLL0R1) {
+				parseError(slot.GoGLL0R1, cI, first[slot.GoGLL0R1])
+				break
+			}
+
+			call(slot.GoGLL0R2, cU, cI)
+		case slot.GoGLL0R2: // GoGLL : Package Rules ∙
+
+			if follow(symbols.NT_GoGLL) {
+				rtn(symbols.NT_GoGLL, cU, cI)
+			} else {
+				parseError(slot.GoGLL0R1, cI, followSets[symbols.NT_GoGLL])
 			}
 		case slot.LexSymbol0R0: // LexSymbol : ∙.
 
@@ -573,14 +386,14 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 			if follow(symbols.NT_LexSymbol) {
 				rtn(symbols.NT_LexSymbol, cU, cI)
 			} else {
-				parseError(slot.LexSymbol0R0, cI)
+				parseError(slot.LexSymbol0R0, cI, followSets[symbols.NT_LexSymbol])
 			}
 		case slot.LexSymbol1R0: // LexSymbol : ∙any string_lit
 
 			bsr.Add(slot.LexSymbol1R1, cU, cI, cI+1)
 			cI++
 			if !testSelect(slot.LexSymbol1R1) {
-				parseError(slot.LexSymbol1R1, cI)
+				parseError(slot.LexSymbol1R1, cI, first[slot.LexSymbol1R1])
 				break
 			}
 
@@ -589,7 +402,7 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 			if follow(symbols.NT_LexSymbol) {
 				rtn(symbols.NT_LexSymbol, cU, cI)
 			} else {
-				parseError(slot.LexSymbol1R1, cI)
+				parseError(slot.LexSymbol1R1, cI, followSets[symbols.NT_LexSymbol])
 			}
 		case slot.LexSymbol2R0: // LexSymbol : ∙char_lit
 
@@ -598,7 +411,7 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 			if follow(symbols.NT_LexSymbol) {
 				rtn(symbols.NT_LexSymbol, cU, cI)
 			} else {
-				parseError(slot.LexSymbol2R0, cI)
+				parseError(slot.LexSymbol2R0, cI, followSets[symbols.NT_LexSymbol])
 			}
 		case slot.LexSymbol3R0: // LexSymbol : ∙LexBracket
 
@@ -608,14 +421,14 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 			if follow(symbols.NT_LexSymbol) {
 				rtn(symbols.NT_LexSymbol, cU, cI)
 			} else {
-				parseError(slot.LexSymbol3R0, cI)
+				parseError(slot.LexSymbol3R0, cI, followSets[symbols.NT_LexSymbol])
 			}
 		case slot.LexSymbol4R0: // LexSymbol : ∙not string_lit
 
 			bsr.Add(slot.LexSymbol4R1, cU, cI, cI+1)
 			cI++
 			if !testSelect(slot.LexSymbol4R1) {
-				parseError(slot.LexSymbol4R1, cI)
+				parseError(slot.LexSymbol4R1, cI, first[slot.LexSymbol4R1])
 				break
 			}
 
@@ -624,7 +437,7 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 			if follow(symbols.NT_LexSymbol) {
 				rtn(symbols.NT_LexSymbol, cU, cI)
 			} else {
-				parseError(slot.LexSymbol4R1, cI)
+				parseError(slot.LexSymbol4R1, cI, followSets[symbols.NT_LexSymbol])
 			}
 		case slot.LexSymbol5R0: // LexSymbol : ∙UnicodeClass
 
@@ -634,7 +447,195 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 			if follow(symbols.NT_LexSymbol) {
 				rtn(symbols.NT_LexSymbol, cU, cI)
 			} else {
-				parseError(slot.LexSymbol5R0, cI)
+				parseError(slot.LexSymbol5R0, cI, followSets[symbols.NT_LexSymbol])
+			}
+		case slot.SyntaxAlternate0R0: // SyntaxAlternate : ∙SyntaxSymbols
+
+			call(slot.SyntaxAlternate0R1, cU, cI)
+		case slot.SyntaxAlternate0R1: // SyntaxAlternate : SyntaxSymbols ∙
+
+			if follow(symbols.NT_SyntaxAlternate) {
+				rtn(symbols.NT_SyntaxAlternate, cU, cI)
+			} else {
+				parseError(slot.SyntaxAlternate0R0, cI, followSets[symbols.NT_SyntaxAlternate])
+			}
+		case slot.SyntaxAlternate1R0: // SyntaxAlternate : ∙empty
+
+			bsr.Add(slot.SyntaxAlternate1R1, cU, cI, cI+1)
+			cI++
+			if follow(symbols.NT_SyntaxAlternate) {
+				rtn(symbols.NT_SyntaxAlternate, cU, cI)
+			} else {
+				parseError(slot.SyntaxAlternate1R0, cI, followSets[symbols.NT_SyntaxAlternate])
+			}
+		case slot.SyntaxSymbol0R0: // SyntaxSymbol : ∙NT
+
+			call(slot.SyntaxSymbol0R1, cU, cI)
+		case slot.SyntaxSymbol0R1: // SyntaxSymbol : NT ∙
+
+			if follow(symbols.NT_SyntaxSymbol) {
+				rtn(symbols.NT_SyntaxSymbol, cU, cI)
+			} else {
+				parseError(slot.SyntaxSymbol0R0, cI, followSets[symbols.NT_SyntaxSymbol])
+			}
+		case slot.SyntaxSymbol1R0: // SyntaxSymbol : ∙TokID
+
+			call(slot.SyntaxSymbol1R1, cU, cI)
+		case slot.SyntaxSymbol1R1: // SyntaxSymbol : TokID ∙
+
+			if follow(symbols.NT_SyntaxSymbol) {
+				rtn(symbols.NT_SyntaxSymbol, cU, cI)
+			} else {
+				parseError(slot.SyntaxSymbol1R0, cI, followSets[symbols.NT_SyntaxSymbol])
+			}
+		case slot.SyntaxSymbol2R0: // SyntaxSymbol : ∙string_lit
+
+			bsr.Add(slot.SyntaxSymbol2R1, cU, cI, cI+1)
+			cI++
+			if follow(symbols.NT_SyntaxSymbol) {
+				rtn(symbols.NT_SyntaxSymbol, cU, cI)
+			} else {
+				parseError(slot.SyntaxSymbol2R0, cI, followSets[symbols.NT_SyntaxSymbol])
+			}
+		case slot.TokID0R0: // TokID : ∙tokid
+
+			bsr.Add(slot.TokID0R1, cU, cI, cI+1)
+			cI++
+			if follow(symbols.NT_TokID) {
+				rtn(symbols.NT_TokID, cU, cI)
+			} else {
+				parseError(slot.TokID0R0, cI, followSets[symbols.NT_TokID])
+			}
+		case slot.Rules0R0: // Rules : ∙Rule
+
+			call(slot.Rules0R1, cU, cI)
+		case slot.Rules0R1: // Rules : Rule ∙
+
+			if follow(symbols.NT_Rules) {
+				rtn(symbols.NT_Rules, cU, cI)
+			} else {
+				parseError(slot.Rules0R0, cI, followSets[symbols.NT_Rules])
+			}
+		case slot.Rules1R0: // Rules : ∙Rule Rules
+
+			call(slot.Rules1R1, cU, cI)
+		case slot.Rules1R1: // Rules : Rule ∙Rules
+
+			if !testSelect(slot.Rules1R1) {
+				parseError(slot.Rules1R1, cI, first[slot.Rules1R1])
+				break
+			}
+
+			call(slot.Rules1R2, cU, cI)
+		case slot.Rules1R2: // Rules : Rule Rules ∙
+
+			if follow(symbols.NT_Rules) {
+				rtn(symbols.NT_Rules, cU, cI)
+			} else {
+				parseError(slot.Rules1R1, cI, followSets[symbols.NT_Rules])
+			}
+		case slot.UnicodeClass0R0: // UnicodeClass : ∙letter
+
+			bsr.Add(slot.UnicodeClass0R1, cU, cI, cI+1)
+			cI++
+			if follow(symbols.NT_UnicodeClass) {
+				rtn(symbols.NT_UnicodeClass, cU, cI)
+			} else {
+				parseError(slot.UnicodeClass0R0, cI, followSets[symbols.NT_UnicodeClass])
+			}
+		case slot.UnicodeClass1R0: // UnicodeClass : ∙upcase
+
+			bsr.Add(slot.UnicodeClass1R1, cU, cI, cI+1)
+			cI++
+			if follow(symbols.NT_UnicodeClass) {
+				rtn(symbols.NT_UnicodeClass, cU, cI)
+			} else {
+				parseError(slot.UnicodeClass1R0, cI, followSets[symbols.NT_UnicodeClass])
+			}
+		case slot.UnicodeClass2R0: // UnicodeClass : ∙lowcase
+
+			bsr.Add(slot.UnicodeClass2R1, cU, cI, cI+1)
+			cI++
+			if follow(symbols.NT_UnicodeClass) {
+				rtn(symbols.NT_UnicodeClass, cU, cI)
+			} else {
+				parseError(slot.UnicodeClass2R0, cI, followSets[symbols.NT_UnicodeClass])
+			}
+		case slot.UnicodeClass3R0: // UnicodeClass : ∙number
+
+			bsr.Add(slot.UnicodeClass3R1, cU, cI, cI+1)
+			cI++
+			if follow(symbols.NT_UnicodeClass) {
+				rtn(symbols.NT_UnicodeClass, cU, cI)
+			} else {
+				parseError(slot.UnicodeClass3R0, cI, followSets[symbols.NT_UnicodeClass])
+			}
+		case slot.SyntaxRule0R0: // SyntaxRule : ∙NT : SyntaxAlternates ;
+
+			call(slot.SyntaxRule0R1, cU, cI)
+		case slot.SyntaxRule0R1: // SyntaxRule : NT ∙: SyntaxAlternates ;
+
+			if !testSelect(slot.SyntaxRule0R1) {
+				parseError(slot.SyntaxRule0R1, cI, first[slot.SyntaxRule0R1])
+				break
+			}
+
+			bsr.Add(slot.SyntaxRule0R2, cU, cI, cI+1)
+			cI++
+			if !testSelect(slot.SyntaxRule0R2) {
+				parseError(slot.SyntaxRule0R2, cI, first[slot.SyntaxRule0R2])
+				break
+			}
+
+			call(slot.SyntaxRule0R3, cU, cI)
+		case slot.SyntaxRule0R3: // SyntaxRule : NT : SyntaxAlternates ∙;
+
+			if !testSelect(slot.SyntaxRule0R3) {
+				parseError(slot.SyntaxRule0R3, cI, first[slot.SyntaxRule0R3])
+				break
+			}
+
+			bsr.Add(slot.SyntaxRule0R4, cU, cI, cI+1)
+			cI++
+			if follow(symbols.NT_SyntaxRule) {
+				rtn(symbols.NT_SyntaxRule, cU, cI)
+			} else {
+				parseError(slot.SyntaxRule0R3, cI, followSets[symbols.NT_SyntaxRule])
+			}
+		case slot.SyntaxAlternates0R0: // SyntaxAlternates : ∙SyntaxAlternate
+
+			call(slot.SyntaxAlternates0R1, cU, cI)
+		case slot.SyntaxAlternates0R1: // SyntaxAlternates : SyntaxAlternate ∙
+
+			if follow(symbols.NT_SyntaxAlternates) {
+				rtn(symbols.NT_SyntaxAlternates, cU, cI)
+			} else {
+				parseError(slot.SyntaxAlternates0R0, cI, followSets[symbols.NT_SyntaxAlternates])
+			}
+		case slot.SyntaxAlternates1R0: // SyntaxAlternates : ∙SyntaxAlternate | SyntaxAlternates
+
+			call(slot.SyntaxAlternates1R1, cU, cI)
+		case slot.SyntaxAlternates1R1: // SyntaxAlternates : SyntaxAlternate ∙| SyntaxAlternates
+
+			if !testSelect(slot.SyntaxAlternates1R1) {
+				parseError(slot.SyntaxAlternates1R1, cI, first[slot.SyntaxAlternates1R1])
+				break
+			}
+
+			bsr.Add(slot.SyntaxAlternates1R2, cU, cI, cI+1)
+			cI++
+			if !testSelect(slot.SyntaxAlternates1R2) {
+				parseError(slot.SyntaxAlternates1R2, cI, first[slot.SyntaxAlternates1R2])
+				break
+			}
+
+			call(slot.SyntaxAlternates1R3, cU, cI)
+		case slot.SyntaxAlternates1R3: // SyntaxAlternates : SyntaxAlternate | SyntaxAlternates ∙
+
+			if follow(symbols.NT_SyntaxAlternates) {
+				rtn(symbols.NT_SyntaxAlternates, cU, cI)
+			} else {
+				parseError(slot.SyntaxAlternates1R2, cI, followSets[symbols.NT_SyntaxAlternates])
 			}
 
 		default:
@@ -653,15 +654,20 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 func ntAdd(nt symbols.NT, j int) {
 	// fmt.Printf("ntAdd(%s, %d)\n", nt, j)
 	failed := true
+	expected := map[token.Type]string{}
 	for _, l := range slot.GetAlternates(nt) {
 		if testSelect(l) {
 			dscAdd(l, j, j)
 			failed = false
+		} else {
+			for k, v := range first[l] {
+				expected[k] = v
+			}
 		}
 	}
 	if failed {
 		for _, l := range slot.GetAlternates(nt) {
-			parseError(l, j)
+			parseError(l, j, expected)
 		}
 	}
 }
@@ -905,10 +911,10 @@ var first = []map[token.Type]string{
 	},
 	// LexAlternates : RegExp ∙
 	map[token.Type]string{
+		token.Type2:  ")",
 		token.Type11: "]",
 		token.Type27: "}",
 		token.Type7:  ">",
-		token.Type2:  ")",
 	},
 	// LexAlternates : ∙RegExp | LexAlternates
 	map[token.Type]string{
@@ -957,24 +963,24 @@ var first = []map[token.Type]string{
 	},
 	// LexBracket : LexGroup ∙
 	map[token.Type]string{
-		token.Type16: "letter",
 		token.Type8:  "[",
-		token.Type11: "]",
-		token.Type25: "{",
-		token.Type18: "not",
-		token.Type2:  ")",
-		token.Type3:  ".",
-		token.Type5:  ";",
-		token.Type26: "|",
-		token.Type1:  "(",
 		token.Type6:  "<",
-		token.Type13: "any",
-		token.Type7:  ">",
-		token.Type14: "char_lit",
-		token.Type27: "}",
+		token.Type26: "|",
+		token.Type16: "letter",
+		token.Type3:  ".",
 		token.Type17: "lowcase",
-		token.Type24: "upcase",
+		token.Type11: "]",
 		token.Type20: "number",
+		token.Type2:  ")",
+		token.Type5:  ";",
+		token.Type27: "}",
+		token.Type13: "any",
+		token.Type1:  "(",
+		token.Type24: "upcase",
+		token.Type25: "{",
+		token.Type14: "char_lit",
+		token.Type7:  ">",
+		token.Type18: "not",
 	},
 	// LexBracket : ∙LexOptional
 	map[token.Type]string{
@@ -982,24 +988,24 @@ var first = []map[token.Type]string{
 	},
 	// LexBracket : LexOptional ∙
 	map[token.Type]string{
+		token.Type13: "any",
+		token.Type1:  "(",
+		token.Type24: "upcase",
 		token.Type25: "{",
+		token.Type14: "char_lit",
+		token.Type7:  ">",
 		token.Type18: "not",
 		token.Type26: "|",
-		token.Type1:  "(",
+		token.Type16: "letter",
+		token.Type3:  ".",
+		token.Type17: "lowcase",
+		token.Type8:  "[",
 		token.Type6:  "<",
 		token.Type2:  ")",
-		token.Type3:  ".",
 		token.Type5:  ";",
-		token.Type17: "lowcase",
-		token.Type24: "upcase",
-		token.Type20: "number",
-		token.Type13: "any",
-		token.Type7:  ">",
-		token.Type14: "char_lit",
 		token.Type27: "}",
-		token.Type16: "letter",
-		token.Type8:  "[",
 		token.Type11: "]",
+		token.Type20: "number",
 	},
 	// LexBracket : ∙LexZeroOrMore
 	map[token.Type]string{
@@ -1007,24 +1013,24 @@ var first = []map[token.Type]string{
 	},
 	// LexBracket : LexZeroOrMore ∙
 	map[token.Type]string{
-		token.Type11: "]",
-		token.Type16: "letter",
-		token.Type8:  "[",
+		token.Type14: "char_lit",
+		token.Type7:  ">",
 		token.Type18: "not",
-		token.Type25: "{",
-		token.Type5:  ";",
 		token.Type26: "|",
-		token.Type1:  "(",
+		token.Type16: "letter",
+		token.Type3:  ".",
+		token.Type17: "lowcase",
+		token.Type8:  "[",
 		token.Type6:  "<",
 		token.Type2:  ")",
-		token.Type3:  ".",
+		token.Type5:  ";",
 		token.Type27: "}",
-		token.Type17: "lowcase",
-		token.Type24: "upcase",
+		token.Type11: "]",
 		token.Type20: "number",
 		token.Type13: "any",
-		token.Type7:  ">",
-		token.Type14: "char_lit",
+		token.Type1:  "(",
+		token.Type24: "upcase",
+		token.Type25: "{",
 	},
 	// LexBracket : ∙LexOneOrMore
 	map[token.Type]string{
@@ -1032,24 +1038,24 @@ var first = []map[token.Type]string{
 	},
 	// LexBracket : LexOneOrMore ∙
 	map[token.Type]string{
-		token.Type25: "{",
-		token.Type18: "not",
-		token.Type2:  ")",
-		token.Type3:  ".",
-		token.Type5:  ";",
-		token.Type26: "|",
-		token.Type1:  "(",
-		token.Type6:  "<",
-		token.Type7:  ">",
-		token.Type14: "char_lit",
-		token.Type27: "}",
-		token.Type17: "lowcase",
-		token.Type24: "upcase",
-		token.Type20: "number",
 		token.Type13: "any",
+		token.Type1:  "(",
+		token.Type24: "upcase",
+		token.Type25: "{",
+		token.Type14: "char_lit",
+		token.Type7:  ">",
+		token.Type18: "not",
+		token.Type26: "|",
 		token.Type16: "letter",
+		token.Type3:  ".",
+		token.Type17: "lowcase",
 		token.Type8:  "[",
+		token.Type6:  "<",
+		token.Type2:  ")",
+		token.Type5:  ";",
+		token.Type27: "}",
 		token.Type11: "]",
+		token.Type20: "number",
 	},
 	// LexGroup : ∙( LexAlternates )
 	map[token.Type]string{
@@ -1076,24 +1082,24 @@ var first = []map[token.Type]string{
 	},
 	// LexGroup : ( LexAlternates ) ∙
 	map[token.Type]string{
-		token.Type16: "letter",
-		token.Type8:  "[",
-		token.Type27: "}",
-		token.Type6:  "<",
-		token.Type3:  ".",
-		token.Type26: "|",
-		token.Type13: "any",
-		token.Type7:  ">",
-		token.Type24: "upcase",
 		token.Type11: "]",
-		token.Type2:  ")",
-		token.Type1:  "(",
-		token.Type14: "char_lit",
-		token.Type17: "lowcase",
-		token.Type25: "{",
-		token.Type18: "not",
-		token.Type5:  ";",
 		token.Type20: "number",
+		token.Type26: "|",
+		token.Type5:  ";",
+		token.Type27: "}",
+		token.Type24: "upcase",
+		token.Type14: "char_lit",
+		token.Type7:  ">",
+		token.Type17: "lowcase",
+		token.Type6:  "<",
+		token.Type25: "{",
+		token.Type8:  "[",
+		token.Type2:  ")",
+		token.Type13: "any",
+		token.Type18: "not",
+		token.Type3:  ".",
+		token.Type16: "letter",
+		token.Type1:  "(",
 	},
 	// LexOneOrMore : ∙< LexAlternates >
 	map[token.Type]string{
@@ -1120,24 +1126,24 @@ var first = []map[token.Type]string{
 	},
 	// LexOneOrMore : < LexAlternates > ∙
 	map[token.Type]string{
-		token.Type6:  "<",
-		token.Type2:  ")",
-		token.Type3:  ".",
-		token.Type13: "any",
-		token.Type16: "letter",
-		token.Type8:  "[",
-		token.Type11: "]",
-		token.Type5:  ";",
-		token.Type26: "|",
-		token.Type24: "upcase",
-		token.Type27: "}",
 		token.Type17: "lowcase",
-		token.Type18: "not",
-		token.Type1:  "(",
+		token.Type3:  ".",
 		token.Type20: "number",
-		token.Type7:  ">",
+		token.Type5:  ";",
+		token.Type13: "any",
+		token.Type1:  "(",
+		token.Type24: "upcase",
 		token.Type14: "char_lit",
+		token.Type7:  ">",
+		token.Type18: "not",
+		token.Type8:  "[",
+		token.Type6:  "<",
 		token.Type25: "{",
+		token.Type26: "|",
+		token.Type16: "letter",
+		token.Type2:  ")",
+		token.Type11: "]",
+		token.Type27: "}",
 	},
 	// LexOptional : ∙[ LexAlternates ]
 	map[token.Type]string{
@@ -1164,24 +1170,24 @@ var first = []map[token.Type]string{
 	},
 	// LexOptional : [ LexAlternates ] ∙
 	map[token.Type]string{
-		token.Type3:  ".",
-		token.Type8:  "[",
-		token.Type18: "not",
-		token.Type2:  ")",
-		token.Type14: "char_lit",
-		token.Type24: "upcase",
-		token.Type5:  ";",
-		token.Type13: "any",
 		token.Type27: "}",
-		token.Type16: "letter",
-		token.Type1:  "(",
-		token.Type7:  ">",
-		token.Type6:  "<",
-		token.Type26: "|",
-		token.Type20: "number",
-		token.Type17: "lowcase",
 		token.Type11: "]",
+		token.Type20: "number",
 		token.Type25: "{",
+		token.Type26: "|",
+		token.Type8:  "[",
+		token.Type6:  "<",
+		token.Type14: "char_lit",
+		token.Type3:  ".",
+		token.Type5:  ";",
+		token.Type7:  ">",
+		token.Type18: "not",
+		token.Type16: "letter",
+		token.Type17: "lowcase",
+		token.Type1:  "(",
+		token.Type2:  ")",
+		token.Type13: "any",
+		token.Type24: "upcase",
 	},
 	// LexRule : ∙TokID : RegExp ;
 	map[token.Type]string{
@@ -1222,24 +1228,24 @@ var first = []map[token.Type]string{
 	},
 	// LexSymbol : . ∙
 	map[token.Type]string{
-		token.Type26: "|",
-		token.Type11: "]",
-		token.Type1:  "(",
-		token.Type6:  "<",
-		token.Type18: "not",
-		token.Type7:  ">",
-		token.Type25: "{",
-		token.Type16: "letter",
-		token.Type14: "char_lit",
-		token.Type27: "}",
-		token.Type2:  ")",
-		token.Type3:  ".",
-		token.Type8:  "[",
-		token.Type5:  ";",
-		token.Type20: "number",
 		token.Type13: "any",
-		token.Type17: "lowcase",
+		token.Type1:  "(",
+		token.Type8:  "[",
 		token.Type24: "upcase",
+		token.Type20: "number",
+		token.Type25: "{",
+		token.Type6:  "<",
+		token.Type14: "char_lit",
+		token.Type26: "|",
+		token.Type2:  ")",
+		token.Type5:  ";",
+		token.Type16: "letter",
+		token.Type7:  ">",
+		token.Type27: "}",
+		token.Type18: "not",
+		token.Type11: "]",
+		token.Type3:  ".",
+		token.Type17: "lowcase",
 	},
 	// LexSymbol : ∙any string_lit
 	map[token.Type]string{
@@ -1251,24 +1257,24 @@ var first = []map[token.Type]string{
 	},
 	// LexSymbol : any string_lit ∙
 	map[token.Type]string{
-		token.Type7:  ">",
-		token.Type25: "{",
+		token.Type26: "|",
+		token.Type2:  ")",
+		token.Type5:  ";",
 		token.Type16: "letter",
 		token.Type14: "char_lit",
+		token.Type7:  ">",
 		token.Type27: "}",
-		token.Type2:  ")",
+		token.Type18: "not",
+		token.Type11: "]",
 		token.Type3:  ".",
+		token.Type17: "lowcase",
 		token.Type8:  "[",
 		token.Type24: "upcase",
-		token.Type5:  ";",
 		token.Type20: "number",
-		token.Type13: "any",
-		token.Type17: "lowcase",
-		token.Type26: "|",
-		token.Type11: "]",
-		token.Type1:  "(",
+		token.Type25: "{",
 		token.Type6:  "<",
-		token.Type18: "not",
+		token.Type13: "any",
+		token.Type1:  "(",
 	},
 	// LexSymbol : ∙char_lit
 	map[token.Type]string{
@@ -1276,24 +1282,24 @@ var first = []map[token.Type]string{
 	},
 	// LexSymbol : char_lit ∙
 	map[token.Type]string{
-		token.Type11: "]",
-		token.Type1:  "(",
-		token.Type6:  "<",
-		token.Type18: "not",
-		token.Type26: "|",
+		token.Type24: "upcase",
+		token.Type20: "number",
 		token.Type25: "{",
+		token.Type6:  "<",
+		token.Type13: "any",
+		token.Type1:  "(",
+		token.Type8:  "[",
+		token.Type26: "|",
+		token.Type2:  ")",
+		token.Type5:  ";",
 		token.Type16: "letter",
 		token.Type14: "char_lit",
 		token.Type7:  ">",
-		token.Type2:  ")",
-		token.Type3:  ".",
-		token.Type8:  "[",
 		token.Type27: "}",
-		token.Type5:  ";",
-		token.Type20: "number",
-		token.Type13: "any",
+		token.Type18: "not",
+		token.Type11: "]",
+		token.Type3:  ".",
 		token.Type17: "lowcase",
-		token.Type24: "upcase",
 	},
 	// LexSymbol : ∙LexBracket
 	map[token.Type]string{
@@ -1304,24 +1310,24 @@ var first = []map[token.Type]string{
 	},
 	// LexSymbol : LexBracket ∙
 	map[token.Type]string{
-		token.Type26: "|",
-		token.Type11: "]",
-		token.Type1:  "(",
-		token.Type6:  "<",
-		token.Type18: "not",
-		token.Type7:  ">",
-		token.Type25: "{",
+		token.Type2:  ")",
+		token.Type5:  ";",
 		token.Type16: "letter",
 		token.Type14: "char_lit",
+		token.Type26: "|",
+		token.Type7:  ">",
 		token.Type27: "}",
-		token.Type2:  ")",
+		token.Type18: "not",
 		token.Type3:  ".",
+		token.Type17: "lowcase",
+		token.Type11: "]",
+		token.Type20: "number",
+		token.Type25: "{",
+		token.Type6:  "<",
+		token.Type13: "any",
+		token.Type1:  "(",
 		token.Type8:  "[",
 		token.Type24: "upcase",
-		token.Type5:  ";",
-		token.Type20: "number",
-		token.Type13: "any",
-		token.Type17: "lowcase",
 	},
 	// LexSymbol : ∙not string_lit
 	map[token.Type]string{
@@ -1333,24 +1339,24 @@ var first = []map[token.Type]string{
 	},
 	// LexSymbol : not string_lit ∙
 	map[token.Type]string{
-		token.Type27: "}",
-		token.Type2:  ")",
-		token.Type3:  ".",
-		token.Type8:  "[",
-		token.Type5:  ";",
-		token.Type20: "number",
-		token.Type13: "any",
-		token.Type17: "lowcase",
-		token.Type24: "upcase",
 		token.Type26: "|",
-		token.Type11: "]",
-		token.Type1:  "(",
-		token.Type6:  "<",
-		token.Type18: "not",
-		token.Type7:  ">",
-		token.Type25: "{",
+		token.Type2:  ")",
+		token.Type5:  ";",
 		token.Type16: "letter",
 		token.Type14: "char_lit",
+		token.Type7:  ">",
+		token.Type27: "}",
+		token.Type18: "not",
+		token.Type11: "]",
+		token.Type3:  ".",
+		token.Type17: "lowcase",
+		token.Type1:  "(",
+		token.Type8:  "[",
+		token.Type24: "upcase",
+		token.Type20: "number",
+		token.Type25: "{",
+		token.Type6:  "<",
+		token.Type13: "any",
 	},
 	// LexSymbol : ∙UnicodeClass
 	map[token.Type]string{
@@ -1361,24 +1367,24 @@ var first = []map[token.Type]string{
 	},
 	// LexSymbol : UnicodeClass ∙
 	map[token.Type]string{
-		token.Type27: "}",
-		token.Type2:  ")",
-		token.Type3:  ".",
-		token.Type8:  "[",
-		token.Type5:  ";",
-		token.Type20: "number",
-		token.Type13: "any",
-		token.Type17: "lowcase",
-		token.Type24: "upcase",
-		token.Type26: "|",
-		token.Type11: "]",
-		token.Type1:  "(",
-		token.Type6:  "<",
-		token.Type18: "not",
-		token.Type7:  ">",
-		token.Type25: "{",
-		token.Type16: "letter",
 		token.Type14: "char_lit",
+		token.Type26: "|",
+		token.Type2:  ")",
+		token.Type5:  ";",
+		token.Type16: "letter",
+		token.Type7:  ">",
+		token.Type27: "}",
+		token.Type18: "not",
+		token.Type11: "]",
+		token.Type3:  ".",
+		token.Type17: "lowcase",
+		token.Type13: "any",
+		token.Type1:  "(",
+		token.Type8:  "[",
+		token.Type24: "upcase",
+		token.Type20: "number",
+		token.Type25: "{",
+		token.Type6:  "<",
 	},
 	// LexZeroOrMore : ∙{ LexAlternates }
 	map[token.Type]string{
@@ -1405,24 +1411,24 @@ var first = []map[token.Type]string{
 	},
 	// LexZeroOrMore : { LexAlternates } ∙
 	map[token.Type]string{
-		token.Type17: "lowcase",
-		token.Type18: "not",
-		token.Type5:  ";",
-		token.Type1:  "(",
-		token.Type6:  "<",
-		token.Type13: "any",
 		token.Type16: "letter",
-		token.Type8:  "[",
-		token.Type11: "]",
-		token.Type26: "|",
 		token.Type27: "}",
 		token.Type24: "upcase",
+		token.Type13: "any",
+		token.Type18: "not",
+		token.Type17: "lowcase",
+		token.Type26: "|",
+		token.Type5:  ";",
 		token.Type20: "number",
-		token.Type25: "{",
-		token.Type3:  ".",
-		token.Type7:  ">",
-		token.Type14: "char_lit",
 		token.Type2:  ")",
+		token.Type1:  "(",
+		token.Type7:  ">",
+		token.Type25: "{",
+		token.Type14: "char_lit",
+		token.Type3:  ".",
+		token.Type6:  "<",
+		token.Type11: "]",
+		token.Type8:  "[",
 	},
 	// NT : ∙nt
 	map[token.Type]string{
@@ -1430,12 +1436,12 @@ var first = []map[token.Type]string{
 	},
 	// NT : nt ∙
 	map[token.Type]string{
-		token.Type4:  ":",
-		token.Type22: "string_lit",
-		token.Type26: "|",
 		token.Type5:  ";",
+		token.Type26: "|",
 		token.Type19: "nt",
 		token.Type23: "tokid",
+		token.Type22: "string_lit",
+		token.Type4:  ":",
 	},
 	// Package : ∙package string_lit
 	map[token.Type]string{
@@ -1447,8 +1453,8 @@ var first = []map[token.Type]string{
 	},
 	// Package : package string_lit ∙
 	map[token.Type]string{
-		token.Type23: "tokid",
 		token.Type19: "nt",
+		token.Type23: "tokid",
 	},
 	// RegExp : ∙LexSymbol
 	map[token.Type]string{
@@ -1467,12 +1473,12 @@ var first = []map[token.Type]string{
 	},
 	// RegExp : LexSymbol ∙
 	map[token.Type]string{
-		token.Type5:  ";",
 		token.Type2:  ")",
 		token.Type11: "]",
 		token.Type27: "}",
-		token.Type7:  ">",
+		token.Type5:  ";",
 		token.Type26: "|",
+		token.Type7:  ">",
 	},
 	// RegExp : ∙LexSymbol RegExp
 	map[token.Type]string{
@@ -1506,12 +1512,12 @@ var first = []map[token.Type]string{
 	},
 	// RegExp : LexSymbol RegExp ∙
 	map[token.Type]string{
-		token.Type26: "|",
-		token.Type5:  ";",
+		token.Type7:  ">",
 		token.Type2:  ")",
 		token.Type11: "]",
 		token.Type27: "}",
-		token.Type7:  ">",
+		token.Type5:  ";",
+		token.Type26: "|",
 	},
 	// Rule : ∙LexRule
 	map[token.Type]string{
@@ -1529,9 +1535,9 @@ var first = []map[token.Type]string{
 	},
 	// Rule : SyntaxRule ∙
 	map[token.Type]string{
-		token.EOF:    "EOF",
 		token.Type23: "tokid",
 		token.Type19: "nt",
+		token.EOF:    "EOF",
 	},
 	// Rules : ∙Rule
 	map[token.Type]string{
@@ -1640,11 +1646,11 @@ var first = []map[token.Type]string{
 	},
 	// SyntaxSymbol : NT ∙
 	map[token.Type]string{
+		token.Type19: "nt",
 		token.Type23: "tokid",
 		token.Type22: "string_lit",
-		token.Type26: "|",
 		token.Type5:  ";",
-		token.Type19: "nt",
+		token.Type26: "|",
 	},
 	// SyntaxSymbol : ∙TokID
 	map[token.Type]string{
@@ -1652,8 +1658,8 @@ var first = []map[token.Type]string{
 	},
 	// SyntaxSymbol : TokID ∙
 	map[token.Type]string{
-		token.Type26: "|",
 		token.Type5:  ";",
+		token.Type26: "|",
 		token.Type19: "nt",
 		token.Type23: "tokid",
 		token.Type22: "string_lit",
@@ -1665,10 +1671,10 @@ var first = []map[token.Type]string{
 	// SyntaxSymbol : string_lit ∙
 	map[token.Type]string{
 		token.Type5:  ";",
+		token.Type26: "|",
 		token.Type19: "nt",
 		token.Type23: "tokid",
 		token.Type22: "string_lit",
-		token.Type26: "|",
 	},
 	// SyntaxSymbols : ∙SyntaxSymbol
 	map[token.Type]string{
@@ -1678,8 +1684,8 @@ var first = []map[token.Type]string{
 	},
 	// SyntaxSymbols : SyntaxSymbol ∙
 	map[token.Type]string{
-		token.Type26: "|",
 		token.Type5:  ";",
+		token.Type26: "|",
 	},
 	// SyntaxSymbols : ∙SyntaxSymbol SyntaxSymbols
 	map[token.Type]string{
@@ -1695,8 +1701,8 @@ var first = []map[token.Type]string{
 	},
 	// SyntaxSymbols : SyntaxSymbol SyntaxSymbols ∙
 	map[token.Type]string{
-		token.Type26: "|",
 		token.Type5:  ";",
+		token.Type26: "|",
 	},
 	// TokID : ∙tokid
 	map[token.Type]string{
@@ -1704,12 +1710,12 @@ var first = []map[token.Type]string{
 	},
 	// TokID : tokid ∙
 	map[token.Type]string{
-		token.Type4:  ":",
-		token.Type26: "|",
-		token.Type5:  ";",
-		token.Type19: "nt",
 		token.Type23: "tokid",
 		token.Type22: "string_lit",
+		token.Type5:  ";",
+		token.Type4:  ":",
+		token.Type26: "|",
+		token.Type19: "nt",
 	},
 	// UnicodeClass : ∙letter
 	map[token.Type]string{
@@ -1717,23 +1723,23 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeClass : letter ∙
 	map[token.Type]string{
-		token.Type25: "{",
 		token.Type16: "letter",
 		token.Type14: "char_lit",
-		token.Type6:  "<",
-		token.Type7:  ">",
 		token.Type3:  ".",
-		token.Type8:  "[",
-		token.Type20: "number",
-		token.Type17: "lowcase",
-		token.Type26: "|",
-		token.Type11: "]",
-		token.Type1:  "(",
-		token.Type27: "}",
 		token.Type13: "any",
 		token.Type24: "upcase",
 		token.Type2:  ")",
+		token.Type20: "number",
+		token.Type6:  "<",
+		token.Type7:  ">",
+		token.Type17: "lowcase",
+		token.Type27: "}",
+		token.Type11: "]",
+		token.Type1:  "(",
+		token.Type8:  "[",
 		token.Type5:  ";",
+		token.Type26: "|",
+		token.Type25: "{",
 		token.Type18: "not",
 	},
 	// UnicodeClass : ∙upcase
@@ -1742,23 +1748,23 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeClass : upcase ∙
 	map[token.Type]string{
-		token.Type5:  ";",
-		token.Type18: "not",
-		token.Type2:  ")",
-		token.Type14: "char_lit",
-		token.Type6:  "<",
 		token.Type25: "{",
-		token.Type16: "letter",
-		token.Type8:  "[",
-		token.Type20: "number",
-		token.Type17: "lowcase",
-		token.Type7:  ">",
+		token.Type18: "not",
 		token.Type3:  ".",
-		token.Type1:  "(",
-		token.Type27: "}",
 		token.Type13: "any",
 		token.Type24: "upcase",
+		token.Type2:  ")",
+		token.Type16: "letter",
+		token.Type14: "char_lit",
+		token.Type20: "number",
+		token.Type6:  "<",
+		token.Type7:  ">",
+		token.Type17: "lowcase",
+		token.Type1:  "(",
+		token.Type8:  "[",
+		token.Type5:  ";",
 		token.Type26: "|",
+		token.Type27: "}",
 		token.Type11: "]",
 	},
 	// UnicodeClass : ∙lowcase
@@ -1767,23 +1773,23 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeClass : lowcase ∙
 	map[token.Type]string{
-		token.Type3:  ".",
-		token.Type8:  "[",
-		token.Type20: "number",
-		token.Type17: "lowcase",
-		token.Type7:  ">",
-		token.Type11: "]",
-		token.Type1:  "(",
-		token.Type27: "}",
 		token.Type13: "any",
 		token.Type24: "upcase",
-		token.Type26: "|",
-		token.Type5:  ";",
-		token.Type18: "not",
 		token.Type2:  ")",
 		token.Type16: "letter",
 		token.Type14: "char_lit",
+		token.Type3:  ".",
 		token.Type6:  "<",
+		token.Type7:  ">",
+		token.Type17: "lowcase",
+		token.Type20: "number",
+		token.Type8:  "[",
+		token.Type5:  ";",
+		token.Type26: "|",
+		token.Type27: "}",
+		token.Type11: "]",
+		token.Type1:  "(",
+		token.Type18: "not",
 		token.Type25: "{",
 	},
 	// UnicodeClass : ∙number
@@ -1792,24 +1798,24 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeClass : number ∙
 	map[token.Type]string{
-		token.Type20: "number",
-		token.Type17: "lowcase",
 		token.Type7:  ">",
-		token.Type3:  ".",
-		token.Type8:  "[",
-		token.Type27: "}",
-		token.Type13: "any",
-		token.Type24: "upcase",
+		token.Type17: "lowcase",
+		token.Type20: "number",
+		token.Type6:  "<",
+		token.Type5:  ";",
 		token.Type26: "|",
+		token.Type27: "}",
 		token.Type11: "]",
 		token.Type1:  "(",
-		token.Type5:  ";",
-		token.Type18: "not",
-		token.Type2:  ")",
-		token.Type6:  "<",
+		token.Type8:  "[",
 		token.Type25: "{",
+		token.Type18: "not",
+		token.Type24: "upcase",
+		token.Type2:  ")",
 		token.Type16: "letter",
 		token.Type14: "char_lit",
+		token.Type3:  ".",
+		token.Type13: "any",
 	},
 }
 
@@ -1820,94 +1826,94 @@ var followSets = []map[token.Type]string{
 	},
 	// LexAlternates
 	map[token.Type]string{
+		token.Type7:  ">",
 		token.Type2:  ")",
 		token.Type11: "]",
 		token.Type27: "}",
-		token.Type7:  ">",
 	},
 	// LexBracket
 	map[token.Type]string{
-		token.Type13: "any",
-		token.Type7:  ">",
-		token.Type14: "char_lit",
-		token.Type27: "}",
-		token.Type17: "lowcase",
-		token.Type24: "upcase",
-		token.Type20: "number",
-		token.Type16: "letter",
-		token.Type8:  "[",
-		token.Type11: "]",
-		token.Type25: "{",
-		token.Type18: "not",
-		token.Type2:  ")",
-		token.Type3:  ".",
-		token.Type5:  ";",
-		token.Type26: "|",
-		token.Type1:  "(",
 		token.Type6:  "<",
+		token.Type26: "|",
+		token.Type16: "letter",
+		token.Type3:  ".",
+		token.Type17: "lowcase",
+		token.Type8:  "[",
+		token.Type20: "number",
+		token.Type2:  ")",
+		token.Type5:  ";",
+		token.Type27: "}",
+		token.Type11: "]",
+		token.Type13: "any",
+		token.Type1:  "(",
+		token.Type24: "upcase",
+		token.Type25: "{",
+		token.Type14: "char_lit",
+		token.Type7:  ">",
+		token.Type18: "not",
 	},
 	// LexGroup
 	map[token.Type]string{
-		token.Type25: "{",
-		token.Type18: "not",
-		token.Type5:  ";",
-		token.Type20: "number",
-		token.Type14: "char_lit",
-		token.Type17: "lowcase",
-		token.Type16: "letter",
-		token.Type8:  "[",
-		token.Type27: "}",
-		token.Type6:  "<",
-		token.Type3:  ".",
-		token.Type26: "|",
-		token.Type13: "any",
-		token.Type11: "]",
-		token.Type2:  ")",
-		token.Type1:  "(",
 		token.Type7:  ">",
+		token.Type17: "lowcase",
+		token.Type6:  "<",
+		token.Type26: "|",
+		token.Type5:  ";",
+		token.Type27: "}",
 		token.Type24: "upcase",
+		token.Type14: "char_lit",
+		token.Type25: "{",
+		token.Type8:  "[",
+		token.Type2:  ")",
+		token.Type13: "any",
+		token.Type3:  ".",
+		token.Type16: "letter",
+		token.Type1:  "(",
+		token.Type18: "not",
+		token.Type20: "number",
+		token.Type11: "]",
 	},
 	// LexOneOrMore
 	map[token.Type]string{
-		token.Type6:  "<",
-		token.Type2:  ")",
-		token.Type3:  ".",
-		token.Type13: "any",
-		token.Type11: "]",
-		token.Type5:  ";",
-		token.Type26: "|",
-		token.Type24: "upcase",
-		token.Type27: "}",
-		token.Type17: "lowcase",
-		token.Type16: "letter",
-		token.Type8:  "[",
-		token.Type18: "not",
-		token.Type1:  "(",
-		token.Type20: "number",
-		token.Type7:  ">",
-		token.Type14: "char_lit",
 		token.Type25: "{",
+		token.Type1:  "(",
+		token.Type24: "upcase",
+		token.Type14: "char_lit",
+		token.Type7:  ">",
+		token.Type18: "not",
+		token.Type8:  "[",
+		token.Type6:  "<",
+		token.Type26: "|",
+		token.Type16: "letter",
+		token.Type2:  ")",
+		token.Type27: "}",
+		token.Type11: "]",
+		token.Type13: "any",
+		token.Type17: "lowcase",
+		token.Type3:  ".",
+		token.Type20: "number",
+		token.Type5:  ";",
 	},
 	// LexOptional
 	map[token.Type]string{
-		token.Type2:  ")",
-		token.Type3:  ".",
-		token.Type8:  "[",
-		token.Type18: "not",
 		token.Type13: "any",
-		token.Type14: "char_lit",
 		token.Type24: "upcase",
+		token.Type2:  ")",
+		token.Type26: "|",
+		token.Type8:  "[",
+		token.Type6:  "<",
+		token.Type27: "}",
+		token.Type11: "]",
+		token.Type20: "number",
+		token.Type25: "{",
+		token.Type14: "char_lit",
 		token.Type5:  ";",
 		token.Type7:  ">",
-		token.Type27: "}",
-		token.Type16: "letter",
-		token.Type1:  "(",
-		token.Type25: "{",
-		token.Type6:  "<",
-		token.Type26: "|",
-		token.Type20: "number",
+		token.Type18: "not",
+		token.Type3:  ".",
 		token.Type17: "lowcase",
-		token.Type11: "]",
+		token.Type1:  "(",
+		token.Type16: "letter",
 	},
 	// LexRule
 	map[token.Type]string{
@@ -1917,68 +1923,68 @@ var followSets = []map[token.Type]string{
 	},
 	// LexSymbol
 	map[token.Type]string{
-		token.Type6:  "<",
-		token.Type18: "not",
-		token.Type26: "|",
-		token.Type11: "]",
-		token.Type1:  "(",
-		token.Type14: "char_lit",
 		token.Type7:  ">",
-		token.Type25: "{",
-		token.Type16: "letter",
-		token.Type8:  "[",
 		token.Type27: "}",
-		token.Type2:  ")",
+		token.Type18: "not",
+		token.Type11: "]",
 		token.Type3:  ".",
-		token.Type13: "any",
 		token.Type17: "lowcase",
+		token.Type1:  "(",
+		token.Type8:  "[",
 		token.Type24: "upcase",
-		token.Type5:  ";",
 		token.Type20: "number",
+		token.Type25: "{",
+		token.Type6:  "<",
+		token.Type13: "any",
+		token.Type26: "|",
+		token.Type2:  ")",
+		token.Type5:  ";",
+		token.Type16: "letter",
+		token.Type14: "char_lit",
 	},
 	// LexZeroOrMore
 	map[token.Type]string{
-		token.Type7:  ">",
-		token.Type14: "char_lit",
-		token.Type2:  ")",
 		token.Type6:  "<",
-		token.Type17: "lowcase",
-		token.Type18: "not",
-		token.Type5:  ";",
-		token.Type1:  "(",
-		token.Type13: "any",
-		token.Type16: "letter",
-		token.Type8:  "[",
-		token.Type11: "]",
 		token.Type25: "{",
+		token.Type14: "char_lit",
 		token.Type3:  ".",
+		token.Type11: "]",
+		token.Type8:  "[",
+		token.Type18: "not",
+		token.Type17: "lowcase",
 		token.Type26: "|",
+		token.Type16: "letter",
 		token.Type27: "}",
 		token.Type24: "upcase",
+		token.Type13: "any",
+		token.Type1:  "(",
+		token.Type7:  ">",
+		token.Type5:  ";",
 		token.Type20: "number",
+		token.Type2:  ")",
 	},
 	// NT
 	map[token.Type]string{
 		token.Type4:  ":",
-		token.Type22: "string_lit",
-		token.Type26: "|",
 		token.Type5:  ";",
+		token.Type26: "|",
 		token.Type19: "nt",
 		token.Type23: "tokid",
+		token.Type22: "string_lit",
 	},
 	// Package
 	map[token.Type]string{
-		token.Type23: "tokid",
 		token.Type19: "nt",
+		token.Type23: "tokid",
 	},
 	// RegExp
 	map[token.Type]string{
-		token.Type7:  ">",
-		token.Type26: "|",
-		token.Type5:  ";",
 		token.Type2:  ")",
 		token.Type11: "]",
 		token.Type27: "}",
+		token.Type5:  ";",
+		token.Type26: "|",
+		token.Type7:  ">",
 	},
 	// Rule
 	map[token.Type]string{
@@ -2007,11 +2013,11 @@ var followSets = []map[token.Type]string{
 	},
 	// SyntaxSymbol
 	map[token.Type]string{
+		token.Type22: "string_lit",
+		token.Type5:  ";",
+		token.Type26: "|",
 		token.Type19: "nt",
 		token.Type23: "tokid",
-		token.Type22: "string_lit",
-		token.Type26: "|",
-		token.Type5:  ";",
 	},
 	// SyntaxSymbols
 	map[token.Type]string{
@@ -2020,32 +2026,32 @@ var followSets = []map[token.Type]string{
 	},
 	// TokID
 	map[token.Type]string{
-		token.Type4:  ":",
-		token.Type26: "|",
-		token.Type5:  ";",
-		token.Type19: "nt",
 		token.Type23: "tokid",
 		token.Type22: "string_lit",
+		token.Type5:  ";",
+		token.Type4:  ":",
+		token.Type26: "|",
+		token.Type19: "nt",
 	},
 	// UnicodeClass
 	map[token.Type]string{
-		token.Type1:  "(",
+		token.Type6:  "<",
+		token.Type7:  ">",
+		token.Type17: "lowcase",
+		token.Type20: "number",
+		token.Type8:  "[",
+		token.Type5:  ";",
+		token.Type26: "|",
 		token.Type27: "}",
+		token.Type11: "]",
+		token.Type1:  "(",
+		token.Type18: "not",
+		token.Type25: "{",
 		token.Type13: "any",
 		token.Type24: "upcase",
-		token.Type26: "|",
-		token.Type11: "]",
-		token.Type5:  ";",
-		token.Type18: "not",
 		token.Type2:  ")",
-		token.Type14: "char_lit",
-		token.Type6:  "<",
-		token.Type25: "{",
 		token.Type16: "letter",
-		token.Type8:  "[",
-		token.Type20: "number",
-		token.Type17: "lowcase",
-		token.Type7:  ">",
+		token.Type14: "char_lit",
 		token.Type3:  ".",
 	},
 }
@@ -2057,15 +2063,23 @@ type Error struct {
 	Slot         slot.Label
 	Token        *token.Token
 	Line, Column int
+	Expected     map[token.Type]string
 }
 
 func (pe *Error) String() string {
-	return fmt.Sprintf("Parse Error: %s I[%d]=%s at line %d col %d",
+	w := new(bytes.Buffer)
+	fmt.Fprintf(w, "Parse Error: %s I[%d]=%s at line %d col %d\n",
 		pe.Slot, pe.cI, pe.Token, pe.Line, pe.Column)
+	exp := []string{}
+	for _, e := range pe.Expected {
+		exp = append(exp, e)
+	}
+	fmt.Fprintf(w, "Expected one of: [%s]", strings.Join(exp, ","))
+	return w.String()
 }
 
-func parseError(slot slot.Label, i int) {
-	pe := &Error{cI: i, Slot: slot, Token: lex.Tokens[i]}
+func parseError(slot slot.Label, i int, expected map[token.Type]string) {
+	pe := &Error{cI: i, Slot: slot, Token: lex.Tokens[i], Expected: expected}
 	parseErrors = append(parseErrors, pe)
 }
 

@@ -117,6 +117,39 @@ var StringToType = map[string] Type {
 	"Type27" : Type27, 
 }
 
+var TypeToID = []string { 
+	"Error", 
+	"EOF", 
+	"'", 
+	"(", 
+	")", 
+	".", 
+	":", 
+	";", 
+	"<", 
+	">", 
+	"[", 
+	"\"", 
+	"\\", 
+	"]", 
+	"_", 
+	"any", 
+	"char_lit", 
+	"empty", 
+	"letter", 
+	"lowcase", 
+	"not", 
+	"nt", 
+	"number", 
+	"package", 
+	"string_lit", 
+	"tokid", 
+	"upcase", 
+	"{", 
+	"|", 
+	"}", 
+}
+
 func New(t Type, lext, rext int, lit []rune) *Token {
 	return &Token{
 		Type: t,
@@ -128,9 +161,18 @@ func New(t Type, lext, rext int, lit []rune) *Token {
 
 func (t *Token) String() string {
 	return fmt.Sprintf("%s (%d,%d) %s",
-		TypeToString[t.Type], t.Lext, t.Rext, string(t.Literal))
+		t.TypeID(), t.Lext, t.Rext, string(t.Literal))
 }
 
 func (t Type) String() string {
 	return TypeToString[t]
 }
+
+func (t *Token) TypeID() string {
+	return t.Type.ID()
+}
+
+func (t Type) ID() string {
+	return TypeToID[t]
+}
+
