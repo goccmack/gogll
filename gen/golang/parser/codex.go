@@ -106,7 +106,7 @@ const altCodeTmpl = `		case slot.{{.AltLabel}}: // {{.AltComment}}{{if .Empty}}
 			bsr.AddEmpty(slot.{{.AltLabel}},cI)
 		{{else}}{{range $i, $slot := .Slots}}
 			{{if $i}}if !testSelect(slot.{{$slot.PreLabel}}){ 
-				parseError(slot.{{$slot.PreLabel}}, cI)
+				parseError(slot.{{$slot.PreLabel}}, cI, first[slot.{{$slot.PreLabel}}])
 				break 
 			}
 			{{end}}
@@ -117,6 +117,6 @@ case slot.{{$slot.PostLabel}}: // {{$slot.Comment}}
 			if follow(symbols.NT_{{.NT}}) {
 				rtn(symbols.NT_{{.NT}}, cU, cI)
 			} else {
-				parseError(slot.{{.LastSlot.PreLabel}}, cI)
+				parseError(slot.{{.LastSlot.PreLabel}}, cI, followSets[symbols.NT_{{.NT}}])
 			}
 	`
