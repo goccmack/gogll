@@ -66,9 +66,7 @@ func (i *Item) beforeCurrentBracket() *Item {
 	}
 }
 
-// isEndOfBracket returns true iff:
-// * The current regexp is and alternate of a bracket expression;
-// * The position after the last symbol of the current alternate of the current bracket.
+// isEndOfBracket returns true iff: the next symbol is a LexBracket
 func (i *Item) atBeforeBracket() bool {
 	_, ok := i.Symbol().(*ast.LexBracket)
 	return ok
@@ -79,9 +77,9 @@ func (i *Item) atBeforeBracket() bool {
 // * The position after the last symbol of the current alternate of the current bracket.
 func (i *Item) atEndOfBracket() bool {
 	// fmt.Println("Item.atEndOfBracket: ", i, i.Pos)
-	// fmt.Println("  top=", i.Pos.Top(), " len=", len(i.getRegExp().Symbols))
+	// fmt.Println("  top=", i.Pos.Top(), " len=", len(i.GetRegExp().Symbols))
 
-	return i.Pos.Len() > 1 && i.Pos.Top() >= len(i.getRegExp().Symbols)
+	return i.Pos.Len() > 1 && i.Pos.Top() >= len(i.GetRegExp().Symbols)
 }
 
 func (i *Item) getCurrentBracket() *ast.LexBracket {
@@ -100,23 +98,18 @@ func (i *Item) Clone() *Item {
 }
 
 func (i *Item) Emoves() []*Item {
-	// fmt.Println("Emoves:", i, i.Pos)
+	// fmt.Println("Emoves:", i)
 
 	after := []*Item{i}
 	for changed := true; changed; {
+		// fmt.Println(" Again")
 		before := after
 		after = []*Item{}
 		changed = false
 		for _, item := range before {
-			// fmt.Println(" Emoves:", item, item.Pos)
+			// fmt.Println("  ", item)
+
 			switch {
-			case item.atEndOfBracket():
-				switch i.getCurrentBracket().Type {
-				case ast.LexZeroOrMore, ast.LexOneOrMore:
-					after = append(after, i.beforeCurrentBracket())
-				}
-				after = append(after, i.afterCurrentBracket())
-				changed = true
 			case item.atBeforeBracket():
 				for j := range item.Symbol().(*ast.LexBracket).Alternates {
 					after = append(after, &Item{
@@ -124,6 +117,13 @@ func (i *Item) Emoves() []*Item {
 						Pos:  item.Pos.Clone().Push(j).Push(0),
 					})
 				}
+				changed = true
+			case item.atEndOfBracket():
+				switch item.getCurrentBracket().Type {
+				case ast.LexZeroOrMore, ast.LexOneOrMore:
+					after = append(after, item.beforeCurrentBracket())
+				}
+				after = append(after, item.afterCurrentBracket())
 				changed = true
 			default:
 				after = append(after, item)
@@ -168,7 +168,7 @@ func (i *Item) Next() *Item {
 		return nil
 	}
 	next := From(i.Rule, i.Pos.Clone().Inc())
-	// for next.Pos.Len() > 1 && next.Pos.Top() >= len(next.getRegExp().Symbols) {
+	// for next.Pos.Len() > 1 && next.Pos.Top() >= len(next.GetRegExp().Symbols) {
 	// 	next.Pos.Pop(2)
 	// 	next.Pos.Inc()
 	// }
@@ -184,8 +184,11 @@ func (i *Item) IsReduce() bool {
 // If i is a reduce item Symbol returns nil
 func (i *Item) Symbol() ast.LexSymbol {
 	// fmt.Printf("Item.Symbol: %s %s\n", i.Rule, i.Pos)
-	re := i.getRegExp()
+
+	re := i.GetRegExp()
+
 	// fmt.Printf("  %s\n", re)
+
 	if i.Pos.Top() >= len(re.Symbols) {
 		return nil
 	}
@@ -198,18 +201,21 @@ func (i *Item) String() string {
 	// 		i.Rule.ID(), stringRegExp(i.Rule.RegExp, i.Pos, 0))
 
 	// }
-	str := fmt.Sprintf("%s : %s",
-		i.Rule.ID(), i.stringRegExp(i.Rule.RegExp, pos.New()))
+	str := fmt.Sprintf("%s : %s %s",
+		i.Rule.ID(), i.stringRegExp(i.Rule.RegExp, pos.New()), i.Pos)
 	return str
 }
 
-// getRegExp returns the RegExp containing the current symbol in i. If pos.Len() > 1
+// GetRegExp returns the RegExp containing the current symbol in i. If pos.Len() > 1
 // this will be an alternate of a LexBracket.
-func (i *Item) getRegExp() *ast.RegExp {
-	// fmt.Printf("Item.getRegExp: %s, %s\n", i.Rule, i.Pos)
+func (i *Item) GetRegExp() *ast.RegExp {
+	// fmt.Printf("Item.GetRegExp: %s, %s\n", i.Rule, i.Pos)
+
 	re := i.Rule.RegExp
 	for j := 0; j < i.Pos.Len()-1; {
+
 		// fmt.Printf("  re: %s pos %d\n", re.Symbols, i.Pos.Peek(j))
+
 		sym := re.Symbols[i.Pos.Peek(j)]
 		j++
 		if brkt, ok := sym.(*ast.LexBracket); ok {

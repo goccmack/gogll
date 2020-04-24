@@ -25,6 +25,7 @@ Section 2.6
 package items
 
 import (
+	"bytes"
 	"fmt"
 	"os"
 	"sort"
@@ -59,8 +60,10 @@ func New(g *ast.GoGLL) *Sets {
 	sets := new(Sets).add(s0)
 	i, changed := 0, true
 	for changed || i < sets.Len() {
+		// fmt.Printf("item.New: %d sets\n", len(sets.sets))
 		changed = false
 		for _, newSet := range sets.Set(i).nextSets() {
+			// fmt.Printf("  Set %d\n", j)
 			if oldSet := sets.GetExisting(newSet); oldSet == nil {
 				newSet.No = len(sets.sets)
 				sets.add(newSet)
@@ -71,6 +74,7 @@ func New(g *ast.GoGLL) *Sets {
 		}
 		i++
 	}
+	// fmt.Println("items.New: done")
 	return sets
 }
 
@@ -140,6 +144,15 @@ func (set *Set) Items() []*item.Item {
 	return set.cloneItems()
 }
 
+func (set *Set) String() string {
+	w := new(bytes.Buffer)
+	fmt.Fprintf(w, "S%d:\n", set.No)
+	for _, item := range set.Items() {
+		fmt.Fprintf(w, "  %s\n", item)
+	}
+	return w.String()
+}
+
 func (set *Set) changeToSetNo(from, to *Set) {
 	for _, t := range set.Transitions {
 		if t.To == from {
@@ -152,13 +165,15 @@ func (set *Set) changeToSetNo(from, to *Set) {
 nextSets returns the next set for each possible event transition in set
 */
 func (set *Set) nextSets() (sets []*Set) {
+	// fmt.Println("items.nextSets")
+	// fmt.Println(set)
+
 	events := event.GetOrdered(set.Items()...)
 	for _, ev := range events {
 		newSet := &Set{}
 		for _, item := range set.set {
 			if sym := item.Symbol(); sym != nil {
 				if event.Subset(ev, sym.(ast.LexBase)) == event.True {
-					// if event.Equal(sym.(ast.LexBase)) {
 					newSet.Add(item.Next().Emoves()...)
 				}
 			}

@@ -32,5 +32,7 @@ import (
 func Gen(g *ast.GoGLL, gs *gslot.GSlot, ff *frstflw.FF, ls *lexitems.Sets, ts *tokens.Tokens) {
 	token.Gen(g, ts)
 	lexer.Gen(path.Join(cfg.BaseDir, "lexer"), g, ls, ts)
-	parser.Gen(path.Join(cfg.BaseDir, "parser"), g, gs, ff, ts)
+	if len(g.SyntaxRules) > 0 {
+		parser.Gen(path.Join(cfg.BaseDir, "parser"), g, gs, ff, ts)
+	}
 }
