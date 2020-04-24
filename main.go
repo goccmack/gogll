@@ -61,7 +61,7 @@ func main() {
 		fmt.Println(err)
 		parseErrors(errs)
 	}
-	parseDone := time.Now()
+	fmt.Printf("Parse duration %s\n", time.Now().Sub(start))
 
 	bsr.ReportAmbiguous()
 
@@ -81,10 +81,6 @@ func main() {
 	}
 
 	golang.Gen(g, gs, ff, lexSets, ts)
-	codeGenDone := time.Now()
-
-	fmt.Printf("Parse duration %s\n", parseDone.Sub(start))
-	fmt.Printf("Total compilation duration %s\n", codeGenDone.Sub(start))
 }
 
 func fail(err error) {

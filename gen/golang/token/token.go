@@ -70,27 +70,6 @@ func getTypes(ts *tokens.Tokens) (types []*TypeDef) {
 	return
 }
 
-// func GetTokenMap(g *ast.GoGLL) map[string]string {
-// 	tokmap := map[string]string{
-// 		"Error": "Error",
-// 		"EOF":   "EOF",
-// 	}
-// 	for i, tok := range g.Terminals.ElementsSorted() {
-// 		tokmap[tok] = fmt.Sprintf("Type%d", i)
-// 	}
-// 	return tokmap
-// }
-
-// func getSortedTokens(g *ast.GoGLL) (tokens []string) {
-// 	for _, t := range g.Terminals.Elements() {
-// 		tokens = append(tokens, t)
-// 	}
-// 	sort.Slice(tokens, func(i, j int) bool {
-// 		return tokens[i] < tokens[j]
-// 	})
-// 	return
-// }
-
 func tokenFile(pkg string) string {
 	return filepath.Join(cfg.BaseDir, "token", "token.go")
 }
@@ -127,6 +106,10 @@ var StringToType = map[string] Type { {{range $typ := .TypeToString}}
 	"{{$typ}}" : {{$typ}}, {{end}}
 }
 
+var TypeToID = []string { {{range $typ := .Types}}
+	"{{$typ.Comment}}", {{end}}
+}
+
 func New(t Type, lext, rext int, lit []rune) *Token {
 	return &Token{
 		Type: t,
@@ -138,10 +121,19 @@ func New(t Type, lext, rext int, lit []rune) *Token {
 
 func (t *Token) String() string {
 	return fmt.Sprintf("%s (%d,%d) %s",
-		TypeToString[t.Type], t.Lext, t.Rext, string(t.Literal))
+		t.TypeID(), t.Lext, t.Rext, string(t.Literal))
 }
 
 func (t Type) String() string {
 	return TypeToString[t]
 }
+
+func (t *Token) TypeID() string {
+	return t.Type.ID()
+}
+
+func (t Type) ID() string {
+	return TypeToID[t]
+}
+
 `

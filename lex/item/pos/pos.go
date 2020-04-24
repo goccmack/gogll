@@ -35,6 +35,11 @@ func New() *Pos {
 	return p.Push(0)
 }
 
+// From returns a Pos derived from the position stack, `stack`
+func From(stack []int) *Pos {
+	return &Pos{stack}
+}
+
 // Clone returns a deep copy of pos
 func (pos *Pos) Clone() *Pos {
 	clone := &Pos{
