@@ -200,7 +200,7 @@ func (l *Lexer) scan(i int) *token.Token {
 		} else {
 			tok.Type = accept[s]
 			s = nextState[s](l.I[tok.Rext])
-			if s != nullState {
+			if s != nullState || tok.Type == token.Error {
 				tok.Rext++
 			}
 		}

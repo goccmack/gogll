@@ -4,18 +4,18 @@
 Copyright 2019 Marius Ackerman. 
 
 # GoGLL
-Gogll generates a matching lexer and parser from one grammar in Go. 
+Gogll generates Go code for a matching lexer and parser from one input grammar. 
 
 The generated lexer is a linear-time finite state automaton FSA [[Grune et al 2012](#Grune-et-al-2012)].
 The lexer ignores whitespace.
 
-The parser is a clustered nonterminal parser (CNP) following [[Scott et al 2019](#Scott-et-al-2019)]. CNP is a version of generalised LL parsing (GLL) [[Scott & Johnstone 2016](#Scott-et-al-2016)]. GLL parsers can parse all context free (CF) languages.
+The generated parser is a clustered nonterminal parser (CNP) following [[Scott et al 2019](#Scott-et-al-2019)]. CNP is a version of generalised LL parsing (GLL) [[Scott & Johnstone 2016](#Scott-et-al-2016)]. GLL parsers can parse all context free (CF) languages.
 
 Gogll accepts grammars in markdown files, which is very useful for documentation.
-The grammar is no longer separate from the language documentation. For example: see
+For example: see
 [gogll's own grammar](gogll.md).
 
-GLL has worst-case cubic time and space complexity but linear complexity for all LL(1) productions [[Scott-et-al-2016](#Scott-et-al-2016)]. A project in which gogll is currently used first used [gocc](https://github.com/goccmack/gocc) to compile an LR-1 grammar. 
+GLL has worst-case cubic time and space complexity but linear complexity for all LL(1) productions [[Scott et al 2016](#Scott-et-al-2016)]. A project in which gogll is currently used first used [gocc](https://github.com/goccmack/gocc) to compile an LR-1 grammar. 
 GoGLL compiles this real-world query language grammar faster than gocc.
 See the table below.
 
@@ -23,7 +23,7 @@ See the table below.
 ## 2020-04-24
 1. GoGLL now generates a linear-time FSA lexer matching the CNP parser.
 1. This version of *GoGLL is faster than gocc*. It compiles a sample grammar in  
-0.071 s, which GoCC compiles in 0.113 s.
+0.074 s, which GoCC compiles in 0.118 s. Gogll compiles itself in 0.041s.
 
 # Benefits and disadvantages
 The following table compares GLL parsers with LL-k/LR-k parsers and [PEGs](#Ford-2004)
@@ -34,7 +34,7 @@ General CF grammars | Yes | Yes | No | No
 Composable CF grammars | Yes | Yes | No | No
 Handle ambiguity | Yes | Yes | No | No
 Indirect left recursion | No problem | No problem | Bad | Bad
-Speed (time to compile the same grammar) | 0.071 s| - | 0.113 s | -
+Speed (time to compile the same grammar) | 0.074 s| - | 0.118 s | -
 
 * General CF grammars allow the parser developer to write grammars that match the language most naturally.
 * Composability allows pre-existing grammar modules to be imported.
@@ -76,8 +76,27 @@ it is installed.
 # Help
 `gogll -h`
 
+# Using the generated lexer and parser
+1. Create a lexer:
+```
+	lex := lexer.New(input []rune) *Lexer  or
+	lex := lexer.NewFile(fname string) *Lexer
+```
+2. Parse the lexer:  
+```
+	if err, errs := parser.Parse(lex); err != nil {...}
+```
+3. Report ambiguities
+```
+	bsr.ReportAmbiguous()
+```
+Ambiguous BSRs must be resolved by walking the parse forest and removing
+unwanted children of ambiguous NTs. To remove an unwanted BSR, `b` call `b.Ignore()`
+4. Use the disambiguated parse tree for the further stages of compilation. 
+For example, see gogll's [AST builder](ast/build.go).
 # Walking the parse forest
-Gogll produces a binary subtree representation (BSR see [[Scott et al 2019]](#Scott-et-al-2019)) set of the parse forest of a successful parse. See [Walking the BSR Parse Forest](doc/bsr/bsr.md)
+Gogll produces a binary subtree representation (BSR see [[Scott et al 2019]](#Scott-et-al-2019)) set of the parse forest of a successful parse. See [Walking the BSR Parse Forest](doc/bsr/bsr.md) or 
+[build.go](ast/build.go) for an example.
 
 # Status
 * `gogll v3` generates a matching lexer and parser. v3 compiles itself.
