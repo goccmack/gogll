@@ -129,7 +129,7 @@ func (g *gen) getFollowConditions(nt string) (tokens []*Symbol) {
 		os.Exit(1)
 	}
 	tokMap := g.ts.LiteralToString
-	for _, sym := range flw.Elements() {
+	for _, sym := range flw.ElementsSorted() {
 		tokens = append(tokens,
 			&Symbol{
 				TokType: tokMap[sym],

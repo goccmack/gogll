@@ -43,6 +43,7 @@ type AltData struct {
 }
 
 func (g *gen) getAlternateCode(nt string, alt *ast.SyntaxAlternate, altI int) string {
+	// fmt.Printf("codes.genAlternateCode: %s altI %d\n", nt, altI)
 	tmpl, err := template.New("Alternate").Parse(altCodeTmpl)
 	if err != nil {
 		panic(err)
@@ -55,6 +56,7 @@ func (g *gen) getAlternateCode(nt string, alt *ast.SyntaxAlternate, altI int) st
 }
 
 func (g *gen) getAltData(nt string, alt *ast.SyntaxAlternate, altI int) *AltData {
+	// fmt.Printf("codex.getAltData %s[%d]\n", nt, altI)
 	L := gslot.NewLabel(nt, altI, 0, g.gs, g.ff)
 	d := &AltData{
 		NT:         nt,
@@ -116,7 +118,7 @@ case slot.{{$slot.PostLabel}}: // {{$slot.Comment}}
 			cI++ {{end}}{{end}}{{end}}
 			if follow(symbols.NT_{{.NT}}) {
 				rtn(symbols.NT_{{.NT}}, cU, cI)
-			} else {
-				parseError(slot.{{.LastSlot.PreLabel}}, cI, followSets[symbols.NT_{{.NT}}])
+			} else { 
+				parseError(slot.{{.AltLabel}}, cI, followSets[symbols.NT_{{.NT}}])
 			}
 	`
