@@ -1,10 +1,9 @@
-# Gogll v3.0.2
+# Gogll v3
 
 [Copyright 2019 Marius Ackerman](License.txt)
 
 This document contains BNF specification for gogll V3. 
 
-# Lexical Definitions
 ```
 package "github.com/goccmack/gogll"
 
@@ -20,6 +19,15 @@ Rules
 Rule : LexRule | SyntaxRule ;
 ```
 
+# Lexical Definitions
+```
+nt : upcase <letter|number|'_'> ;
+tokid : lowcase <letter|number|'_'> ; 
+
+char_lit : '\'' (not "\\'" | '\\' any "\\'nrt") '\'' ;
+string_lit : '"' {not "\\\"" | '\\' any "\\\"nrt"} '"' ;
+
+```
 # Lex Rules
 ```
 LexRule : TokID ":" RegExp ";" ;
@@ -40,7 +48,7 @@ LexOneOrMore : "<" LexAlternates ">" ;
 
 LexAlternates : RegExp | RegExp "|" LexAlternates ;
 
-UnicodeClass : letter | upcase | lowcase | number | space ;
+UnicodeClass : "letter" | "upcase" | "lowcase" | "number" ;
 
 ```
 

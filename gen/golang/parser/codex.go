@@ -24,7 +24,7 @@ import (
 
 func (g *gen) genAlternatesCode() string {
 	buf := new(bytes.Buffer)
-	for _, nt := range g.g.NonTerminals.Elements() {
+	for _, nt := range g.g.NonTerminals.ElementsSorted() {
 		rule := g.g.GetSyntaxRule(nt)
 		for i, alt := range rule.Alternates {
 			buf.WriteString(g.getAlternateCode(nt, alt, i))
