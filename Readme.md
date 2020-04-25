@@ -7,6 +7,7 @@ Copyright 2019 Marius Ackerman.
 Gogll generates a matching lexer and parser from one grammar in Go. 
 
 The generated lexer is a linear-time finite state automaton FSA [[Grune et al 2012](#Grune-et-al-2012)].
+The lexer ignores whitespace.
 
 The parser is a clustered nonterminal parser (CNP) following [[Scott et al 2019](#Scott-et-al-2019)]. CNP is a version of generalised LL parsing (GLL) [[Scott & Johnstone 2016](#Scott-et-al-2016)]. GLL parsers can parse all context free (CF) languages.
 
