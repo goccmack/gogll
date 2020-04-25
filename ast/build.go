@@ -149,10 +149,10 @@ func (bld *builder) getStringLiterals(rules []*SyntaxRule) *stringset.StringSet 
 
 /*** Lex Rules ***/
 
-// LexRule : TokID ":" RegExp ";" ;
+// LexRule : tokid ":" RegExp ";" ;
 func (bld *builder) lexRule(b bsr.BSR) *LexRule {
 	return &LexRule{
-		TokID:  bld.tokID(b.GetNTChildI(0)),
+		TokID:  bld.tokID(b.GetTChildI(0)),
 		RegExp: bld.regexp(b.GetNTChildI(2)),
 	}
 }
@@ -337,21 +337,21 @@ func (bld *builder) syntaxAlternates(b bsr.BSR) []*SyntaxAlternate {
 	return alts
 }
 
-// SyntaxRule : NT ":" SyntaxAlternates ";"  ;
+// SyntaxRule : nt ":" SyntaxAlternates ";"  ;
 func (bld *builder) syntaxRule(b bsr.BSR) brule {
 	return &SyntaxRule{
-		Head:       bld.nt(b.GetNTChild(symbols.NT_NT, 0)),
+		Head:       bld.nt(b.GetTChildI(0)),
 		Alternates: bld.syntaxAlternates(b.GetNTChild(symbols.NT_SyntaxAlternates, 0)),
 	}
 }
 
-// SyntaxSymbol : NT | TokID | string_lit ;
+// SyntaxSymbol : nt | tokid | string_lit ;
 func (bld *builder) symbol(b bsr.BSR) SyntaxSymbol {
 	switch b.Alternate() {
 	case 0:
-		return bld.nt(b.GetNTChildI(0))
+		return bld.nt(b.GetTChildI(0))
 	case 1:
-		return bld.tokID(b.GetNTChildI(0))
+		return bld.tokID(b.GetTChildI(0))
 	case 2:
 		return bld.stringLit(b.GetTChildI(0))
 	}
@@ -373,8 +373,7 @@ func (bld *builder) syntaxSymbols(b bsr.BSR) []SyntaxSymbol {
 /*** Shared ***/
 
 // NT : nt  ;
-func (bld *builder) nt(b bsr.BSR) *NT {
-	tok := b.GetTChildI(0)
+func (bld *builder) nt(tok *token.Token) *NT {
 	return &NT{
 		tok: tok,
 	}
@@ -387,8 +386,7 @@ func (bld *builder) stringLit(tok *token.Token) *StringLit {
 }
 
 // TokID : id ;
-func (bld *builder) tokID(b bsr.BSR) *TokID {
-	tok := b.GetTChildI(0)
+func (bld *builder) tokID(tok *token.Token) *TokID {
 	return &TokID{
 		tok: tok,
 	}

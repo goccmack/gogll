@@ -222,11 +222,10 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 			} else {
 				parseError(slot.LexOptional0R0, cI, followSets[symbols.NT_LexOptional])
 			}
-		case slot.LexRule0R0: // LexRule : ∙TokID : RegExp ;
+		case slot.LexRule0R0: // LexRule : ∙tokid : RegExp ;
 
-			call(slot.LexRule0R1, cU, cI)
-		case slot.LexRule0R1: // LexRule : TokID ∙: RegExp ;
-
+			bsr.Add(slot.LexRule0R1, cU, cI, cI+1)
+			cI++
 			if !testSelect(slot.LexRule0R1) {
 				parseError(slot.LexRule0R1, cI, first[slot.LexRule0R1])
 				break
@@ -240,7 +239,7 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 			}
 
 			call(slot.LexRule0R3, cU, cI)
-		case slot.LexRule0R3: // LexRule : TokID : RegExp ∙;
+		case slot.LexRule0R3: // LexRule : tokid : RegExp ∙;
 
 			if !testSelect(slot.LexRule0R3) {
 				parseError(slot.LexRule0R3, cI, first[slot.LexRule0R3])
@@ -347,15 +346,6 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 				rtn(symbols.NT_LexZeroOrMore, cU, cI)
 			} else {
 				parseError(slot.LexZeroOrMore0R0, cI, followSets[symbols.NT_LexZeroOrMore])
-			}
-		case slot.NT0R0: // NT : ∙nt
-
-			bsr.Add(slot.NT0R1, cU, cI, cI+1)
-			cI++
-			if follow(symbols.NT_NT) {
-				rtn(symbols.NT_NT, cU, cI)
-			} else {
-				parseError(slot.NT0R0, cI, followSets[symbols.NT_NT])
 			}
 		case slot.Package0R0: // Package : ∙package string_lit
 
@@ -503,11 +493,10 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 			} else {
 				parseError(slot.SyntaxAlternates1R0, cI, followSets[symbols.NT_SyntaxAlternates])
 			}
-		case slot.SyntaxRule0R0: // SyntaxRule : ∙NT : SyntaxAlternates ;
+		case slot.SyntaxRule0R0: // SyntaxRule : ∙nt : SyntaxAlternates ;
 
-			call(slot.SyntaxRule0R1, cU, cI)
-		case slot.SyntaxRule0R1: // SyntaxRule : NT ∙: SyntaxAlternates ;
-
+			bsr.Add(slot.SyntaxRule0R1, cU, cI, cI+1)
+			cI++
 			if !testSelect(slot.SyntaxRule0R1) {
 				parseError(slot.SyntaxRule0R1, cI, first[slot.SyntaxRule0R1])
 				break
@@ -521,7 +510,7 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 			}
 
 			call(slot.SyntaxRule0R3, cU, cI)
-		case slot.SyntaxRule0R3: // SyntaxRule : NT : SyntaxAlternates ∙;
+		case slot.SyntaxRule0R3: // SyntaxRule : nt : SyntaxAlternates ∙;
 
 			if !testSelect(slot.SyntaxRule0R3) {
 				parseError(slot.SyntaxRule0R3, cI, first[slot.SyntaxRule0R3])
@@ -535,21 +524,19 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 			} else {
 				parseError(slot.SyntaxRule0R0, cI, followSets[symbols.NT_SyntaxRule])
 			}
-		case slot.SyntaxSymbol0R0: // SyntaxSymbol : ∙NT
+		case slot.SyntaxSymbol0R0: // SyntaxSymbol : ∙nt
 
-			call(slot.SyntaxSymbol0R1, cU, cI)
-		case slot.SyntaxSymbol0R1: // SyntaxSymbol : NT ∙
-
+			bsr.Add(slot.SyntaxSymbol0R1, cU, cI, cI+1)
+			cI++
 			if follow(symbols.NT_SyntaxSymbol) {
 				rtn(symbols.NT_SyntaxSymbol, cU, cI)
 			} else {
 				parseError(slot.SyntaxSymbol0R0, cI, followSets[symbols.NT_SyntaxSymbol])
 			}
-		case slot.SyntaxSymbol1R0: // SyntaxSymbol : ∙TokID
+		case slot.SyntaxSymbol1R0: // SyntaxSymbol : ∙tokid
 
-			call(slot.SyntaxSymbol1R1, cU, cI)
-		case slot.SyntaxSymbol1R1: // SyntaxSymbol : TokID ∙
-
+			bsr.Add(slot.SyntaxSymbol1R1, cU, cI, cI+1)
+			cI++
 			if follow(symbols.NT_SyntaxSymbol) {
 				rtn(symbols.NT_SyntaxSymbol, cU, cI)
 			} else {
@@ -591,15 +578,6 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 				rtn(symbols.NT_SyntaxSymbols, cU, cI)
 			} else {
 				parseError(slot.SyntaxSymbols1R0, cI, followSets[symbols.NT_SyntaxSymbols])
-			}
-		case slot.TokID0R0: // TokID : ∙tokid
-
-			bsr.Add(slot.TokID0R1, cU, cI, cI+1)
-			cI++
-			if follow(symbols.NT_TokID) {
-				rtn(symbols.NT_TokID, cU, cI)
-			} else {
-				parseError(slot.TokID0R0, cI, followSets[symbols.NT_TokID])
 			}
 		case slot.UnicodeClass0R0: // UnicodeClass : ∙letter
 
@@ -1189,15 +1167,15 @@ var first = []map[token.Type]string{
 		token.Type26: "|",
 		token.Type27: "}",
 	},
-	// LexRule : ∙TokID : RegExp ;
+	// LexRule : ∙tokid : RegExp ;
 	map[token.Type]string{
 		token.Type23: "tokid",
 	},
-	// LexRule : TokID ∙: RegExp ;
+	// LexRule : tokid ∙: RegExp ;
 	map[token.Type]string{
 		token.Type4: ":",
 	},
-	// LexRule : TokID : ∙RegExp ;
+	// LexRule : tokid : ∙RegExp ;
 	map[token.Type]string{
 		token.Type1:  "(",
 		token.Type3:  ".",
@@ -1212,11 +1190,11 @@ var first = []map[token.Type]string{
 		token.Type24: "upcase",
 		token.Type25: "{",
 	},
-	// LexRule : TokID : RegExp ∙;
+	// LexRule : tokid : RegExp ∙;
 	map[token.Type]string{
 		token.Type5: ";",
 	},
-	// LexRule : TokID : RegExp ; ∙
+	// LexRule : tokid : RegExp ; ∙
 	map[token.Type]string{
 		token.EOF:    "EOF",
 		token.Type19: "nt",
@@ -1430,19 +1408,6 @@ var first = []map[token.Type]string{
 		token.Type26: "|",
 		token.Type27: "}",
 	},
-	// NT : ∙nt
-	map[token.Type]string{
-		token.Type19: "nt",
-	},
-	// NT : nt ∙
-	map[token.Type]string{
-		token.Type4:  ":",
-		token.Type5:  ";",
-		token.Type19: "nt",
-		token.Type22: "string_lit",
-		token.Type23: "tokid",
-		token.Type26: "|",
-	},
 	// Package : ∙package string_lit
 	map[token.Type]string{
 		token.Type21: "package",
@@ -1615,36 +1580,36 @@ var first = []map[token.Type]string{
 	map[token.Type]string{
 		token.Type5: ";",
 	},
-	// SyntaxRule : ∙NT : SyntaxAlternates ;
+	// SyntaxRule : ∙nt : SyntaxAlternates ;
 	map[token.Type]string{
 		token.Type19: "nt",
 	},
-	// SyntaxRule : NT ∙: SyntaxAlternates ;
+	// SyntaxRule : nt ∙: SyntaxAlternates ;
 	map[token.Type]string{
 		token.Type4: ":",
 	},
-	// SyntaxRule : NT : ∙SyntaxAlternates ;
+	// SyntaxRule : nt : ∙SyntaxAlternates ;
 	map[token.Type]string{
 		token.Type15: "empty",
 		token.Type19: "nt",
 		token.Type22: "string_lit",
 		token.Type23: "tokid",
 	},
-	// SyntaxRule : NT : SyntaxAlternates ∙;
+	// SyntaxRule : nt : SyntaxAlternates ∙;
 	map[token.Type]string{
 		token.Type5: ";",
 	},
-	// SyntaxRule : NT : SyntaxAlternates ; ∙
+	// SyntaxRule : nt : SyntaxAlternates ; ∙
 	map[token.Type]string{
 		token.EOF:    "EOF",
 		token.Type19: "nt",
 		token.Type23: "tokid",
 	},
-	// SyntaxSymbol : ∙NT
+	// SyntaxSymbol : ∙nt
 	map[token.Type]string{
 		token.Type19: "nt",
 	},
-	// SyntaxSymbol : NT ∙
+	// SyntaxSymbol : nt ∙
 	map[token.Type]string{
 		token.Type5:  ";",
 		token.Type19: "nt",
@@ -1652,11 +1617,11 @@ var first = []map[token.Type]string{
 		token.Type23: "tokid",
 		token.Type26: "|",
 	},
-	// SyntaxSymbol : ∙TokID
+	// SyntaxSymbol : ∙tokid
 	map[token.Type]string{
 		token.Type23: "tokid",
 	},
-	// SyntaxSymbol : TokID ∙
+	// SyntaxSymbol : tokid ∙
 	map[token.Type]string{
 		token.Type5:  ";",
 		token.Type19: "nt",
@@ -1702,19 +1667,6 @@ var first = []map[token.Type]string{
 	// SyntaxSymbols : SyntaxSymbol SyntaxSymbols ∙
 	map[token.Type]string{
 		token.Type5:  ";",
-		token.Type26: "|",
-	},
-	// TokID : ∙tokid
-	map[token.Type]string{
-		token.Type23: "tokid",
-	},
-	// TokID : tokid ∙
-	map[token.Type]string{
-		token.Type4:  ":",
-		token.Type5:  ";",
-		token.Type19: "nt",
-		token.Type22: "string_lit",
-		token.Type23: "tokid",
 		token.Type26: "|",
 	},
 	// UnicodeClass : ∙letter
@@ -1963,15 +1915,6 @@ var followSets = []map[token.Type]string{
 		token.Type26: "|",
 		token.Type27: "}",
 	},
-	// NT
-	map[token.Type]string{
-		token.Type4:  ":",
-		token.Type5:  ";",
-		token.Type19: "nt",
-		token.Type22: "string_lit",
-		token.Type23: "tokid",
-		token.Type26: "|",
-	},
 	// Package
 	map[token.Type]string{
 		token.Type19: "nt",
@@ -2022,15 +1965,6 @@ var followSets = []map[token.Type]string{
 	// SyntaxSymbols
 	map[token.Type]string{
 		token.Type5:  ";",
-		token.Type26: "|",
-	},
-	// TokID
-	map[token.Type]string{
-		token.Type4:  ":",
-		token.Type5:  ";",
-		token.Type19: "nt",
-		token.Type22: "string_lit",
-		token.Type23: "tokid",
 		token.Type26: "|",
 	},
 	// UnicodeClass

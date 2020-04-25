@@ -24,7 +24,6 @@ const(
 	NT_LexRule 
 	NT_LexSymbol 
 	NT_LexZeroOrMore 
-	NT_NT 
 	NT_Package 
 	NT_RegExp 
 	NT_Rule 
@@ -34,7 +33,6 @@ const(
 	NT_SyntaxRule 
 	NT_SyntaxSymbol 
 	NT_SyntaxSymbols 
-	NT_TokID 
 	NT_UnicodeClass 
 )
 
@@ -107,7 +105,6 @@ var ntToString = []string {
 	"LexRule", /* NT_LexRule */
 	"LexSymbol", /* NT_LexSymbol */
 	"LexZeroOrMore", /* NT_LexZeroOrMore */
-	"NT", /* NT_NT */
 	"Package", /* NT_Package */
 	"RegExp", /* NT_RegExp */
 	"Rule", /* NT_Rule */
@@ -117,7 +114,6 @@ var ntToString = []string {
 	"SyntaxRule", /* NT_SyntaxRule */
 	"SyntaxSymbol", /* NT_SyntaxSymbol */
 	"SyntaxSymbols", /* NT_SyntaxSymbols */
-	"TokID", /* NT_TokID */
 	"UnicodeClass", /* NT_UnicodeClass */ 
 }
 
@@ -162,7 +158,6 @@ var stringNT = map[string]NT{
 	"LexRule":NT_LexRule,
 	"LexSymbol":NT_LexSymbol,
 	"LexZeroOrMore":NT_LexZeroOrMore,
-	"NT":NT_NT,
 	"Package":NT_Package,
 	"RegExp":NT_RegExp,
 	"Rule":NT_Rule,
@@ -172,6 +167,5 @@ var stringNT = map[string]NT{
 	"SyntaxRule":NT_SyntaxRule,
 	"SyntaxSymbol":NT_SyntaxSymbol,
 	"SyntaxSymbols":NT_SyntaxSymbols,
-	"TokID":NT_TokID,
 	"UnicodeClass":NT_UnicodeClass,
 }

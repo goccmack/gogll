@@ -65,8 +65,6 @@ const(
 	LexZeroOrMore0R1
 	LexZeroOrMore0R2
 	LexZeroOrMore0R3
-	NT0R0
-	NT0R1
 	Package0R0
 	Package0R1
 	Package0R2
@@ -110,8 +108,6 @@ const(
 	SyntaxSymbols1R0
 	SyntaxSymbols1R1
 	SyntaxSymbols1R2
-	TokID0R0
-	TokID0R1
 	UnicodeClass0R0
 	UnicodeClass0R1
 	UnicodeClass1R0
@@ -450,7 +446,7 @@ var slots = map[Label]*Slot{
 	LexRule0R0: {
 		symbols.NT_LexRule, 0, 0, 
 		symbols.Symbols{  
-			symbols.NT_TokID, 
+			symbols.T_23, 
 			symbols.T_4, 
 			symbols.NT_RegExp, 
 			symbols.T_5,
@@ -460,7 +456,7 @@ var slots = map[Label]*Slot{
 	LexRule0R1: {
 		symbols.NT_LexRule, 0, 1, 
 		symbols.Symbols{  
-			symbols.NT_TokID, 
+			symbols.T_23, 
 			symbols.T_4, 
 			symbols.NT_RegExp, 
 			symbols.T_5,
@@ -470,7 +466,7 @@ var slots = map[Label]*Slot{
 	LexRule0R2: {
 		symbols.NT_LexRule, 0, 2, 
 		symbols.Symbols{  
-			symbols.NT_TokID, 
+			symbols.T_23, 
 			symbols.T_4, 
 			symbols.NT_RegExp, 
 			symbols.T_5,
@@ -480,7 +476,7 @@ var slots = map[Label]*Slot{
 	LexRule0R3: {
 		symbols.NT_LexRule, 0, 3, 
 		symbols.Symbols{  
-			symbols.NT_TokID, 
+			symbols.T_23, 
 			symbols.T_4, 
 			symbols.NT_RegExp, 
 			symbols.T_5,
@@ -490,7 +486,7 @@ var slots = map[Label]*Slot{
 	LexRule0R4: {
 		symbols.NT_LexRule, 0, 4, 
 		symbols.Symbols{  
-			symbols.NT_TokID, 
+			symbols.T_23, 
 			symbols.T_4, 
 			symbols.NT_RegExp, 
 			symbols.T_5,
@@ -636,20 +632,6 @@ var slots = map[Label]*Slot{
 			symbols.T_27,
 		}, 
 		LexZeroOrMore0R3, 
-	},
-	NT0R0: {
-		symbols.NT_NT, 0, 0, 
-		symbols.Symbols{  
-			symbols.T_19,
-		}, 
-		NT0R0, 
-	},
-	NT0R1: {
-		symbols.NT_NT, 0, 1, 
-		symbols.Symbols{  
-			symbols.T_19,
-		}, 
-		NT0R1, 
 	},
 	Package0R0: {
 		symbols.NT_Package, 0, 0, 
@@ -860,7 +842,7 @@ var slots = map[Label]*Slot{
 	SyntaxRule0R0: {
 		symbols.NT_SyntaxRule, 0, 0, 
 		symbols.Symbols{  
-			symbols.NT_NT, 
+			symbols.T_19, 
 			symbols.T_4, 
 			symbols.NT_SyntaxAlternates, 
 			symbols.T_5,
@@ -870,7 +852,7 @@ var slots = map[Label]*Slot{
 	SyntaxRule0R1: {
 		symbols.NT_SyntaxRule, 0, 1, 
 		symbols.Symbols{  
-			symbols.NT_NT, 
+			symbols.T_19, 
 			symbols.T_4, 
 			symbols.NT_SyntaxAlternates, 
 			symbols.T_5,
@@ -880,7 +862,7 @@ var slots = map[Label]*Slot{
 	SyntaxRule0R2: {
 		symbols.NT_SyntaxRule, 0, 2, 
 		symbols.Symbols{  
-			symbols.NT_NT, 
+			symbols.T_19, 
 			symbols.T_4, 
 			symbols.NT_SyntaxAlternates, 
 			symbols.T_5,
@@ -890,7 +872,7 @@ var slots = map[Label]*Slot{
 	SyntaxRule0R3: {
 		symbols.NT_SyntaxRule, 0, 3, 
 		symbols.Symbols{  
-			symbols.NT_NT, 
+			symbols.T_19, 
 			symbols.T_4, 
 			symbols.NT_SyntaxAlternates, 
 			symbols.T_5,
@@ -900,7 +882,7 @@ var slots = map[Label]*Slot{
 	SyntaxRule0R4: {
 		symbols.NT_SyntaxRule, 0, 4, 
 		symbols.Symbols{  
-			symbols.NT_NT, 
+			symbols.T_19, 
 			symbols.T_4, 
 			symbols.NT_SyntaxAlternates, 
 			symbols.T_5,
@@ -910,28 +892,28 @@ var slots = map[Label]*Slot{
 	SyntaxSymbol0R0: {
 		symbols.NT_SyntaxSymbol, 0, 0, 
 		symbols.Symbols{  
-			symbols.NT_NT,
+			symbols.T_19,
 		}, 
 		SyntaxSymbol0R0, 
 	},
 	SyntaxSymbol0R1: {
 		symbols.NT_SyntaxSymbol, 0, 1, 
 		symbols.Symbols{  
-			symbols.NT_NT,
+			symbols.T_19,
 		}, 
 		SyntaxSymbol0R1, 
 	},
 	SyntaxSymbol1R0: {
 		symbols.NT_SyntaxSymbol, 1, 0, 
 		symbols.Symbols{  
-			symbols.NT_TokID,
+			symbols.T_23,
 		}, 
 		SyntaxSymbol1R0, 
 	},
 	SyntaxSymbol1R1: {
 		symbols.NT_SyntaxSymbol, 1, 1, 
 		symbols.Symbols{  
-			symbols.NT_TokID,
+			symbols.T_23,
 		}, 
 		SyntaxSymbol1R1, 
 	},
@@ -986,20 +968,6 @@ var slots = map[Label]*Slot{
 			symbols.NT_SyntaxSymbols,
 		}, 
 		SyntaxSymbols1R2, 
-	},
-	TokID0R0: {
-		symbols.NT_TokID, 0, 0, 
-		symbols.Symbols{  
-			symbols.T_23,
-		}, 
-		TokID0R0, 
-	},
-	TokID0R1: {
-		symbols.NT_TokID, 0, 1, 
-		symbols.Symbols{  
-			symbols.T_23,
-		}, 
-		TokID0R1, 
 	},
 	UnicodeClass0R0: {
 		symbols.NT_UnicodeClass, 0, 0, 
@@ -1112,8 +1080,6 @@ var slotIndex = map[Index]Label {
 	Index{ symbols.NT_LexZeroOrMore,0,1 }: LexZeroOrMore0R1,
 	Index{ symbols.NT_LexZeroOrMore,0,2 }: LexZeroOrMore0R2,
 	Index{ symbols.NT_LexZeroOrMore,0,3 }: LexZeroOrMore0R3,
-	Index{ symbols.NT_NT,0,0 }: NT0R0,
-	Index{ symbols.NT_NT,0,1 }: NT0R1,
 	Index{ symbols.NT_Package,0,0 }: Package0R0,
 	Index{ symbols.NT_Package,0,1 }: Package0R1,
 	Index{ symbols.NT_Package,0,2 }: Package0R2,
@@ -1157,8 +1123,6 @@ var slotIndex = map[Index]Label {
 	Index{ symbols.NT_SyntaxSymbols,1,0 }: SyntaxSymbols1R0,
 	Index{ symbols.NT_SyntaxSymbols,1,1 }: SyntaxSymbols1R1,
 	Index{ symbols.NT_SyntaxSymbols,1,2 }: SyntaxSymbols1R2,
-	Index{ symbols.NT_TokID,0,0 }: TokID0R0,
-	Index{ symbols.NT_TokID,0,1 }: TokID0R1,
 	Index{ symbols.NT_UnicodeClass,0,0 }: UnicodeClass0R0,
 	Index{ symbols.NT_UnicodeClass,0,1 }: UnicodeClass0R1,
 	Index{ symbols.NT_UnicodeClass,1,0 }: UnicodeClass1R0,
@@ -1174,22 +1138,20 @@ var alternates = map[symbols.NT][]Label{
 	symbols.NT_Package:[]Label{ Package0R0 },
 	symbols.NT_Rules:[]Label{ Rules0R0,Rules1R0 },
 	symbols.NT_Rule:[]Label{ Rule0R0,Rule1R0 },
-	symbols.NT_LexRule:[]Label{ LexRule0R0 },
-	symbols.NT_RegExp:[]Label{ RegExp0R0,RegExp1R0 },
 	symbols.NT_LexSymbol:[]Label{ LexSymbol0R0,LexSymbol1R0,LexSymbol2R0,LexSymbol3R0,LexSymbol4R0,LexSymbol5R0 },
+	symbols.NT_UnicodeClass:[]Label{ UnicodeClass0R0,UnicodeClass1R0,UnicodeClass2R0,UnicodeClass3R0 },
 	symbols.NT_LexBracket:[]Label{ LexBracket0R0,LexBracket1R0,LexBracket2R0,LexBracket3R0 },
 	symbols.NT_LexGroup:[]Label{ LexGroup0R0 },
 	symbols.NT_LexOptional:[]Label{ LexOptional0R0 },
 	symbols.NT_LexZeroOrMore:[]Label{ LexZeroOrMore0R0 },
 	symbols.NT_LexOneOrMore:[]Label{ LexOneOrMore0R0 },
 	symbols.NT_LexAlternates:[]Label{ LexAlternates0R0,LexAlternates1R0 },
-	symbols.NT_UnicodeClass:[]Label{ UnicodeClass0R0,UnicodeClass1R0,UnicodeClass2R0,UnicodeClass3R0 },
+	symbols.NT_RegExp:[]Label{ RegExp0R0,RegExp1R0 },
+	symbols.NT_LexRule:[]Label{ LexRule0R0 },
 	symbols.NT_SyntaxRule:[]Label{ SyntaxRule0R0 },
-	symbols.NT_NT:[]Label{ NT0R0 },
 	symbols.NT_SyntaxAlternates:[]Label{ SyntaxAlternates0R0,SyntaxAlternates1R0 },
 	symbols.NT_SyntaxAlternate:[]Label{ SyntaxAlternate0R0,SyntaxAlternate1R0 },
 	symbols.NT_SyntaxSymbols:[]Label{ SyntaxSymbols0R0,SyntaxSymbols1R0 },
 	symbols.NT_SyntaxSymbol:[]Label{ SyntaxSymbol0R0,SyntaxSymbol1R0,SyntaxSymbol2R0 },
-	symbols.NT_TokID:[]Label{ TokID0R0 },
 }
 

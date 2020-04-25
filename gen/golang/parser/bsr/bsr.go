@@ -460,16 +460,21 @@ func ReportAmbiguous() {
 		fmt.Printf("BSR has %d ambigous roots\n", len(rts))
 	}
 	for i, b := range GetRoots() {
-		fmt.Println("Root", i)
-		report(b)
+		fmt.Println("In root", i)
+		if !report(b) {
+			fmt.Println("No ambiguous BSRs")
+		}
 	}
 }
 
-func report(b BSR) {
+// report return true iff at least one ambigous BSR was found
+func report(b BSR) bool {
+	ambiguous := false
 	for i, s := range b.Label.Symbols() {
 		ln, col := getLineColumn(b.LeftExtent())
 		if s.IsNonTerminal() {
 			if len(b.GetNTChildrenI(i)) != 1 {
+				ambiguous = true
 				fmt.Printf("  Ambigous: in %s: NT %s (%d) at line %d col %d \n", b, s, i, ln, col)
 				fmt.Println("   Children:")
 				for _, c := range b.GetNTChildrenI(i) {
@@ -481,5 +486,6 @@ func report(b BSR) {
 			}
 		}
 	}
+	return ambiguous
 }
 `
