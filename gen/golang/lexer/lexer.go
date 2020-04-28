@@ -136,7 +136,7 @@ import (
 
 	"github.com/goccmack/goutil/md"
 
-	"github.com/goccmack/gogll/token"
+	"{{.Package}}/token"
 )
 
 type state int
