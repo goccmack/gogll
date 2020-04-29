@@ -86,9 +86,13 @@ it is installed.
 ```
 	if err, errs := parser.Parse(lex); err != nil {...}
 ```
-3. Report ambiguities
+3. Check for ambiguities in the parse forest
 ```
-	bsr.ReportAmbiguous()
+	if bsr.IsAmbiguous() {
+		fmt.Println("Error: Ambiguous parse forest")
+		bsr.ReportAmbiguous()
+		os.Exit(1)
+	}
 ```
 Ambiguous BSRs must be resolved by walking the parse forest and removing
 unwanted children of ambiguous NTs. To remove an unwanted BSR, `b` call `b.Ignore()`

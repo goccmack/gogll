@@ -488,4 +488,33 @@ func report(b BSR) bool {
 	}
 	return ambiguous
 }
+
+// IsAmbiguous returns true if the BSR set does not have exactly one root, or
+// if any BSR in the set has an NT symbol, which does not have exactly one
+// sub-tree.
+func IsAmbiguous() bool {
+	if len(GetRoots()) != 1 {
+		return true
+	}
+	return isAmbiguous(GetRoot())
+}
+
+// isAmbiguous returns true if b or any of its NT children is ambiguous.
+// A BSR is ambigous if any of its NT symbols does not have exactly one
+// subtrees (children).
+func isAmbiguous(b BSR) bool {
+	for i, s := range b.Label.Symbols() {
+		if s.IsNonTerminal() {
+			if len(b.GetNTChildrenI(i)) != 1 {
+				return true
+			}
+			for _, b1 := range b.GetNTChildrenI(i) {
+				if isAmbiguous(b1) {
+					return true
+				}
+			}
+		}
+	}
+	return false
+}
 `
