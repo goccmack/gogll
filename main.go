@@ -37,6 +37,7 @@ import (
 	"github.com/goccmack/gogll/lexer"
 	"github.com/goccmack/gogll/parser"
 	"github.com/goccmack/gogll/parser/bsr"
+	"github.com/goccmack/gogll/sc"
 	"github.com/goccmack/gogll/symbols"
 )
 
@@ -66,6 +67,7 @@ func main() {
 	bsr.ReportAmbiguous()
 
 	g := ast.Build(bsr.GetRoot(), lex)
+	sc.Go(g, lex)
 	symbols.Init(g)
 
 	ff := frstflw.New(g)

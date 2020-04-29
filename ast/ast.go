@@ -119,3 +119,7 @@ func (t *TokID) Token() string {
 func (t *TokID) Lext() int {
 	return t.tok.Lext
 }
+
+func (t *TokID) ID() string {
+	return string(t.tok.Literal)
+}
