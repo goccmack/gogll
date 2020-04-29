@@ -21,7 +21,6 @@ import (
 	"os"
 	"path/filepath"
 	"runtime/pprof"
-	"time"
 
 	"github.com/goccmack/gogll/ast"
 	"github.com/goccmack/gogll/cfg"
@@ -56,15 +55,19 @@ func main() {
 		}
 		defer pprof.StopCPUProfile()
 	}
-	start := time.Now()
+	// start := time.Now()
 	lex := lexer.NewFile(cfg.SrcFile)
 	if err, errs := parser.Parse(lex); err != nil {
 		fmt.Println(err)
 		parseErrors(errs)
 	}
-	fmt.Printf("Parse duration %s\n", time.Now().Sub(start))
+	// fmt.Printf("Parse duration %s\n", time.Now().Sub(start))
 
-	bsr.ReportAmbiguous()
+	if bsr.IsAmbiguous() {
+		fmt.Println("Error: Ambiguous parse forest")
+		bsr.ReportAmbiguous()
+		os.Exit(1)
+	}
 
 	g := ast.Build(bsr.GetRoot(), lex)
 	sc.Go(g, lex)
