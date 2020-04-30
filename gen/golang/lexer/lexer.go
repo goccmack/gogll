@@ -173,14 +173,13 @@ func New(input []rune) *Lexer {
 		for lext < len(lex.I) && unicode.IsSpace(lex.I[lext]) {
 			lext++
 		}
-		if lext >= len(lex.I) {
-			lex.add(token.EOF, len(input), len(input))
-		} else {
+		if lext < len(lex.I) {
 			tok := lex.scan(lext)
 			lext = tok.Rext
 			lex.addToken(tok)
 		}
 	}
+	lex.add(token.EOF, len(input), len(input))
 	return lex
 }
 
@@ -188,13 +187,13 @@ func (l *Lexer) scan(i int) *token.Token {
 	// fmt.Printf("lexer.scan\n")
 	s, tok := state(0), token.New(token.Error, i, i, nil)
 	for s != nullState {
-		if tok.Rext >= len(l.I) {
-			// fmt.Printf(" scan: state=%d tok=%s \"%s\" r=EOF\n", 
-			// s, tok, string(l.I[tok.Lext:tok.Rext]))
-		} else {
-			// fmt.Printf(" scan: state=%d tok=%s \"%s\" r='%s'\n", 
-			// s, tok, string(l.I[tok.Lext:tok.Rext]), escape(l.I[tok.Rext]))
-		}
+		// if tok.Rext >= len(l.I) {
+		// 	fmt.Printf(" scan: state=%d tok=%s \"%s\" r=EOF\n", 
+		// 	s, tok, string(l.I[tok.Lext:tok.Rext]))
+		// } else {
+		// 	fmt.Printf(" scan: state=%d tok=%s \"%s\" r='%s'\n", 
+		// 	s, tok, string(l.I[tok.Lext:tok.Rext]), escape(l.I[tok.Rext]))
+		// }
 		if tok.Rext >= len(l.I) {
 			s = nullState
 		} else {

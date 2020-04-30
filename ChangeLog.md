@@ -1,5 +1,8 @@
 # Change Log
 
+# 2020-04-30
+1. Bugfix in lexer closure algorithm.
+
 # 2020-04-29
 1. Some semantic checks implemented
 	1. Check that referenced NTs and TokIDs are declared.

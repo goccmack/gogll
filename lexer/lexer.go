@@ -47,14 +47,13 @@ func New(input []rune) *Lexer {
 		for lext < len(lex.I) && unicode.IsSpace(lex.I[lext]) {
 			lext++
 		}
-		if lext >= len(lex.I) {
-			lex.add(token.EOF, len(input), len(input))
-		} else {
+		if lext < len(lex.I) {
 			tok := lex.scan(lext)
 			lext = tok.Rext
 			lex.addToken(tok)
 		}
 	}
+	lex.add(token.EOF, len(input), len(input))
 	return lex
 }
 
@@ -62,13 +61,13 @@ func (l *Lexer) scan(i int) *token.Token {
 	// fmt.Printf("lexer.scan\n")
 	s, tok := state(0), token.New(token.Error, i, i, nil)
 	for s != nullState {
-		if tok.Rext >= len(l.I) {
-			// fmt.Printf(" scan: state=%d tok=%s \"%s\" r=EOF\n", 
-			// s, tok, string(l.I[tok.Lext:tok.Rext]))
-		} else {
-			// fmt.Printf(" scan: state=%d tok=%s \"%s\" r='%s'\n", 
-			// s, tok, string(l.I[tok.Lext:tok.Rext]), escape(l.I[tok.Rext]))
-		}
+		// if tok.Rext >= len(l.I) {
+		// 	fmt.Printf(" scan: state=%d tok=%s \"%s\" r=EOF\n", 
+		// 	s, tok, string(l.I[tok.Lext:tok.Rext]))
+		// } else {
+		// 	fmt.Printf(" scan: state=%d tok=%s \"%s\" r='%s'\n", 
+		// 	s, tok, string(l.I[tok.Lext:tok.Rext]), escape(l.I[tok.Rext]))
+		// }
 		if tok.Rext >= len(l.I) {
 			s = nullState
 		} else {
@@ -177,7 +176,7 @@ var accept = []token.Type{
 	token.Type27, 
 	token.Error, 
 	token.Error, 
-	token.Error, 
+	token.Type22, 
 	token.Error, 
 	token.Error, 
 	token.Error, 
@@ -191,7 +190,6 @@ var accept = []token.Type{
 	token.Type23, 
 	token.Type23, 
 	token.Type19, 
-	token.Type22, 
 	token.Type14, 
 	token.Type13, 
 	token.Type23, 
@@ -276,10 +274,12 @@ var nextState = []func(r rune) state{
 	// Set1
 	func(r rune) state {
 		switch { 
-		case r == '\\':
+		case r == '"':
 			return 23 
-		case not(r, []rune{'"','\\'}):
+		case r == '\\':
 			return 24 
+		case not(r, []rune{'"','\\'}):
+			return 1 
 		}
 		return nullState
 	}, 
@@ -480,20 +480,14 @@ var nextState = []func(r rune) state{
 	// Set23
 	func(r rune) state {
 		switch { 
-		case any(r, []rune{'"','\\','n','r','t'}):
-			return 24 
 		}
 		return nullState
 	}, 
 	// Set24
 	func(r rune) state {
 		switch { 
-		case r == '"':
-			return 37 
-		case r == '\\':
-			return 23 
-		case not(r, []rune{'"','\\'}):
-			return 24 
+		case any(r, []rune{'"','\\','n','r','t'}):
+			return 1 
 		}
 		return nullState
 	}, 
@@ -509,7 +503,7 @@ var nextState = []func(r rune) state{
 	func(r rune) state {
 		switch { 
 		case r == '\'':
-			return 38 
+			return 37 
 		}
 		return nullState
 	}, 
@@ -531,7 +525,7 @@ var nextState = []func(r rune) state{
 		case r == '_':
 			return 27 
 		case r == 'y':
-			return 39 
+			return 38 
 		case unicode.IsLetter(r):
 			return 27 
 		case unicode.IsNumber(r):
@@ -545,7 +539,7 @@ var nextState = []func(r rune) state{
 		case r == '_':
 			return 27 
 		case r == 'p':
-			return 40 
+			return 39 
 		case unicode.IsLetter(r):
 			return 27 
 		case unicode.IsNumber(r):
@@ -559,7 +553,7 @@ var nextState = []func(r rune) state{
 		case r == '_':
 			return 27 
 		case r == 't':
-			return 41 
+			return 40 
 		case unicode.IsLetter(r):
 			return 27 
 		case unicode.IsNumber(r):
@@ -573,7 +567,7 @@ var nextState = []func(r rune) state{
 		case r == '_':
 			return 27 
 		case r == 'w':
-			return 42 
+			return 41 
 		case unicode.IsLetter(r):
 			return 27 
 		case unicode.IsNumber(r):
@@ -587,7 +581,7 @@ var nextState = []func(r rune) state{
 		case r == '_':
 			return 27 
 		case r == 't':
-			return 43 
+			return 42 
 		case unicode.IsLetter(r):
 			return 27 
 		case unicode.IsNumber(r):
@@ -601,7 +595,7 @@ var nextState = []func(r rune) state{
 		case r == '_':
 			return 27 
 		case r == 'm':
-			return 44 
+			return 43 
 		case unicode.IsLetter(r):
 			return 27 
 		case unicode.IsNumber(r):
@@ -615,7 +609,7 @@ var nextState = []func(r rune) state{
 		case r == '_':
 			return 27 
 		case r == 'c':
-			return 45 
+			return 44 
 		case unicode.IsLetter(r):
 			return 27 
 		case unicode.IsNumber(r):
@@ -629,7 +623,7 @@ var nextState = []func(r rune) state{
 		case r == '_':
 			return 27 
 		case r == 'c':
-			return 46 
+			return 45 
 		case unicode.IsLetter(r):
 			return 27 
 		case unicode.IsNumber(r):
@@ -658,6 +652,12 @@ var nextState = []func(r rune) state{
 	// Set38
 	func(r rune) state {
 		switch { 
+		case r == '_':
+			return 27 
+		case unicode.IsLetter(r):
+			return 27 
+		case unicode.IsNumber(r):
+			return 27 
 		}
 		return nullState
 	}, 
@@ -666,6 +666,8 @@ var nextState = []func(r rune) state{
 		switch { 
 		case r == '_':
 			return 27 
+		case r == 't':
+			return 46 
 		case unicode.IsLetter(r):
 			return 27 
 		case unicode.IsNumber(r):
@@ -692,7 +694,7 @@ var nextState = []func(r rune) state{
 		switch { 
 		case r == '_':
 			return 27 
-		case r == 't':
+		case r == 'c':
 			return 48 
 		case unicode.IsLetter(r):
 			return 27 
@@ -706,8 +708,6 @@ var nextState = []func(r rune) state{
 		switch { 
 		case r == '_':
 			return 27 
-		case r == 'c':
-			return 49 
 		case unicode.IsLetter(r):
 			return 27 
 		case unicode.IsNumber(r):
@@ -720,6 +720,8 @@ var nextState = []func(r rune) state{
 		switch { 
 		case r == '_':
 			return 27 
+		case r == 'b':
+			return 49 
 		case unicode.IsLetter(r):
 			return 27 
 		case unicode.IsNumber(r):
@@ -732,7 +734,7 @@ var nextState = []func(r rune) state{
 		switch { 
 		case r == '_':
 			return 27 
-		case r == 'b':
+		case r == 'k':
 			return 50 
 		case unicode.IsLetter(r):
 			return 27 
@@ -746,7 +748,7 @@ var nextState = []func(r rune) state{
 		switch { 
 		case r == '_':
 			return 27 
-		case r == 'k':
+		case r == 'a':
 			return 51 
 		case unicode.IsLetter(r):
 			return 27 
@@ -760,7 +762,7 @@ var nextState = []func(r rune) state{
 		switch { 
 		case r == '_':
 			return 27 
-		case r == 'a':
+		case r == 'y':
 			return 52 
 		case unicode.IsLetter(r):
 			return 27 
@@ -774,7 +776,7 @@ var nextState = []func(r rune) state{
 		switch { 
 		case r == '_':
 			return 27 
-		case r == 'y':
+		case r == 'e':
 			return 53 
 		case unicode.IsLetter(r):
 			return 27 
@@ -788,7 +790,7 @@ var nextState = []func(r rune) state{
 		switch { 
 		case r == '_':
 			return 27 
-		case r == 'e':
+		case r == 'a':
 			return 54 
 		case unicode.IsLetter(r):
 			return 27 
@@ -802,7 +804,7 @@ var nextState = []func(r rune) state{
 		switch { 
 		case r == '_':
 			return 27 
-		case r == 'a':
+		case r == 'e':
 			return 55 
 		case unicode.IsLetter(r):
 			return 27 
@@ -816,7 +818,7 @@ var nextState = []func(r rune) state{
 		switch { 
 		case r == '_':
 			return 27 
-		case r == 'e':
+		case r == 'a':
 			return 56 
 		case unicode.IsLetter(r):
 			return 27 
@@ -830,7 +832,7 @@ var nextState = []func(r rune) state{
 		switch { 
 		case r == '_':
 			return 27 
-		case r == 'a':
+		case r == 's':
 			return 57 
 		case unicode.IsLetter(r):
 			return 27 
@@ -844,8 +846,6 @@ var nextState = []func(r rune) state{
 		switch { 
 		case r == '_':
 			return 27 
-		case r == 's':
-			return 58 
 		case unicode.IsLetter(r):
 			return 27 
 		case unicode.IsNumber(r):
@@ -858,6 +858,8 @@ var nextState = []func(r rune) state{
 		switch { 
 		case r == '_':
 			return 27 
+		case r == 'r':
+			return 58 
 		case unicode.IsLetter(r):
 			return 27 
 		case unicode.IsNumber(r):
@@ -870,7 +872,7 @@ var nextState = []func(r rune) state{
 		switch { 
 		case r == '_':
 			return 27 
-		case r == 'r':
+		case r == 's':
 			return 59 
 		case unicode.IsLetter(r):
 			return 27 
@@ -884,7 +886,7 @@ var nextState = []func(r rune) state{
 		switch { 
 		case r == '_':
 			return 27 
-		case r == 's':
+		case r == 'r':
 			return 60 
 		case unicode.IsLetter(r):
 			return 27 
@@ -898,7 +900,7 @@ var nextState = []func(r rune) state{
 		switch { 
 		case r == '_':
 			return 27 
-		case r == 'r':
+		case r == 'g':
 			return 61 
 		case unicode.IsLetter(r):
 			return 27 
@@ -912,7 +914,7 @@ var nextState = []func(r rune) state{
 		switch { 
 		case r == '_':
 			return 27 
-		case r == 'g':
+		case r == 'e':
 			return 62 
 		case unicode.IsLetter(r):
 			return 27 
@@ -926,8 +928,6 @@ var nextState = []func(r rune) state{
 		switch { 
 		case r == '_':
 			return 27 
-		case r == 'e':
-			return 63 
 		case unicode.IsLetter(r):
 			return 27 
 		case unicode.IsNumber(r):
@@ -940,6 +940,8 @@ var nextState = []func(r rune) state{
 		switch { 
 		case r == '_':
 			return 27 
+		case r == 'e':
+			return 63 
 		case unicode.IsLetter(r):
 			return 27 
 		case unicode.IsNumber(r):
@@ -948,6 +950,18 @@ var nextState = []func(r rune) state{
 		return nullState
 	}, 
 	// Set60
+	func(r rune) state {
+		switch { 
+		case r == '_':
+			return 27 
+		case unicode.IsLetter(r):
+			return 27 
+		case unicode.IsNumber(r):
+			return 27 
+		}
+		return nullState
+	}, 
+	// Set61
 	func(r rune) state {
 		switch { 
 		case r == '_':
@@ -961,25 +975,11 @@ var nextState = []func(r rune) state{
 		}
 		return nullState
 	}, 
-	// Set61
-	func(r rune) state {
-		switch { 
-		case r == '_':
-			return 27 
-		case unicode.IsLetter(r):
-			return 27 
-		case unicode.IsNumber(r):
-			return 27 
-		}
-		return nullState
-	}, 
 	// Set62
 	func(r rune) state {
 		switch { 
 		case r == '_':
 			return 27 
-		case r == 'e':
-			return 65 
 		case unicode.IsLetter(r):
 			return 27 
 		case unicode.IsNumber(r):
@@ -1000,18 +1000,6 @@ var nextState = []func(r rune) state{
 		return nullState
 	}, 
 	// Set64
-	func(r rune) state {
-		switch { 
-		case r == '_':
-			return 27 
-		case unicode.IsLetter(r):
-			return 27 
-		case unicode.IsNumber(r):
-			return 27 
-		}
-		return nullState
-	}, 
-	// Set65
 	func(r rune) state {
 		switch { 
 		case r == '_':
