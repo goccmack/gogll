@@ -112,10 +112,15 @@ func (i *Item) Emoves() []*Item {
 			switch {
 			case item.atBeforeBracket():
 				for j := range item.Symbol().(*ast.LexBracket).Alternates {
-					after = append(after, &Item{
+					item1 := &Item{
 						Rule: item.Rule,
 						Pos:  item.Pos.Clone().Push(j).Push(0),
-					})
+					}
+					after = append(after, item1)
+					switch item1.getCurrentBracket().Type {
+					case ast.LexOptional, ast.LexZeroOrMore:
+						after = append(after, item1.afterCurrentBracket())
+					}
 				}
 				changed = true
 			case item.atEndOfBracket():

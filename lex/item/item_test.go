@@ -29,3 +29,21 @@ func Test1(t *testing.T) {
 		fmt.Println(it)
 	}
 }
+
+const grammar1 = `package "test"
+rule : ['a'] 'b' ;`
+
+var test1Good = [][]rune{
+	[]rune("a"),
+	[]rune("ab"),
+}
+var test1Bad = [][]rune{
+	[]rune(""),
+	[]rune("abc"),
+	[]rune("bb"),
+	[]rune("ac")
+}
+
+func Test2(t *testing.T) {
+
+}
