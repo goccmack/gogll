@@ -1,8 +1,6 @@
 gogll
 ToDo.md
-first_follow.txt
-grammar_slots.txt
-symbols.txt
+*.txt
 .vscode
 cpu.prof
 profile*.png
