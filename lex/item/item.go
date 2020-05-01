@@ -201,13 +201,8 @@ func (i *Item) Symbol() ast.LexSymbol {
 }
 
 func (i *Item) String() string {
-	// if i.IsReduce() {
-	// 	return fmt.Sprintf("%s : %s •",
-	// 		i.Rule.ID(), stringRegExp(i.Rule.RegExp, i.Pos, 0))
-
-	// }
-	str := fmt.Sprintf("%s : %s %s",
-		i.Rule.ID(), i.stringRegExp(i.Rule.RegExp, pos.New()), i.Pos)
+	str := fmt.Sprintf("%s : %s",
+		i.Rule.ID(), i.stringRegExp(i.Rule.RegExp, pos.New()))
 	return str
 }
 

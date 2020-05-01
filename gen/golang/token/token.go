@@ -87,13 +87,83 @@ import(
 
 // Token is returned by the lexer for every scanned lexical token
 type Token struct {
-	Type       Type
-	Lext, Rext int
-	Literal    []rune
+	typ        Type
+	lext, rext int
+	input      []rune
+}
+
+func New(t Type, lext, rext int, input []rune) *Token {
+	return &Token{
+		typ:   t,
+		lext:  lext,
+		rext:  rext,
+		input: input,
+	}
+}
+
+// GetLineColumn returns the line and column of rune[i] in the input
+func (t *Token) GetLineColumn(i int) (line, col int) {
+	line, col = 1, 1
+	for j := 0; j < i; j++ {
+		switch t.input[j] {
+		case '\n':
+			line++
+			col = 1
+		case '\t':
+			col += 4
+		default:
+			col++
+		}
+	}
+	return
+}
+
+// GetInput returns the input from which t was parsed.
+func (t *Token) GetInput() []rune {
+	return t.input
+}
+
+func (t *Token) Lext() int {
+	return t.lext
+}
+
+func (t *Token) Literal() []rune {
+	return t.input[t.lext:t.rext]
+}
+
+func (t *Token) LiteralString() string {
+	return string(t.Literal())
+}
+
+func (t *Token) Rext() int {
+	return t.rext
+}
+
+func (t *Token) String() string {
+	return fmt.Sprintf("%s (%d,%d) %s",
+		t.TypeID(), t.lext, t.rext, t.LiteralString())
+}
+
+func (t *Token) Type() Type {
+	return t.typ
+}
+
+func (t *Token) TypeID() string {
+	return t.Type().ID()
 }
 
 // Type is the token type
 type Type int
+
+func (t Type) String() string {
+	return TypeToString[t]
+}
+
+func (t Type) ID() string {
+	return TypeToID[t]
+}
+
+
 const({{range $i, $typ := .Types}}
 	{{$typ.Name}} {{if eq $i 0}} Type = iota {{end}} // {{$typ.Comment}} {{end}}
 )
@@ -108,32 +178,6 @@ var StringToType = map[string] Type { {{range $typ := .TypeToString}}
 
 var TypeToID = []string { {{range $typ := .Types}}
 	"{{$typ.Comment}}", {{end}}
-}
-
-func New(t Type, lext, rext int, lit []rune) *Token {
-	return &Token{
-		Type: t,
-		Lext: lext,
-		Rext: rext,
-		Literal: lit,
-	}
-}
-
-func (t *Token) String() string {
-	return fmt.Sprintf("%s (%d,%d) %s",
-		t.TypeID(), t.Lext, t.Rext, string(t.Literal))
-}
-
-func (t Type) String() string {
-	return TypeToString[t]
-}
-
-func (t *Token) TypeID() string {
-	return t.Type.ID()
-}
-
-func (t Type) ID() string {
-	return TypeToID[t]
 }
 
 `

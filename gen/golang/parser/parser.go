@@ -390,12 +390,12 @@ func DumpU() {
 /*** TestSelect ***/
 
 func follow(nt symbols.NT) bool {
-	_, exist := followSets[nt][lex.Tokens[cI].Type]
+	_, exist := followSets[nt][lex.Tokens[cI].Type()]
 	return exist
 }
 
 func testSelect(l slot.Label) bool {
-	_, exist := first[l][lex.Tokens[cI].Type]
+	_, exist := first[l][lex.Tokens[cI].Type()]
 	// fmt.Printf("testSelect(%s) = %t\n", l, exist)
 	return exist
 }
@@ -433,10 +433,10 @@ func parseError(slot slot.Label, i int, expected map[token.Type]string) {
 func sortParseErrors() {
 	sort.Slice(parseErrors,
 		func(i, j int) bool {
-			return parseErrors[j].Token.Lext < parseErrors[i].Token.Lext
+			return parseErrors[j].Token.Lext() < parseErrors[i].Token.Lext()
 		})
 	for _, pe := range parseErrors {
-		pe.Line, pe.Column = lex.GetLineColumn(pe.Token.Lext)
+		pe.Line, pe.Column = lex.GetLineColumn(pe.Token.Lext())
 	}
 }
 
