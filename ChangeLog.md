@@ -1,5 +1,8 @@
 # Change Log
 
+# 2020-05-01
+1. tokens have a method: GetLineColumn()
+
 # 2020-04-30
 1. Bugfix in lexer closure algorithm.
 
