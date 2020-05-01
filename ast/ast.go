@@ -18,6 +18,8 @@ Package ast is an Abstract Syntax Tree for gogll, used for code generation.
 package ast
 
 import (
+	"sort"
+
 	"github.com/goccmack/gogll/token"
 	"github.com/goccmack/goutil/stringset"
 )
@@ -28,7 +30,7 @@ type GoGLL struct {
 	SyntaxRules    []*SyntaxRule
 	Terminals      *stringset.StringSet
 	NonTerminals   *stringset.StringSet
-	StringLiterals *stringset.StringSet
+	StringLiterals map[string]*StringLit
 }
 
 type NT struct {
@@ -58,6 +60,21 @@ func (g *GoGLL) GetLexRule(id string) *LexRule {
 	return nil
 }
 
+// GetStringLiterals returns a sorted slice of the string literals
+func (g *GoGLL) GetStringLiterals() []string {
+	slits := make([]string, 0, len(g.StringLiterals))
+	for sl := range g.StringLiterals {
+		slits = append(slits, sl)
+	}
+	sort.Slice(slits, func(i, j int) bool { return slits[i] < slits[j] })
+	return slits
+}
+
+// GetStringLiteralsSet returns a stringset containing the string literals
+func (g *GoGLL) GetStringLiteralsSet() *stringset.StringSet {
+	return stringset.New(g.GetStringLiterals()...)
+}
+
 func (g *GoGLL) GetSyntaxRule(nt string) *SyntaxRule {
 	for _, r := range g.SyntaxRules {
 		if r.Head.Token() == nt {
@@ -76,50 +93,50 @@ func (g *GoGLL) StartSymbol() string {
 }
 
 func (n *NT) String() string {
-	return string(n.tok.Literal)
+	return n.tok.LiteralString()
 }
 
 func (n *NT) Token() string {
-	return string(n.tok.Literal)
+	return n.tok.LiteralString()
 }
 
 func (n *NT) Lext() int {
-	return n.tok.Lext
+	return n.tok.Lext()
 }
 
 // ID returns the identifier of n
 func (n *NT) ID() string {
-	return string(n.tok.Literal)
+	return n.tok.LiteralString()
 }
 
 func (p *Package) GetString() string {
-	return string(p.tok.Literal[1 : len(p.tok.Literal)-1])
+	return string(p.tok.Literal()[1 : len(p.tok.Literal())-1])
 }
 
 func (s *StringLit) String() string {
-	return string(s.tok.Literal[1 : len(s.tok.Literal)-1])
+	return string(s.tok.Literal()[1 : len(s.tok.Literal())-1])
 }
 
 func (s *StringLit) Token() string {
-	return string(s.tok.Literal[1 : len(s.tok.Literal)-1])
+	return string(s.tok.Literal()[1 : len(s.tok.Literal())-1])
 }
 
 func (s *StringLit) Lext() int {
-	return s.tok.Lext
+	return s.tok.Lext()
 }
 
 func (t *TokID) String() string {
-	return string(t.tok.Literal)
+	return t.tok.LiteralString()
 }
 
 func (t *TokID) Token() string {
-	return string(t.tok.Literal)
+	return t.tok.LiteralString()
 }
 
 func (t *TokID) Lext() int {
-	return t.tok.Lext
+	return t.tok.Lext()
 }
 
 func (t *TokID) ID() string {
-	return string(t.tok.Literal)
+	return t.tok.LiteralString()
 }

@@ -52,8 +52,8 @@ func Build(root bsr.BSR, l *lexer.Lexer) *GoGLL {
 	}
 	gogll := bld.gogll(root)
 	gogll.NonTerminals = bld.nonTerminals(gogll.SyntaxRules)
-	gogll.Terminals = bld.terminals(gogll)
 	gogll.StringLiterals = bld.getStringLiterals(gogll.SyntaxRules)
+	gogll.Terminals = bld.terminals(gogll, gogll.GetStringLiterals())
 	return gogll
 }
 
@@ -115,10 +115,10 @@ func (bld *builder) nonTerminals(rules []*SyntaxRule) *stringset.StringSet {
 	return nts
 }
 
-func (bld *builder) terminals(g *GoGLL) *stringset.StringSet {
+func (bld *builder) terminals(g *GoGLL, stringLiterals []string) *stringset.StringSet {
 	terminals := bld.getLexRuleIDs(g.LexRules)
 	terminals.AddSet(bld.charLiterals)
-	terminals.AddSet(bld.getStringLiterals(g.SyntaxRules))
+	terminals.Add(stringLiterals...)
 	return terminals
 }
 
@@ -133,18 +133,18 @@ func (bld *builder) getLexRuleIDs(rules []*LexRule) *stringset.StringSet {
 	return terminals
 }
 
-func (bld *builder) getStringLiterals(rules []*SyntaxRule) *stringset.StringSet {
-	terminals := stringset.New()
+func (bld *builder) getStringLiterals(rules []*SyntaxRule) map[string]*StringLit {
+	slits := make(map[string]*StringLit)
 	for _, r := range rules {
 		for _, a := range r.Alternates {
 			for _, s := range a.Symbols {
 				if sl, ok := s.(*StringLit); ok {
-					terminals.Add(sl.Token())
+					slits[sl.Token()] = sl
 				}
 			}
 		}
 	}
-	return terminals
+	return slits
 }
 
 /*** Lex Rules ***/
@@ -204,21 +204,19 @@ func (bld *builder) anyOf(any, strLit *token.Token) *AnyOf {
 }
 
 func (bld *builder) charLiteral(tok *token.Token) *CharLiteral {
-	switch tok.Literal[1] {
+	switch tok.Literal()[1] {
 	case '\\':
-		if tok.Literal[2] == '\'' {
+		if tok.Literal()[2] == '\'' {
 			bld.charLiterals.Add("'")
 		} else {
-			bld.charLiterals.Add(string(tok.Literal[1:3]))
+			bld.charLiterals.Add(string(tok.Literal()[1:3]))
 		}
 	case '"':
 		bld.charLiterals.Add("\\\"")
 	default:
-		bld.charLiterals.Add(string(tok.Literal[1:2]))
+		bld.charLiterals.Add(string(tok.Literal()[1:2]))
 	}
-	return &CharLiteral{
-		tok: tok,
-	}
+	return NewCharLiteral(tok, tok.Literal())
 }
 
 // LexBracket : LexGroup | LexOptional | LexZeroOrMore | LexOneOrMore ;
@@ -411,10 +409,10 @@ func (bld *builder) addSyntaxRule(r *SyntaxRule, gogll *GoGLL) {
 // parse the string set from tokens any or not
 func (bld *builder) parseStringSet(strLit *token.Token) *runeset.RuneSet {
 	rs := runeset.New()
-	for i := 1; i < len(strLit.Literal)-1; i++ {
-		if strLit.Literal[i] == '\\' {
+	for i := 1; i < len(strLit.Literal())-1; i++ {
+		if strLit.Literal()[i] == '\\' {
 			i++
-			switch strLit.Literal[i] {
+			switch strLit.Literal()[i] {
 			case '\\':
 				rs.Add('\\')
 			case '"':
@@ -426,10 +424,10 @@ func (bld *builder) parseStringSet(strLit *token.Token) *runeset.RuneSet {
 			case 't':
 				rs.Add('\t')
 			default:
-				bld.fail(fmt.Errorf("invalid escape char"), strLit.Lext)
+				bld.fail(fmt.Errorf("invalid escape char"), strLit.Lext())
 			}
 		} else {
-			rs.Add(strLit.Literal[i])
+			rs.Add(strLit.Literal()[i])
 		}
 	}
 	return rs

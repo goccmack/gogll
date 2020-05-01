@@ -68,7 +68,7 @@ func getAccept(ls *items.Sets, ts *tokens.Tokens, slits *stringset.StringSet) (t
 func getData(g *ast.GoGLL, ls *items.Sets, ts *tokens.Tokens) *Data {
 	return &Data{
 		Package:     g.Package.GetString(),
-		Accept:      getAccept(ls, ts, g.StringLiterals),
+		Accept:      getAccept(ls, ts, g.GetStringLiteralsSet()),
 		Transitions: getTransitions(ls),
 	}
 }
@@ -103,7 +103,7 @@ func getCondition(event ast.LexBase) string {
 	case *ast.AnyOf:
 		return fmt.Sprintf("any(r, %s)", e.Set)
 	case *ast.CharLiteral:
-		return fmt.Sprintf("r == %s", string(e.Literal()))
+		return fmt.Sprintf("r == %s", string(e.Literal))
 	case *ast.Not:
 		return fmt.Sprintf("not(r, %s)", e.Set)
 	case *ast.UnicodeClass:

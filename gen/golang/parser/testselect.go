@@ -154,16 +154,3 @@ var followSets = []map[token.Type]string { {{range $flw := .Follow}}
 	},{{end}}
 } 
 `
-
-/*
-var testSelect = []func()bool { {{range $i, $ts := .TestSelect}}
-	// slot.{{$ts.Label}}
-	func()bool{
-		return {{range $i, $c := $ts.Conditions}}{{$c.Cond}} {{if not $c.Last}}||{{end}}
-	{{end}} },
-{{end}} }
-
-{{range $i, $flw := .Follow}}func follow{{$flw.Label}} () bool {
-	return {{range $i, $c := $flw.Conditions}}{{$c.Cond}} {{if not $c.Last}}||{{end}}
-{{end}} }
-*/
