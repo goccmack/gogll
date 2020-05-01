@@ -68,7 +68,7 @@ func getAccept(ls *items.Sets, ts *tokens.Tokens, slits *stringset.StringSet) (t
 func getData(g *ast.GoGLL, ls *items.Sets, ts *tokens.Tokens) *Data {
 	return &Data{
 		Package:     g.Package.GetString(),
-		Accept:      getAccept(ls, ts, g.StringLiterals),
+		Accept:      getAccept(ls, ts, g.GetStringLiteralsSet()),
 		Transitions: getTransitions(ls),
 	}
 }
@@ -103,7 +103,7 @@ func getCondition(event ast.LexBase) string {
 	case *ast.AnyOf:
 		return fmt.Sprintf("any(r, %s)", e.Set)
 	case *ast.CharLiteral:
-		return fmt.Sprintf("r == %s", string(e.Literal()))
+		return fmt.Sprintf("r == %s", string(e.Literal))
 	case *ast.Not:
 		return fmt.Sprintf("not(r, %s)", e.Set)
 	case *ast.UnicodeClass:
@@ -175,7 +175,7 @@ func New(input []rune) *Lexer {
 		}
 		if lext < len(lex.I) {
 			tok := lex.scan(lext)
-			lext = tok.Rext
+			lext = tok.Rext()
 			lex.addToken(tok)
 		}
 	}
@@ -185,28 +185,19 @@ func New(input []rune) *Lexer {
 
 func (l *Lexer) scan(i int) *token.Token {
 	// fmt.Printf("lexer.scan\n")
-	s, tok := state(0), token.New(token.Error, i, i, nil)
+	s, typ, rext := state(0), token.Error, i
 	for s != nullState {
-		// if tok.Rext >= len(l.I) {
-		// 	fmt.Printf(" scan: state=%d tok=%s \"%s\" r=EOF\n", 
-		// 	s, tok, string(l.I[tok.Lext:tok.Rext]))
-		// } else {
-		// 	fmt.Printf(" scan: state=%d tok=%s \"%s\" r='%s'\n", 
-		// 	s, tok, string(l.I[tok.Lext:tok.Rext]), escape(l.I[tok.Rext]))
-		// }
-		if tok.Rext >= len(l.I) {
+		if rext >= len(l.I) {
 			s = nullState
 		} else {
-			tok.Type = accept[s]
-			s = nextState[s](l.I[tok.Rext])
-			if s != nullState || tok.Type == token.Error {
-				tok.Rext++
+			typ = accept[s]
+			s = nextState[s](l.I[rext])
+			if s != nullState || typ == token.Error {
+				rext++
 			}
 		}
 	}
-	tok.Literal = l.I[tok.Lext:tok.Rext]
-	// fmt.Printf(" scan: state=%d tok=%s\n", s, tok)
-	return tok
+	return token.New(typ, i, rext,l.I)
 }
 
 func escape(r rune) string {
@@ -243,13 +234,13 @@ func (l *Lexer) GetLineColumn(i int) (line, col int) {
 }
 
 func (l *Lexer) GetLineColumnOfToken(i int) (line, col int) {
-	return l.GetLineColumn(l.Tokens[i].Lext)
+	return l.GetLineColumn(l.Tokens[i].Lext())
 }
 
 // GetString returns the input string from the left extent of Token[lext] to
 // the right extent of Token[rext]
 func (l *Lexer) GetString(lext, rext int) string {
-	return string(l.I[l.Tokens[lext].Lext:l.Tokens[rext].Rext])
+	return string(l.I[l.Tokens[lext].Lext():l.Tokens[rext].Rext()])
 }
 
 func (l *Lexer) add(t token.Type, lext, rext int) {

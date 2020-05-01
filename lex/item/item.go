@@ -138,29 +138,6 @@ func (i *Item) Emoves() []*Item {
 	return after
 }
 
-// func (i *Item) Emoves() []*Item {
-// 	after := []*Item{i}
-// 	for changed := true; changed; {
-// 		before := after
-// 		after = []*Item{}
-// 		changed = false
-// 		for _, item := range before {
-// 			if brkt, ok := item.Symbol().(*ast.LexBracket); ok {
-// 				for j := range brkt.Alternates {
-// 					after = append(after, &Item{
-// 						Rule: item.Rule,
-// 						Pos:  item.Pos.Clone().Push(j).Push(0),
-// 					})
-// 				}
-// 				changed = true
-// 			} else {
-// 				after = append(after, item)
-// 			}
-// 		}
-// 	}
-// 	return after
-// }
-
 // Equal is true if i and other have the same rule and position.
 func (i *Item) Equal(other *Item) bool {
 	return i.Rule.ID() == other.Rule.ID() &&
@@ -173,10 +150,6 @@ func (i *Item) Next() *Item {
 		return nil
 	}
 	next := From(i.Rule, i.Pos.Clone().Inc())
-	// for next.Pos.Len() > 1 && next.Pos.Top() >= len(next.GetRegExp().Symbols) {
-	// 	next.Pos.Pop(2)
-	// 	next.Pos.Inc()
-	// }
 	return next
 }
 
@@ -201,13 +174,8 @@ func (i *Item) Symbol() ast.LexSymbol {
 }
 
 func (i *Item) String() string {
-	// if i.IsReduce() {
-	// 	return fmt.Sprintf("%s : %s •",
-	// 		i.Rule.ID(), stringRegExp(i.Rule.RegExp, i.Pos, 0))
-
-	// }
-	str := fmt.Sprintf("%s : %s %s",
-		i.Rule.ID(), i.stringRegExp(i.Rule.RegExp, pos.New()), i.Pos)
+	str := fmt.Sprintf("%s : %s",
+		i.Rule.ID(), i.stringRegExp(i.Rule.RegExp, pos.New()))
 	return str
 }
 
@@ -264,31 +232,3 @@ func (i *Item) stringSymbol(symbol ast.LexSymbol, pos *pos.Pos) string {
 	}
 	return w.String()
 }
-
-// func stringRegExp(regExp *ast.RegExp, nextSym ast.LexSymbol) string {
-// 	w := new(bytes.Buffer)
-// 	for _, symbol := range regExp.Symbols {
-// 		if symbol == nextSym {
-// 			fmt.Fprintf(w, "•")
-// 		}
-// 		fmt.Fprintf(w, stringSymbol(symbol, nextSym))
-// 	}
-// 	return w.String()
-// }
-
-// func stringSymbol(symbol, next ast.LexSymbol) string {
-// 	w := new(bytes.Buffer)
-// 	if brkt, ok := symbol.(*ast.LexBracket); ok {
-// 		fmt.Fprintf(w, brkt.LeftBracket())
-// 		for i, alt := range brkt.Alternates {
-// 			if i > 0 {
-// 				fmt.Fprintf(w, "| ")
-// 			}
-// 			fmt.Fprint(w, stringRegExp(alt, next))
-// 		}
-// 		fmt.Fprintf(w, brkt.RightBracket())
-// 	} else {
-// 		fmt.Fprintf(w, "%s ", symbol)
-// 	}
-// 	return w.String()
-// }

@@ -51,7 +51,8 @@ type AnyOf struct {
 }
 
 type CharLiteral struct {
-	tok *token.Token
+	tok     *token.Token
+	Literal []rune
 }
 
 type LexBracket struct {
@@ -139,7 +140,7 @@ func (*Any) Equal(other LexBase) bool {
 }
 
 func (a *Any) Lext() int {
-	return a.tok.Lext
+	return a.tok.Lext()
 }
 
 func (ao *AnyOf) Equal(other LexBase) bool {
@@ -154,12 +155,19 @@ func (ao *AnyOf) Equal(other LexBase) bool {
 }
 
 func (a *AnyOf) Lext() int {
-	return a.any.Lext
+	return a.any.Lext()
+}
+
+func NewCharLiteral(tok *token.Token, literal []rune) *CharLiteral {
+	return &CharLiteral{
+		tok:     tok,
+		Literal: literal,
+	}
 }
 
 func (c *CharLiteral) Char() rune {
-	if c.tok.Literal[1] == '\\' {
-		switch c.tok.Literal[2] {
+	if c.Literal[1] == '\\' {
+		switch c.tok.Literal()[2] {
 		case '\'':
 			return '\''
 		case '\\':
@@ -171,10 +179,10 @@ func (c *CharLiteral) Char() rune {
 		case 'r':
 			return '\r'
 		default:
-			panic(fmt.Sprintf("invalid '%c'", c.tok.Literal[2]))
+			panic(fmt.Sprintf("invalid '%c'", c.Literal[2]))
 		}
 	} else {
-		return c.tok.Literal[1]
+		return c.Literal[1]
 	}
 }
 
@@ -191,11 +199,7 @@ func (c *CharLiteral) Equal(other LexBase) bool {
 }
 
 func (c *CharLiteral) Lext() int {
-	return c.tok.Lext
-}
-
-func (c *CharLiteral) Literal() []rune {
-	return c.tok.Literal
+	return c.tok.Lext()
 }
 
 func (l *LexBracket) LeftBracket() string {
@@ -240,7 +244,7 @@ func (l *LexRule) String() string {
 }
 
 func (b *LexBracket) Lext() int {
-	return b.leftBracket.Lext
+	return b.leftBracket.Lext()
 }
 
 func (n *Not) Equal(other LexBase) bool {
@@ -255,7 +259,7 @@ func (n *Not) Equal(other LexBase) bool {
 }
 
 func (n *Not) Lext() int {
-	return n.not.Lext
+	return n.not.Lext()
 }
 
 func (re *RegExp) String() string {
@@ -286,11 +290,11 @@ func (*Any) String() string {
 }
 
 func (a *AnyOf) String() string {
-	return fmt.Sprintf("any %s", string(a.strLit.Literal))
+	return fmt.Sprintf("any %s", string(a.strLit.Literal()))
 }
 
 func (c *CharLiteral) String() string {
-	return string(c.tok.Literal)
+	return string(c.Literal)
 }
 
 func (lb *LexBracket) String() string {
@@ -307,27 +311,33 @@ func (lb *LexBracket) String() string {
 }
 
 func (n *Not) String() string {
-	return fmt.Sprintf("not %s", string(n.strLit.Literal))
+	return fmt.Sprintf("not %s", string(n.strLit.Literal()))
+}
+
+func (sl *StringLit) Literal() []rune {
+	return sl.tok.Literal()
+}
+
+func (sl *StringLit) Value() []rune {
+	return sl.tok.Literal()[1 : len(sl.tok.Literal())-1]
 }
 
 func (u *UnicodeClass) String() string {
-	return string(u.tok.Literal)
+	return string(u.tok.Literal())
 }
 
 /*** Utils ***/
 
 // StringLitToTokID returns a dummy TokID with ID = id
-func StringLitToTokID(id string) *TokID {
-	return &TokID{&token.Token{
-		Type:    token.StringToType["tokid"],
-		Literal: []rune(id),
-	}}
+func StringLitToTokID(id *StringLit) *TokID {
+	return &TokID{
+		token.New(token.StringToType["tokid"],
+			id.tok.Lext()+1, id.tok.Rext()-1, id.tok.GetInput()),
+	}
 }
 
-// RuneToCharLit returns a dummy CharLiteral with Literal [r]
-func RuneToCharLit(r rune) *CharLiteral {
-	return &CharLiteral{&token.Token{
-		Type:    token.StringToType["char_lit"],
-		Literal: []rune{'\'', r, '\''},
-	}}
+// CharLitFromStringLit returns a dummy CharLiteral with Literal sl.Literal[i]
+func CharLitFromStringLit(sl *StringLit, i int) *CharLiteral {
+	return NewCharLiteral(token.New(token.StringToType["char_lit"], sl.Lext()+i, sl.Lext()+i+1, sl.tok.GetInput()),
+		[]rune{'\'', sl.Value()[i], '\''})
 }

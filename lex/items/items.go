@@ -74,6 +74,9 @@ func New(g *ast.GoGLL) *Sets {
 		}
 		i++
 	}
+	for _, s := range sets.sets {
+		sort.Sort(s)
+	}
 	// fmt.Println("items.New: done")
 	return sets
 }
@@ -86,7 +89,7 @@ func (set *Set) Accept(slits *stringset.StringSet) string {
 
 	// Check for accepting multiple string literals
 	if len(acceptItems) > 1 && slits.Contain(acceptItems[1].Rule.ID()) {
-		fmt.Printf("Error in lex item sets: S%d accepts multiple string literals", set.No)
+		fmt.Printf("Error in lex item sets: S%d accepts multiple string literals\n", set.No)
 		os.Exit(1)
 	}
 
@@ -189,11 +192,6 @@ func (set *Set) nextSets() (sets []*Set) {
 }
 
 func (sets *Sets) GetExisting(set *Set) *Set {
-	// fmt.Printf("Sets.Contains\n")
-	// for _, item := range set.set {
-	// 	fmt.Printf("  %s\n", item)
-	// }
-
 	for _, set1 := range sets.sets {
 		if set1.Equals(set) {
 			return set1
@@ -220,7 +218,7 @@ func set0(g *ast.GoGLL) *Set {
 	for _, rule := range g.LexRules {
 		s0.add(item.New(rule).Emoves()...)
 	}
-	for _, sl := range g.StringLiterals.ElementsSorted() {
+	for _, sl := range g.StringLiterals {
 		s0.add(item.New(stringLitToRule(sl)))
 	}
 	return s0
@@ -241,22 +239,40 @@ func (set *Set) cloneItems() []*item.Item {
 	return items
 }
 
+/*** Sort Interface for Set ***/
+
+func (s *Set) Len() int {
+	return len(s.set)
+}
+
+func (s *Set) Less(i, j int) bool {
+	return s.set[i].Rule.ID() < s.set[j].Rule.ID()
+}
+
+func (s *Set) Swap(i, j int) {
+	s.set[i], s.set[j] = s.set[j], s.set[i]
+}
+
+//-------------
+
 func (sets *Sets) add(set *Set) *Sets {
 	sets.sets = append(sets.sets, set)
 	return sets
 }
 
-func stringLitToRule(sl string) *ast.LexRule {
+func stringLitToRule(sl *ast.StringLit) *ast.LexRule {
 	return &ast.LexRule{ast.StringLitToTokID(sl), stringLitToRegExp(sl)}
 }
 
-func stringLitToRegExp(sl string) *ast.RegExp {
+func stringLitToRegExp(sl *ast.StringLit) *ast.RegExp {
 	return &ast.RegExp{stringLitToLexSymbols(sl)}
 }
 
-func stringLitToLexSymbols(sl string) (symbols []ast.LexSymbol) {
-	for _, r := range []rune(sl) {
-		symbols = append(symbols, ast.RuneToCharLit(r))
+func stringLitToLexSymbols(sl *ast.StringLit) (symbols []ast.LexSymbol) {
+	// fmt.Printf("items.stringLitToLexSymbols sl %s value() %s\n", string(sl.Literal()), string(sl.Value()))
+	for i := range sl.Value() {
+		symbols = append(symbols, ast.CharLitFromStringLit(sl, i))
+		// fmt.Printf("  %s\n", symbols[len(symbols)-1])
 	}
 	return
 }
