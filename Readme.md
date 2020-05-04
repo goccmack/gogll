@@ -98,9 +98,162 @@ Ambiguous BSRs must be resolved by walking the parse forest and removing
 unwanted children of ambiguous NTs. To remove an unwanted BSR, `b` call `b.Ignore()`
 4. Use the disambiguated parse tree for the further stages of compilation. 
 For example, see gogll's [AST builder](ast/build.go).
-# Walking the parse forest
-Gogll produces a binary subtree representation (BSR see [[Scott et al 2019]](#Scott-et-al-2019)) set of the parse forest of a successful parse. See [Walking the BSR Parse Forest](doc/bsr/bsr.md) or 
-[build.go](ast/build.go) for an example.
+
+# Complete Example
+The code of following example can be found at [examples/boolx](examples/boolx/boolx.md). 
+The example has the following grammar: [boolx.md](examples/boolx/boolx.md), which generates boolean expressions such as: `a | b & c | d & e`:
+
+```
+package "github.com/goccmack/gogll/examples/boolx"
+
+Expr :   var
+     |   Expr Op Expr
+     ;
+
+var : letter ;
+
+Op : "&" | "|" ; 
+```
+The second alternate above, `Expr : Expr Op Expr`, is ambiguous and can produce an ambiguous parse forest.
+The grammar does not enforce operator precedence, 
+this has to be done during semantic analysis.
+
+The grammar is compiled by the following command:
+```
+gogll examples/boolx/boolx.md
+```
+
+The test file, [boolx_test.go](examples/boolx/boolx_test.go) shows the steps
+required to parse an input string and produce a disambiguated abstract syntax tree:
+
+```
+const t1Src = `a | b & c | d & e`
+
+func Test1(t *testing.T) {
+```
+1. Create a lexer from the input string and parse. Fail if there are parse errors.
+```
+	if err, errs := parser.Parse(lexer.New([]rune(t1Src))); err != nil {
+		fail(errs)
+	}
+
+```
+2. Build an abstract syntax tree for each root of the parse forest and print them.
+```
+	for i, r := range bsr.GetRoots() {
+		fmt.Printf("%d: %s\n", i, buildExpr(r))
+	}
+}
+```
+The input string produces an ambiguous parse forest, which is partially 
+disambiguated by applying operator precedence.
+We get the following output from this test:
+```
+> go test -v ./examples/boolx
+=== RUN   Test1
+0: (a | ((b & c) | (d & e)))
+1: <nil>
+2: <nil>
+3: ((a | (b & c)) | (d & e))
+--- PASS: Test1 (0.00s)
+PASS
+```
+The output shows that the parse forest has 4 roots, 2 of which produce valid ASTs 
+after disambiguation. The removed trees are syntactically valid by semantically
+invalid because they give `|` precedence over `&`. 
+Both the remaining ASTs are syntactically and semantically
+valid. The AST encodes operator precedence as shown by the parentheses. 
+The choice of which valid AST to use for further processing is application specific.
+
+In this example disambiguation by operator precedence is applied during the
+AST build. 
+
+Our AST has only one type of node: `Expr`.
+```
+type ExprType int
+
+const (
+	Expr_Var ExprType = iota
+	Expr_Expr
+)
+
+type Expr struct {
+	Type  ExprType
+	Var   *token.Token
+	Op    *token.Token
+	Left  *Expr
+	Right *Expr
+}
+
+```
+A node can represent a variable (`Type` = `Expr_Var`) or an expression (`Type` = `Expr_Expr`).
+If the node represents a variable the field `Var` contains the variable token. 
+Otherwise `Op` contains the operator token and `Left` and `Right` contain the nodes
+of the sub-expressions.
+
+The AST is constructed recursively from each BSR root by the function, `buildExpr`
+in [boolx_test.go](examples/boolx/boolx_test.go).
+
+```
+/*
+Expr :   var
+     |   Expr Op Expr
+     ;
+Op : "&" | "|" ;
+*/
+func buildExpr(b bsr.BSR) *Expr {
+	/*** Expr :   var ***/
+	if b.Alternate() == 0 {
+		return &Expr{
+			Type: Expr_Var,
+			Var:  b.GetTChildI(0),
+		}
+	}
+
+	/*** Expr : Expr Op Expr ***/
+	op := b.GetNTChildI(1). // Op is symbol 1 of the Expr rule
+				GetTChildI(0) // The operator token is symbol 0 for both alternates of the Op rule
+
+	// Build the left subexpression Node. The subtree for it may be ambiguous.
+	left := []*Expr{}
+	// b.GetNTChildrenI(0) returns all the valid BSRs for symbol 0 of the body of the rule.
+	for _, le := range b.GetNTChildrenI(0) {
+		// Add subexpression if it is valid and has precedence over this expression
+		if e := buildExpr(le); e != nil && hasPrecedence(e, op) {
+			left = append(left, e)
+		}
+	}
+	// No valid subexpressions therefore this whole expression is invalid
+	if len(left) == 0 {
+		return nil
+	}
+	// Belts and braces
+	if len(left) > 1 {
+		panic(fmt.Sprintf("%s has %d left children", b, len(left)))
+	}
+	// Do the same for the right subexpression
+	right := []*Expr{}
+	for _, le := range b.GetNTChildrenI(2) {
+		if e := buildExpr(le); e != nil && hasPrecedence(e, op) {
+			right = append(right, e)
+		}
+	}
+	if len(right) == 0 {
+		return nil
+	}
+	if len(right) > 1 {
+		panic(fmt.Sprintf("%s has %d right children", b, len(right)))
+	}
+
+	// return an expression node
+	return &Expr{
+		Type:  Expr_Expr,
+		Op:    op,
+		Left:  left[0],
+		Right: right[0],
+	}
+}
+```
 
 # Status
 * `gogll v3` generates a matching lexer and parser. v3 compiles itself.

@@ -11,8 +11,6 @@ import (
 	"github.com/goccmack/gogll/examples/boolx/token"
 )
 
-const t1Src = `a | b & c | d & e`
-
 type ExprType int
 
 const (
@@ -28,15 +26,15 @@ type Expr struct {
 	Right *Expr
 }
 
+const t1Src = `a | b & c | d & e`
+
 func Test1(t *testing.T) {
 	if err, errs := parser.Parse(lexer.New([]rune(t1Src))); err != nil {
 		fail(errs)
 	}
 
-	for _, r := range bsr.GetRoots() {
-		if e := buildExpr(r); e != nil {
-			fmt.Println(e)
-		}
+	for i, r := range bsr.GetRoots() {
+		fmt.Printf("%d: %s\n", i, buildExpr(r))
 	}
 }
 
@@ -47,25 +45,36 @@ Expr :   var
 Op : "&" | "|" ;
 */
 func buildExpr(b bsr.BSR) *Expr {
+	/*** Expr :   var ***/
 	if b.Alternate() == 0 {
 		return &Expr{
 			Type: Expr_Var,
 			Var:  b.GetTChildI(0),
 		}
 	}
-	op := b.GetNTChildI(1).GetTChildI(0)
+
+	/*** Expr : Expr Op Expr ***/
+	op := b.GetNTChildI(1). // Op is symbol 1 of the Expr rule
+				GetTChildI(0) // The operator token is symbol 0 for both alternates of the Op rule
+
+	// Build the left subexpression Node. The subtree for it may be ambiguous.
 	left := []*Expr{}
+	// b.GetNTChildrenI(0) returns all the valid BSRs for symbol 0 of the body of the rule.
 	for _, le := range b.GetNTChildrenI(0) {
+		// Add subexpression if it is valid and has precedence over this expression
 		if e := buildExpr(le); e != nil && hasPrecedence(e, op) {
 			left = append(left, e)
 		}
 	}
+	// No valid subexpressions therefore this whole expression is invalid
 	if len(left) == 0 {
 		return nil
 	}
+	// Belts and braces
 	if len(left) > 1 {
 		panic(fmt.Sprintf("%s has %d left children", b, len(left)))
 	}
+	// Do the same for the right subexpression
 	right := []*Expr{}
 	for _, le := range b.GetNTChildrenI(2) {
 		if e := buildExpr(le); e != nil && hasPrecedence(e, op) {
@@ -79,6 +88,7 @@ func buildExpr(b bsr.BSR) *Expr {
 		panic(fmt.Sprintf("%s has %d right children", b, len(right)))
 	}
 
+	// return an expression node
 	return &Expr{
 		Type:  Expr_Expr,
 		Op:    op,
