@@ -351,23 +351,40 @@ func deleteNTSlotEntry(b BSR) {
 	// fmt.Printf("deletNTSlotEntry(%s)\n", b)
 	nts := ntSlot{b.Label.Head(), b.leftExtent, b.rightExtent}
 	slots := set.ntSlotEntries[nts]
+	slots1 := make([]BSR, 0, len(slots))
 	bi := -1
 	for i, s := range slots {
-		// fmt.Println("", i, ":", s)
-		if s == b {
-			if bi != -1 {
-				panic("Duplicate")
-			}
+		if s == b && bi != -1 {
+			panic(fmt.Sprintf("Duplicate slot entries: %d and %d", bi, i))
 			bi = i
-			// fmt.Println("  bi", i)
+		} else {
+			slots1 = append(slots1, s)
 		}
 	}
-	slots1 := slots[0:bi]
-	slots1 = append(slots1, slots[bi+1:]...)
-	// fmt.Println("  slots", slots)
-	// fmt.Println("  slots1", slots1)
 	set.ntSlotEntries[nts] = slots1
 }
+
+// func deleteNTSlotEntry(b BSR) {
+// 	// fmt.Printf("deletNTSlotEntry(%s)\n", b)
+// 	nts := ntSlot{b.Label.Head(), b.leftExtent, b.rightExtent}
+// 	slots := set.ntSlotEntries[nts]
+// 	bi := -1
+// 	for i, s := range slots {
+// 		// fmt.Println("", i, ":", s)
+// 		if s == b {
+// 			if bi != -1 {
+// 				panic("Duplicate")
+// 			}
+// 			bi = i
+// 			// fmt.Println("  bi", i)
+// 		}
+// 	}
+// 	slots1 := slots[0:bi]
+// 	slots1 = append(slots1, slots[bi+1:]...)
+// 	// fmt.Println("  slots", slots)
+// 	// fmt.Println("  slots1", slots1)
+// 	set.ntSlotEntries[nts] = slots1
+// }
 
 func (s BSR) LeftExtent() int {
 	return s.leftExtent
@@ -383,7 +400,7 @@ func (s BSR) Pivot() int {
 
 func (s BSR) String() string {
 	return fmt.Sprintf("%s,%d,%d,%d - %s", s.Label, s.leftExtent, s.pivot, s.rightExtent, 
-		set.lex.GetString(s.LeftExtent(), s.RightExtent()))
+		set.lex.GetString(s.LeftExtent(), s.RightExtent()-1))
 }
 
 func (s stringBSR) LeftExtent() int {
