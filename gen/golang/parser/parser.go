@@ -102,7 +102,6 @@ package parser
 import(
 	"bytes"
 	"fmt"
-	"os"
 	"sort"
 	"strings"
 
@@ -114,71 +113,77 @@ import(
 	"{{.Package}}/token"
 )
 
-var (
-	cI    = 0
+type parser struct {
+	cI int
 
 	R *descriptors
 	U *descriptors
 
-	popped 		map[poppedNode]bool
-	crf			map[clusterNode][]*crfNode
-	crfNodes	map[crfNode]*crfNode
+	popped   map[poppedNode]bool
+	crf      map[clusterNode][]*crfNode
+	crfNodes map[crfNode]*crfNode
 
 	lex         *lexer.Lexer
 	parseErrors []*Error
 
 	bsrSet *bsr.Set
-)
+}
 
-func initParser(l *lexer.Lexer) {
-	lex = l
-	cI = 0
-	R, U = &descriptors{}, &descriptors{}
-	popped = make(map[poppedNode]bool)
-	crf = map[clusterNode][]*crfNode{
-		{symbols.NT_{{.StartSymbol}}, 0}:{},
+func newParser(l *lexer.Lexer) *parser {
+	return &parser{
+		cI:     0,
+		lex:    l,
+		R:      &descriptors{},
+		U:      &descriptors{},
+		popped: make(map[poppedNode]bool),
+		crf: map[clusterNode][]*crfNode{
+			{symbols.NT_GoGLL, 0}: {},
+		},
+		crfNodes:    map[crfNode]*crfNode{},
+		bsrSet:      bsr.New(symbols.NT_GoGLL, l),
+		parseErrors: nil,
 	}
-	crfNodes = map[crfNode]*crfNode{}
-	bsrSet = bsr.New(symbols.NT_{{.StartSymbol}}, lex)
-	parseErrors = nil
 }
 
 // Parse returns the BSR set containing the parse forest.
 // If the parse was successfull []*Error is nil
 func Parse(l *lexer.Lexer) (*bsr.Set, []*Error) {
-	initParser(l)
+	return newParser(l).parse()
+}
+
+func (p *parser) parse() (*bsr.Set, []*Error) {
 	var L slot.Label
-	m, cU := len(l.Tokens)-1, 0
-	ntAdd(symbols.NT_{{.StartSymbol}}, 0)
+	m, cU := len(p.lex.Tokens)-1, 0
+	p.ntAdd(symbols.NT_GoGLL, 0)
 	// DumpDescriptors()
-	for !R.empty() {
-		L, cU, cI = R.remove()
+	for !p.R.empty() {
+		L, cU, p.cI = p.R.remove()
 
 		// fmt.Println()
-		// fmt.Printf("L:%s, cI:%d, I[cI]:%s, cU:%d\n", L, cI, lex.Tokens[cI], cU)
+		// fmt.Printf("L:%s, p.cI:%d, I[cI]:%s, cU:%d\n", L, p.cI, lex.Tokens[cI], cU)
 		// DumpDescriptors()
 
-		switch L { 
+		switch L {
 {{.CodeX}}
 
 		default:
 			panic("This must not happen")
 		}
 	}
-	if !bsrSet.Contain(symbols.NT_{{.StartSymbol}},0,m) {
-		sortParseErrors()
-		return bsrSet, parseErrors
+	if !p.bsrSet.Contain(symbols.NT_GoGLL, 0, m) {
+		p.sortParseErrors()
+		return nil, p.parseErrors
 	}
-	return bsrSet, nil
+	return p.bsrSet, nil
 }
 
-func ntAdd(nt symbols.NT, j int) {
-	// fmt.Printf("ntAdd(%s, %d)\n", nt, j)
+func (p *parser) ntAdd(nt symbols.NT, j int) {
+	// fmt.Printf("p.ntAdd(%s, %d)\n", nt, j)
 	failed := true
 	expected := map[token.Type]string{}
 	for _, l := range slot.GetAlternates(nt) {
-		if testSelect(l) {
-			dscAdd(l, j, j)
+		if p.testSelect(l) {
+			p.dscAdd(l, j, j)
 			failed = false
 		} else {
 			for k, v := range first[l] {
@@ -188,7 +193,7 @@ func ntAdd(nt symbols.NT, j int) {
 	}
 	if failed {
 		for _, l := range slot.GetAlternates(nt) {
-			parseError(l, j, expected)
+			p.parseError(l, j, expected)
 		}
 	}
 }
@@ -229,31 +234,31 @@ if there is no CRF node labelled (X, j) {
 	} 
 }
 */
-func call(L slot.Label, i, j int) {
-	// fmt.Printf("call(%s,%d,%d)\n", L,i,j)
-	u, exist := crfNodes[crfNode{L, i}]
+func (p *parser) call(L slot.Label, i, j int) {
+	// fmt.Printf("p.call(%s,%d,%d)\n", L,i,j)
+	u, exist := p.crfNodes[crfNode{L, i}]
 	// fmt.Printf("  u exist=%t\n", exist)
 	if !exist {
 		u = &crfNode{L, i}
-		crfNodes[*u] = u
+		p.crfNodes[*u] = u
 	}
 	X := L.Symbols()[L.Pos()-1].(symbols.NT)
 	ndV := clusterNode{X, j}
-	v, exist := crf[ndV]
+	v, exist := p.crf[ndV]
 	if !exist {
 		// fmt.Println("  v !exist")
-		crf[ndV] = []*crfNode{u}
-		ntAdd(X, j)
+		p.crf[ndV] = []*crfNode{u}
+		p.ntAdd(X, j)
 	} else {
 		// fmt.Println("  v exist")
 		if !existEdge(v, u) {
 			// fmt.Printf("  !existEdge(%v)\n", u)
-			crf[ndV] = append(v, u)
+			p.crf[ndV] = append(v, u)
 			// fmt.Printf("|popped|=%d\n", len(popped))
-			for pnd, _ := range popped {
+			for pnd := range p.popped {
 				if pnd.X == X && pnd.k == j {
-					dscAdd(L, i, pnd.j)
-					bsrSet.Add(L, i, j, pnd.j)
+					p.dscAdd(L, i, pnd.j)
+					p.bsrSet.Add(L, i, j, pnd.j)
 				}
 			}
 		}
@@ -269,29 +274,29 @@ func existEdge(nds []*crfNode, nd *crfNode) bool {
 	return false
 }
 
-func rtn(X symbols.NT, k, j int) {
-	// fmt.Printf("rtn(%s,%d,%d)\n", X,k,j)
-	p := poppedNode{X, k, j}
-	if _, exist := popped[p]; !exist {
-		popped[p] = true
-		for _, nd := range crf[clusterNode{X, k}] {
-			dscAdd(nd.L, nd.i, j)
-			bsrSet.Add(nd.L, nd.i, k, j)
+func (p *parser) rtn(X symbols.NT, k, j int) {
+	// fmt.Printf("p.rtn(%s,%d,%d)\n", X,k,j)
+	pn := poppedNode{X, k, j}
+	if _, exist := p.popped[pn]; !exist {
+		p.popped[pn] = true
+		for _, nd := range p.crf[clusterNode{X, k}] {
+			p.dscAdd(nd.L, nd.i, j)
+			p.bsrSet.Add(nd.L, nd.i, k, j)
 		}
 	}
 }
 
-func CRFString() string {
-	buf := new(bytes.Buffer)
-	buf.WriteString("CRF: {")
-	for cn, nds := range crf{
-		for _, nd := range nds {
-			fmt.Fprintf(buf, "%s->%s, ", cn, nd)
-		}
-	}
-	buf.WriteString("}")
-	return buf.String()
-}
+// func CRFString() string {
+// 	buf := new(bytes.Buffer)
+// 	buf.WriteString("CRF: {")
+// 	for cn, nds := range crf{
+// 		for _, nd := range nds {
+// 			fmt.Fprintf(buf, "%s->%s, ", cn, nd)
+// 		}
+// 	}
+// 	buf.WriteString("}")
+// 	return buf.String()
+// }
 
 func (cn clusterNode) String() string {
 	return fmt.Sprintf("(%s,%d)", cn.X, cn.k)
@@ -301,15 +306,15 @@ func (n crfNode) String() string {
 	return fmt.Sprintf("(%s,%d)", n.L.String(), n.i)
 }
 
-func PoppedString() string {
-	buf := new(bytes.Buffer)
-	buf.WriteString("Popped: {")
-	for p, _ := range popped {
-		fmt.Fprintf(buf, "(%s,%d,%d) ", p.X, p.k, p.j)
-	}
-	buf.WriteString("}")
-	return buf.String()
-}
+// func PoppedString() string {
+// 	buf := new(bytes.Buffer)
+// 	buf.WriteString("Popped: {")
+// 	for p, _ := range popped {
+// 		fmt.Fprintf(buf, "(%s,%d,%d) ", p.X, p.k, p.j)
+// 	}
+// 	buf.WriteString("}")
+// 	return buf.String()
+// }
 
 /*** descriptors ***/
 
@@ -353,12 +358,12 @@ func (d *descriptor) String() string {
 	return fmt.Sprintf("%s,%d,%d", d.L, d.k, d.i)
 }
 
-func dscAdd(L slot.Label, k, i int) {
-	// fmt.Printf("dscAdd(%s,%d,%d)\n", L, k, i)
+func (p *parser) dscAdd(L slot.Label, k, i int) {
+	// fmt.Printf("p.dscAdd(%s,%d,%d)\n", L, k, i)
 	d := &descriptor{L, k, i}
-	if !U.contain(d) {
-		R.set = append(R.set, d)
-		U.set = append(U.set, d)
+	if !p.U.contain(d) {
+		p.R.set = append(p.R.set, d)
+		p.U.set = append(p.U.set, d)
 	}
 }
 
@@ -369,34 +374,34 @@ func (ds *descriptors) remove() (L slot.Label, k, i int) {
 	return d.L, d.k, d.i
 }
 
-func DumpDescriptors() {
-	DumpR()
-	DumpU()
+func (p *parser) DumpDescriptors() {
+	p.DumpR()
+	p.DumpU()
 }
 
-func DumpR() {
+func (p *parser) DumpR() {
 	fmt.Println("R:")
-	for _, d := range R.set {
+	for _, d := range p.R.set {
 		fmt.Printf(" %s\n", d)
 	}
 }
 
-func DumpU() {
+func (p *parser) DumpU() {
 	fmt.Println("U:")
-	for _, d := range U.set {
+	for _, d := range p.U.set {
 		fmt.Printf(" %s\n", d)
 	}
 }
 
 /*** TestSelect ***/
 
-func follow(nt symbols.NT) bool {
-	_, exist := followSets[nt][lex.Tokens[cI].Type()]
+func (p *parser) follow(nt symbols.NT) bool {
+	_, exist := followSets[nt][p.lex.Tokens[p.cI].Type()]
 	return exist
 }
 
-func testSelect(l slot.Label) bool {
-	_, exist := first[l][lex.Tokens[cI].Type()]
+func (p *parser) testSelect(l slot.Label) bool {
+	_, exist := first[l][p.lex.Tokens[p.cI].Type()]
 	// fmt.Printf("testSelect(%s) = %t\n", l, exist)
 	return exist
 }
@@ -426,23 +431,23 @@ func (pe *Error) String() string {
 	return w.String()
 }
 
-func parseError(slot slot.Label, i int, expected map[token.Type]string) {
-	pe := &Error{cI: i, Slot: slot, Token: lex.Tokens[i], Expected: expected}
-	parseErrors = append(parseErrors, pe)
+func (p *parser) parseError(slot slot.Label, i int, expected map[token.Type]string) {
+	pe := &Error{cI: i, Slot: slot, Token: p.lex.Tokens[i], Expected: expected}
+	p.parseErrors = append(p.parseErrors, pe)
 }
 
-func sortParseErrors() {
-	sort.Slice(parseErrors,
+func (p *parser) sortParseErrors() {
+	sort.Slice(p.parseErrors,
 		func(i, j int) bool {
-			return parseErrors[j].Token.Lext() < parseErrors[i].Token.Lext()
+			return p.parseErrors[j].Token.Lext() < p.parseErrors[i].Token.Lext()
 		})
-	for _, pe := range parseErrors {
-		pe.Line, pe.Column = lex.GetLineColumn(pe.Token.Lext())
+	for _, pe := range p.parseErrors {
+		pe.Line, pe.Column = p.lex.GetLineColumn(pe.Token.Lext())
 	}
 }
 
-func parseErrorError(err error) {
-	fmt.Printf("Error: %s\n", err)
-	os.Exit(1)
-}
+// func parseErrorError(err error) {
+// 	fmt.Printf("Error: %s\n", err)
+// 	os.Exit(1)
+// }
 `

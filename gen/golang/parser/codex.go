@@ -105,20 +105,20 @@ type SlotData struct {
 }
 
 const altCodeTmpl = `		case slot.{{.AltLabel}}: // {{.AltComment}}{{if .Empty}}
-			bsrSet.AddEmpty(slot.{{.AltLabel}},cI)
+			p.bsrSet.AddEmpty(slot.{{.AltLabel}},cI)
 		{{else}}{{range $i, $slot := .Slots}}
-			{{if $i}}if !testSelect(slot.{{$slot.PreLabel}}){ 
-				parseError(slot.{{$slot.PreLabel}}, cI, first[slot.{{$slot.PreLabel}}])
+			{{if $i}}if !p.testSelect(slot.{{$slot.PreLabel}}){ 
+				p.parseError(slot.{{$slot.PreLabel}}, p.cI, first[slot.{{$slot.PreLabel}}])
 				break 
 			}
 			{{end}}
-			{{if $slot.IsNT}}call(slot.{{$slot.PostLabel}}, cU, cI)
+			{{if $slot.IsNT}}p.call(slot.{{$slot.PostLabel}}, cU, p.cI)
 case slot.{{$slot.PostLabel}}: // {{$slot.Comment}} 
-			{{else}}bsrSet.Add(slot.{{$slot.PostLabel}}, cU, cI, cI+1)
-			cI++ {{end}}{{end}}{{end}}
-			if follow(symbols.NT_{{.NT}}) {
-				rtn(symbols.NT_{{.NT}}, cU, cI)
+			{{else}}p.bsrSet.Add(slot.{{$slot.PostLabel}}, cU, p.cI, p.cI+1)
+			p.cI++ {{end}}{{end}}{{end}}
+			if p.follow(symbols.NT_{{.NT}}) {
+				p.rtn(symbols.NT_{{.NT}}, cU, p.cI)
 			} else { 
-				parseError(slot.{{.AltLabel}}, cI, followSets[symbols.NT_{{.NT}}])
+				p.parseError(slot.{{.AltLabel}}, p.cI, followSets[symbols.NT_{{.NT}}])
 			}
 	`
