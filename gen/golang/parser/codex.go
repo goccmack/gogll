@@ -105,7 +105,7 @@ type SlotData struct {
 }
 
 const altCodeTmpl = `		case slot.{{.AltLabel}}: // {{.AltComment}}{{if .Empty}}
-			bsr.AddEmpty(slot.{{.AltLabel}},cI)
+			bsrSet.AddEmpty(slot.{{.AltLabel}},cI)
 		{{else}}{{range $i, $slot := .Slots}}
 			{{if $i}}if !testSelect(slot.{{$slot.PreLabel}}){ 
 				parseError(slot.{{$slot.PreLabel}}, cI, first[slot.{{$slot.PreLabel}}])
@@ -114,7 +114,7 @@ const altCodeTmpl = `		case slot.{{.AltLabel}}: // {{.AltComment}}{{if .Empty}}
 			{{end}}
 			{{if $slot.IsNT}}call(slot.{{$slot.PostLabel}}, cU, cI)
 case slot.{{$slot.PostLabel}}: // {{$slot.Comment}} 
-			{{else}}bsr.Add(slot.{{$slot.PostLabel}}, cU, cI, cI+1)
+			{{else}}bsrSet.Add(slot.{{$slot.PostLabel}}, cU, cI, cI+1)
 			cI++ {{end}}{{end}}{{end}}
 			if follow(symbols.NT_{{.NT}}) {
 				rtn(symbols.NT_{{.NT}}, cU, cI)

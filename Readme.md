@@ -94,11 +94,12 @@ it is installed.
 		os.Exit(1)
 	}
 ```
-Ambiguous BSRs must be resolved by walking the parse forest and removing
-unwanted children of ambiguous NTs. To remove an unwanted BSR, `b` call `b.Ignore()`
+Ambiguous BSRs must be resolved by walking the parse forest and ignoring
+unwanted children of ambiguous NTs (see [Complete Example](#Complete-Example)).
 4. Use the disambiguated parse tree for the further stages of compilation. 
 For example, see gogll's [AST builder](ast/build.go).
 
+<a name="Complete-Example"></a>
 # Complete Example
 The code of following example can be found at [examples/boolx](examples/boolx/boolx.md). 
 The example has the following grammar: [boolx.md](examples/boolx/boolx.md), which generates boolean expressions such as: `a | b & c | d & e`:

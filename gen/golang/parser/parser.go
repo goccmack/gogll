@@ -126,6 +126,8 @@ var (
 
 	lex         *lexer.Lexer
 	parseErrors []*Error
+
+	bsrSet *bsr.Set
 )
 
 func initParser(l *lexer.Lexer) {
@@ -137,11 +139,13 @@ func initParser(l *lexer.Lexer) {
 		{symbols.NT_{{.StartSymbol}}, 0}:{},
 	}
 	crfNodes = map[crfNode]*crfNode{}
-	bsr.Init(symbols.NT_{{.StartSymbol}}, lex)
+	bsrSet = bsr.New(symbols.NT_{{.StartSymbol}}, lex)
 	parseErrors = nil
 }
 
-func Parse(l *lexer.Lexer) (error, []*Error) {
+// Parse returns the BSR set containing the parse forest.
+// If the parse was successfull []*Error is nil
+func Parse(l *lexer.Lexer) (*bsr.Set, []*Error) {
 	initParser(l)
 	var L slot.Label
 	m, cU := len(l.Tokens)-1, 0
@@ -161,13 +165,11 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 			panic("This must not happen")
 		}
 	}
-	if !bsr.Contain(symbols.NT_{{.StartSymbol}},0,m) {
+	if !bsrSet.Contain(symbols.NT_{{.StartSymbol}},0,m) {
 		sortParseErrors()
-		err := fmt.Errorf("Error: Parse Failed right extent=%d, m=%d", 
-			bsr.GetRightExtent(), len(l.Tokens))
-		return err, parseErrors
+		return bsrSet, parseErrors
 	}
-	return nil, nil
+	return bsrSet, nil
 }
 
 func ntAdd(nt symbols.NT, j int) {
@@ -251,7 +253,7 @@ func call(L slot.Label, i, j int) {
 			for pnd, _ := range popped {
 				if pnd.X == X && pnd.k == j {
 					dscAdd(L, i, pnd.j)
-					bsr.Add(L, i, j, pnd.j)
+					bsrSet.Add(L, i, j, pnd.j)
 				}
 			}
 		}
@@ -274,7 +276,7 @@ func rtn(X symbols.NT, k, j int) {
 		popped[p] = true
 		for _, nd := range crf[clusterNode{X, k}] {
 			dscAdd(nd.L, nd.i, j)
-			bsr.Add(nd.L, nd.i, k, j)
+			bsrSet.Add(nd.L, nd.i, k, j)
 		}
 	}
 }

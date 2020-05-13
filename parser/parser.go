@@ -27,6 +27,8 @@ var (
 
 	lex         *lexer.Lexer
 	parseErrors []*Error
+
+	bsrSet *bsr.Set
 )
 
 func initParser(l *lexer.Lexer) {
@@ -38,11 +40,11 @@ func initParser(l *lexer.Lexer) {
 		{symbols.NT_GoGLL, 0}: {},
 	}
 	crfNodes = map[crfNode]*crfNode{}
-	bsr.Init(symbols.NT_GoGLL, lex)
+	bsrSet = bsr.New(symbols.NT_GoGLL, lex)
 	parseErrors = nil
 }
 
-func Parse(l *lexer.Lexer) (error, []*Error) {
+func Parse(l *lexer.Lexer) (*bsr.Set, []*Error) {
 	initParser(l)
 	var L slot.Label
 	m, cU := len(l.Tokens)-1, 0
@@ -94,7 +96,7 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 				break
 			}
 
-			bsr.Add(slot.LexAlternates1R2, cU, cI, cI+1)
+			bsrSet.Add(slot.LexAlternates1R2, cU, cI, cI+1)
 			cI++
 			if !testSelect(slot.LexAlternates1R2) {
 				parseError(slot.LexAlternates1R2, cI, first[slot.LexAlternates1R2])
@@ -151,7 +153,7 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 			}
 		case slot.LexGroup0R0: // LexGroup : ∙( LexAlternates )
 
-			bsr.Add(slot.LexGroup0R1, cU, cI, cI+1)
+			bsrSet.Add(slot.LexGroup0R1, cU, cI, cI+1)
 			cI++
 			if !testSelect(slot.LexGroup0R1) {
 				parseError(slot.LexGroup0R1, cI, first[slot.LexGroup0R1])
@@ -166,7 +168,7 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 				break
 			}
 
-			bsr.Add(slot.LexGroup0R3, cU, cI, cI+1)
+			bsrSet.Add(slot.LexGroup0R3, cU, cI, cI+1)
 			cI++
 			if follow(symbols.NT_LexGroup) {
 				rtn(symbols.NT_LexGroup, cU, cI)
@@ -175,7 +177,7 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 			}
 		case slot.LexOneOrMore0R0: // LexOneOrMore : ∙< LexAlternates >
 
-			bsr.Add(slot.LexOneOrMore0R1, cU, cI, cI+1)
+			bsrSet.Add(slot.LexOneOrMore0R1, cU, cI, cI+1)
 			cI++
 			if !testSelect(slot.LexOneOrMore0R1) {
 				parseError(slot.LexOneOrMore0R1, cI, first[slot.LexOneOrMore0R1])
@@ -190,7 +192,7 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 				break
 			}
 
-			bsr.Add(slot.LexOneOrMore0R3, cU, cI, cI+1)
+			bsrSet.Add(slot.LexOneOrMore0R3, cU, cI, cI+1)
 			cI++
 			if follow(symbols.NT_LexOneOrMore) {
 				rtn(symbols.NT_LexOneOrMore, cU, cI)
@@ -199,7 +201,7 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 			}
 		case slot.LexOptional0R0: // LexOptional : ∙[ LexAlternates ]
 
-			bsr.Add(slot.LexOptional0R1, cU, cI, cI+1)
+			bsrSet.Add(slot.LexOptional0R1, cU, cI, cI+1)
 			cI++
 			if !testSelect(slot.LexOptional0R1) {
 				parseError(slot.LexOptional0R1, cI, first[slot.LexOptional0R1])
@@ -214,7 +216,7 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 				break
 			}
 
-			bsr.Add(slot.LexOptional0R3, cU, cI, cI+1)
+			bsrSet.Add(slot.LexOptional0R3, cU, cI, cI+1)
 			cI++
 			if follow(symbols.NT_LexOptional) {
 				rtn(symbols.NT_LexOptional, cU, cI)
@@ -223,14 +225,14 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 			}
 		case slot.LexRule0R0: // LexRule : ∙tokid : RegExp ;
 
-			bsr.Add(slot.LexRule0R1, cU, cI, cI+1)
+			bsrSet.Add(slot.LexRule0R1, cU, cI, cI+1)
 			cI++
 			if !testSelect(slot.LexRule0R1) {
 				parseError(slot.LexRule0R1, cI, first[slot.LexRule0R1])
 				break
 			}
 
-			bsr.Add(slot.LexRule0R2, cU, cI, cI+1)
+			bsrSet.Add(slot.LexRule0R2, cU, cI, cI+1)
 			cI++
 			if !testSelect(slot.LexRule0R2) {
 				parseError(slot.LexRule0R2, cI, first[slot.LexRule0R2])
@@ -245,7 +247,7 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 				break
 			}
 
-			bsr.Add(slot.LexRule0R4, cU, cI, cI+1)
+			bsrSet.Add(slot.LexRule0R4, cU, cI, cI+1)
 			cI++
 			if follow(symbols.NT_LexRule) {
 				rtn(symbols.NT_LexRule, cU, cI)
@@ -254,7 +256,7 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 			}
 		case slot.LexSymbol0R0: // LexSymbol : ∙.
 
-			bsr.Add(slot.LexSymbol0R1, cU, cI, cI+1)
+			bsrSet.Add(slot.LexSymbol0R1, cU, cI, cI+1)
 			cI++
 			if follow(symbols.NT_LexSymbol) {
 				rtn(symbols.NT_LexSymbol, cU, cI)
@@ -263,14 +265,14 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 			}
 		case slot.LexSymbol1R0: // LexSymbol : ∙any string_lit
 
-			bsr.Add(slot.LexSymbol1R1, cU, cI, cI+1)
+			bsrSet.Add(slot.LexSymbol1R1, cU, cI, cI+1)
 			cI++
 			if !testSelect(slot.LexSymbol1R1) {
 				parseError(slot.LexSymbol1R1, cI, first[slot.LexSymbol1R1])
 				break
 			}
 
-			bsr.Add(slot.LexSymbol1R2, cU, cI, cI+1)
+			bsrSet.Add(slot.LexSymbol1R2, cU, cI, cI+1)
 			cI++
 			if follow(symbols.NT_LexSymbol) {
 				rtn(symbols.NT_LexSymbol, cU, cI)
@@ -279,7 +281,7 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 			}
 		case slot.LexSymbol2R0: // LexSymbol : ∙char_lit
 
-			bsr.Add(slot.LexSymbol2R1, cU, cI, cI+1)
+			bsrSet.Add(slot.LexSymbol2R1, cU, cI, cI+1)
 			cI++
 			if follow(symbols.NT_LexSymbol) {
 				rtn(symbols.NT_LexSymbol, cU, cI)
@@ -298,14 +300,14 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 			}
 		case slot.LexSymbol4R0: // LexSymbol : ∙not string_lit
 
-			bsr.Add(slot.LexSymbol4R1, cU, cI, cI+1)
+			bsrSet.Add(slot.LexSymbol4R1, cU, cI, cI+1)
 			cI++
 			if !testSelect(slot.LexSymbol4R1) {
 				parseError(slot.LexSymbol4R1, cI, first[slot.LexSymbol4R1])
 				break
 			}
 
-			bsr.Add(slot.LexSymbol4R2, cU, cI, cI+1)
+			bsrSet.Add(slot.LexSymbol4R2, cU, cI, cI+1)
 			cI++
 			if follow(symbols.NT_LexSymbol) {
 				rtn(symbols.NT_LexSymbol, cU, cI)
@@ -324,7 +326,7 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 			}
 		case slot.LexZeroOrMore0R0: // LexZeroOrMore : ∙{ LexAlternates }
 
-			bsr.Add(slot.LexZeroOrMore0R1, cU, cI, cI+1)
+			bsrSet.Add(slot.LexZeroOrMore0R1, cU, cI, cI+1)
 			cI++
 			if !testSelect(slot.LexZeroOrMore0R1) {
 				parseError(slot.LexZeroOrMore0R1, cI, first[slot.LexZeroOrMore0R1])
@@ -339,7 +341,7 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 				break
 			}
 
-			bsr.Add(slot.LexZeroOrMore0R3, cU, cI, cI+1)
+			bsrSet.Add(slot.LexZeroOrMore0R3, cU, cI, cI+1)
 			cI++
 			if follow(symbols.NT_LexZeroOrMore) {
 				rtn(symbols.NT_LexZeroOrMore, cU, cI)
@@ -348,14 +350,14 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 			}
 		case slot.Package0R0: // Package : ∙package string_lit
 
-			bsr.Add(slot.Package0R1, cU, cI, cI+1)
+			bsrSet.Add(slot.Package0R1, cU, cI, cI+1)
 			cI++
 			if !testSelect(slot.Package0R1) {
 				parseError(slot.Package0R1, cI, first[slot.Package0R1])
 				break
 			}
 
-			bsr.Add(slot.Package0R2, cU, cI, cI+1)
+			bsrSet.Add(slot.Package0R2, cU, cI, cI+1)
 			cI++
 			if follow(symbols.NT_Package) {
 				rtn(symbols.NT_Package, cU, cI)
@@ -450,7 +452,7 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 			}
 		case slot.SyntaxAlternate1R0: // SyntaxAlternate : ∙empty
 
-			bsr.Add(slot.SyntaxAlternate1R1, cU, cI, cI+1)
+			bsrSet.Add(slot.SyntaxAlternate1R1, cU, cI, cI+1)
 			cI++
 			if follow(symbols.NT_SyntaxAlternate) {
 				rtn(symbols.NT_SyntaxAlternate, cU, cI)
@@ -477,7 +479,7 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 				break
 			}
 
-			bsr.Add(slot.SyntaxAlternates1R2, cU, cI, cI+1)
+			bsrSet.Add(slot.SyntaxAlternates1R2, cU, cI, cI+1)
 			cI++
 			if !testSelect(slot.SyntaxAlternates1R2) {
 				parseError(slot.SyntaxAlternates1R2, cI, first[slot.SyntaxAlternates1R2])
@@ -494,14 +496,14 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 			}
 		case slot.SyntaxRule0R0: // SyntaxRule : ∙nt : SyntaxAlternates ;
 
-			bsr.Add(slot.SyntaxRule0R1, cU, cI, cI+1)
+			bsrSet.Add(slot.SyntaxRule0R1, cU, cI, cI+1)
 			cI++
 			if !testSelect(slot.SyntaxRule0R1) {
 				parseError(slot.SyntaxRule0R1, cI, first[slot.SyntaxRule0R1])
 				break
 			}
 
-			bsr.Add(slot.SyntaxRule0R2, cU, cI, cI+1)
+			bsrSet.Add(slot.SyntaxRule0R2, cU, cI, cI+1)
 			cI++
 			if !testSelect(slot.SyntaxRule0R2) {
 				parseError(slot.SyntaxRule0R2, cI, first[slot.SyntaxRule0R2])
@@ -516,7 +518,7 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 				break
 			}
 
-			bsr.Add(slot.SyntaxRule0R4, cU, cI, cI+1)
+			bsrSet.Add(slot.SyntaxRule0R4, cU, cI, cI+1)
 			cI++
 			if follow(symbols.NT_SyntaxRule) {
 				rtn(symbols.NT_SyntaxRule, cU, cI)
@@ -525,7 +527,7 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 			}
 		case slot.SyntaxSymbol0R0: // SyntaxSymbol : ∙nt
 
-			bsr.Add(slot.SyntaxSymbol0R1, cU, cI, cI+1)
+			bsrSet.Add(slot.SyntaxSymbol0R1, cU, cI, cI+1)
 			cI++
 			if follow(symbols.NT_SyntaxSymbol) {
 				rtn(symbols.NT_SyntaxSymbol, cU, cI)
@@ -534,7 +536,7 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 			}
 		case slot.SyntaxSymbol1R0: // SyntaxSymbol : ∙tokid
 
-			bsr.Add(slot.SyntaxSymbol1R1, cU, cI, cI+1)
+			bsrSet.Add(slot.SyntaxSymbol1R1, cU, cI, cI+1)
 			cI++
 			if follow(symbols.NT_SyntaxSymbol) {
 				rtn(symbols.NT_SyntaxSymbol, cU, cI)
@@ -543,7 +545,7 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 			}
 		case slot.SyntaxSymbol2R0: // SyntaxSymbol : ∙string_lit
 
-			bsr.Add(slot.SyntaxSymbol2R1, cU, cI, cI+1)
+			bsrSet.Add(slot.SyntaxSymbol2R1, cU, cI, cI+1)
 			cI++
 			if follow(symbols.NT_SyntaxSymbol) {
 				rtn(symbols.NT_SyntaxSymbol, cU, cI)
@@ -580,7 +582,7 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 			}
 		case slot.UnicodeClass0R0: // UnicodeClass : ∙letter
 
-			bsr.Add(slot.UnicodeClass0R1, cU, cI, cI+1)
+			bsrSet.Add(slot.UnicodeClass0R1, cU, cI, cI+1)
 			cI++
 			if follow(symbols.NT_UnicodeClass) {
 				rtn(symbols.NT_UnicodeClass, cU, cI)
@@ -589,7 +591,7 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 			}
 		case slot.UnicodeClass1R0: // UnicodeClass : ∙upcase
 
-			bsr.Add(slot.UnicodeClass1R1, cU, cI, cI+1)
+			bsrSet.Add(slot.UnicodeClass1R1, cU, cI, cI+1)
 			cI++
 			if follow(symbols.NT_UnicodeClass) {
 				rtn(symbols.NT_UnicodeClass, cU, cI)
@@ -598,7 +600,7 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 			}
 		case slot.UnicodeClass2R0: // UnicodeClass : ∙lowcase
 
-			bsr.Add(slot.UnicodeClass2R1, cU, cI, cI+1)
+			bsrSet.Add(slot.UnicodeClass2R1, cU, cI, cI+1)
 			cI++
 			if follow(symbols.NT_UnicodeClass) {
 				rtn(symbols.NT_UnicodeClass, cU, cI)
@@ -607,7 +609,7 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 			}
 		case slot.UnicodeClass3R0: // UnicodeClass : ∙number
 
-			bsr.Add(slot.UnicodeClass3R1, cU, cI, cI+1)
+			bsrSet.Add(slot.UnicodeClass3R1, cU, cI, cI+1)
 			cI++
 			if follow(symbols.NT_UnicodeClass) {
 				rtn(symbols.NT_UnicodeClass, cU, cI)
@@ -619,13 +621,11 @@ func Parse(l *lexer.Lexer) (error, []*Error) {
 			panic("This must not happen")
 		}
 	}
-	if !bsr.Contain(symbols.NT_GoGLL, 0, m) {
+	if !bsrSet.Contain(symbols.NT_GoGLL, 0, m) {
 		sortParseErrors()
-		err := fmt.Errorf("Error: Parse Failed right extent=%d, m=%d",
-			bsr.GetRightExtent(), len(l.Tokens))
-		return err, parseErrors
+		return nil, parseErrors
 	}
-	return nil, nil
+	return bsrSet, nil
 }
 
 func ntAdd(nt symbols.NT, j int) {
@@ -709,7 +709,7 @@ func call(L slot.Label, i, j int) {
 			for pnd, _ := range popped {
 				if pnd.X == X && pnd.k == j {
 					dscAdd(L, i, pnd.j)
-					bsr.Add(L, i, j, pnd.j)
+					bsrSet.Add(L, i, j, pnd.j)
 				}
 			}
 		}
@@ -732,7 +732,7 @@ func rtn(X symbols.NT, k, j int) {
 		popped[p] = true
 		for _, nd := range crf[clusterNode{X, k}] {
 			dscAdd(nd.L, nd.i, j)
-			bsr.Add(nd.L, nd.i, k, j)
+			bsrSet.Add(nd.L, nd.i, k, j)
 		}
 	}
 }

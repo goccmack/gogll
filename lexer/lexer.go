@@ -62,6 +62,7 @@ func (l *Lexer) scan(i int) *token.Token {
 	s, typ, rext := state(0), token.Error, i
 	for s != nullState {
 		if rext >= len(l.I) {
+			typ = accept[s]
 			s = nullState
 		} else {
 			typ = accept[s]

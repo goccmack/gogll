@@ -35,7 +35,6 @@ import (
 	"github.com/goccmack/gogll/lex/items"
 	"github.com/goccmack/gogll/lexer"
 	"github.com/goccmack/gogll/parser"
-	"github.com/goccmack/gogll/parser/bsr"
 	"github.com/goccmack/gogll/sc"
 	"github.com/goccmack/gogll/symbols"
 )
@@ -57,19 +56,19 @@ func main() {
 	}
 	// start := time.Now()
 	lex := lexer.NewFile(cfg.SrcFile)
-	if err, errs := parser.Parse(lex); err != nil {
-		fmt.Println(err)
+	bsrSet, errs := parser.Parse(lex)
+	if errs != nil {
 		parseErrors(errs)
 	}
 	// fmt.Printf("Parse duration %s\n", time.Now().Sub(start))
 
-	if bsr.IsAmbiguous() {
+	if bsrSet.IsAmbiguous() {
 		fmt.Println("Error: Ambiguous parse forest")
-		bsr.ReportAmbiguous()
+		bsrSet.ReportAmbiguous()
 		os.Exit(1)
 	}
 
-	g := ast.Build(bsr.GetRoot(), lex)
+	g := ast.Build(bsrSet.GetRoot(), lex)
 	sc.Go(g, lex)
 	symbols.Init(g)
 
