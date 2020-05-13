@@ -45,6 +45,10 @@ Package bsr implements a Binary Subtree Representation set as defined in
 	Derivation representation using binary subtree sets,
 	Science of Computer Programming 175 (2019)
 
+ToDo:   
+
+* stringBSR is specific to a grammar slot rather than a symbol string. In an
+ambiguous grammar this leads to more string BSRs than necessary.
 */
 package bsr
 
@@ -66,10 +70,12 @@ type bsr interface {
 	Pivot() int
 }
 
+/*
+Set contains the set of Binary Subtree Representations (BSR).
+*/
 type Set struct {
 	slotEntries   map[BSR]bool
 	ntSlotEntries map[ntSlot][]BSR
-	ignoredSlots  map[BSR]bool
 	stringEntries map[stringBSR]bool
 	rightExtent   int
 	lex           *lexer.Lexer
@@ -100,11 +106,11 @@ type stringBSR struct {
 	set         *Set
 }
 
+// New returns a new initialised BSR Set
 func New(startSymbol symbols.NT, l *lexer.Lexer) *Set {
 	return &Set{
 		slotEntries:   make(map[BSR]bool),
 		ntSlotEntries: make(map[ntSlot][]BSR),
-		ignoredSlots:  make(map[BSR]bool),
 		stringEntries: make(map[stringBSR]bool),
 		rightExtent:   0,
 		lex:           l,
@@ -126,10 +132,15 @@ func (s *Set) Add(l slot.Label, i, k, j int) {
 	}
 }
 
+// AddEmpty adds a grammar slot: X : ϵ•
 func (s *Set) AddEmpty(l slot.Label, i int) {
 	s.insert(BSR{l, i, i, i, s})
 }
 
+/*
+Contain returns true iff the BSR Set contains the NT symbol with left and
+right extent.
+*/
 func (s *Set) Contain(nt symbols.NT, left, right int) bool {
 	// fmt.Printf("bsr.Contain(%s,%d,%d)\n",nt,left,right)
 	for e := range s.slotEntries {
@@ -331,15 +342,6 @@ func (b BSR) GetTChildI(i int) *token.Token {
 	return b.set.lex.Tokens[b.LeftExtent()+i]
 }
 
-// Ignore removes NT slot 'b' from the BSR set. Ignore() is typically called by
-// disambiguration code to remove an ambiguous BSR entry.
-func (b BSR) Ignore() {
-	// fmt.Printf("bsr.Ignore %s\n", b)
-	delete(b.set.slotEntries, b)
-	deleteNTSlotEntry(b)
-	b.set.ignoredSlots[b] = true
-}
-
 func deleteNTSlotEntry(b BSR) {
 	// fmt.Printf("deletNTSlotEntry(%s)\n", b)
 	nts := ntSlot{b.Label.Head(), b.leftExtent, b.rightExtent}
@@ -356,36 +358,17 @@ func deleteNTSlotEntry(b BSR) {
 	b.set.ntSlotEntries[nts] = slots1
 }
 
-// func deleteNTSlotEntry(b BSR) {
-// 	// fmt.Printf("deletNTSlotEntry(%s)\n", b)
-// 	nts := ntSlot{b.Label.Head(), b.leftExtent, b.rightExtent}
-// 	slots := set.ntSlotEntries[nts]
-// 	bi := -1
-// 	for i, s := range slots {
-// 		// fmt.Println("", i, ":", s)
-// 		if s == b {
-// 			if bi != -1 {
-// 				panic("Duplicate")
-// 			}
-// 			bi = i
-// 			// fmt.Println("  bi", i)
-// 		}
-// 	}
-// 	slots1 := slots[0:bi]
-// 	slots1 = append(slots1, slots[bi+1:]...)
-// 	// fmt.Println("  slots", slots)
-// 	// fmt.Println("  slots1", slots1)
-// 	set.ntSlotEntries[nts] = slots1
-// }
-
+// LeftExtent returns the left extent of the BSR
 func (b BSR) LeftExtent() int {
 	return b.leftExtent
 }
 
+// RightExtent returns the right extent of the BSR
 func (b BSR) RightExtent() int {
 	return b.rightExtent
 }
 
+// Pivot returns the pivot of the BSR
 func (b BSR) Pivot() int {
 	return b.pivot
 }

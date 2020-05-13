@@ -54,13 +54,11 @@ func main() {
 		}
 		defer pprof.StopCPUProfile()
 	}
-	// start := time.Now()
 	lex := lexer.NewFile(cfg.SrcFile)
 	bsrSet, errs := parser.Parse(lex)
 	if errs != nil {
 		parseErrors(errs)
 	}
-	// fmt.Printf("Parse duration %s\n", time.Now().Sub(start))
 
 	if bsrSet.IsAmbiguous() {
 		fmt.Println("Error: Ambiguous parse forest")
