@@ -101,34 +101,30 @@ func (t Type) ID() string {
 const(
 	Error  Type = iota  // Error 
 	EOF  // EOF 
-	Type0  // ' 
-	Type1  // ( 
-	Type2  // ) 
-	Type3  // . 
-	Type4  // : 
-	Type5  // ; 
-	Type6  // < 
-	Type7  // > 
-	Type8  // [ 
-	Type9  // \" 
-	Type10  // \\ 
-	Type11  // ] 
-	Type12  // _ 
-	Type13  // any 
-	Type14  // char_lit 
-	Type15  // empty 
-	Type16  // letter 
-	Type17  // lowcase 
-	Type18  // not 
-	Type19  // nt 
-	Type20  // number 
-	Type21  // package 
-	Type22  // string_lit 
-	Type23  // tokid 
-	Type24  // upcase 
-	Type25  // { 
-	Type26  // | 
-	Type27  // } 
+	Type0  // ( 
+	Type1  // ) 
+	Type2  // . 
+	Type3  // : 
+	Type4  // ; 
+	Type5  // < 
+	Type6  // > 
+	Type7  // [ 
+	Type8  // ] 
+	Type9  // any 
+	Type10  // char_lit 
+	Type11  // empty 
+	Type12  // letter 
+	Type13  // lowcase 
+	Type14  // not 
+	Type15  // nt 
+	Type16  // number 
+	Type17  // package 
+	Type18  // string_lit 
+	Type19  // tokid 
+	Type20  // upcase 
+	Type21  // { 
+	Type22  // | 
+	Type23  // } 
 )
 
 var TypeToString = []string{ 
@@ -158,10 +154,6 @@ var TypeToString = []string{
 	"Type21",
 	"Type22",
 	"Type23",
-	"Type24",
-	"Type25",
-	"Type26",
-	"Type27",
 }
 
 var StringToType = map[string] Type { 
@@ -191,16 +183,11 @@ var StringToType = map[string] Type {
 	"Type21" : Type21, 
 	"Type22" : Type22, 
 	"Type23" : Type23, 
-	"Type24" : Type24, 
-	"Type25" : Type25, 
-	"Type26" : Type26, 
-	"Type27" : Type27, 
 }
 
 var TypeToID = []string { 
 	"Error", 
 	"EOF", 
-	"'", 
 	"(", 
 	")", 
 	".", 
@@ -209,10 +196,7 @@ var TypeToID = []string {
 	"<", 
 	">", 
 	"[", 
-	"\"", 
-	"\\", 
 	"]", 
-	"_", 
 	"any", 
 	"char_lit", 
 	"empty", 

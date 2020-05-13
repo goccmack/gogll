@@ -17,11 +17,26 @@ type state int
 
 const nullState state = -1
 
+
+// Lexer contains both the input slice of runes and the slice of tokens
+// parsed from the input
 type Lexer struct {
+	// I is the input slice of runes
 	I      []rune
+
+	// Tokens is the slice of tokens constructed by the lexer from I
 	Tokens []*token.Token
 }
 
+/*
+NewFile constructs a Lexer created from the input file, fname. 
+
+If the input file is a markdown file NewFile process treats all text outside
+code blocks as whitespace. All text inside code blocks are treated as input text.
+
+If the input file is a normal text file NewFile treats all text in the inputfile
+as input text.
+*/
 func NewFile(fname string) *Lexer {
 	if strings.HasSuffix(fname, ".md") {
 		src, err := md.GetSource(fname)
@@ -37,6 +52,11 @@ func NewFile(fname string) *Lexer {
 	return New([]rune(string(buf)))
 }
 
+/*
+New constructs a Lexer from a slice of runes. 
+
+All contents of the input slice are treated as input text.
+*/
 func New(input []rune) *Lexer {
 	lex := &Lexer{
 		I:      input,
@@ -108,6 +128,7 @@ func (l *Lexer) GetLineColumn(i int) (line, col int) {
 	return
 }
 
+// GetLineColumnOfToken returns the line and column of token[i] in the imput
 func (l *Lexer) GetLineColumnOfToken(i int) (line, col int) {
 	return l.GetLineColumn(l.Tokens[i].Lext())
 }

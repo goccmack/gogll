@@ -117,7 +117,6 @@ func (bld *builder) nonTerminals(rules []*SyntaxRule) *stringset.StringSet {
 
 func (bld *builder) terminals(g *GoGLL, stringLiterals []string) *stringset.StringSet {
 	terminals := bld.getLexRuleIDs(g.LexRules)
-	terminals.AddSet(bld.charLiterals)
 	terminals.Add(stringLiterals...)
 	return terminals
 }
