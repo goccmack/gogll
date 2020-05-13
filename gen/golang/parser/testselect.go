@@ -142,14 +142,14 @@ func (g *gen) getFollowConditions(nt string) (tokens []*Symbol) {
 const testSelectTmpl = `
 var first = []map[token.Type]string { {{range $ts := .TestSelect}}
 	// {{$ts.Label}}
-	map[token.Type]string{ {{range $sym := $ts.Symbols}}
+	{ {{range $sym := $ts.Symbols}}
 		token.{{$sym.TokType}}:"{{$sym.Label}}",{{end}}
 	},{{end}}
 }
 
 var followSets = []map[token.Type]string { {{range $flw := .Follow}}
 	// {{$flw.Label}}
-	map[token.Type]string{ {{range $sym := $flw.Symbols}}
+	{ {{range $sym := $flw.Symbols}}
 		token.{{$sym.TokType}}:"{{$sym.Label}}",{{end}}
 	},{{end}}
 } 
