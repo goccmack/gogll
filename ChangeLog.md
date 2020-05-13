@@ -1,8 +1,7 @@
 # Change Log
 
-# v3.0.9
-1. Refactor bsr to be object-based
-2. Refactor parser to object-based.
+# 2020-05-13 v3.0.9
+1. Global variables removed from parser and BSR.
 
 # 2020-05-01
 1. tokens have a method: GetLineColumn()

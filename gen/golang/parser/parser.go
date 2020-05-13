@@ -155,13 +155,13 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 	var L slot.Label
 	m, cU := len(p.lex.Tokens)-1, 0
 	p.ntAdd(symbols.NT_GoGLL, 0)
-	// DumpDescriptors()
+	// p.DumpDescriptors()
 	for !p.R.empty() {
 		L, cU, p.cI = p.R.remove()
 
 		// fmt.Println()
-		// fmt.Printf("L:%s, p.cI:%d, I[cI]:%s, cU:%d\n", L, p.cI, lex.Tokens[cI], cU)
-		// DumpDescriptors()
+		// fmt.Printf("L:%s, cI:%d, I[p.cI]:%s, cU:%d\n", L, p.cI, p.lex.Tokens[p.cI], cU)
+		// p.DumpDescriptors()
 
 		switch L {
 {{.CodeX}}
@@ -411,12 +411,32 @@ func (p *parser) testSelect(l slot.Label) bool {
 	
 /*** Errors ***/
 
+/*
+Error is returned by Parse at every point at which the parser fails to parse
+a grammar production. For non-LL-1 grammars there will be an error for each 
+alternate attempted by the parser.
+
+The errors are sorted in descending order of input position (index of token in
+the stream of tokens).
+
+Normally the error of interest is the one that has parsed the largest number of
+tokens.
+*/
 type Error struct {
-	cI           int
-	Slot         slot.Label
-	Token        *token.Token
-	Line, Column int
-	Expected     map[token.Type]string
+	// Index of token that caused the error.
+	cI           int 
+	
+	// Grammar slot at which the error occured.
+	Slot         slot.Label 
+	
+	// The token at which the error occurred.
+	Token        *token.Token 
+	
+	// The line and column in the input text at which the error occurred
+	Line, Column int 
+
+	// The tokens expected at the point where the error occurred
+	Expected     map[token.Type]string 
 }
 
 func (pe *Error) String() string {
@@ -445,9 +465,4 @@ func (p *parser) sortParseErrors() {
 		pe.Line, pe.Column = p.lex.GetLineColumn(pe.Token.Lext())
 	}
 }
-
-// func parseErrorError(err error) {
-// 	fmt.Printf("Error: %s\n", err)
-// 	os.Exit(1)
-// }
 `
