@@ -10,7 +10,7 @@ import (
 
 	"github.com/goccmack/goutil/md"
 
-	"github.com/goccmack/gogll/examples/boolx/token"
+	"github.com/goccmack/r1/token"
 )
 
 type state int
@@ -167,37 +167,91 @@ func not(r rune, set []rune) bool {
 
 var accept = []token.Type{ 
 	token.Error, 
-	token.Type0, 
-	token.Type2, 
+	token.Error, 
+	token.Error, 
+	token.Error, 
+	token.Error, 
+	token.Error, 
+	token.Error, 
+	token.Error, 
 	token.Type1, 
+	token.Type0, 
 }
 
 var nextState = []func(r rune) state{ 
 	// Set0
 	func(r rune) state {
 		switch { 
-		case r == '&':
+		case r == 'f':
 			return 1 
-		case r == '|':
+		case r == 't':
 			return 2 
-		case unicode.IsLetter(r):
-			return 3 
 		}
 		return nullState
 	}, 
 	// Set1
 	func(r rune) state {
 		switch { 
+		case r == 'a':
+			return 3 
 		}
 		return nullState
 	}, 
 	// Set2
 	func(r rune) state {
 		switch { 
+		case r == 'r':
+			return 4 
 		}
 		return nullState
 	}, 
 	// Set3
+	func(r rune) state {
+		switch { 
+		case r == 'l':
+			return 5 
+		}
+		return nullState
+	}, 
+	// Set4
+	func(r rune) state {
+		switch { 
+		case r == 'u':
+			return 6 
+		}
+		return nullState
+	}, 
+	// Set5
+	func(r rune) state {
+		switch { 
+		case r == 's':
+			return 7 
+		}
+		return nullState
+	}, 
+	// Set6
+	func(r rune) state {
+		switch { 
+		case r == 'e':
+			return 8 
+		}
+		return nullState
+	}, 
+	// Set7
+	func(r rune) state {
+		switch { 
+		case r == 'e':
+			return 9 
+		}
+		return nullState
+	}, 
+	// Set8
+	func(r rune) state {
+		switch { 
+		}
+		return nullState
+	}, 
+	// Set9
 	func(r rune) state {
 		switch { 
 		}

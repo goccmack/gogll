@@ -28,6 +28,7 @@ import (
 	genff "github.com/goccmack/gogll/gen/firstfollow"
 	"github.com/goccmack/gogll/gen/golang"
 	"github.com/goccmack/gogll/gen/lexfsa"
+	"github.com/goccmack/gogll/gen/rust"
 	"github.com/goccmack/gogll/gen/slots"
 	gensymbols "github.com/goccmack/gogll/gen/symbols"
 	"github.com/goccmack/gogll/gslot"
@@ -82,7 +83,14 @@ func main() {
 		lexfsa.Gen(filepath.Join(cfg.BaseDir, "lexfsa.txt"), lexSets)
 	}
 
-	golang.Gen(g, gs, ff, lexSets, ts)
+	switch cfg.Target {
+	case cfg.Go:
+		golang.Gen(g, gs, ff, lexSets, ts)
+	case cfg.Rust:
+		rust.Gen(g, gs, ff, lexSets, ts)
+	default:
+		panic("Invalid target language")
+	}
 }
 
 func fail(err error) {
