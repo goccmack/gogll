@@ -38,34 +38,30 @@ const(
 // T is the type of terminals symbols
 type T int
 const( 
-	T_0 T = iota // ' 
-	T_1  // ( 
-	T_2  // ) 
-	T_3  // . 
-	T_4  // : 
-	T_5  // ; 
-	T_6  // < 
-	T_7  // > 
-	T_8  // [ 
-	T_9  // \" 
-	T_10  // \\ 
-	T_11  // ] 
-	T_12  // _ 
-	T_13  // any 
-	T_14  // char_lit 
-	T_15  // empty 
-	T_16  // letter 
-	T_17  // lowcase 
-	T_18  // not 
-	T_19  // nt 
-	T_20  // number 
-	T_21  // package 
-	T_22  // string_lit 
-	T_23  // tokid 
-	T_24  // upcase 
-	T_25  // { 
-	T_26  // | 
-	T_27  // } 
+	T_0 T = iota // ( 
+	T_1  // ) 
+	T_2  // . 
+	T_3  // : 
+	T_4  // ; 
+	T_5  // < 
+	T_6  // > 
+	T_7  // [ 
+	T_8  // ] 
+	T_9  // any 
+	T_10  // char_lit 
+	T_11  // empty 
+	T_12  // letter 
+	T_13  // lowcase 
+	T_14  // not 
+	T_15  // nt 
+	T_16  // number 
+	T_17  // package 
+	T_18  // string_lit 
+	T_19  // tokid 
+	T_20  // upcase 
+	T_21  // { 
+	T_22  // | 
+	T_23  // } 
 )
 
 type Symbols []Symbol
@@ -117,34 +113,30 @@ var ntToString = []string {
 }
 
 var tToString = []string { 
-	"'", /* T_0 */
-	"(", /* T_1 */
-	")", /* T_2 */
-	".", /* T_3 */
-	":", /* T_4 */
-	";", /* T_5 */
-	"<", /* T_6 */
-	">", /* T_7 */
-	"[", /* T_8 */
-	"\"", /* T_9 */
-	"\\", /* T_10 */
-	"]", /* T_11 */
-	"_", /* T_12 */
-	"any", /* T_13 */
-	"char_lit", /* T_14 */
-	"empty", /* T_15 */
-	"letter", /* T_16 */
-	"lowcase", /* T_17 */
-	"not", /* T_18 */
-	"nt", /* T_19 */
-	"number", /* T_20 */
-	"package", /* T_21 */
-	"string_lit", /* T_22 */
-	"tokid", /* T_23 */
-	"upcase", /* T_24 */
-	"{", /* T_25 */
-	"|", /* T_26 */
-	"}", /* T_27 */ 
+	"(", /* T_0 */
+	")", /* T_1 */
+	".", /* T_2 */
+	":", /* T_3 */
+	";", /* T_4 */
+	"<", /* T_5 */
+	">", /* T_6 */
+	"[", /* T_7 */
+	"]", /* T_8 */
+	"any", /* T_9 */
+	"char_lit", /* T_10 */
+	"empty", /* T_11 */
+	"letter", /* T_12 */
+	"lowcase", /* T_13 */
+	"not", /* T_14 */
+	"nt", /* T_15 */
+	"number", /* T_16 */
+	"package", /* T_17 */
+	"string_lit", /* T_18 */
+	"tokid", /* T_19 */
+	"upcase", /* T_20 */
+	"{", /* T_21 */
+	"|", /* T_22 */
+	"}", /* T_23 */ 
 }
 
 var stringNT = map[string]NT{ 

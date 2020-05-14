@@ -92,7 +92,7 @@ func (l *Lexer) scan(i int) *token.Token {
 			}
 		}
 	}
-	return token.New(typ, i, rext,l.I)
+	return token.New(typ, i, rext, l.I)
 }
 
 func escape(r rune) string {
@@ -140,7 +140,7 @@ func (l *Lexer) GetString(lext, rext int) string {
 }
 
 func (l *Lexer) add(t token.Type, lext, rext int) {
-	l.addToken(token.New(t, lext, rext, l.I[lext:rext]))
+	l.addToken(token.New(t, lext, rext, l.I))
 }
 
 func (l *Lexer) addToken(tok *token.Token) {
@@ -169,6 +169,7 @@ var accept = []token.Type{
 	token.Error, 
 	token.Error, 
 	token.Error, 
+	token.Type0, 
 	token.Type1, 
 	token.Type2, 
 	token.Type3, 
@@ -177,60 +178,59 @@ var accept = []token.Type{
 	token.Type6, 
 	token.Type7, 
 	token.Type8, 
-	token.Type11, 
 	token.Error, 
 	token.Error, 
 	token.Error, 
 	token.Error, 
 	token.Error, 
 	token.Error, 
-	token.Type25, 
-	token.Type26, 
-	token.Type27, 
-	token.Error, 
-	token.Error, 
+	token.Type21, 
 	token.Type22, 
+	token.Type23, 
+	token.Error, 
+	token.Error, 
+	token.Type18, 
 	token.Error, 
 	token.Error, 
 	token.Error, 
-	token.Type23, 
-	token.Type23, 
-	token.Type23, 
-	token.Type23, 
-	token.Type23, 
-	token.Type23, 
-	token.Type23, 
-	token.Type23, 
-	token.Type23, 
+	token.Type19, 
+	token.Type19, 
+	token.Type19, 
+	token.Type19, 
+	token.Type19, 
+	token.Type19, 
+	token.Type19, 
+	token.Type19, 
+	token.Type19, 
+	token.Type15, 
+	token.Type10, 
+	token.Type9, 
+	token.Type19, 
+	token.Type19, 
 	token.Type19, 
 	token.Type14, 
-	token.Type13, 
-	token.Type23, 
-	token.Type23, 
-	token.Type23, 
-	token.Type18, 
-	token.Type23, 
-	token.Type23, 
-	token.Type23, 
-	token.Type23, 
-	token.Type23, 
-	token.Type23, 
-	token.Type23, 
-	token.Type23, 
-	token.Type23, 
-	token.Type15, 
-	token.Type23, 
-	token.Type23, 
-	token.Type23, 
-	token.Type23, 
-	token.Type23, 
+	token.Type19, 
+	token.Type19, 
+	token.Type19, 
+	token.Type19, 
+	token.Type19, 
+	token.Type19, 
+	token.Type19, 
+	token.Type19, 
+	token.Type19, 
+	token.Type11, 
+	token.Type19, 
+	token.Type19, 
+	token.Type19, 
+	token.Type19, 
+	token.Type19, 
+	token.Type12, 
+	token.Type19, 
 	token.Type16, 
-	token.Type23, 
+	token.Type19, 
 	token.Type20, 
-	token.Type23, 
-	token.Type24, 
+	token.Type13, 
 	token.Type17, 
-	token.Type21, 
 }
 
 var nextState = []func(r rune) state{ 
@@ -277,9 +277,9 @@ var nextState = []func(r rune) state{
 			return 19 
 		case r == '}':
 			return 20 
-		case unicode.IsLower(r):
-			return 21 
 		case unicode.IsUpper(r):
+			return 21 
+		case unicode.IsLower(r):
 			return 22 
 		}
 		return nullState
@@ -470,11 +470,11 @@ var nextState = []func(r rune) state{
 	func(r rune) state {
 		switch { 
 		case r == '_':
-			return 27 
+			return 36 
 		case unicode.IsLetter(r):
-			return 27 
+			return 36 
 		case unicode.IsNumber(r):
-			return 27 
+			return 36 
 		}
 		return nullState
 	}, 
@@ -482,11 +482,11 @@ var nextState = []func(r rune) state{
 	func(r rune) state {
 		switch { 
 		case r == '_':
-			return 36 
+			return 27 
 		case unicode.IsLetter(r):
-			return 36 
+			return 27 
 		case unicode.IsNumber(r):
-			return 36 
+			return 27 
 		}
 		return nullState
 	}, 
