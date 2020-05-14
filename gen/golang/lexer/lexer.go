@@ -218,7 +218,7 @@ func (l *Lexer) scan(i int) *token.Token {
 			}
 		}
 	}
-	return token.New(typ, i, rext,l.I)
+	return token.New(typ, i, rext, l.I)
 }
 
 func escape(r rune) string {
@@ -266,7 +266,7 @@ func (l *Lexer) GetString(lext, rext int) string {
 }
 
 func (l *Lexer) add(t token.Type, lext, rext int) {
-	l.addToken(token.New(t, lext, rext, l.I[lext:rext]))
+	l.addToken(token.New(t, lext, rext, l.I))
 }
 
 func (l *Lexer) addToken(tok *token.Token) {

@@ -12,6 +12,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
+// Package cfg reads the commandline options
 package cfg
 
 import (
@@ -22,7 +23,7 @@ import (
 )
 
 // Version is the version of this compiler
-const Version = "v3.0.10"
+const Version = "v3.0.11"
 
 var (
 	BaseDir    string

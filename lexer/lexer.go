@@ -92,7 +92,7 @@ func (l *Lexer) scan(i int) *token.Token {
 			}
 		}
 	}
-	return token.New(typ, i, rext,l.I)
+	return token.New(typ, i, rext, l.I)
 }
 
 func escape(r rune) string {
@@ -140,7 +140,7 @@ func (l *Lexer) GetString(lext, rext int) string {
 }
 
 func (l *Lexer) add(t token.Type, lext, rext int) {
-	l.addToken(token.New(t, lext, rext, l.I[lext:rext]))
+	l.addToken(token.New(t, lext, rext, l.I))
 }
 
 func (l *Lexer) addToken(tok *token.Token) {
@@ -277,9 +277,9 @@ var nextState = []func(r rune) state{
 			return 19 
 		case r == '}':
 			return 20 
-		case unicode.IsLower(r):
-			return 21 
 		case unicode.IsUpper(r):
+			return 21 
+		case unicode.IsLower(r):
 			return 22 
 		}
 		return nullState
@@ -470,11 +470,11 @@ var nextState = []func(r rune) state{
 	func(r rune) state {
 		switch { 
 		case r == '_':
-			return 27 
+			return 36 
 		case unicode.IsLetter(r):
-			return 27 
+			return 36 
 		case unicode.IsNumber(r):
-			return 27 
+			return 36 
 		}
 		return nullState
 	}, 
@@ -482,11 +482,11 @@ var nextState = []func(r rune) state{
 	func(r rune) state {
 		switch { 
 		case r == '_':
-			return 36 
+			return 27 
 		case unicode.IsLetter(r):
-			return 36 
+			return 27 
 		case unicode.IsNumber(r):
-			return 36 
+			return 27 
 		}
 		return nullState
 	}, 
