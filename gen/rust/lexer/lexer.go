@@ -162,7 +162,6 @@ extern crate lazy_static;
 
 use crate::token;
 
-use std::collections::HashMap;
 use std::{fs, io};
 use std::rc::Rc;
 use lazy_static::lazy_static;

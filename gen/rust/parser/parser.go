@@ -12,28 +12,24 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-// Package rust generates code for the Rust language
-package rust
+// Package parser generates Rust code for a GLL parser
+package parser
 
 import (
-	"path"
 	"path/filepath"
 
 	"github.com/goccmack/gogll/ast"
-	"github.com/goccmack/gogll/cfg"
 	"github.com/goccmack/gogll/frstflw"
-	"github.com/goccmack/gogll/gen/rust/lexer"
-	"github.com/goccmack/gogll/gen/rust/parser"
-	"github.com/goccmack/gogll/gen/rust/token"
+	"github.com/goccmack/gogll/gen/rust/parser/parser"
+	"github.com/goccmack/gogll/gen/rust/parser/slot"
+	"github.com/goccmack/gogll/gen/rust/parser/symbols"
 	"github.com/goccmack/gogll/gslot"
 	"github.com/goccmack/gogll/im/tokens"
-	"github.com/goccmack/gogll/lex/items"
 )
 
-func Gen(g *ast.GoGLL, gs *gslot.GSlot, ff *frstflw.FF, ls *items.Sets, ts *tokens.Tokens) {
-	token.Gen(filepath.Join(cfg.BaseDir, "src", "token", "mod.rs"), ts)
-	lexer.Gen(path.Join(cfg.BaseDir, "src", "lexer", "mod.rs"), g, ls, ts)
-	if len(g.SyntaxRules) > 0 {
-		parser.Gen(path.Join(cfg.BaseDir, "src", "parser"), g, gs, ff, ts)
-	}
+func Gen(parserDir string, g *ast.GoGLL, gs *gslot.GSlot, ff *frstflw.FF, ts *tokens.Tokens) {
+	// bsr.Gen(filepath.Join(parserDir, "bsr", "mod.rs"))
+	symbols.Gen(filepath.Join(parserDir, "symbols", "mod.rs"), g)
+	slot.Gen(filepath.Join(parserDir, "slot", "mod.rs"), g, gs, ff)
+	parser.Gen(filepath.Join(parserDir, "mod.rs"), g, gs, ff, ts)
 }

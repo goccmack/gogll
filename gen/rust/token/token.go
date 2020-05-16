@@ -19,9 +19,8 @@ import (
 	"bytes"
 	"text/template"
 
-	"github.com/goccmack/goutil/ioutil"
-
 	"github.com/goccmack/gogll/im/tokens"
+	"github.com/goccmack/goutil/ioutil"
 )
 
 type Data struct {
@@ -124,9 +123,9 @@ impl Token {
 	}
 	
 	/// get_input returns the input from which t was parsed.
-	pub fn get_input(&self) -> Rc<Vec<char>> {
-		Rc::clone(&self.input)
-	}
+	// pub fn get_input(&self) -> Rc<Vec<char>> {
+	// 	Rc::clone(&self.input)
+	// }
 	
 	/// literal returns the literal runes of t scanned by the lexer
 	pub fn literal(&self) -> Vec<char> {
@@ -146,6 +145,7 @@ impl <'a>fmt::Display for Token {
 
 impl <'a>Type {
 	/// id returns the token type ID of token Type t
+	#[allow(dead_code)]
 	pub fn id(&self) -> &'a str {
 		TYPE_TO_STRING[self]
 	}
