@@ -57,12 +57,14 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 	m, cU := len(p.lex.Tokens)-1, 0
 	p.ntAdd(symbols.NT_GoGLL, 0)
 	// p.DumpDescriptors()
-	for !p.R.empty() {
+
+	for slotNo := 0; !p.R.empty(); slotNo++ {
 		L, cU, p.cI = p.R.remove()
 
 		// fmt.Println()
-		// fmt.Printf("L:%s, cI:%d, I[p.cI]:%s, cU:%d\n", L, p.cI, p.lex.Tokens[p.cI], cU)
-		// p.DumpDescriptors()
+		// fmt.Printf("%d: %s, cI:%d, I[p.cI]:%s, cU:%d\n",
+		// 	slotNo, L, p.cI, p.lex.Tokens[p.cI], cU)
+		// p.DumpR()
 
 		switch L {
 		case slot.GoGLL0R0: // GoGLL : ∙Package Rules
@@ -636,7 +638,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 }
 
 func (p *parser) ntAdd(nt symbols.NT, j int) {
-	// fmt.Printf("p.ntAdd(%s, %d)\n", nt, j)
+	// fmt.Printf("ntAdd(%s, %d)\n", nt, j)
 	failed := true
 	expected := map[token.Type]string{}
 	for _, l := range slot.GetAlternates(nt) {

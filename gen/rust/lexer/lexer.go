@@ -193,7 +193,7 @@ impl Lexer {
 	as input text.
 	*/
 	#[allow(dead_code)]
-	pub fn new_file(fname: &String) -> io::Result<Box<Lexer>> {
+	pub fn new_file(fname: &String) -> io::Result<Rc<Lexer>> {
 		let i = Rc::new(load_file(fname)?);
 		Ok(Lexer::new(i))
 	}
@@ -203,11 +203,11 @@ impl Lexer {
 	
 	All contents of the input are treated as input text.
 	*/
-	pub fn new(input: Rc<Vec<char>>) -> Box<Lexer> {
-		let mut lex = Box::new(Lexer{
+	pub fn new(input: Rc<Vec<char>>) -> Rc<Lexer> {
+		let mut lex = Lexer{
 			i:      input.clone(),
 			tokens: Vec::new(),
-		});
+		};
 		let mut lext = 0;
 		while lext < lex.i.len() {
 			while lext < lex.i.len() && lex.i[lext].is_whitespace() {
@@ -220,7 +220,7 @@ impl Lexer {
 			}
 		}
 		lex.add(token::Type::EOF, input.len(), input.len());
-		lex
+		Rc::new(lex)
 	}
 
 	fn add(&mut self, t: token::Type, lext: usize, rext: usize) {

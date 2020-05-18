@@ -109,6 +109,7 @@ use symbols::{NT,Symbol};
 
 use lazy_static::lazy_static;
 use std::collections::{HashMap, HashSet};
+use std::fmt;
 use std::rc::Rc;
 
 struct Parser {
@@ -206,12 +207,12 @@ struct CRFNode {
 }
 
 /// Parse returns the BSR set containing the parse forest.
-/// If the parse was successfull []*Error is nil
+/// If the parse was successfull the length of Vec\<Box\<Error\>\> = 0.
 #[allow(dead_code)]
 pub fn parse(l: Rc<lexer::Lexer>) -> (Box<bsr::Set>, Vec<Box<Error>>) {
     let mut p = Parser::new(l.clone());
     p.parse();
-    if !p.bsr_set.contain(&NT::{{.StartSymbol}}, 0, l.tokens.len()) {
+    if !p.bsr_set.contain(&NT::{{.StartSymbol}}, 0, l.tokens.len()-1) {
         let errors = p.export_errors();
         (p.bsr_set, errors)
     } else {
@@ -239,9 +240,19 @@ impl Parser {
     fn parse(&mut self) {
         // let mut c_u = 0;
         self.nt_add(NT::{{.StartSymbol}}, 0);
+        // let mut slotNo = 0;
         while self.r.len() > 0 {
             let (l, c_u, c_i) = self.r_remove();
             self.c_i = c_i;
+
+            // println!("{no}:{l} i {i} u {u} tok {t}", 
+            //     no=slotNo, l=l, i=c_i, u=c_u, t=self.lex.tokens[c_i]);
+            // slotNo += 1;
+
+            // for d in self.r.iter() {
+            //     println!("  {}", d);
+            // }
+
             (|| {
                 match l { {{range $alt := .Alternates}}
                     // {{$alt.Comment}}
@@ -271,6 +282,8 @@ impl Parser {
     }
     
     fn nt_add(&mut self, nt: NT, j: usize) {
+        // println!("nt_add({},{}", nt, j);
+
         let mut failed = true;
         let mut expected: HashSet<token::Type> = HashSet::new();
         for l in slot::get_alternates(&nt).iter() {
@@ -333,9 +346,11 @@ impl Parser {
                     for pnd in self.popped.iter() {
                         if pnd.x == x && pnd.k == j {
                             descs.push(Descriptor::new(l, i, pnd.j));
-                            // self.dsc_add(l, i, pnd.j);
                             self.bsr_set.add(l, i, j, pnd.j);
                         }
+                    }
+                    for d in descs.into_iter() {
+                        self.dsc_add(d.l, d.k, d.i)
                     }
                 }
             }
@@ -458,7 +473,33 @@ impl PoppedNode {
     }
 }
 
-lazy_static! {
+impl fmt::Display for Descriptor {    
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "l={l},k={k},i={i}", 
+            l=self.l,
+            k=self.k,
+            i=self.i,
+        )
+    }
+}
+    
+impl fmt::Display for Error {    
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let mut errs: Vec<String> = Vec::new();
+        for tok in self.expected.iter() {
+            errs.push(format!("{}",tok));
+        };
+        write!(f, "Error: {slot}, token {tok}, expected {{"{{{"}}exp}}} at line {ln} col {col}", 
+            slot=self.slot,
+            tok=self.token,
+            exp=errs.join(","),
+            ln=self.line,
+            col=self.column,
+        )
+    }
+}
+    
+    lazy_static! {
     static ref FIRST: HashMap<Label, Box<HashSet<token::Type>>> = {
         let mut fmap = HashMap::new(); {{range $ts := .TestSelect}}
         // {{$ts.Comment}}
