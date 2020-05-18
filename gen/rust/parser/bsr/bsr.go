@@ -12,7 +12,12 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-// Package bsr generates Rust code for the parser NTBSR module
+/**!
+Package bsr generates Rust code for the parser NTBSR module
+
+ToDo:
+* change slot_entries to HashSet?
+*/
 package bsr
 
 import (
@@ -50,7 +55,8 @@ use std::collections::HashMap;
 use std::rc::Rc;
 use std::fmt;
 
-enum bsr {
+// The kind of BSR added.
+enum Kind {
     NT(Rc<BSR>),
     Str(Rc<BSR>),
 }
@@ -88,31 +94,31 @@ pub struct BSR {
 impl Set {
     /// New returns a new initialised BSR Set
     #[allow(dead_code)]
-    pub fn new(start_symbol: &NT, l: Rc<lexer::Lexer>) -> Rc<Set> {
-        Rc::new(Set {
+    pub fn new(start_symbol: NT, l: Rc<lexer::Lexer>) -> Box<Set> {
+        Box::new(Set {
             slot_entries: HashMap::new(),
             nt_slot_entries: HashMap::new(),
             string_entries: HashMap::new(),
             rext: 0,
             lex: l.clone(),
-            start_sym: start_symbol.clone(),
+            start_sym: start_symbol,
         })
     }
 
     /// Add a BSR to the set. (i,j) is the extent. k is the pivot.
     #[allow(dead_code)]
-    pub fn add(&mut self, l: &slot::Label, i: usize, k: usize, j: usize) {
+    pub fn add(&mut self, l: slot::Label, i: usize, k: usize, j: usize) {
         let b = Rc::new(BSR {
-            label: l.clone(),
+            label: l,
             lext: i,
             pivot: k,
             rext: j,
         });
         if l.eor() {
-            self.insert(bsr::NT(b))
+            self.insert(Kind::NT(b))
         } else {
             if l.pos() > 1 {
-                self.insert(bsr::Str(b))
+                self.insert(Kind::Str(b))
             }
         }
     }
@@ -123,12 +129,12 @@ impl Set {
     	return b.label.alternate()
     }
 
-    fn insert(&mut self, bsr: bsr) {
+    fn insert(&mut self, bsr: Kind) {
         if bsr.rext() > self.rext {
             self.rext = bsr.rext()
         }
         match bsr {
-            bsr::NT(b) => {
+            Kind::NT(b) => {
                 self.slot_entries.insert(b.clone(), true);
                 let nt_slot = NTSlot::new(b.label.head(), b.lext, b.rext);
                 match self.nt_slot_entries.get_mut(&nt_slot) {
@@ -138,7 +144,7 @@ impl Set {
                     Some(bsrs) => bsrs.push(b.clone())
                 }
             }
-            bsr::Str(b) => {
+            Kind::Str(b) => {
                 self.string_entries.insert(b.clone(), true);
             }
         };
@@ -147,7 +153,7 @@ impl Set {
     /// AddEmpty adds a grammar slot: X : ϵ•
     #[allow(dead_code)]
     pub fn add_empty(&mut self, l: slot::Label, i: usize) {
-        self.insert(bsr::NT(Rc::new(BSR {
+        self.insert(Kind::NT(Rc::new(BSR {
             label: l,
             lext: i,
             pivot: i,
@@ -193,7 +199,7 @@ impl Set {
         roots
     }
 
-    /// Return the (line, column) of the left extent of token `i`.
+    /// Return the (line, column) of the left extent of token i.
     fn get_line_column(&self, i: usize) -> (usize, usize) {
     	return self.lex.get_line_column_of_token(i)
     }
@@ -225,16 +231,16 @@ impl Set {
             return self.get_nt_slot(&b.label.symbols()[i], b.pivot, b.rext)
         }
         let mut idx = b.label.index();
-        let mut strBsr = Rc::new(BSR{label: b.label, lext: b.lext, pivot: b.pivot, rext: b.rext});
+        let mut str_bsr = Rc::new(BSR{label: b.label, lext: b.lext, pivot: b.pivot, rext: b.rext});
         while idx.pos > i+1 && idx.pos > 2 {
             idx.pos -= 1;
-            strBsr = self.get_string(slot::get_label(&idx.nt, idx.alt, idx.pos), 
-                strBsr.lext, strBsr.pivot);
+            str_bsr = self.get_string(slot::get_label(&idx.nt, idx.alt, idx.pos), 
+                str_bsr.lext, str_bsr.pivot);
         }
         if i == 0 {
-            return self.get_nt_slot(&b.label.symbols()[i], strBsr.lext, strBsr.pivot)
+            return self.get_nt_slot(&b.label.symbols()[i], str_bsr.lext, str_bsr.pivot)
         }
-        return self.get_nt_slot(&b.label.symbols()[i], strBsr.pivot, strBsr.rext)
+        return self.get_nt_slot(&b.label.symbols()[i], str_bsr.pivot, str_bsr.rext)
     }
 
     fn get_nt_slot(&self, sym: &Symbol, lext: usize, rext: usize) -> &Vec<Rc<BSR>> {
@@ -305,11 +311,11 @@ impl Set {
 
 } // impl Set
 
-impl bsr {
+impl Kind {
     fn rext(&self) -> usize {
         match self {
-            bsr::NT(b) => b.rext,
-            bsr::Str(b) => b.rext,
+            Kind::NT(b) => b.rext,
+            Kind::Str(b) => b.rext,
         }
     }
 }

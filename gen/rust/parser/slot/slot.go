@@ -126,7 +126,7 @@ use super::symbols::{Symbol, NT, T};
 use std::collections::HashMap;
 use std::fmt;
 
-#[derive(Hash, Eq, PartialEq, Clone, Copy)]
+#[derive(Hash, Eq, PartialEq, Clone, Copy, Debug)]
 pub enum Label { {{range $i, $l := .Slots}}
     {{$l.Label}},{{end}}
 }
@@ -242,7 +242,7 @@ impl fmt::Display for Slot {
     }
 }
 
-    lazy_static! {
+lazy_static! {
     static ref ALTERNATES: HashMap<NT, Vec<Label>> = {
         let mut m = HashMap::new(); {{range $a := .Alts}}
         m.insert(NT::{{$a.NT}}, 

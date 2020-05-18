@@ -20,6 +20,7 @@ import (
 
 	"github.com/goccmack/gogll/ast"
 	"github.com/goccmack/gogll/frstflw"
+	"github.com/goccmack/gogll/gen/rust/parser/bsr"
 	"github.com/goccmack/gogll/gen/rust/parser/parser"
 	"github.com/goccmack/gogll/gen/rust/parser/slot"
 	"github.com/goccmack/gogll/gen/rust/parser/symbols"
@@ -28,7 +29,7 @@ import (
 )
 
 func Gen(parserDir string, g *ast.GoGLL, gs *gslot.GSlot, ff *frstflw.FF, ts *tokens.Tokens) {
-	// bsr.Gen(filepath.Join(parserDir, "bsr", "mod.rs"))
+	bsr.Gen(filepath.Join(parserDir, "bsr", "mod.rs"))
 	symbols.Gen(filepath.Join(parserDir, "symbols", "mod.rs"), g)
 	slot.Gen(filepath.Join(parserDir, "slot", "mod.rs"), g, gs, ff)
 	parser.Gen(filepath.Join(parserDir, "mod.rs"), g, gs, ff, ts)

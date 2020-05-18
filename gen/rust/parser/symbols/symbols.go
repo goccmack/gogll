@@ -80,7 +80,7 @@ pub enum Symbol {
 
 // NT is the type of non-terminals symbols
 #[allow(dead_code)]
-#[derive(Hash, Eq, PartialEq, Clone, Copy)]
+#[derive(Hash, Eq, PartialEq, Clone, Copy, Debug)]
 pub enum NT { {{range $i, $nt := .NonTerminals}}
     {{$nt}},{{end}}
 }
