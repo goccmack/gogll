@@ -1,5 +1,8 @@
 # Change Log
 
+# 2020-05-19 v3.1.0
+Rust target added.
+
 # 2020-05-13 v3.0.9
 1. Global variables removed from parser and BSR.
 

@@ -20,21 +20,32 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"strings"
 )
 
 // Version is the version of this compiler
-const Version = "v3.0.11"
+const Version = "v3.1.0"
+
+type TargetLanguage int
+
+const (
+	Go TargetLanguage = iota
+	Rust
+)
 
 var (
-	BaseDir    string
-	SrcFile    string
-	Verbose    bool
+	BaseDir string
+	SrcFile string
+	Verbose bool
+	Target  TargetLanguage
+
 	BSRStats   = flag.Bool("bs", false, "Print BSR stats")
 	help       = flag.Bool("h", false, "Print help")
 	CPUProfile = flag.Bool("CPUProf", false, "Generate CPU profile")
 	outDir     = flag.String("o", "", "")
 	verbose    = flag.Bool("v", false, "Verbose")
 	version    = flag.Bool("version", false, "Version")
+	target     = flag.String("t", "go", "Target Language")
 )
 
 func GetParams() {
@@ -49,6 +60,7 @@ func GetParams() {
 	}
 	getSourceFile()
 	getFileBase()
+	getTargetLanguage()
 	Verbose = *verbose
 }
 
@@ -70,6 +82,17 @@ func getSourceFile() {
 	SrcFile = flag.Arg(0)
 }
 
+func getTargetLanguage() {
+	switch strings.ToLower(*target) {
+	case "go":
+		Target = Go
+	case "rust":
+		Target = Rust
+	default:
+		fail("target language must be one of: go, rust")
+	}
+}
+
 func fail(msg string) {
 	fmt.Printf("ERROR: %s\n", msg)
 	usage()
@@ -77,25 +100,31 @@ func fail(msg string) {
 }
 
 func usage() {
-	msg := `use: gogll [-h][-version][-v][-CPUProf] [-o <out dir>] <source file>
-    
-    -o <out dir>: Optional. The directory to which code will be generated.
-                  Default: the same directory as <source file>.
+	msg :=
+		`use: gogll [-h][-version][-v][-CPUProf] [-o <out dir>] [-t <target>] <source file>
     
     <source file> : Mandatory. Name of the source file to be processed. 
         If the file extension is ".md" the bnf is extracted from markdown code 
         segments enclosed in triple backticks.
+    
+    -h : Optional. Display this help.
+    
+    -o <out dir>: Optional. The directory to which code will be generated.
+                  Default: the same directory as <source file>.
+                  
+    -t <target>: Optional. The target language for code generation.
+                 Default: go
+                 Valid options: go, rust
+    
+    -bs: Optional. Print BSR statistics.
+    
+    -v : Optional. Verbose: generate additional information files.
+    
+    -version : Optional. Display the version of this compiler
 
     -CPUProf : Optional. Generate a CPU profile. Default false.
         The generated CPU profile is in <cpu.prof>. 
-        Use "go tool pprof cpu.prof" to analyse the profile.
+        Use "go tool pprof cpu.prof" to analyse the profile.`
 
-    -h : Optional. Display this help.
-
-    -bs: Optional. Print BSR statistics.
-
-    -v : Optional. Verbose: generate additional information files.
-    
-    -version : Optional. Display the version of this compiler`
 	fmt.Println(msg)
 }
