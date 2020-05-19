@@ -4,7 +4,7 @@
 Copyright 2019 Marius Ackerman. 
 
 # GoGLL
-Gogll generates Go code for a matching lexer and parser from one input grammar. 
+Gogll generates Go or Rust code for a matching lexer and parser from one input grammar. 
 
 The generated lexer is a linear-time finite state automaton FSA [[Grune et al 2012](#Grune-et-al-2012)].
 The lexer ignores whitespace.
@@ -20,6 +20,25 @@ GoGLL compiles this real-world query language grammar faster than gocc.
 See the table below.
 
 # News
+## 2020-05-19
+GoGLL v3.1 generates Rust as well as Go parsers, and Go is the faster.
+
+Use gogll's target option to generate a Rust lexer/parser: `-t rust`.
+Gogll generates Go code by default.
+
+See [examples/rust](examples/rust/Readme.md) for the Rust and Go programs used for this
+comparison.
+
+|| Lexer | Parser | Build
+|---|---|---|---|
+Go | 119 μs | 1324 μs | 0.124s
+Rust | 904 μs | 1406 μs | 2.932s
+
+1. The lexer and parser duration was averaged over 10_000 repetitions.
+1. Build time was measures with the time command.
+    1. For Rust: `time cargo build --release`
+    2. For Go: `time go build`
+
 ## 2020-04-24
 1. GoGLL now generates a linear-time FSA lexer matching the CNP parser.
 1. This version of *GoGLL is faster than gocc*. It compiles a sample grammar in  
@@ -73,8 +92,31 @@ Gogll v3 has a BNF grammar. See [gogll.md](gogll.md)
 1. Clone this repository and run `go install` in the root of the directory where
 it is installed.
 
-# Help
-`gogll -h`
+# Usage
+Enter `gogll -h` or `gogll` for the following help:
+
+```
+use: gogll [-h][-version][-v][-CPUProf] [-o <out dir>] [-t <target>] <source file>
+    
+    <source file> : Mandatory. Name of the source file to be processed. 
+        If the file extension is ".md" the bnf is extracted from markdown code 
+        segments enclosed in triple backticks.
+    
+    -h : Optional. Display this help.
+    
+    -o <out dir>: Optional. The directory to which code will be generated.
+                  Default: the same directory as <source file>.
+                  
+    -t <target>: Optional. The target language for code generation.
+                 Default: go
+                 Valid options: go, rust
+    
+    -bs: Optional. Print BSR statistics.
+    
+    -v : Optional. Verbose: generate additional information files.
+    
+    -version : Optional. Display the version of this compiler
+```
 
 # Using the generated lexer and parser
 1. Create a lexer:

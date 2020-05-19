@@ -1,5 +1,5 @@
 [package]
-name = "r1"
+name = "gogll"
 version = "0.1.0"
 authors = ["Marius Ackerman <goccmack@gmail.com>"]
 edition = "2018"

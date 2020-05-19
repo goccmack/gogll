@@ -20,8 +20,30 @@ pub struct Token {
 pub enum Type {	
 	Error, // "Error"
 	EOF, // "EOF"
-	Type0, // "false"
-	Type1, // "true"
+	Type0, // "("
+	Type1, // ")"
+	Type2, // "."
+	Type3, // ":"
+	Type4, // ";"
+	Type5, // "<"
+	Type6, // ">"
+	Type7, // "["
+	Type8, // "]"
+	Type9, // "any"
+	Type10, // "char_lit"
+	Type11, // "empty"
+	Type12, // "letter"
+	Type13, // "lowcase"
+	Type14, // "not"
+	Type15, // "nt"
+	Type16, // "number"
+	Type17, // "package"
+	Type18, // "string_lit"
+	Type19, // "tokid"
+	Type20, // "upcase"
+	Type21, // "{"
+	Type22, // "|"
+	Type23, // "}"
 }
 
 /**
@@ -59,9 +81,9 @@ impl Token {
 	}
 	
 	/// get_input returns the input from which t was parsed.
-	pub fn get_input(&self) -> Rc<Vec<char>> {
-		Rc::clone(&self.input)
-	}
+	// pub fn get_input(&self) -> Rc<Vec<char>> {
+	// 	Rc::clone(&self.input)
+	// }
 	
 	/// literal returns the literal runes of t scanned by the lexer
 	pub fn literal(&self) -> Vec<char> {
@@ -81,6 +103,7 @@ impl <'a>fmt::Display for Token {
 
 impl <'a>Type {
 	/// id returns the token type ID of token Type t
+	#[allow(dead_code)]
 	pub fn id(&self) -> &'a str {
 		TYPE_TO_STRING[self]
 	}
@@ -99,8 +122,30 @@ lazy_static! {
         let mut m = HashMap::new(); 
 		m.insert(Type::Error, "Error");
 		m.insert(Type::EOF, "EOF");
-		m.insert(Type::Type0, "false");
-		m.insert(Type::Type1, "true");
+		m.insert(Type::Type0, "(");
+		m.insert(Type::Type1, ")");
+		m.insert(Type::Type2, ".");
+		m.insert(Type::Type3, ":");
+		m.insert(Type::Type4, ";");
+		m.insert(Type::Type5, "<");
+		m.insert(Type::Type6, ">");
+		m.insert(Type::Type7, "[");
+		m.insert(Type::Type8, "]");
+		m.insert(Type::Type9, "any");
+		m.insert(Type::Type10, "char_lit");
+		m.insert(Type::Type11, "empty");
+		m.insert(Type::Type12, "letter");
+		m.insert(Type::Type13, "lowcase");
+		m.insert(Type::Type14, "not");
+		m.insert(Type::Type15, "nt");
+		m.insert(Type::Type16, "number");
+		m.insert(Type::Type17, "package");
+		m.insert(Type::Type18, "string_lit");
+		m.insert(Type::Type19, "tokid");
+		m.insert(Type::Type20, "upcase");
+		m.insert(Type::Type21, "{");
+		m.insert(Type::Type22, "|");
+		m.insert(Type::Type23, "}");
         m
     };
 }
@@ -112,6 +157,28 @@ lazy_static! {
 		m.insert("EOF", Type::EOF); 
 		m.insert("Type0", Type::Type0); 
 		m.insert("Type1", Type::Type1); 
+		m.insert("Type2", Type::Type2); 
+		m.insert("Type3", Type::Type3); 
+		m.insert("Type4", Type::Type4); 
+		m.insert("Type5", Type::Type5); 
+		m.insert("Type6", Type::Type6); 
+		m.insert("Type7", Type::Type7); 
+		m.insert("Type8", Type::Type8); 
+		m.insert("Type9", Type::Type9); 
+		m.insert("Type10", Type::Type10); 
+		m.insert("Type11", Type::Type11); 
+		m.insert("Type12", Type::Type12); 
+		m.insert("Type13", Type::Type13); 
+		m.insert("Type14", Type::Type14); 
+		m.insert("Type15", Type::Type15); 
+		m.insert("Type16", Type::Type16); 
+		m.insert("Type17", Type::Type17); 
+		m.insert("Type18", Type::Type18); 
+		m.insert("Type19", Type::Type19); 
+		m.insert("Type20", Type::Type20); 
+		m.insert("Type21", Type::Type21); 
+		m.insert("Type22", Type::Type22); 
+		m.insert("Type23", Type::Type23); 
 		m
 	};
 }

@@ -104,8 +104,8 @@ func usage() {
 		`use: gogll [-h][-version][-v][-CPUProf] [-o <out dir>] [-t <target>] <source file>
     
     <source file> : Mandatory. Name of the source file to be processed. 
-    If the file extension is ".md" the bnf is extracted from markdown code 
-    segments enclosed in triple backticks.
+        If the file extension is ".md" the bnf is extracted from markdown code 
+        segments enclosed in triple backticks.
     
     -h : Optional. Display this help.
     
