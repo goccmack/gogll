@@ -1,6 +1,6 @@
 # Rust example and benchmark against Go
 This is an example demonstrating how to generate a Rust lexer and parser for 
-the [gogll grammar](), as well as a demonstration of walking the BSR set in Rust.
+the [gogll grammar](gogll.md), as well as a demonstration of walking the BSR set in Rust.
 
 # Generating the lexer and parser
 The following rule from [examples/rust/makefile](makefile) shows
