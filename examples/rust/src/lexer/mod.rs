@@ -264,594 +264,464 @@ lazy_static! {
 lazy_static! {
 	static ref NEXT_STATE: Vec<fn(char) -> State> = vec![  
 	// Set0 
-	|c| -> State { 
-		match true { 
-			_ if c == '"' => return 1, 
-			_ if c == '\'' => return 2, 
-			_ if c == '(' => return 3, 
-			_ if c == ')' => return 4, 
-			_ if c == '.' => return 5, 
-			_ if c == ':' => return 6, 
-			_ if c == ';' => return 7, 
-			_ if c == '<' => return 8, 
-			_ if c == '>' => return 9, 
-			_ if c == '[' => return 10, 
-			_ if c == ']' => return 11, 
-			_ if c == 'a' => return 12, 
-			_ if c == 'e' => return 13, 
-			_ if c == 'l' => return 14, 
-			_ if c == 'n' => return 15, 
-			_ if c == 'p' => return 16, 
-			_ if c == 'u' => return 17, 
-			_ if c == '{' => return 18, 
-			_ if c == '|' => return 19, 
-			_ if c == '}' => return 20, 
-			_ if c.is_uppercase() => return 21, 
-			_ if c.is_lowercase() => return 22, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '"' { return 1 }; 
+        if c == '\'' { return 2 }; 
+        if c == '(' { return 3 }; 
+        if c == ')' { return 4 }; 
+        if c == '.' { return 5 }; 
+        if c == ':' { return 6 }; 
+        if c == ';' { return 7 }; 
+        if c == '<' { return 8 }; 
+        if c == '>' { return 9 }; 
+        if c == '[' { return 10 }; 
+        if c == ']' { return 11 }; 
+        if c == 'a' { return 12 }; 
+        if c == 'e' { return 13 }; 
+        if c == 'l' { return 14 }; 
+        if c == 'n' { return 15 }; 
+        if c == 'p' { return 16 }; 
+        if c == 'u' { return 17 }; 
+        if c == '{' { return 18 }; 
+        if c == '|' { return 19 }; 
+        if c == '}' { return 20 }; 
+        if c.is_lowercase() { return 21 }; 
+        if c.is_uppercase() { return 22 }; 
+        NULL_STATE
 	}, 
 	// Set1 
-	|c| -> State { 
-		match true { 
-			_ if c == '"' => return 23, 
-			_ if c == '\\' => return 24, 
-			_ if not(c, &vec!['"','\\']) => return 1, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '"' { return 23 }; 
+        if c == '\\' { return 24 }; 
+        if not(c, &vec!['"','\\']) { return 1 }; 
+        NULL_STATE
 	}, 
 	// Set2 
-	|c| -> State { 
-		match true { 
-			_ if c == '\\' => return 25, 
-			_ if not(c, &vec!['\'','\\']) => return 26, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '\\' { return 25 }; 
+        if not(c, &vec!['\'','\\']) { return 26 }; 
+        NULL_STATE
 	}, 
 	// Set3 
-	|_| -> State { 
-		match true { 
-			_ => NULL_STATE
-		}
+	|_| -> State {  
+        NULL_STATE
 	}, 
 	// Set4 
-	|_| -> State { 
-		match true { 
-			_ => NULL_STATE
-		}
+	|_| -> State {  
+        NULL_STATE
 	}, 
 	// Set5 
-	|_| -> State { 
-		match true { 
-			_ => NULL_STATE
-		}
+	|_| -> State {  
+        NULL_STATE
 	}, 
 	// Set6 
-	|_| -> State { 
-		match true { 
-			_ => NULL_STATE
-		}
+	|_| -> State {  
+        NULL_STATE
 	}, 
 	// Set7 
-	|_| -> State { 
-		match true { 
-			_ => NULL_STATE
-		}
+	|_| -> State {  
+        NULL_STATE
 	}, 
 	// Set8 
-	|_| -> State { 
-		match true { 
-			_ => NULL_STATE
-		}
+	|_| -> State {  
+        NULL_STATE
 	}, 
 	// Set9 
-	|_| -> State { 
-		match true { 
-			_ => NULL_STATE
-		}
+	|_| -> State {  
+        NULL_STATE
 	}, 
 	// Set10 
-	|_| -> State { 
-		match true { 
-			_ => NULL_STATE
-		}
+	|_| -> State {  
+        NULL_STATE
 	}, 
 	// Set11 
-	|_| -> State { 
-		match true { 
-			_ => NULL_STATE
-		}
+	|_| -> State {  
+        NULL_STATE
 	}, 
 	// Set12 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 27, 
-			_ if c == 'n' => return 28, 
-			_ if c.is_alphabetic() => return 27, 
-			_ if c.is_numeric() => return 27, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 27 }; 
+        if c == 'n' { return 28 }; 
+        if c.is_alphabetic() { return 27 }; 
+        if c.is_numeric() { return 27 }; 
+        NULL_STATE
 	}, 
 	// Set13 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 27, 
-			_ if c == 'm' => return 29, 
-			_ if c.is_alphabetic() => return 27, 
-			_ if c.is_numeric() => return 27, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 27 }; 
+        if c == 'm' { return 29 }; 
+        if c.is_alphabetic() { return 27 }; 
+        if c.is_numeric() { return 27 }; 
+        NULL_STATE
 	}, 
 	// Set14 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 27, 
-			_ if c == 'e' => return 30, 
-			_ if c == 'o' => return 31, 
-			_ if c.is_alphabetic() => return 27, 
-			_ if c.is_numeric() => return 27, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 27 }; 
+        if c == 'e' { return 30 }; 
+        if c == 'o' { return 31 }; 
+        if c.is_alphabetic() { return 27 }; 
+        if c.is_numeric() { return 27 }; 
+        NULL_STATE
 	}, 
 	// Set15 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 27, 
-			_ if c == 'o' => return 32, 
-			_ if c == 'u' => return 33, 
-			_ if c.is_alphabetic() => return 27, 
-			_ if c.is_numeric() => return 27, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 27 }; 
+        if c == 'o' { return 32 }; 
+        if c == 'u' { return 33 }; 
+        if c.is_alphabetic() { return 27 }; 
+        if c.is_numeric() { return 27 }; 
+        NULL_STATE
 	}, 
 	// Set16 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 27, 
-			_ if c == 'a' => return 34, 
-			_ if c.is_alphabetic() => return 27, 
-			_ if c.is_numeric() => return 27, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 27 }; 
+        if c == 'a' { return 34 }; 
+        if c.is_alphabetic() { return 27 }; 
+        if c.is_numeric() { return 27 }; 
+        NULL_STATE
 	}, 
 	// Set17 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 27, 
-			_ if c == 'p' => return 35, 
-			_ if c.is_alphabetic() => return 27, 
-			_ if c.is_numeric() => return 27, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 27 }; 
+        if c == 'p' { return 35 }; 
+        if c.is_alphabetic() { return 27 }; 
+        if c.is_numeric() { return 27 }; 
+        NULL_STATE
 	}, 
 	// Set18 
-	|_| -> State { 
-		match true { 
-			_ => NULL_STATE
-		}
+	|_| -> State {  
+        NULL_STATE
 	}, 
 	// Set19 
-	|_| -> State { 
-		match true { 
-			_ => NULL_STATE
-		}
+	|_| -> State {  
+        NULL_STATE
 	}, 
 	// Set20 
-	|_| -> State { 
-		match true { 
-			_ => NULL_STATE
-		}
+	|_| -> State {  
+        NULL_STATE
 	}, 
 	// Set21 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 36, 
-			_ if c.is_alphabetic() => return 36, 
-			_ if c.is_numeric() => return 36, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 27 }; 
+        if c.is_alphabetic() { return 27 }; 
+        if c.is_numeric() { return 27 }; 
+        NULL_STATE
 	}, 
 	// Set22 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 27, 
-			_ if c.is_alphabetic() => return 27, 
-			_ if c.is_numeric() => return 27, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 36 }; 
+        if c.is_alphabetic() { return 36 }; 
+        if c.is_numeric() { return 36 }; 
+        NULL_STATE
 	}, 
 	// Set23 
-	|_| -> State { 
-		match true { 
-			_ => NULL_STATE
-		}
+	|_| -> State {  
+        NULL_STATE
 	}, 
 	// Set24 
-	|c| -> State { 
-		match true { 
-			_ if any(c, &vec!['"','\\','n','r','t']) => return 1, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if any(c, &vec!['"','\\','n','r','t']) { return 1 }; 
+        NULL_STATE
 	}, 
 	// Set25 
-	|c| -> State { 
-		match true { 
-			_ if any(c, &vec!['\'','\\','n','r','t']) => return 26, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if any(c, &vec!['\'','\\','n','r','t']) { return 26 }; 
+        NULL_STATE
 	}, 
 	// Set26 
-	|c| -> State { 
-		match true { 
-			_ if c == '\'' => return 37, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '\'' { return 37 }; 
+        NULL_STATE
 	}, 
 	// Set27 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 27, 
-			_ if c.is_alphabetic() => return 27, 
-			_ if c.is_numeric() => return 27, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 27 }; 
+        if c.is_alphabetic() { return 27 }; 
+        if c.is_numeric() { return 27 }; 
+        NULL_STATE
 	}, 
 	// Set28 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 27, 
-			_ if c == 'y' => return 38, 
-			_ if c.is_alphabetic() => return 27, 
-			_ if c.is_numeric() => return 27, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 27 }; 
+        if c == 'y' { return 38 }; 
+        if c.is_alphabetic() { return 27 }; 
+        if c.is_numeric() { return 27 }; 
+        NULL_STATE
 	}, 
 	// Set29 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 27, 
-			_ if c == 'p' => return 39, 
-			_ if c.is_alphabetic() => return 27, 
-			_ if c.is_numeric() => return 27, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 27 }; 
+        if c == 'p' { return 39 }; 
+        if c.is_alphabetic() { return 27 }; 
+        if c.is_numeric() { return 27 }; 
+        NULL_STATE
 	}, 
 	// Set30 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 27, 
-			_ if c == 't' => return 40, 
-			_ if c.is_alphabetic() => return 27, 
-			_ if c.is_numeric() => return 27, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 27 }; 
+        if c == 't' { return 40 }; 
+        if c.is_alphabetic() { return 27 }; 
+        if c.is_numeric() { return 27 }; 
+        NULL_STATE
 	}, 
 	// Set31 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 27, 
-			_ if c == 'w' => return 41, 
-			_ if c.is_alphabetic() => return 27, 
-			_ if c.is_numeric() => return 27, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 27 }; 
+        if c == 'w' { return 41 }; 
+        if c.is_alphabetic() { return 27 }; 
+        if c.is_numeric() { return 27 }; 
+        NULL_STATE
 	}, 
 	// Set32 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 27, 
-			_ if c == 't' => return 42, 
-			_ if c.is_alphabetic() => return 27, 
-			_ if c.is_numeric() => return 27, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 27 }; 
+        if c == 't' { return 42 }; 
+        if c.is_alphabetic() { return 27 }; 
+        if c.is_numeric() { return 27 }; 
+        NULL_STATE
 	}, 
 	// Set33 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 27, 
-			_ if c == 'm' => return 43, 
-			_ if c.is_alphabetic() => return 27, 
-			_ if c.is_numeric() => return 27, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 27 }; 
+        if c == 'm' { return 43 }; 
+        if c.is_alphabetic() { return 27 }; 
+        if c.is_numeric() { return 27 }; 
+        NULL_STATE
 	}, 
 	// Set34 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 27, 
-			_ if c == 'c' => return 44, 
-			_ if c.is_alphabetic() => return 27, 
-			_ if c.is_numeric() => return 27, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 27 }; 
+        if c == 'c' { return 44 }; 
+        if c.is_alphabetic() { return 27 }; 
+        if c.is_numeric() { return 27 }; 
+        NULL_STATE
 	}, 
 	// Set35 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 27, 
-			_ if c == 'c' => return 45, 
-			_ if c.is_alphabetic() => return 27, 
-			_ if c.is_numeric() => return 27, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 27 }; 
+        if c == 'c' { return 45 }; 
+        if c.is_alphabetic() { return 27 }; 
+        if c.is_numeric() { return 27 }; 
+        NULL_STATE
 	}, 
 	// Set36 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 36, 
-			_ if c.is_alphabetic() => return 36, 
-			_ if c.is_numeric() => return 36, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 36 }; 
+        if c.is_alphabetic() { return 36 }; 
+        if c.is_numeric() { return 36 }; 
+        NULL_STATE
 	}, 
 	// Set37 
-	|_| -> State { 
-		match true { 
-			_ => NULL_STATE
-		}
+	|_| -> State {  
+        NULL_STATE
 	}, 
 	// Set38 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 27, 
-			_ if c.is_alphabetic() => return 27, 
-			_ if c.is_numeric() => return 27, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 27 }; 
+        if c.is_alphabetic() { return 27 }; 
+        if c.is_numeric() { return 27 }; 
+        NULL_STATE
 	}, 
 	// Set39 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 27, 
-			_ if c == 't' => return 46, 
-			_ if c.is_alphabetic() => return 27, 
-			_ if c.is_numeric() => return 27, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 27 }; 
+        if c == 't' { return 46 }; 
+        if c.is_alphabetic() { return 27 }; 
+        if c.is_numeric() { return 27 }; 
+        NULL_STATE
 	}, 
 	// Set40 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 27, 
-			_ if c == 't' => return 47, 
-			_ if c.is_alphabetic() => return 27, 
-			_ if c.is_numeric() => return 27, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 27 }; 
+        if c == 't' { return 47 }; 
+        if c.is_alphabetic() { return 27 }; 
+        if c.is_numeric() { return 27 }; 
+        NULL_STATE
 	}, 
 	// Set41 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 27, 
-			_ if c == 'c' => return 48, 
-			_ if c.is_alphabetic() => return 27, 
-			_ if c.is_numeric() => return 27, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 27 }; 
+        if c == 'c' { return 48 }; 
+        if c.is_alphabetic() { return 27 }; 
+        if c.is_numeric() { return 27 }; 
+        NULL_STATE
 	}, 
 	// Set42 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 27, 
-			_ if c.is_alphabetic() => return 27, 
-			_ if c.is_numeric() => return 27, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 27 }; 
+        if c.is_alphabetic() { return 27 }; 
+        if c.is_numeric() { return 27 }; 
+        NULL_STATE
 	}, 
 	// Set43 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 27, 
-			_ if c == 'b' => return 49, 
-			_ if c.is_alphabetic() => return 27, 
-			_ if c.is_numeric() => return 27, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 27 }; 
+        if c == 'b' { return 49 }; 
+        if c.is_alphabetic() { return 27 }; 
+        if c.is_numeric() { return 27 }; 
+        NULL_STATE
 	}, 
 	// Set44 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 27, 
-			_ if c == 'k' => return 50, 
-			_ if c.is_alphabetic() => return 27, 
-			_ if c.is_numeric() => return 27, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 27 }; 
+        if c == 'k' { return 50 }; 
+        if c.is_alphabetic() { return 27 }; 
+        if c.is_numeric() { return 27 }; 
+        NULL_STATE
 	}, 
 	// Set45 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 27, 
-			_ if c == 'a' => return 51, 
-			_ if c.is_alphabetic() => return 27, 
-			_ if c.is_numeric() => return 27, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 27 }; 
+        if c == 'a' { return 51 }; 
+        if c.is_alphabetic() { return 27 }; 
+        if c.is_numeric() { return 27 }; 
+        NULL_STATE
 	}, 
 	// Set46 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 27, 
-			_ if c == 'y' => return 52, 
-			_ if c.is_alphabetic() => return 27, 
-			_ if c.is_numeric() => return 27, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 27 }; 
+        if c == 'y' { return 52 }; 
+        if c.is_alphabetic() { return 27 }; 
+        if c.is_numeric() { return 27 }; 
+        NULL_STATE
 	}, 
 	// Set47 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 27, 
-			_ if c == 'e' => return 53, 
-			_ if c.is_alphabetic() => return 27, 
-			_ if c.is_numeric() => return 27, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 27 }; 
+        if c == 'e' { return 53 }; 
+        if c.is_alphabetic() { return 27 }; 
+        if c.is_numeric() { return 27 }; 
+        NULL_STATE
 	}, 
 	// Set48 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 27, 
-			_ if c == 'a' => return 54, 
-			_ if c.is_alphabetic() => return 27, 
-			_ if c.is_numeric() => return 27, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 27 }; 
+        if c == 'a' { return 54 }; 
+        if c.is_alphabetic() { return 27 }; 
+        if c.is_numeric() { return 27 }; 
+        NULL_STATE
 	}, 
 	// Set49 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 27, 
-			_ if c == 'e' => return 55, 
-			_ if c.is_alphabetic() => return 27, 
-			_ if c.is_numeric() => return 27, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 27 }; 
+        if c == 'e' { return 55 }; 
+        if c.is_alphabetic() { return 27 }; 
+        if c.is_numeric() { return 27 }; 
+        NULL_STATE
 	}, 
 	// Set50 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 27, 
-			_ if c == 'a' => return 56, 
-			_ if c.is_alphabetic() => return 27, 
-			_ if c.is_numeric() => return 27, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 27 }; 
+        if c == 'a' { return 56 }; 
+        if c.is_alphabetic() { return 27 }; 
+        if c.is_numeric() { return 27 }; 
+        NULL_STATE
 	}, 
 	// Set51 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 27, 
-			_ if c == 's' => return 57, 
-			_ if c.is_alphabetic() => return 27, 
-			_ if c.is_numeric() => return 27, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 27 }; 
+        if c == 's' { return 57 }; 
+        if c.is_alphabetic() { return 27 }; 
+        if c.is_numeric() { return 27 }; 
+        NULL_STATE
 	}, 
 	// Set52 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 27, 
-			_ if c.is_alphabetic() => return 27, 
-			_ if c.is_numeric() => return 27, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 27 }; 
+        if c.is_alphabetic() { return 27 }; 
+        if c.is_numeric() { return 27 }; 
+        NULL_STATE
 	}, 
 	// Set53 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 27, 
-			_ if c == 'r' => return 58, 
-			_ if c.is_alphabetic() => return 27, 
-			_ if c.is_numeric() => return 27, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 27 }; 
+        if c == 'r' { return 58 }; 
+        if c.is_alphabetic() { return 27 }; 
+        if c.is_numeric() { return 27 }; 
+        NULL_STATE
 	}, 
 	// Set54 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 27, 
-			_ if c == 's' => return 59, 
-			_ if c.is_alphabetic() => return 27, 
-			_ if c.is_numeric() => return 27, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 27 }; 
+        if c == 's' { return 59 }; 
+        if c.is_alphabetic() { return 27 }; 
+        if c.is_numeric() { return 27 }; 
+        NULL_STATE
 	}, 
 	// Set55 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 27, 
-			_ if c == 'r' => return 60, 
-			_ if c.is_alphabetic() => return 27, 
-			_ if c.is_numeric() => return 27, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 27 }; 
+        if c == 'r' { return 60 }; 
+        if c.is_alphabetic() { return 27 }; 
+        if c.is_numeric() { return 27 }; 
+        NULL_STATE
 	}, 
 	// Set56 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 27, 
-			_ if c == 'g' => return 61, 
-			_ if c.is_alphabetic() => return 27, 
-			_ if c.is_numeric() => return 27, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 27 }; 
+        if c == 'g' { return 61 }; 
+        if c.is_alphabetic() { return 27 }; 
+        if c.is_numeric() { return 27 }; 
+        NULL_STATE
 	}, 
 	// Set57 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 27, 
-			_ if c == 'e' => return 62, 
-			_ if c.is_alphabetic() => return 27, 
-			_ if c.is_numeric() => return 27, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 27 }; 
+        if c == 'e' { return 62 }; 
+        if c.is_alphabetic() { return 27 }; 
+        if c.is_numeric() { return 27 }; 
+        NULL_STATE
 	}, 
 	// Set58 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 27, 
-			_ if c.is_alphabetic() => return 27, 
-			_ if c.is_numeric() => return 27, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 27 }; 
+        if c.is_alphabetic() { return 27 }; 
+        if c.is_numeric() { return 27 }; 
+        NULL_STATE
 	}, 
 	// Set59 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 27, 
-			_ if c == 'e' => return 63, 
-			_ if c.is_alphabetic() => return 27, 
-			_ if c.is_numeric() => return 27, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 27 }; 
+        if c == 'e' { return 63 }; 
+        if c.is_alphabetic() { return 27 }; 
+        if c.is_numeric() { return 27 }; 
+        NULL_STATE
 	}, 
 	// Set60 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 27, 
-			_ if c.is_alphabetic() => return 27, 
-			_ if c.is_numeric() => return 27, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 27 }; 
+        if c.is_alphabetic() { return 27 }; 
+        if c.is_numeric() { return 27 }; 
+        NULL_STATE
 	}, 
 	// Set61 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 27, 
-			_ if c == 'e' => return 64, 
-			_ if c.is_alphabetic() => return 27, 
-			_ if c.is_numeric() => return 27, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 27 }; 
+        if c == 'e' { return 64 }; 
+        if c.is_alphabetic() { return 27 }; 
+        if c.is_numeric() { return 27 }; 
+        NULL_STATE
 	}, 
 	// Set62 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 27, 
-			_ if c.is_alphabetic() => return 27, 
-			_ if c.is_numeric() => return 27, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 27 }; 
+        if c.is_alphabetic() { return 27 }; 
+        if c.is_numeric() { return 27 }; 
+        NULL_STATE
 	}, 
 	// Set63 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 27, 
-			_ if c.is_alphabetic() => return 27, 
-			_ if c.is_numeric() => return 27, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 27 }; 
+        if c.is_alphabetic() { return 27 }; 
+        if c.is_numeric() { return 27 }; 
+        NULL_STATE
 	}, 
 	// Set64 
-	|c| -> State { 
-		match true { 
-			_ if c == '_' => return 27, 
-			_ if c.is_alphabetic() => return 27, 
-			_ if c.is_numeric() => return 27, 
-			_ => NULL_STATE
-		}
+	|c| -> State {  
+        if c == '_' { return 27 }; 
+        if c.is_alphabetic() { return 27 }; 
+        if c.is_numeric() { return 27 }; 
+        NULL_STATE
 	}, 
 	];
 }

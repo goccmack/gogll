@@ -24,7 +24,7 @@ import (
 )
 
 // Version is the version of this compiler
-const Version = "v3.1.0"
+const Version = "v3.1.1"
 
 type TargetLanguage int
 

@@ -358,11 +358,9 @@ lazy_static! {
 	static ref NEXT_STATE: Vec<fn(char) -> State> = vec![  {{range $i, $set := .Transitions}}
 	// Set{{$i}} {{if (len $set)}}
 	|c| -> State { {{ else }}
-	|_| -> State { {{end}}
-		match true { {{range $cond := $set}}
-			_ if {{$cond.Condition}} => return {{$cond.NextState}}, {{end}}
-			_ => NULL_STATE
-		}
+	|_| -> State { {{end}} {{range $cond := $set}}
+        if {{$cond.Condition}} { return {{$cond.NextState}} }; {{end}}
+        NULL_STATE
 	}, {{end}}
 	];
 }
