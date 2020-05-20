@@ -285,8 +285,8 @@ lazy_static! {
         if c == '{' { return 18 }; 
         if c == '|' { return 19 }; 
         if c == '}' { return 20 }; 
-        if c.is_lowercase() { return 21 }; 
-        if c.is_uppercase() { return 22 }; 
+        if c.is_uppercase() { return 21 }; 
+        if c.is_lowercase() { return 22 }; 
         NULL_STATE
 	}, 
 	// Set1 
@@ -402,16 +402,16 @@ lazy_static! {
 	}, 
 	// Set21 
 	|c| -> State {  
-        if c == '_' { return 27 }; 
-        if c.is_alphabetic() { return 27 }; 
-        if c.is_numeric() { return 27 }; 
+        if c == '_' { return 36 }; 
+        if c.is_alphabetic() { return 36 }; 
+        if c.is_numeric() { return 36 }; 
         NULL_STATE
 	}, 
 	// Set22 
 	|c| -> State {  
-        if c == '_' { return 36 }; 
-        if c.is_alphabetic() { return 36 }; 
-        if c.is_numeric() { return 36 }; 
+        if c == '_' { return 27 }; 
+        if c.is_alphabetic() { return 27 }; 
+        if c.is_numeric() { return 27 }; 
         NULL_STATE
 	}, 
 	// Set23 

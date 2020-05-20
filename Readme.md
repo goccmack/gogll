@@ -119,10 +119,15 @@ use: gogll [-h][-version][-v][-CPUProf] [-o <out dir>] [-t <target>] <source fil
 ```
 
 # Using the generated lexer and parser
-1. Create a lexer:
+1. Create a lexer:  
+From an `[]rune`:
 ```
-	lex := lexer.New(input []rune) *Lexer  or
-	lex := lexer.NewFile(fname string) *Lexer
+	lexer.New(input []rune) *Lexer
+```
+  or from a file. If the file extension us `.md` the lexer will 
+  treat all text outside the markdown code blocks as whitespace.
+```
+	lexer.NewFile(fname string) *Lexer
 ```
 2. Parse the lexer:  
 ```
