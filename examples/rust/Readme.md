@@ -31,7 +31,7 @@ use std::rc::Rc;
 use std::time::SystemTime;
 
 // The number of times to repeat lexing and parsing
-const N: u128 = 10000;
+const N: u128 = 1000;
 
 fn main() {
     let src_file = "gogll.md".to_string();

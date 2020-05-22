@@ -2,18 +2,19 @@ package main
 
 import (
 	"fmt"
-	"gogll/lexer"
-	"gogll/parser"
 	"time"
+
+	"github.com/goccmack/gogll/lexer"
+	"github.com/goccmack/gogll/parser"
 )
 
-const N = 10000
+const N = 1000
 
 func main() {
 	start := time.Now()
 	var lex *lexer.Lexer
 	for i := 0; i < N; i++ {
-		lex = lexer.NewFile("../gogll.md")
+		lex = lexer.NewFile("../../../gogll.md")
 	}
 	lexDone := time.Now()
 	for i := 0; i < N; i++ {

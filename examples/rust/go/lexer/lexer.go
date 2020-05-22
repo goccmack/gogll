@@ -10,7 +10,7 @@ import (
 
 	"github.com/goccmack/goutil/md"
 
-	"gogll/token"
+	"github.com/goccmack/gogll/token"
 )
 
 type state int

@@ -2,6 +2,7 @@
 
 # v3.1.1
 1. Unnecessary match statements removed from generated Rust lexer code.
+1. Generated Rust lexer markdown loading performance improved.
 
 # 2020-05-19 v3.1.0
 Rust target added.

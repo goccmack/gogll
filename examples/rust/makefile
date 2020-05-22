@@ -6,8 +6,8 @@ test: gogll
 	time cargo run --release
 
 gogll: 
-	gogll -t rust gogll.md
-	gogll -o go gogll.md
+	gogll -t rust -o . ../../gogll.md
+	gogll -o go ../../gogll.md
 
 clean:
 	rm -rf src/lexer; \

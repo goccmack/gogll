@@ -20,10 +20,10 @@ import (
 	"strings"
 	"unicode/utf8"
 
-	"gogll/lexer"
-	"gogll/parser/slot"
-	"gogll/parser/symbols"
-	"gogll/token"
+	"github.com/goccmack/gogll/lexer"
+	"github.com/goccmack/gogll/parser/slot"
+	"github.com/goccmack/gogll/parser/symbols"
+	"github.com/goccmack/gogll/token"
 )
 
 type bsr interface {

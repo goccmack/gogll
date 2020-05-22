@@ -7,11 +7,11 @@ import (
 	"sort"
 	"strings"
 
-	"gogll/lexer"
-	"gogll/parser/bsr"
-	"gogll/parser/slot"
-	"gogll/parser/symbols"
-	"gogll/token"
+	"github.com/goccmack/gogll/lexer"
+	"github.com/goccmack/gogll/parser/bsr"
+	"github.com/goccmack/gogll/parser/slot"
+	"github.com/goccmack/gogll/parser/symbols"
+	"github.com/goccmack/gogll/token"
 )
 
 type parser struct {
