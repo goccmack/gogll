@@ -225,15 +225,15 @@ impl Parser {
         let mut p = Box::new(Parser{
             c_i:         0,
             lex:         l.clone(),
-            r:           Vec::new(),
-            u:           Vec::new(),
-            popped:      HashSet::new(),
-            crf:         HashMap::new(),
-            crf_nodes:   HashSet::new(),
+            r:           Vec::with_capacity(1024),
+            u:           Vec::with_capacity(1024),
+            popped:      HashSet::with_capacity(1024),
+            crf:         HashMap::with_capacity(1024),
+            crf_nodes:   HashSet::with_capacity(1024),
             bsr_set:     bsr::Set::new(NT::GoGLL, l.clone()),
-            errors:      Vec::new(),
+            errors:      Vec::with_capacity(1024),
         });
-        p.crf.insert(ClusterNode::new(NT::GoGLL, 0), HashSet::new());
+        p.crf.insert(ClusterNode::new(NT::GoGLL, 0), HashSet::with_capacity(128));
         p
     }
 
@@ -285,7 +285,7 @@ impl Parser {
         // println!("nt_add({},{}", nt, j);
 
         let mut failed = true;
-        let mut expected: HashSet<token::Type> = HashSet::new();
+        let mut expected: HashSet<token::Type> = HashSet::with_capacity(128);
         for l in slot::get_alternates(&nt).iter() {
             if self.test_select(*l) {
                 self.dsc_add(*l, j, j);
@@ -334,7 +334,7 @@ impl Parser {
         let nd_v = ClusterNode::new(x, j);
         match self.crf.get_mut(&nd_v) {
             None => {
-                let mut m: HashSet<CRFNode> = HashSet::new();
+                let mut m: HashSet<CRFNode> = HashSet::with_capacity(128);
                 m.insert(u);
                 self.crf.insert(nd_v, m);
                 self.nt_add(x, j);

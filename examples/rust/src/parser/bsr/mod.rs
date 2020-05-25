@@ -64,9 +64,9 @@ impl Set {
     #[allow(dead_code)]
     pub fn new(start_symbol: NT, l: Rc<lexer::Lexer>) -> Box<Set> {
         Box::new(Set {
-            slot_entries: HashMap::new(),
-            nt_slot_entries: HashMap::new(),
-            string_entries: HashMap::new(),
+            slot_entries: HashMap::with_capacity(1024),
+            nt_slot_entries: HashMap::with_capacity(1024),
+            string_entries: HashMap::with_capacity(1024),
             rext: 0,
             lex: l.clone(),
             start_sym: start_symbol,
@@ -158,7 +158,7 @@ impl Set {
     // get_roots returns all the roots of parse trees of the start symbol of the grammar.
     #[allow(dead_code)]
     pub fn get_roots(&self) -> Vec<Rc<BSR>> {
-        let mut roots: Vec<Rc<BSR>> = Vec::new();
+        let mut roots: Vec<Rc<BSR>> = Vec::with_capacity(128);
         for b in self.slot_entries.keys() {
             if b.label.head() == &self.start_sym && b.lext == 0 && self.rext == self.rext {
                 roots.push(b.clone())

@@ -25,7 +25,7 @@ GoGLL v3.1 generates Rust as well as Go parsers with similar performance:
 || Lexer | Parser | Build
 |---|---|---|---|
 Go | 119 μs | 1324 μs | 0.124s
-Rust | 71 μs | 1377 μs | 2.932s
+Rust | 71 μs | 1297 μs | 2.932s
 
 1. The duration was averaged over 1000 repetitions.
 1. Build time was measures with the time command.
