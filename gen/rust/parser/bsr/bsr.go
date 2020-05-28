@@ -85,10 +85,10 @@ struct NTSlot {
 /// BSR is the binary subtree representation of a parsed nonterminal
 #[derive(Hash, Eq, PartialEq)]
 pub struct BSR {
-    label: slot::Label,
-    lext: usize,
-    pivot: usize,
-    rext: usize,
+    pub label: slot::Label,
+    pub lext: usize,
+    pub pivot: usize,
+    pub rext: usize,
 }
 
 impl Set {
@@ -192,7 +192,7 @@ impl Set {
     pub fn get_roots(&self) -> Vec<Rc<BSR>> {
         let mut roots: Vec<Rc<BSR>> = Vec::with_capacity(128);
         for b in self.slot_entries.keys() {
-            if b.label.head() == &self.start_sym && b.lext == 0 && self.rext == self.rext {
+            if b.label.head() == &self.start_sym && b.lext == 0 && b.rext == self.rext {
                 roots.push(b.clone())
             }
         }
