@@ -124,6 +124,7 @@ func buildOp(b bsr.BSR) *token.Token {
 	return b.GetTChildI(0)
 }
 
+// id > & > |
 func (e *Expr) hasPrecedence(op *token.Token) bool {
 	switch e.Type {
 	case Expr_And:

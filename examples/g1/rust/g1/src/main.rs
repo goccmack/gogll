@@ -156,6 +156,7 @@ impl Expr {
         }
     }
 
+    // id > & > |
     fn has_precedence(&self, op: Op) -> bool {
         match self {
             Expr::And{left:_,right:_} => true, 

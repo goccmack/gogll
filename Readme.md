@@ -20,6 +20,28 @@ See the table below.
 
 # News
 ## 2020-05-22
+Gogll generated Go and Rust code compared head to head.
+
+This test was based on the ambiguous grammar [G1](examples/g1/g1.md) and the 
+input string, [input.txt](examples/g1/input.txt). 
+The number of syntactically valid parse trees is determined by the 
+[Catalan number](https://en.wikipedia.org/wiki/Catalan_number)
+C[19] = 1_767_263_190. The parse trees are represented in gogll's BSR version of SPPF by 
+only 1369 non-terminal BSR nodes.
+The performance of the [Go](examples/g1/go) and [Rust](examples/g1/rust/g1)
+implementations were measured over 10 runs each. The results are:
+
+||Go Parse | Go Treewalk | Rust Parse | Rust Treewalk 
+|---|---|---|---|---|
+Avg | 2.4 ms | 2_808.8 ms | 3.6 ms | 1_040.5 ms
+Min | 2.3 ms | 6.1 ms | 3.0 ms | 5.6 ms 
+Max | 2.6 ms | 7_258.8 ms | 4.0 ms | 3_065.1 ms
+
+1. Parse is measured from after the lexing is complete until the BSR set is returns.
+1. Treewalk involves walking the parse forest and picking the first parse tree
+that is valid under the operator precedence rules (`id > & > |`). 
+
+## 2020-05-22
 GoGLL v3.1 generates Rust as well as Go parsers with similar performance:
 
 || Lexer | Parser | Build
