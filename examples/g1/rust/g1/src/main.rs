@@ -22,17 +22,17 @@ enum Op {
 }
 
 fn main() {
-    let input: Rc<Vec<char>> = Rc::new("a1 & a2 | a3 & a4 | a5 & a6 | a7 & a8 | a9 & a10 | a11 & a12 | a13 & a14 | a15 & a16 | a17 & a18 | a19 & a20".chars().collect());
-    let lex = Lexer::new(input);
+    let input_file = &std::env::args().collect::<Vec<String>>()[1];
+    let lex = Lexer::new_file(&input_file).unwrap();
     let start = std::time::SystemTime::now();
     let (bsr_set, errs) = parser::parse(lex.clone());
     if errs.len() > 0 {
         fail(&errs)
     }
-    println!("{} μs", start.elapsed().unwrap().as_micros());
+    println!("{} μs parse", start.elapsed().unwrap().as_micros());
     println!("{} BSRs", bsr_set.get_all().len());
     println!("{}", get_exp(&bsr_set).to_string());
-    println!("{} μs", start.elapsed().unwrap().as_micros());
+    println!("{} μs elapsed", start.elapsed().unwrap().as_micros());
 }
 
 fn get_exp(set: &parser::bsr::Set) -> Box<Expr> {
@@ -58,28 +58,27 @@ fn exp(set: &bsr::Set, b: Rc<bsr::BSR>) -> Option<Box<Expr>> {
 
     let mut left: Option<Box<Expr>> = None;
     for b1 in set.get_nt_children_i(b.clone(), 0) {
-        match exp(set, b1.clone()) {
-            Some(e) => {
-                if e.has_precedence(op) {
-                    left = Some(e);
-                    break;
-                }
-            },
-            _ => (),
-        };
-    };
+        if let Some(e) = exp(set, b1.clone()) {
+            if e.has_precedence(op) {
+                left = Some(e);
+                break;
+            }
+        }
+    }
+    if left.is_none() {
+        return None;
+    }
 
     let mut right: Option<Box<Expr>> = None;
     for b1 in set.get_nt_children_i(b.clone(), 2) {
-        match exp(set, b1.clone()) {
-            Some(e) if e.has_precedence(op) => {
+        if let Some(e) = exp(set, b1.clone()) {
+            if e.has_precedence(op) {
                 right = Some(e);
-                break
-            },
-            _ => (),
-        };
-    };
-    if left.is_none() || right.is_none() {
+                break;
+            }
+        }
+    }
+    if right.is_none() {
         return None;
     }
     // If there are multiple valid left or right sub-expressions we pick
@@ -147,9 +146,8 @@ impl Expr {
     fn has_precedence(&self, op: Op) -> bool {
         match self {
             Expr::And{left:_,right:_} => true, 
-            Expr::Or{left:_,right:_} if op == Op::Or => true,
+            Expr::Or{left:_,right:_} => return op == Op::Or,
             Expr::Id(_) => true,
-            _ => false,
         }
     }
 } // impl Expr

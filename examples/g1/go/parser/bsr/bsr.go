@@ -169,7 +169,7 @@ func (s *Set) GetRoot() BSR {
 // GetRoots returns all the roots of parse trees of the start symbol of the grammar.
 func (s *Set) GetRoots() (roots []BSR) {
 	for b := range s.slotEntries {
-		if b.Label.Head() == s.startSym && b.leftExtent == 0 && s.rightExtent == s.rightExtent {
+		if b.Label.Head() == s.startSym && b.leftExtent == 0 && s.rightExtent == b.rightExtent {
 			roots = append(roots, b)
 		}
 	}
