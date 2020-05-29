@@ -31,13 +31,17 @@ fn main() {
     }
     println!("{} μs parse", start.elapsed().unwrap().as_micros());
     println!("{} BSRs", bsr_set.get_all().len());
-    println!("{}", get_exp(&bsr_set).to_string());
+
+    // Disambiguate parse forest and print resulting expression
+    println!("{}", get_expr(&bsr_set).to_string());
+
     println!("{} μs elapsed", start.elapsed().unwrap().as_micros());
 }
 
-fn get_exp(set: &parser::bsr::Set) -> Box<Expr> {
+// Return the first logically valid expression
+fn get_expr(set: &parser::bsr::Set) -> Box<Expr> {
     for r in set.get_roots() {
-        if let Some(e) = exp(set, r.clone()) {
+        if let Some(e) = build_expr(set, r.clone()) {
             return e;
         }
     }
@@ -49,29 +53,38 @@ Exp : Exp Op Exp
     | id
     ;
 */
-fn exp(set: &bsr::Set, b: Rc<bsr::BSR>) -> Option<Box<Expr>> {
+fn build_expr(set: &bsr::Set, b: Rc<bsr::BSR>) -> Option<Box<Expr>> {
+    // Alternate 1 of the rule
     if set.alternate(b.clone()) == 1 {
-        return Some(id(set, b));
+        return Some(build_id(set, b));
     }
 
-    let op: Op = op(set, set.get_nt_child_i(b.clone(), 1));
+    // Get Op: symbol 1 in the body of alternate 0
+    let op: Op = build_op(set, set.get_nt_child_i(b.clone(), 1));
 
+    // Build the left subexpression Node. The subtree for it may be ambiguous.
+    // Pick the first subexpression that has operator precedence over this expression.
     let mut left: Option<Box<Expr>> = None;
+    // set.get_nt_children_i(b, 0) returns all the valid subtrees for symbol 0 of
+    // Exp : Exp Op Exp
     for b1 in set.get_nt_children_i(b.clone(), 0) {
-        if let Some(e) = exp(set, b1.clone()) {
+		// Pick the first subexpression with operator precedence over this expression
+        if let Some(e) = build_expr(set, b1.clone()) {
             if e.has_precedence(op) {
                 left = Some(e);
                 break;
             }
         }
     }
+	// No valid subexpressions therefore this whole expression is invalid
     if left.is_none() {
         return None;
     }
 
+	// Do the same for the right subexpression
     let mut right: Option<Box<Expr>> = None;
     for b1 in set.get_nt_children_i(b.clone(), 2) {
-        if let Some(e) = exp(set, b1.clone()) {
+        if let Some(e) = build_expr(set, b1.clone()) {
             if e.has_precedence(op) {
                 right = Some(e);
                 break;
@@ -81,8 +94,8 @@ fn exp(set: &bsr::Set, b: Rc<bsr::BSR>) -> Option<Box<Expr>> {
     if right.is_none() {
         return None;
     }
-    // If there are multiple valid left or right sub-expressions we pick
-    // the last one
+
+	// return an expression node
     let l: Box<Expr> = left.unwrap();
     let r: Box<Expr> = right.unwrap();
     match op {
@@ -92,14 +105,14 @@ fn exp(set: &bsr::Set, b: Rc<bsr::BSR>) -> Option<Box<Expr>> {
 }
 
 // Exp : id
-fn id(set: &bsr::Set, b: Rc<bsr::BSR>) -> Box<Expr> {
+fn build_id(set: &bsr::Set, b: Rc<bsr::BSR>) -> Box<Expr> {
     let id: Rc<Token> = set.get_t_child_i(b, 0);
     let id_str: String = id.literal().iter().collect();
     Box::new(Expr::Id(id_str))
 }
 
 // Op : "&" | "|" ;
-fn op(set: &bsr::Set, b: Rc<bsr::BSR>) -> Op {
+fn build_op(set: &bsr::Set, b: Rc<bsr::BSR>) -> Op {
     match set.alternate(b.clone()) {
         0 => Op::And,
         1 => Op::Or,

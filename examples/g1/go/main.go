@@ -16,12 +16,12 @@ type ExprType int
 const (
 	Expr_And ExprType = iota
 	Expr_Or
-	Expr_Var
+	Expr_Id
 )
 
 type Expr struct {
 	Type  ExprType
-	Var   *token.Token
+	Id    *token.Token
 	Left  *Expr
 	Right *Expr
 }
@@ -35,10 +35,14 @@ func main() {
 	}
 	fmt.Printf("%d μs\n", time.Now().Sub(start)/time.Microsecond)
 	fmt.Printf("%d BSRs\n", len(bsrSet.GetAll()))
+
+	// Disambiguate parse forest and print resulting expression
 	fmt.Println(getExpr(bsrSet))
+
 	fmt.Printf("%d μs elapsed\n", time.Now().Sub(start)/time.Microsecond)
 }
 
+// Return the first logically valid expression
 func getExpr(set *bsr.Set) *Expr {
 	for _, r := range set.GetRoots() {
 		if expr := buildExpr(r); expr != nil {
@@ -54,23 +58,21 @@ Exp : Exp Op Exp
     ;
 */
 func buildExpr(b bsr.BSR) *Expr {
-	/*** Expr :   var ***/
+	// Alternate 1 of the rule
 	if b.Alternate() == 1 {
-		return &Expr{
-			Type: Expr_Var,
-			Var:  b.GetTChildI(0),
-		}
+		return buildID(b)
 	}
 
-	/*** Expr : Expr Op Expr ***/
-	op := b.GetNTChildI(1). // Op is symbol 1 of the Expr rule
-				GetTChildI(0) // The operator token is symbol 0 for both alternates of the Op rule
+	// Get Op: symbol 1 in the body of alternate 0
+	op := buildOp(b.GetNTChildI(1))
 
 	// Build the left subexpression Node. The subtree for it may be ambiguous.
+	// Pick the first subexpression that has operator precedence over this expression.
 	var left *Expr
-	// b.GetNTChildrenI(0) returns all the valid BSRs for symbol 0 of the body of the rule.
+	// b.GetNTChildrenI(0) returns all the valid subtrees for symbol 0 of
+	// Exp : Exp Op Exp
 	for _, le := range b.GetNTChildrenI(0) {
-		// Add subexpression if it is valid and has precedence over this expression
+		// Pick the first subexpression with operator precedence over this expression
 		if e := buildExpr(le); e != nil && e.hasPrecedence(op) {
 			left = e
 			break
@@ -80,6 +82,7 @@ func buildExpr(b bsr.BSR) *Expr {
 	if left == nil {
 		return nil
 	}
+
 	// Do the same for the right subexpression
 	var right *Expr
 	for _, re := range b.GetNTChildrenI(2) {
@@ -108,14 +111,26 @@ func buildExpr(b bsr.BSR) *Expr {
 	return expr
 }
 
-// & > |, & > &, | > |
+// Exp : id ;
+func buildID(b bsr.BSR) *Expr {
+	return &Expr{
+		Type: Expr_Id,
+		Id:   b.GetTChildI(0),
+	}
+}
+
+// Op : "&" | "|" ;
+func buildOp(b bsr.BSR) *token.Token {
+	return b.GetTChildI(0)
+}
+
 func (e *Expr) hasPrecedence(op *token.Token) bool {
 	switch e.Type {
 	case Expr_And:
 		return true
 	case Expr_Or:
 		return op.LiteralString() == "|"
-	case Expr_Var:
+	case Expr_Id:
 		return true
 	}
 	return false
@@ -127,12 +142,13 @@ func (e *Expr) String() string {
 		return fmt.Sprintf("(%s & %s)", e.Left, e.Right)
 	case Expr_Or:
 		return fmt.Sprintf("(%s | %s)", e.Left, e.Right)
-	case Expr_Var:
-		return e.Var.LiteralString()
+	case Expr_Id:
+		return e.Id.LiteralString()
 	}
 	panic("invalid")
 }
 
+// Print all the errors with the same line number as errs[0] and exit(1)
 func fail(errs []*parser.Error) {
 	fmt.Println("Parse Errors:")
 	ln := errs[0].Line
