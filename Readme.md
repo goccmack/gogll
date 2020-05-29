@@ -37,7 +37,7 @@ Avg | 2.4 ms | 2_808.8 ms | 3.6 ms | 1_040.5 ms
 Min | 2.3 ms | 6.1 ms | 3.0 ms | 5.6 ms 
 Max | 2.6 ms | 7_258.8 ms | 4.0 ms | 3_065.1 ms
 
-1. Parse is measured from after the lexing is complete until the BSR set is returns.
+1. Parse is measured from after the lexing is complete until the BSR set is returned by the parser.
 1. Treewalk involves walking the parse forest and picking the first parse tree
 that is valid under the operator precedence rules (`id > & > |`). 
 
