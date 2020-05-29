@@ -14,6 +14,7 @@ pub enum Symbol {
 #[derive(Hash, Eq, PartialEq, Clone, Copy, Debug)]
 pub enum NT { 
     Exp,
+    Op,
 }
 
 // T is the type of terminals symbols
@@ -48,7 +49,8 @@ impl Symbol {
 impl fmt::Display for NT {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {  
-            NT::Exp => write!(f, "Exp"),
+            NT::Exp => write!(f, "Exp"), 
+            NT::Op => write!(f, "Op"),
         }
     }
 }
@@ -76,7 +78,8 @@ impl fmt::Display for Symbol {
 // impl fmt::Display for NT {
 //     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
 //         match self {  
-//             NT::Exp => write!(f, "Exp"),
+//             NT::Exp => write!(f, "Exp"), 
+//             NT::Op => write!(f, "Op"),
 //         }
 //     }
 // }

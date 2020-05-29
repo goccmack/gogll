@@ -159,25 +159,27 @@ impl Parser {
 
             (|| {
                 match l { 
-                    // Exp : ∙Exp & Exp 
+                    // Exp : ∙Exp Op Exp 
                     Label::Exp0R0 => { 
                         self.call(Label::Exp0R1, c_u, self.c_i);
                     },
-                    // Exp : Exp ∙& Exp 
+                    // Exp : Exp ∙Op Exp 
                     Label::Exp0R1 => {
                         if !self.test_select(Label::Exp0R1){ 
                             self.error_first(Label::Exp0R1, self.c_i);
                             return; 
                         }
-                        self.bsr_set.add(Label::Exp0R2, c_u, self.c_i, self.c_i+1);
-                        self.c_i += 1; 
+                        self.call(Label::Exp0R2, c_u, self.c_i);
+                    },
+                    // Exp : Exp Op ∙Exp 
+                    Label::Exp0R2 => {
                         if !self.test_select(Label::Exp0R2){ 
                             self.error_first(Label::Exp0R2, self.c_i);
                             return; 
                         }
                         self.call(Label::Exp0R3, c_u, self.c_i);
                     },
-                    // Exp : Exp & Exp ∙
+                    // Exp : Exp Op Exp ∙
                     Label::Exp0R3 => {
                         if self.follow(NT::Exp) {
                             self.rtn(NT::Exp, c_u, self.c_i)
@@ -185,40 +187,34 @@ impl Parser {
                             self.error_follow(Label::Exp0R0, self.c_i, NT::Exp)
                         }
                     }, 
-                    // Exp : ∙Exp | Exp 
+                    // Exp : ∙id 
                     Label::Exp1R0 => { 
-                        self.call(Label::Exp1R1, c_u, self.c_i);
-                    },
-                    // Exp : Exp ∙| Exp 
-                    Label::Exp1R1 => {
-                        if !self.test_select(Label::Exp1R1){ 
-                            self.error_first(Label::Exp1R1, self.c_i);
-                            return; 
-                        }
-                        self.bsr_set.add(Label::Exp1R2, c_u, self.c_i, self.c_i+1);
+                        self.bsr_set.add(Label::Exp1R1, c_u, self.c_i, self.c_i+1);
                         self.c_i += 1; 
-                        if !self.test_select(Label::Exp1R2){ 
-                            self.error_first(Label::Exp1R2, self.c_i);
-                            return; 
-                        }
-                        self.call(Label::Exp1R3, c_u, self.c_i);
-                    },
-                    // Exp : Exp | Exp ∙
-                    Label::Exp1R3 => {
                         if self.follow(NT::Exp) {
                             self.rtn(NT::Exp, c_u, self.c_i)
                         } else { 
                             self.error_follow(Label::Exp1R0, self.c_i, NT::Exp)
                         }
                     }, 
-                    // Exp : ∙id 
-                    Label::Exp2R0 => { 
-                        self.bsr_set.add(Label::Exp2R1, c_u, self.c_i, self.c_i+1);
+                    // Op : ∙& 
+                    Label::Op0R0 => { 
+                        self.bsr_set.add(Label::Op0R1, c_u, self.c_i, self.c_i+1);
                         self.c_i += 1; 
-                        if self.follow(NT::Exp) {
-                            self.rtn(NT::Exp, c_u, self.c_i)
+                        if self.follow(NT::Op) {
+                            self.rtn(NT::Op, c_u, self.c_i)
                         } else { 
-                            self.error_follow(Label::Exp2R0, self.c_i, NT::Exp)
+                            self.error_follow(Label::Op0R0, self.c_i, NT::Op)
+                        }
+                    }, 
+                    // Op : ∙| 
+                    Label::Op1R0 => { 
+                        self.bsr_set.add(Label::Op1R1, c_u, self.c_i, self.c_i+1);
+                        self.c_i += 1; 
+                        if self.follow(NT::Op) {
+                            self.rtn(NT::Op, c_u, self.c_i)
+                        } else { 
+                            self.error_follow(Label::Op1R0, self.c_i, NT::Op)
                         }
                     }, 
                     _ => unimplemented!()
@@ -448,52 +444,51 @@ impl fmt::Display for Error {
     lazy_static! {
     static ref FIRST: HashMap<Label, Box<HashSet<token::Type>>> = {
         let mut fmap = HashMap::new(); 
-        // Exp : ∙Exp & Exp 
+        // Exp : ∙Exp Op Exp 
             let mut hset = Box::new(HashSet::new()); 
             hset.insert(token::Type::Type1); // id 
             fmap.insert(Label::Exp0R0, hset);
-        // Exp : Exp ∙& Exp 
+        // Exp : Exp ∙Op Exp 
             let mut hset = Box::new(HashSet::new()); 
             hset.insert(token::Type::Type0); // & 
+            hset.insert(token::Type::Type2); // | 
             fmap.insert(Label::Exp0R1, hset);
-        // Exp : Exp & ∙Exp 
+        // Exp : Exp Op ∙Exp 
             let mut hset = Box::new(HashSet::new()); 
             hset.insert(token::Type::Type1); // id 
             fmap.insert(Label::Exp0R2, hset);
-        // Exp : Exp & Exp ∙
+        // Exp : Exp Op Exp ∙
             let mut hset = Box::new(HashSet::new()); 
             hset.insert(token::Type::Type0); // & 
             hset.insert(token::Type::EOF); // EOF 
             hset.insert(token::Type::Type2); // | 
             fmap.insert(Label::Exp0R3, hset);
-        // Exp : ∙Exp | Exp 
-            let mut hset = Box::new(HashSet::new()); 
-            hset.insert(token::Type::Type1); // id 
-            fmap.insert(Label::Exp1R0, hset);
-        // Exp : Exp ∙| Exp 
-            let mut hset = Box::new(HashSet::new()); 
-            hset.insert(token::Type::Type2); // | 
-            fmap.insert(Label::Exp1R1, hset);
-        // Exp : Exp | ∙Exp 
-            let mut hset = Box::new(HashSet::new()); 
-            hset.insert(token::Type::Type1); // id 
-            fmap.insert(Label::Exp1R2, hset);
-        // Exp : Exp | Exp ∙
-            let mut hset = Box::new(HashSet::new()); 
-            hset.insert(token::Type::Type0); // & 
-            hset.insert(token::Type::EOF); // EOF 
-            hset.insert(token::Type::Type2); // | 
-            fmap.insert(Label::Exp1R3, hset);
         // Exp : ∙id 
             let mut hset = Box::new(HashSet::new()); 
             hset.insert(token::Type::Type1); // id 
-            fmap.insert(Label::Exp2R0, hset);
+            fmap.insert(Label::Exp1R0, hset);
         // Exp : id ∙
             let mut hset = Box::new(HashSet::new()); 
             hset.insert(token::Type::Type0); // & 
             hset.insert(token::Type::EOF); // EOF 
             hset.insert(token::Type::Type2); // | 
-            fmap.insert(Label::Exp2R1, hset);
+            fmap.insert(Label::Exp1R1, hset);
+        // Op : ∙& 
+            let mut hset = Box::new(HashSet::new()); 
+            hset.insert(token::Type::Type0); // & 
+            fmap.insert(Label::Op0R0, hset);
+        // Op : & ∙
+            let mut hset = Box::new(HashSet::new()); 
+            hset.insert(token::Type::Type1); // id 
+            fmap.insert(Label::Op0R1, hset);
+        // Op : ∙| 
+            let mut hset = Box::new(HashSet::new()); 
+            hset.insert(token::Type::Type2); // | 
+            fmap.insert(Label::Op1R0, hset);
+        // Op : | ∙
+            let mut hset = Box::new(HashSet::new()); 
+            hset.insert(token::Type::Type1); // id 
+            fmap.insert(Label::Op1R1, hset);
         fmap
     };
 
@@ -505,6 +500,10 @@ impl fmt::Display for Error {
             hset.insert(token::Type::EOF); // EOF 
             hset.insert(token::Type::Type2); // | 
             fmap.insert(NT::Exp, hset);
+        // Op
+            let mut hset = Box::new(HashSet::new()); 
+            hset.insert(token::Type::Type1); // id 
+            fmap.insert(NT::Op, hset);
         fmap
     };
 }

@@ -19,6 +19,8 @@ use crate::parser::{slot, symbols};
 use crate::parser::symbols::{NT, Symbol};
 use crate::token::{Token};
 
+use std::cmp::Ordering;
+use std::cmp::Ordering::{Less, Greater};
 use std::collections::HashMap;
 use std::rc::Rc;
 use std::fmt;
@@ -53,10 +55,33 @@ struct NTSlot {
 /// BSR is the binary subtree representation of a parsed nonterminal
 #[derive(Hash, Eq, PartialEq)]
 pub struct BSR {
-    label: slot::Label,
-    lext: usize,
-    pivot: usize,
-    rext: usize,
+    pub label: slot::Label,
+    pub lext: usize,
+    pub pivot: usize,
+    pub rext: usize,
+}
+
+impl BSR {
+    fn cmp(&self, other: &Self) -> Ordering {
+        if self.lext < other.lext {
+            return Less;
+        }
+        if self.lext > other.lext {
+            return Greater;
+        }
+        // self.lext == other.lext
+        if self.rext > other.rext {
+            return Less;
+        }
+        if self.rext < other.rext {
+            return Greater;
+        }
+        // self.rext == other.rext
+        if self.pivot < other.pivot {
+            return Less;
+        }
+        Greater
+    }
 }
 
 impl Set {
@@ -143,6 +168,17 @@ impl Set {
         return false;
     }
 
+    /// Returns all the NT BSR entries. Used for debugging.
+    #[allow(dead_code)]
+    pub fn get_all(&self) -> Vec<Rc<BSR>> {
+        let mut bsrs: Vec<Rc<BSR>> = Vec::with_capacity(128);
+        for b in self.slot_entries.keys() {
+            bsrs.push(b.clone());
+        }
+        bsrs.sort_by(|a, b| a.cmp(b));
+        bsrs
+    }
+
     // get_root returns the root of the parse tree of an unambiguous parse.
     // get_root fails if the parse was ambiguous. Use get_roots() for ambiguous parses.
     #[allow(dead_code)]
@@ -160,7 +196,7 @@ impl Set {
     pub fn get_roots(&self) -> Vec<Rc<BSR>> {
         let mut roots: Vec<Rc<BSR>> = Vec::with_capacity(128);
         for b in self.slot_entries.keys() {
-            if b.label.head() == &self.start_sym && b.lext == 0 && self.rext == self.rext {
+            if b.label.head() == &self.start_sym && b.lext == 0 && b.rext == self.rext {
                 roots.push(b.clone())
             }
         }

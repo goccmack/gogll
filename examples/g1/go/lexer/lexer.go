@@ -169,6 +169,7 @@ var accept = []token.Type{
 	token.Error, 
 	token.Type0, 
 	token.Type2, 
+	token.Error, 
 	token.Type1, 
 }
 
@@ -201,7 +202,19 @@ var nextState = []func(r rune) state{
 	func(r rune) state {
 		switch { 
 		case unicode.IsLetter(r):
-			return 3 
+			return 4 
+		case unicode.IsNumber(r):
+			return 4 
+		}
+		return nullState
+	}, 
+	// Set4
+	func(r rune) state {
+		switch { 
+		case unicode.IsLetter(r):
+			return 4 
+		case unicode.IsNumber(r):
+			return 4 
 		}
 		return nullState
 	}, 

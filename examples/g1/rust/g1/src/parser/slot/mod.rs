@@ -16,10 +16,10 @@ pub enum Label {
     Exp0R3,
     Exp1R0,
     Exp1R1,
-    Exp1R2,
-    Exp1R3,
-    Exp2R0,
-    Exp2R1,
+    Op0R0,
+    Op0R1,
+    Op1R0,
+    Op1R1,
 }
 
 #[allow(dead_code)]
@@ -140,7 +140,11 @@ lazy_static! {
             vec![ 
                 Label::Exp0R0,
                 Label::Exp1R0,
-                Label::Exp2R0,
+            ]);
+        m.insert(NT::Op, 
+            vec![ 
+                Label::Op0R0,
+                Label::Op1R0,
             ]);
         m
      };
@@ -153,16 +157,16 @@ lazy_static! {
         m.insert(Index{nt:NT::Exp, alt:0, pos:3}, Label::Exp0R3); 
         m.insert(Index{nt:NT::Exp, alt:1, pos:0}, Label::Exp1R0); 
         m.insert(Index{nt:NT::Exp, alt:1, pos:1}, Label::Exp1R1); 
-        m.insert(Index{nt:NT::Exp, alt:1, pos:2}, Label::Exp1R2); 
-        m.insert(Index{nt:NT::Exp, alt:1, pos:3}, Label::Exp1R3); 
-        m.insert(Index{nt:NT::Exp, alt:2, pos:0}, Label::Exp2R0); 
-        m.insert(Index{nt:NT::Exp, alt:2, pos:1}, Label::Exp2R1); 
+        m.insert(Index{nt:NT::Op, alt:0, pos:0}, Label::Op0R0); 
+        m.insert(Index{nt:NT::Op, alt:0, pos:1}, Label::Op0R1); 
+        m.insert(Index{nt:NT::Op, alt:1, pos:0}, Label::Op1R0); 
+        m.insert(Index{nt:NT::Op, alt:1, pos:1}, Label::Op1R1); 
         m
     };
 
     static ref SLOTS: HashMap<Label, Slot> = {
         let mut m = HashMap::new(); 
-        // Exp : ∙Exp & Exp 
+        // Exp : ∙Exp Op Exp 
         m.insert(Label::Exp0R0, 
             Slot{
                 nt: NT::Exp,
@@ -170,12 +174,12 @@ lazy_static! {
                 pos: 0,
                 symbols: vec![ 
                     Symbol::NT(NT::Exp), 
-                    Symbol::T(T::T0), 
+                    Symbol::NT(NT::Op), 
                     Symbol::NT(NT::Exp), 
                 ],
                 label: Label::Exp0R0,
             });
-        // Exp : Exp ∙& Exp 
+        // Exp : Exp ∙Op Exp 
         m.insert(Label::Exp0R1, 
             Slot{
                 nt: NT::Exp,
@@ -183,12 +187,12 @@ lazy_static! {
                 pos: 1,
                 symbols: vec![ 
                     Symbol::NT(NT::Exp), 
-                    Symbol::T(T::T0), 
+                    Symbol::NT(NT::Op), 
                     Symbol::NT(NT::Exp), 
                 ],
                 label: Label::Exp0R1,
             });
-        // Exp : Exp & ∙Exp 
+        // Exp : Exp Op ∙Exp 
         m.insert(Label::Exp0R2, 
             Slot{
                 nt: NT::Exp,
@@ -196,12 +200,12 @@ lazy_static! {
                 pos: 2,
                 symbols: vec![ 
                     Symbol::NT(NT::Exp), 
-                    Symbol::T(T::T0), 
+                    Symbol::NT(NT::Op), 
                     Symbol::NT(NT::Exp), 
                 ],
                 label: Label::Exp0R2,
             });
-        // Exp : Exp & Exp ∙
+        // Exp : Exp Op Exp ∙
         m.insert(Label::Exp0R3, 
             Slot{
                 nt: NT::Exp,
@@ -209,84 +213,76 @@ lazy_static! {
                 pos: 3,
                 symbols: vec![ 
                     Symbol::NT(NT::Exp), 
-                    Symbol::T(T::T0), 
+                    Symbol::NT(NT::Op), 
                     Symbol::NT(NT::Exp), 
                 ],
                 label: Label::Exp0R3,
             });
-        // Exp : ∙Exp | Exp 
+        // Exp : ∙id 
         m.insert(Label::Exp1R0, 
             Slot{
                 nt: NT::Exp,
                 alt: 1,
                 pos: 0,
                 symbols: vec![ 
-                    Symbol::NT(NT::Exp), 
-                    Symbol::T(T::T2), 
-                    Symbol::NT(NT::Exp), 
+                    Symbol::T(T::T1), 
                 ],
                 label: Label::Exp1R0,
             });
-        // Exp : Exp ∙| Exp 
+        // Exp : id ∙
         m.insert(Label::Exp1R1, 
             Slot{
                 nt: NT::Exp,
                 alt: 1,
                 pos: 1,
                 symbols: vec![ 
-                    Symbol::NT(NT::Exp), 
-                    Symbol::T(T::T2), 
-                    Symbol::NT(NT::Exp), 
+                    Symbol::T(T::T1), 
                 ],
                 label: Label::Exp1R1,
             });
-        // Exp : Exp | ∙Exp 
-        m.insert(Label::Exp1R2, 
+        // Op : ∙& 
+        m.insert(Label::Op0R0, 
             Slot{
-                nt: NT::Exp,
-                alt: 1,
-                pos: 2,
-                symbols: vec![ 
-                    Symbol::NT(NT::Exp), 
-                    Symbol::T(T::T2), 
-                    Symbol::NT(NT::Exp), 
-                ],
-                label: Label::Exp1R2,
-            });
-        // Exp : Exp | Exp ∙
-        m.insert(Label::Exp1R3, 
-            Slot{
-                nt: NT::Exp,
-                alt: 1,
-                pos: 3,
-                symbols: vec![ 
-                    Symbol::NT(NT::Exp), 
-                    Symbol::T(T::T2), 
-                    Symbol::NT(NT::Exp), 
-                ],
-                label: Label::Exp1R3,
-            });
-        // Exp : ∙id 
-        m.insert(Label::Exp2R0, 
-            Slot{
-                nt: NT::Exp,
-                alt: 2,
+                nt: NT::Op,
+                alt: 0,
                 pos: 0,
                 symbols: vec![ 
-                    Symbol::T(T::T1), 
+                    Symbol::T(T::T0), 
                 ],
-                label: Label::Exp2R0,
+                label: Label::Op0R0,
             });
-        // Exp : id ∙
-        m.insert(Label::Exp2R1, 
+        // Op : & ∙
+        m.insert(Label::Op0R1, 
             Slot{
-                nt: NT::Exp,
-                alt: 2,
+                nt: NT::Op,
+                alt: 0,
                 pos: 1,
                 symbols: vec![ 
-                    Symbol::T(T::T1), 
+                    Symbol::T(T::T0), 
                 ],
-                label: Label::Exp2R1,
+                label: Label::Op0R1,
+            });
+        // Op : ∙| 
+        m.insert(Label::Op1R0, 
+            Slot{
+                nt: NT::Op,
+                alt: 1,
+                pos: 0,
+                symbols: vec![ 
+                    Symbol::T(T::T2), 
+                ],
+                label: Label::Op1R0,
+            });
+        // Op : | ∙
+        m.insert(Label::Op1R1, 
+            Slot{
+                nt: NT::Op,
+                alt: 1,
+                pos: 1,
+                symbols: vec![ 
+                    Symbol::T(T::T2), 
+                ],
+                label: Label::Op1R1,
             });
         m
 	};

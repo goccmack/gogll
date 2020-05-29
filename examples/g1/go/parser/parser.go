@@ -65,64 +65,58 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 		// p.DumpDescriptors()
 
 		switch L {
-		case slot.Exp0R0: // Exp : ∙Exp & Exp
+		case slot.Exp0R0: // Exp : ∙Exp Op Exp
 
 			p.call(slot.Exp0R1, cU, p.cI)
-		case slot.Exp0R1: // Exp : Exp ∙& Exp
+		case slot.Exp0R1: // Exp : Exp ∙Op Exp
 
 			if !p.testSelect(slot.Exp0R1) {
 				p.parseError(slot.Exp0R1, p.cI, first[slot.Exp0R1])
 				break
 			}
 
-			p.bsrSet.Add(slot.Exp0R2, cU, p.cI, p.cI+1)
-			p.cI++
+			p.call(slot.Exp0R2, cU, p.cI)
+		case slot.Exp0R2: // Exp : Exp Op ∙Exp
+
 			if !p.testSelect(slot.Exp0R2) {
 				p.parseError(slot.Exp0R2, p.cI, first[slot.Exp0R2])
 				break
 			}
 
 			p.call(slot.Exp0R3, cU, p.cI)
-		case slot.Exp0R3: // Exp : Exp & Exp ∙
+		case slot.Exp0R3: // Exp : Exp Op Exp ∙
 
 			if p.follow(symbols.NT_Exp) {
 				p.rtn(symbols.NT_Exp, cU, p.cI)
 			} else {
 				p.parseError(slot.Exp0R0, p.cI, followSets[symbols.NT_Exp])
 			}
-		case slot.Exp1R0: // Exp : ∙Exp | Exp
+		case slot.Exp1R0: // Exp : ∙id
 
-			p.call(slot.Exp1R1, cU, p.cI)
-		case slot.Exp1R1: // Exp : Exp ∙| Exp
-
-			if !p.testSelect(slot.Exp1R1) {
-				p.parseError(slot.Exp1R1, p.cI, first[slot.Exp1R1])
-				break
-			}
-
-			p.bsrSet.Add(slot.Exp1R2, cU, p.cI, p.cI+1)
+			p.bsrSet.Add(slot.Exp1R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if !p.testSelect(slot.Exp1R2) {
-				p.parseError(slot.Exp1R2, p.cI, first[slot.Exp1R2])
-				break
-			}
-
-			p.call(slot.Exp1R3, cU, p.cI)
-		case slot.Exp1R3: // Exp : Exp | Exp ∙
-
 			if p.follow(symbols.NT_Exp) {
 				p.rtn(symbols.NT_Exp, cU, p.cI)
 			} else {
 				p.parseError(slot.Exp1R0, p.cI, followSets[symbols.NT_Exp])
 			}
-		case slot.Exp2R0: // Exp : ∙id
+		case slot.Op0R0: // Op : ∙&
 
-			p.bsrSet.Add(slot.Exp2R1, cU, p.cI, p.cI+1)
+			p.bsrSet.Add(slot.Op0R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_Exp) {
-				p.rtn(symbols.NT_Exp, cU, p.cI)
+			if p.follow(symbols.NT_Op) {
+				p.rtn(symbols.NT_Op, cU, p.cI)
 			} else {
-				p.parseError(slot.Exp2R0, p.cI, followSets[symbols.NT_Exp])
+				p.parseError(slot.Op0R0, p.cI, followSets[symbols.NT_Op])
+			}
+		case slot.Op1R0: // Op : ∙|
+
+			p.bsrSet.Add(slot.Op1R1, cU, p.cI, p.cI+1)
+			p.cI++
+			if p.follow(symbols.NT_Op) {
+				p.rtn(symbols.NT_Op, cU, p.cI)
+			} else {
+				p.parseError(slot.Op1R0, p.cI, followSets[symbols.NT_Op])
 			}
 
 		default:
@@ -366,37 +360,20 @@ func (p *parser) testSelect(l slot.Label) bool {
 }
 
 var first = []map[token.Type]string{
-	// Exp : ∙Exp & Exp
+	// Exp : ∙Exp Op Exp
 	{
 		token.Type1: "id",
 	},
-	// Exp : Exp ∙& Exp
+	// Exp : Exp ∙Op Exp
 	{
 		token.Type0: "&",
-	},
-	// Exp : Exp & ∙Exp
-	{
-		token.Type1: "id",
-	},
-	// Exp : Exp & Exp ∙
-	{
-		token.Type0: "&",
-		token.EOF:   "EOF",
 		token.Type2: "|",
 	},
-	// Exp : ∙Exp | Exp
+	// Exp : Exp Op ∙Exp
 	{
 		token.Type1: "id",
 	},
-	// Exp : Exp ∙| Exp
-	{
-		token.Type2: "|",
-	},
-	// Exp : Exp | ∙Exp
-	{
-		token.Type1: "id",
-	},
-	// Exp : Exp | Exp ∙
+	// Exp : Exp Op Exp ∙
 	{
 		token.Type0: "&",
 		token.EOF:   "EOF",
@@ -412,6 +389,22 @@ var first = []map[token.Type]string{
 		token.EOF:   "EOF",
 		token.Type2: "|",
 	},
+	// Op : ∙&
+	{
+		token.Type0: "&",
+	},
+	// Op : & ∙
+	{
+		token.Type1: "id",
+	},
+	// Op : ∙|
+	{
+		token.Type2: "|",
+	},
+	// Op : | ∙
+	{
+		token.Type1: "id",
+	},
 }
 
 var followSets = []map[token.Type]string{
@@ -420,6 +413,10 @@ var followSets = []map[token.Type]string{
 		token.Type0: "&",
 		token.EOF:   "EOF",
 		token.Type2: "|",
+	},
+	// Op
+	{
+		token.Type1: "id",
 	},
 }
 
