@@ -4,42 +4,38 @@
 Copyright 2019 Marius Ackerman. 
 
 # GoGLL
-Gogll is a compiler kit that generates Go and Rust code for a  lexer and parser from one input grammar. 
+Gogll generates a GLL parser and FSA-based lexer for any context-free grammar. 
+The generated code is Go or Rust.
 
-The generated lexer is a linear-time finite state automaton FSA [[Grune et al 2012](#Grune-et-al-2012)].
+[Click here](https://goccmack.github.io/posts/2020-05-31_gogll/) for an introduction
+to GLL.
+
+The generated parser is a clustered nonterminal parser (CNP) following 
+[[Scott et al 2019](#Scott-et-al-2019)]. 
+CNP is a version of generalised LL parsing (GLL) 
+[[Scott & Johnstone 2016](#Scott-et-al-2016)]. 
+GLL parsers can parse all context free (CF) languages.
+
+The generated lexer is a linear-time finite state automaton FSA 
+[[Grune et al 2012](#Grune-et-al-2012)].
 The lexer ignores whitespace.
-
-The generated parser is a clustered nonterminal parser (CNP) following [[Scott et al 2019](#Scott-et-al-2019)]. CNP is a version of generalised LL parsing (GLL) [[Scott & Johnstone 2016](#Scott-et-al-2016)]. GLL parsers can parse all context free (CF) languages.
 
 Gogll accepts grammars in markdown files, which is very useful for documenting the grammar.
 For example: see
 [gogll's own grammar](gogll.md).
 
-GLL has worst-case cubic time and space complexity but linear complexity for all LL(1) productions [[Scott et al 2016](#Scott-et-al-2016)]. For comparable grammars tested so far gogll produces faster lexers and parsers than [gocc](https://github.com/goccmack/gocc) (FSA/LR-1).
+GLL has worst-case cubic time and space complexity but linear complexity for all 
+LL productions [[Scott et al 2016](#Scott-et-al-2016)]. 
+[See here](https://goccmack.github.io/posts/2020-05-31_gogll/) for space and
+CPU time measurements of an extreme ambiguous example.
+For comparable grammars tested so far gogll produces faster lexers and parsers 
+than [gocc](https://github.com/goccmack/gocc) (FSA/LR-1).
 See the table below.
 
 # News
-## 2020-05-22
-Gogll generated Go and Rust code compared head to head.
-
-This test was based on the ambiguous grammar [G1](examples/g1/g1.md) and the 
-input string, [input.txt](examples/g1/input.txt). 
-The number of syntactically valid parse trees is determined by the 
-[Catalan number](https://en.wikipedia.org/wiki/Catalan_number)
-C[19] = 1_767_263_190. The parse trees are represented in gogll's BSR version of SPPF by 
-only 1369 non-terminal BSR nodes.
-The performance of the [Go](examples/g1/go) and [Rust](examples/g1/rust/g1)
-implementations were measured over 10 runs each. The results are:
-
-||Go Parse | Go Treewalk | Rust Parse | Rust Treewalk 
-|---|---|---|---|---|
-Avg | 2.4 ms | 2_808.8 ms | 3.6 ms | 1_040.5 ms
-Min | 2.3 ms | 6.1 ms | 3.0 ms | 5.6 ms 
-Max | 2.6 ms | 7_258.8 ms | 4.0 ms | 3_065.1 ms
-
-1. Parse is measured from after the lexing is complete until the BSR set is returned by the parser.
-1. Treewalk involves walking the parse forest and picking the first parse tree
-that is valid under the operator precedence rules (`id > & > |`). 
+## 2020-06-01
+[See](https://goccmack.github.io/posts/2020-05-31_gogll/) for an introduction
+to GLL and a performance comparison of the generated Go and Rust code parsers.
 
 ## 2020-05-22
 GoGLL v3.1 generates Rust as well as Go parsers with similar performance:
