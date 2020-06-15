@@ -67,7 +67,7 @@ words of gogll.
 ```
 LexSymbol : "." | "any" string_lit | char_lit | LexBracket | "not" string_lit | UnicodeClass ;
 UnicodeClass : "letter" | "upcase" | "lowcase" | "number" ;
-char_lit : '\'' (not "\\'" | '\\' any "\\'nrt") '\'' ;
+char_lit : '\'' (not "'" | '\\' any "\\'nrt") '\'' ;
 ```
 `char_lit` is a character literal enclosed in single quotes. A char literal may
 be an escaped character:
