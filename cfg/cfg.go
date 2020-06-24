@@ -39,6 +39,7 @@ var (
 	Verbose bool
 	Target  TargetLanguage
 
+	All        = flag.Bool("a", false, "Regenerate all files")
 	BSRStats   = flag.Bool("bs", false, "Print BSR stats")
 	help       = flag.Bool("h", false, "Print help")
 	CPUProfile = flag.Bool("CPUProf", false, "Generate CPU profile")
@@ -46,6 +47,11 @@ var (
 	verbose    = flag.Bool("v", false, "Verbose")
 	version    = flag.Bool("version", false, "Version")
 	target     = flag.String("t", "go", "Target Language")
+
+	GLL               = flag.Bool("gll", true, "Generate GLL parser")
+	Knuth             = flag.Bool("knuth", false, "Generate Knuth LR(1) parser")
+	Pager             = flag.Bool("pager", false, "Generate Pager's PGM parser")
+	AutoResolveLRConf = flag.Bool("resolve_conflicts", false, "Auto resolve LR(1) conflicts")
 )
 
 func GetParams() {
@@ -61,6 +67,7 @@ func GetParams() {
 	getSourceFile()
 	getFileBase()
 	getTargetLanguage()
+	getParserType()
 	Verbose = *verbose
 }
 
@@ -72,6 +79,15 @@ func getFileBase() {
 		if BaseDir == "" {
 			BaseDir = "."
 		}
+	}
+}
+
+func getParserType() {
+	if *Pager || *Knuth {
+		*GLL = false
+	}
+	if *Pager && *Knuth {
+		fail("Only one of pager or knuth may be selected")
 	}
 }
 
@@ -108,6 +124,9 @@ func usage() {
         segments enclosed in triple backticks.
     
     -h : Optional. Display this help.
+
+    -a : Optional. Regenerate all files.
+         WARNING: This may destroy user editing in the LR(1) AST.
     
     -o <out dir>: Optional. The directory to which code will be generated.
                   Default: the same directory as <source file>.
@@ -115,8 +134,17 @@ func usage() {
     -t <target>: Optional. The target language for code generation.
                  Default: go
                  Valid options: go, rust
+
+    -knuth: Optional. Generate a Knuth LR(1) parser
+            Default false
+
+    -pager: Optional. Generate a Pager PGM LR(1) parser.
+            Default false
+
+    - resolve_conflicts: Optional. Automatically resolve LR(1) conflicts.
+            Default: false. Only used when generating LR(1) parsers.
     
-    -bs: Optional. Print BSR statistics.
+    -bs: Optional. Print BSR statistics (GLL only).
     
     -v : Optional. Verbose: generate additional information files.
     

@@ -26,7 +26,10 @@ import (
 	"github.com/goccmack/gogll/cfg"
 	"github.com/goccmack/gogll/frstflw"
 	genff "github.com/goccmack/gogll/gen/firstfollow"
-	"github.com/goccmack/gogll/gen/golang"
+	gengogll "github.com/goccmack/gogll/gen/golang/gll"
+	gengolexer "github.com/goccmack/gogll/gen/golang/lexer"
+	gengolr1 "github.com/goccmack/gogll/gen/golang/lr1"
+	gengotoken "github.com/goccmack/gogll/gen/golang/token"
 	"github.com/goccmack/gogll/gen/lexfsa"
 	"github.com/goccmack/gogll/gen/rust"
 	"github.com/goccmack/gogll/gen/slots"
@@ -35,6 +38,7 @@ import (
 	"github.com/goccmack/gogll/im/tokens"
 	"github.com/goccmack/gogll/lex/items"
 	"github.com/goccmack/gogll/lexer"
+	"github.com/goccmack/gogll/lr1"
 	"github.com/goccmack/gogll/parser"
 	"github.com/goccmack/gogll/sc"
 	"github.com/goccmack/gogll/symbols"
@@ -85,11 +89,23 @@ func main() {
 
 	switch cfg.Target {
 	case cfg.Go:
-		golang.Gen(g, gs, ff, lexSets, ts)
+		gengolexer.Gen(g, lexSets, ts)
+		gengotoken.Gen(g, ts)
 	case cfg.Rust:
-		rust.Gen(g, gs, ff, lexSets, ts)
+		if *cfg.GLL {
+			rust.Gen(g, gs, ff, lexSets, ts)
+		}
 	default:
 		panic("Invalid target language")
+	}
+
+	if len(g.SyntaxRules) > 0 {
+		if *cfg.GLL {
+			gengogll.Gen(g, gs, ff, ts)
+		} else {
+			bprods, states, actions := lr1.Gen(g)
+			gengolr1.Gen(g.Package.GetString(), bprods, states, actions)
+		}
 	}
 }
 

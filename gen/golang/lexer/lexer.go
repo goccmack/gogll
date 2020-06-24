@@ -24,6 +24,7 @@ import (
 	"text/template"
 
 	"github.com/goccmack/gogll/ast"
+	"github.com/goccmack/gogll/cfg"
 	"github.com/goccmack/gogll/im/tokens"
 	"github.com/goccmack/gogll/lex/items"
 	"github.com/goccmack/goutil/ioutil"
@@ -43,7 +44,7 @@ type Transition struct {
 	NextState int
 }
 
-func Gen(lexDir string, g *ast.GoGLL, ls *items.Sets, ts *tokens.Tokens) {
+func Gen(g *ast.GoGLL, ls *items.Sets, ts *tokens.Tokens) {
 	tmpl, err := template.New("lexer").Parse(tmplSrc)
 	if err != nil {
 		panic(err)
@@ -52,7 +53,8 @@ func Gen(lexDir string, g *ast.GoGLL, ls *items.Sets, ts *tokens.Tokens) {
 	if err = tmpl.Execute(buf, getData(g, ls, ts)); err != nil {
 		panic(err)
 	}
-	if err = ioutil.WriteFile(filepath.Join(lexDir, "lexer.go"), buf.Bytes()); err != nil {
+	lexFile := filepath.Join(cfg.BaseDir, "lexer", "lexer.go")
+	if err = ioutil.WriteFile(lexFile, buf.Bytes()); err != nil {
 		panic(err)
 	}
 }

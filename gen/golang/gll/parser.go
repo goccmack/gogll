@@ -12,8 +12,8 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-// Package parser generates a Go GLL parser
-package parser
+// Package gll generates a Go GLL parser
+package gll
 
 import (
 	"bytes"
@@ -25,10 +25,11 @@ import (
 	"text/template"
 
 	"github.com/goccmack/gogll/ast"
+	"github.com/goccmack/gogll/cfg"
 	"github.com/goccmack/gogll/frstflw"
-	"github.com/goccmack/gogll/gen/golang/parser/bsr"
-	"github.com/goccmack/gogll/gen/golang/parser/slots"
-	"github.com/goccmack/gogll/gen/golang/parser/symbols"
+	"github.com/goccmack/gogll/gen/golang/gll/bsr"
+	"github.com/goccmack/gogll/gen/golang/gll/slots"
+	"github.com/goccmack/gogll/gen/golang/gll/symbols"
 	"github.com/goccmack/gogll/gslot"
 	"github.com/goccmack/gogll/im/tokens"
 	"github.com/goccmack/goutil/ioutil"
@@ -43,7 +44,8 @@ type gen struct {
 	ts *tokens.Tokens
 }
 
-func Gen(parserDir string, g *ast.GoGLL, gs *gslot.GSlot, ff *frstflw.FF, ts *tokens.Tokens) {
+func Gen(g *ast.GoGLL, gs *gslot.GSlot, ff *frstflw.FF, ts *tokens.Tokens) {
+	parserDir := path.Join(cfg.BaseDir, "parser")
 	gn := &gen{g, gs, ff, ts}
 	gn.genParser(parserDir)
 	bsr.Gen(filepath.Join(parserDir, "bsr", "bsr.go"), g.Package.GetString())

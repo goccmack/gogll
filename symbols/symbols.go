@@ -51,6 +51,16 @@ type NT int
 // T is the type of a terminal symbol
 type T int
 
+const (
+	Error T = iota
+	EoF
+)
+
+// $ is the EOF symbol
+// type EoF string
+
+// const EOF EoF = "$"
+
 // Symbols is a list of Symbol
 type Symbols []Symbol
 
@@ -77,16 +87,29 @@ func Init(g *ast.GoGLL) {
 	}
 
 	ts := g.Terminals.ElementsSorted()
-	tToLiteral = make([]string, len(ts))
-	literalToT = make(map[string]T, len(ts))
-	tToString = make([]string, len(ts))
+	tToLiteral = make([]string, len(ts)+2)
+	literalToT = make(map[string]T, len(ts)+2)
+	tToString = make([]string, len(ts)+2)
+
+	tToLiteral[0] = "Error"
+	literalToT["Error"] = T(0)
+	tToString[0] = "Error"
+	tToLiteral[1] = "$"
+	literalToT["$"] = T(1)
+	tToString[1] = "EOF"
+
 	for i, t := range ts {
-		tToLiteral[i] = t
-		literalToT[t] = T(i)
-		tToString[i] = fmt.Sprintf("T_%d", i)
+		tToLiteral[i+2] = t
+		literalToT[t] = T(i + 2)
+		tToString[i+2] = fmt.Sprintf("Type%d", i)
 	}
 
 	initialisized = true
+}
+
+func IsNonTerminal(sym string) bool {
+	_, exist := literalToNT[sym]
+	return exist
 }
 
 // FromASTString translates an AST symbol string to Symbol
@@ -101,6 +124,15 @@ func FromASTString(astSym string) Symbol {
 		return t
 	}
 	panic(fmt.Sprintf("No symbol %s", astSym))
+}
+
+// IDToTerminal returns the T corresponding to the terminal ID s
+func IDToTerminal(s string) T {
+	if t, ok := literalToT[s]; ok {
+		return t
+	} else {
+		panic(fmt.Sprintf("Unknown terminal %s", s))
+	}
 }
 
 // IsNonTerminal always returns true if the symbol is a non-terminal
@@ -167,6 +199,8 @@ func (t T) String() string {
 	return tToLiteral[t]
 }
 
+/***/
+
 // GetNonTerminals returns the list of non-terminals used by code generation modules
 func GetNonTerminals() []NT {
 	nts := make([]NT, len(ntToLiteral))
@@ -176,6 +210,28 @@ func GetNonTerminals() []NT {
 	return nts
 }
 
+// GetNonTerminalSymbols returns the list of non-terminals used by code generation modules
+func GetNonTerminalSymbols() []string {
+	return ntToLiteral
+}
+
+// GetNTType returns the NT values of nt
+func GetNTType(nt string) NT {
+	return literalToNT[nt]
+}
+
+// GetSymbols returns the code strings of all the NT and T symbols
+func GetSymbols() []string {
+	symbols := make([]string, 0, len(ntToLiteral)+len(tToString)+1)
+	symbols = append(symbols, ntToLiteral...)
+	symbols = append(symbols, tToLiteral...)
+
+	// TODO: clean up
+	// symbols = append(symbols, EOF.GoString())
+
+	return symbols
+}
+
 // GetTerminals returns the list of terminals used by code generation modules
 func GetTerminals() []T {
 	ts := make([]T, len(tToLiteral))
@@ -183,6 +239,12 @@ func GetTerminals() []T {
 		ts[i] = T(i)
 	}
 	return ts
+}
+
+// GetTerminalSymbols returns the list of symbol strings used by code generation
+// modules of the terminals
+func GetTerminalSymbols() []string {
+	return tToLiteral
 }
 
 // Empty returns true iff ss is empty
