@@ -9,8 +9,12 @@ fn main() {
     let input: Rc<Vec<char>> = Rc::new("a + a + a".chars().collect());
     let lex = lexer::Lexer::new(input.clone());
     match parser::Parser::new(lex).parse() {
-        Ok(_) => {
-            println!("Ok");
+        Ok(res) => {
+            if let ast::Node::NT(s) = *res.unwrap() {
+                println!("{}", s);
+            } else {
+                panic!();
+            };
         }
         Err(msg) => {
             println!("Error: {}", msg);

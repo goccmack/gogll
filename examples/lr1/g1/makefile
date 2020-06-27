@@ -13,7 +13,7 @@ $(GODIR)/go.mod:
 	cd $(GODIR); go mod init g1
 
 rust: $(RUSTDIR)/Cargo.toml
-	../../../gogll -a -v -t rust -pager -o $(RUSTDIR) g1.md
+	../../../gogll -v -t rust -pager -o $(RUSTDIR) g1.md
 
 $(RUSTDIR)/Cargo.toml: 
 	cargo new $(RUSTDIR)

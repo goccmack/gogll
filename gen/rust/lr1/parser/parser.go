@@ -50,7 +50,7 @@ use action_table::{ACTION_TABLE, Action::{Accept, Reduce, Shift}};
 use goto_table::GOTO_TABLE;
 use productions_table::PROD_TABLE;
 use crate::ast;
-use crate::ast::{Node::{NT, T}};
+use crate::ast::{Node::{T}};
 use crate::lexer;
 use crate::token;
 

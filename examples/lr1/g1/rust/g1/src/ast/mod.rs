@@ -6,37 +6,43 @@ use std::rc::Rc;
 
 #[allow(dead_code)]
 pub enum Node { 
-	NT(NT),
+	NT(String),
 	T(Rc<token::Token>),
 }
 
-pub enum NT { 
-	G0, 
-	E1, 
-	T1, 
-}
-
 /// G0 : E1 ;
-pub fn g_0_0(params: Vec<Option<Box<Node>>>) -> Result<Option<Box<Node>>, String> {
-    println!("ast.g_0_0 is unimplemented");
-    Ok(None)
+pub fn g_0_0(mut params: Vec<Option<Box<Node>>>) -> Result<Option<Box<Node>>, String> {
+    Ok(params.remove(0))
 }
 
 /// E1 : E1 + T1 ;
-pub fn e_1_0(params: Vec<Option<Box<Node>>>) -> Result<Option<Box<Node>>, String> {
-    println!("ast.e_1_0 is unimplemented");
-    Ok(None)
+pub fn e_1_0(mut params: Vec<Option<Box<Node>>>) -> Result<Option<Box<Node>>, String> {
+    let mut e1 = if let Node::NT(s) = *params.remove(0).unwrap() {
+        s
+    } else {
+        panic!()
+    };
+    e1.push_str(" + ");
+    if let Node::NT(s) = *params.remove(1).unwrap() {
+        e1.push_str(&s)
+    } else {
+        panic!()
+    };
+    Ok(Some(Box::new(Node::NT(e1))))
 }
 
 /// E1 : T1 ;
-pub fn e_1_1(params: Vec<Option<Box<Node>>>) -> Result<Option<Box<Node>>, String> {
-    println!("ast.e_1_1 is unimplemented");
-    Ok(None)
+pub fn e_1_1(mut params: Vec<Option<Box<Node>>>) -> Result<Option<Box<Node>>, String> {
+    Ok(params.remove(0))
 }
 
 /// T1 : a ;
-pub fn t_1_0(params: Vec<Option<Box<Node>>>) -> Result<Option<Box<Node>>, String> {
-    println!("ast.t_1_0 is unimplemented");
-    Ok(None)
+pub fn t_1_0(mut params: Vec<Option<Box<Node>>>) -> Result<Option<Box<Node>>, String> {
+    let a: Node = *params.remove(0).unwrap();
+    if let Node::T(tok) = a {
+        Ok(Some(Box::new(Node::NT(tok.literal_string()))))
+    } else {
+        panic!()
+    }
 }
 
