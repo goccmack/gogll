@@ -19,6 +19,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"path"
 	"path/filepath"
 	"runtime/pprof"
 
@@ -31,7 +32,10 @@ import (
 	gengolr1 "github.com/goccmack/gogll/gen/golang/lr1"
 	gengotoken "github.com/goccmack/gogll/gen/golang/token"
 	"github.com/goccmack/gogll/gen/lexfsa"
-	"github.com/goccmack/gogll/gen/rust"
+	genrustgll "github.com/goccmack/gogll/gen/rust/gll"
+	genrustlexer "github.com/goccmack/gogll/gen/rust/lexer"
+	genrustlr1 "github.com/goccmack/gogll/gen/rust/lr1"
+	genrusttoken "github.com/goccmack/gogll/gen/rust/token"
 	"github.com/goccmack/gogll/gen/slots"
 	gensymbols "github.com/goccmack/gogll/gen/symbols"
 	"github.com/goccmack/gogll/gslot"
@@ -91,22 +95,29 @@ func main() {
 	case cfg.Go:
 		gengolexer.Gen(g, lexSets, ts)
 		gengotoken.Gen(g, ts)
+		if len(g.SyntaxRules) > 0 {
+			if *cfg.GLL {
+				gengogll.Gen(g, gs, ff, ts)
+			} else {
+				bprods, states, actions := lr1.Gen(g)
+				gengolr1.Gen(g.Package.GetString(), bprods, states, actions)
+			}
+		}
 	case cfg.Rust:
-		if *cfg.GLL {
-			rust.Gen(g, gs, ff, lexSets, ts)
+		genrusttoken.Gen(filepath.Join(cfg.BaseDir, "src", "token", "mod.rs"), ts)
+		genrustlexer.Gen(path.Join(cfg.BaseDir, "src", "lexer", "mod.rs"), g, lexSets, ts)
+		if len(g.SyntaxRules) > 0 {
+			if *cfg.GLL {
+				genrustgll.Gen(path.Join(cfg.BaseDir, "src", "parser"), g, gs, ff, ts)
+			} else {
+				bprods, states, actions := lr1.Gen(g)
+				genrustlr1.Gen(g.Package.GetString(), bprods, states, actions)
+			}
 		}
 	default:
-		panic("Invalid target language")
+		fail(fmt.Errorf("Invalid target language"))
 	}
 
-	if len(g.SyntaxRules) > 0 {
-		if *cfg.GLL {
-			gengogll.Gen(g, gs, ff, ts)
-		} else {
-			bprods, states, actions := lr1.Gen(g)
-			gengolr1.Gen(g.Package.GetString(), bprods, states, actions)
-		}
-	}
 }
 
 func fail(err error) {

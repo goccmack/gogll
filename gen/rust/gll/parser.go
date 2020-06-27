@@ -12,18 +12,18 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-// Package parser generates Rust code for a GLL parser
-package parser
+// Package gll generates Rust code for a GLL parser
+package gll
 
 import (
 	"path/filepath"
 
 	"github.com/goccmack/gogll/ast"
 	"github.com/goccmack/gogll/frstflw"
-	"github.com/goccmack/gogll/gen/rust/parser/bsr"
-	"github.com/goccmack/gogll/gen/rust/parser/parser"
-	"github.com/goccmack/gogll/gen/rust/parser/slot"
-	"github.com/goccmack/gogll/gen/rust/parser/symbols"
+	"github.com/goccmack/gogll/gen/rust/gll/bsr"
+	"github.com/goccmack/gogll/gen/rust/gll/parser"
+	"github.com/goccmack/gogll/gen/rust/gll/slot"
+	"github.com/goccmack/gogll/gen/rust/gll/symbols"
 	"github.com/goccmack/gogll/gslot"
 	"github.com/goccmack/gogll/im/tokens"
 )

@@ -16,7 +16,9 @@ func genGotoTable(outDir string, states *states.States) {
 		panic(err)
 	}
 	wr := new(bytes.Buffer)
-	tmpl.Execute(wr, getGotoTableData(states))
+	if err := tmpl.Execute(wr, getGotoTableData(states)); err != nil {
+		panic(err)
+	}
 	if err := ioutil.WriteFile(path.Join(outDir, "parser", "gototable.go"), wr.Bytes()); err != nil {
 		panic(err)
 	}

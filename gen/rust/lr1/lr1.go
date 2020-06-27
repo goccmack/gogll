@@ -1,11 +1,11 @@
 /*
-Package lr1 generates Go code for the LR(1) parser
+Package lr1 generates Rust code for the LR(1) parser
 */
 package lr1
 
 import (
-	"github.com/goccmack/gogll/gen/golang/lr1/ast"
-	"github.com/goccmack/gogll/gen/golang/lr1/parser"
+	"github.com/goccmack/gogll/gen/rust/lr1/ast"
+	"github.com/goccmack/gogll/gen/rust/lr1/parser"
 	"github.com/goccmack/gogll/lr1/action"
 	"github.com/goccmack/gogll/lr1/basicprod"
 	"github.com/goccmack/gogll/lr1/states"
