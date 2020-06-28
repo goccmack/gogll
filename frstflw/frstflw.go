@@ -185,7 +185,7 @@ func (ff *FF) initFollowSets() {
 	ff.followSets = make(map[string]*stringset.StringSet)
 	for _, nt := range ff.g.NonTerminals.Elements() {
 		if nt == ff.g.StartSymbol() {
-			ff.followSets[nt] = stringset.New("EOF")
+			ff.followSets[nt] = stringset.New("$")
 		} else {
 			ff.followSets[nt] = stringset.New()
 		}

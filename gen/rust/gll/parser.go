@@ -25,12 +25,11 @@ import (
 	"github.com/goccmack/gogll/gen/rust/gll/slot"
 	"github.com/goccmack/gogll/gen/rust/gll/symbols"
 	"github.com/goccmack/gogll/gslot"
-	"github.com/goccmack/gogll/im/tokens"
 )
 
-func Gen(parserDir string, g *ast.GoGLL, gs *gslot.GSlot, ff *frstflw.FF, ts *tokens.Tokens) {
+func Gen(parserDir string, g *ast.GoGLL, gs *gslot.GSlot, ff *frstflw.FF) {
 	bsr.Gen(filepath.Join(parserDir, "bsr", "mod.rs"))
 	symbols.Gen(filepath.Join(parserDir, "symbols", "mod.rs"), g)
 	slot.Gen(filepath.Join(parserDir, "slot", "mod.rs"), g, gs, ff)
-	parser.Gen(filepath.Join(parserDir, "mod.rs"), g, gs, ff, ts)
+	parser.Gen(filepath.Join(parserDir, "mod.rs"), g, gs, ff)
 }

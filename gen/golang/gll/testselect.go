@@ -23,6 +23,7 @@ import (
 
 	"github.com/goccmack/gogll/frstflw"
 	"github.com/goccmack/gogll/gslot"
+	"github.com/goccmack/gogll/symbols"
 )
 
 func (g *gen) genTestSelect() string {
@@ -98,19 +99,21 @@ func (g *gen) getSlotTSData(l gslot.Label) *TSData {
 
 func (g *gen) getFirst(l gslot.Label) (tokens []*Symbol) {
 	// fmt.Printf("testSelect.getFirst(%s)\n", l)
+
 	ss := l.Symbols()[l.Pos:]
 	frst := g.ff.FirstOfString(ss.Strings())
 	firstSymbols := frst.Elements()
 	sort.Slice(
 		firstSymbols,
 		func(i, j int) bool { return firstSymbols[i] < firstSymbols[j] })
-	tokMap := g.ts.LiteralToString
+
 	// fmt.Printf("  first: %s\n", frst)
+
 	for _, sym := range firstSymbols {
 		if sym != frstflw.Empty {
 			tokens = append(tokens,
 				&Symbol{
-					TokType: tokMap[sym],
+					TokType: symbols.TerminalLiteralToType(sym).TypeString(),
 					Label:   sym,
 				})
 		}
@@ -128,11 +131,11 @@ func (g *gen) getFollowConditions(nt string) (tokens []*Symbol) {
 		fmt.Printf("Production %s has empty follow set. It is never called\n", nt)
 		os.Exit(1)
 	}
-	tokMap := g.ts.LiteralToString
 	for _, sym := range flw.ElementsSorted() {
+		// fmt.Printf("getFollowConditions: %s\n", sym)
 		tokens = append(tokens,
 			&Symbol{
-				TokType: tokMap[sym],
+				TokType: symbols.TerminalLiteralToType(sym).TypeString(),
 				Label:   sym,
 			})
 	}

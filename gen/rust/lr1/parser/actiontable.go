@@ -126,7 +126,7 @@ pub struct ActionRow {
 lazy_static! {
 	pub static ref ACTION_TABLE: Vec<ActionRow> = {
 		let mut v: Vec<ActionRow> = Vec::with_capacity({{.NumRows}});
-        v.resize_with(6, Default::default);
+        v.resize_with({{.NumRows}}, Default::default);
 		{{range $i, $row := .Rows}}
 		v[{{$i}}].can_recover = {{printf "%t" $row.CanRecover}};{{range $a := .Actions}}
 		v[{{$i}}].actions.insert(token::Type::{{$a.Token}}, Action::{{$a.Action}}); {{end}}{{end}}

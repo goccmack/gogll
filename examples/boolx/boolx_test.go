@@ -29,11 +29,16 @@ type Expr struct {
 const t1Src = `a | b & c | d & e`
 
 func Test1(t *testing.T) {
-	if err, errs := parser.Parse(lexer.New([]rune(t1Src))); err != nil {
+	bsrSet, errs := parser.Parse(lexer.New([]rune(t1Src)))
+	if len(errs) > 0 {
 		fail(errs)
 	}
 
-	for i, r := range bsr.GetRoots() {
+	if bsrSet == nil {
+		panic("BSRSet == nil")
+	}
+
+	for i, r := range bsrSet.GetRoots() {
 		fmt.Printf("%d: %s\n", i, buildExpr(r))
 	}
 }

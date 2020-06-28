@@ -71,7 +71,7 @@ var (
 	ntToString    []string
 	literalToT    map[string]T
 	tToLiteral    []string
-	tToString     []string
+	tToTypeString []string
 )
 
 // Init initialises the symbols
@@ -89,19 +89,19 @@ func Init(g *ast.GoGLL) {
 	ts := g.Terminals.ElementsSorted()
 	tToLiteral = make([]string, len(ts)+2)
 	literalToT = make(map[string]T, len(ts)+2)
-	tToString = make([]string, len(ts)+2)
+	tToTypeString = make([]string, len(ts)+2)
 
 	tToLiteral[0] = "Error"
 	literalToT["Error"] = T(0)
-	tToString[0] = "Error"
+	tToTypeString[0] = "Error"
 	tToLiteral[1] = "$"
 	literalToT["$"] = T(1)
-	tToString[1] = "EOF"
+	tToTypeString[1] = "EOF"
 
 	for i, t := range ts {
 		tToLiteral[i+2] = t
 		literalToT[t] = T(i + 2)
-		tToString[i+2] = fmt.Sprintf("Type%d", i)
+		tToTypeString[i+2] = fmt.Sprintf("T_%d", i)
 	}
 
 	initialisized = true
@@ -126,8 +126,8 @@ func FromASTString(astSym string) Symbol {
 	panic(fmt.Sprintf("No symbol %s", astSym))
 }
 
-// IDToTerminal returns the T corresponding to the terminal ID s
-func IDToTerminal(s string) T {
+// TerminalLiteralToType returns the T corresponding to the terminal litral s
+func TerminalLiteralToType(s string) T {
 	if t, ok := literalToT[s]; ok {
 		return t
 	} else {
@@ -183,12 +183,21 @@ func (t T) Literal() string {
 	return tToLiteral[t]
 }
 
+// TODO: obsolete
 // GoString returns the Go representation of t used by code generation modules
 func (t T) GoString() string {
 	if !initialisized {
 		panic("Uninitialised")
 	}
-	return tToString[t]
+	return tToTypeString[t]
+}
+
+// TypeString returns the Go representation of t used by code generation modules
+func (t T) TypeString() string {
+	if !initialisized {
+		panic("Uninitialised")
+	}
+	return tToTypeString[t]
 }
 
 // String returns the string representation of t used by code generation modules
@@ -222,7 +231,7 @@ func GetNTType(nt string) NT {
 
 // GetSymbols returns the code strings of all the NT and T symbols
 func GetSymbols() []string {
-	symbols := make([]string, 0, len(ntToLiteral)+len(tToString)+1)
+	symbols := make([]string, 0, len(ntToLiteral)+len(tToTypeString)+1)
 	symbols = append(symbols, ntToLiteral...)
 	symbols = append(symbols, tToLiteral...)
 
@@ -245,6 +254,12 @@ func GetTerminals() []T {
 // modules of the terminals
 func GetTerminalSymbols() []string {
 	return tToLiteral
+}
+
+// GetTerminalTypeStrings returns the type strings of the terminals in order of
+// their types.
+func GetTerminalTypeStrings() []string {
+	return tToTypeString
 }
 
 // Empty returns true iff ss is empty

@@ -189,69 +189,69 @@ var accept = []token.Type{
 	token.Error, 
 	token.Error, 
 	token.Error, 
-	token.Type0, 
-	token.Type1, 
-	token.Type2, 
-	token.Type3, 
-	token.Type4, 
-	token.Type5, 
-	token.Type6, 
-	token.Type7, 
-	token.Type8, 
+	token.T_0, 
+	token.T_1, 
+	token.T_2, 
+	token.T_3, 
+	token.T_4, 
+	token.T_5, 
+	token.T_6, 
+	token.T_7, 
+	token.T_8, 
 	token.Error, 
 	token.Error, 
 	token.Error, 
 	token.Error, 
 	token.Error, 
 	token.Error, 
-	token.Type21, 
-	token.Type22, 
-	token.Type23, 
+	token.T_21, 
+	token.T_22, 
+	token.T_23, 
 	token.Error, 
 	token.Error, 
-	token.Type18, 
+	token.T_18, 
 	token.Error, 
 	token.Error, 
 	token.Error, 
-	token.Type19, 
-	token.Type19, 
-	token.Type19, 
-	token.Type19, 
-	token.Type19, 
-	token.Type19, 
-	token.Type19, 
-	token.Type19, 
-	token.Type19, 
-	token.Type15, 
-	token.Type10, 
-	token.Type10, 
-	token.Type9, 
-	token.Type19, 
-	token.Type19, 
-	token.Type19, 
-	token.Type14, 
-	token.Type19, 
-	token.Type19, 
-	token.Type19, 
-	token.Type19, 
-	token.Type19, 
-	token.Type19, 
-	token.Type19, 
-	token.Type19, 
-	token.Type19, 
-	token.Type11, 
-	token.Type19, 
-	token.Type19, 
-	token.Type19, 
-	token.Type19, 
-	token.Type19, 
-	token.Type12, 
-	token.Type19, 
-	token.Type16, 
-	token.Type19, 
-	token.Type20, 
-	token.Type13, 
-	token.Type17, 
+	token.T_19, 
+	token.T_19, 
+	token.T_19, 
+	token.T_19, 
+	token.T_19, 
+	token.T_19, 
+	token.T_19, 
+	token.T_19, 
+	token.T_19, 
+	token.T_15, 
+	token.T_10, 
+	token.T_10, 
+	token.T_9, 
+	token.T_19, 
+	token.T_19, 
+	token.T_19, 
+	token.T_14, 
+	token.T_19, 
+	token.T_19, 
+	token.T_19, 
+	token.T_19, 
+	token.T_19, 
+	token.T_19, 
+	token.T_19, 
+	token.T_19, 
+	token.T_19, 
+	token.T_11, 
+	token.T_19, 
+	token.T_19, 
+	token.T_19, 
+	token.T_19, 
+	token.T_19, 
+	token.T_12, 
+	token.T_19, 
+	token.T_16, 
+	token.T_19, 
+	token.T_20, 
+	token.T_13, 
+	token.T_17, 
 }
 
 var nextState = []func(r rune) state{ 
@@ -298,9 +298,9 @@ var nextState = []func(r rune) state{
 			return 19 
 		case r == '}':
 			return 20 
-		case unicode.IsUpper(r):
-			return 21 
 		case unicode.IsLower(r):
+			return 21 
+		case unicode.IsUpper(r):
 			return 22 
 		}
 		return nullState
@@ -491,11 +491,11 @@ var nextState = []func(r rune) state{
 	func(r rune) state {
 		switch { 
 		case r == '_':
-			return 36 
+			return 27 
 		case unicode.IsLetter(r):
-			return 36 
+			return 27 
 		case unicode.IsNumber(r):
-			return 36 
+			return 27 
 		}
 		return nullState
 	}, 
@@ -503,11 +503,11 @@ var nextState = []func(r rune) state{
 	func(r rune) state {
 		switch { 
 		case r == '_':
-			return 27 
+			return 36 
 		case unicode.IsLetter(r):
-			return 27 
+			return 36 
 		case unicode.IsNumber(r):
-			return 27 
+			return 36 
 		}
 		return nullState
 	}, 

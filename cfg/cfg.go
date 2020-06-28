@@ -20,24 +20,15 @@ import (
 	"fmt"
 	"os"
 	"path"
-	"strings"
 )
 
 // Version is the version of this compiler
 const Version = "v3.1.5"
 
-type TargetLanguage int
-
-const (
-	Go TargetLanguage = iota
-	Rust
-)
-
 var (
 	BaseDir string
 	SrcFile string
 	Verbose bool
-	Target  TargetLanguage
 
 	All        = flag.Bool("a", false, "Regenerate all files")
 	BSRStats   = flag.Bool("bs", false, "Print BSR stats")
@@ -46,7 +37,11 @@ var (
 	outDir     = flag.String("o", "", "")
 	verbose    = flag.Bool("v", false, "Verbose")
 	version    = flag.Bool("version", false, "Version")
-	target     = flag.String("t", "go", "Target Language")
+
+	Go   = flag.Bool("go", true, "Generate Go code")
+	Rust = flag.Bool("rust", false, "Generate Rust code")
+
+	target = flag.String("t", "go", "Target Language")
 
 	GLL               = flag.Bool("gll", true, "Generate GLL parser")
 	Knuth             = flag.Bool("knuth", false, "Generate Knuth LR(1) parser")
@@ -66,8 +61,10 @@ func GetParams() {
 	}
 	getSourceFile()
 	getFileBase()
-	getTargetLanguage()
 	getParserType()
+	if *Rust {
+		*Go = false
+	}
 	Verbose = *verbose
 }
 
@@ -98,17 +95,6 @@ func getSourceFile() {
 	SrcFile = flag.Arg(0)
 }
 
-func getTargetLanguage() {
-	switch strings.ToLower(*target) {
-	case "go":
-		Target = Go
-	case "rust":
-		Target = Rust
-	default:
-		fail("target language must be one of: go, rust")
-	}
-}
-
 func fail(msg string) {
 	fmt.Printf("ERROR: %s\n", msg)
 	usage()
@@ -117,7 +103,7 @@ func fail(msg string) {
 
 func usage() {
 	msg :=
-		`use: gogll [-h][-version][-v][-CPUProf] [-o <out dir>] [-t <target>] <source file>
+		`use: gogll [-h][-version][-v][-CPUProf] [-o <out dir>] [-go] [-rust] <source file>
     
     <source file> : Mandatory. Name of the source file to be processed. 
         If the file extension is ".md" the bnf is extracted from markdown code 
@@ -131,10 +117,12 @@ func usage() {
     -o <out dir>: Optional. The directory to which code will be generated.
                   Default: the same directory as <source file>.
                   
-    -t <target>: Optional. The target language for code generation.
-                 Default: go
-                 Valid options: go, rust
+    -go : Optional. Generate Go code.
+          Default: true, but false if -rust is selected
 
+    -rust: Optional. Generate Rust code.
+           Default: false
+                  
     -knuth: Optional. Generate a Knuth LR(1) parser
             Default false
 

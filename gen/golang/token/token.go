@@ -24,7 +24,7 @@ import (
 
 	"github.com/goccmack/gogll/ast"
 	"github.com/goccmack/gogll/cfg"
-	"github.com/goccmack/gogll/im/tokens"
+	"github.com/goccmack/gogll/symbols"
 	"github.com/goccmack/goutil/ioutil"
 )
 
@@ -37,13 +37,13 @@ type TypeDef struct {
 	Name, Comment string
 }
 
-func Gen(g *ast.GoGLL, ts *tokens.Tokens) {
+func Gen(g *ast.GoGLL) {
 	tmpl, err := template.New("Token").Parse(tmplSrc)
 	if err != nil {
 		panic(err)
 	}
 	buf := new(bytes.Buffer)
-	err = tmpl.Execute(buf, getData(ts))
+	err = tmpl.Execute(buf, getData())
 	if err != nil {
 		panic(err)
 	}
@@ -52,19 +52,19 @@ func Gen(g *ast.GoGLL, ts *tokens.Tokens) {
 	}
 }
 
-func getData(ts *tokens.Tokens) *Data {
+func getData() *Data {
 	return &Data{
-		Types:        getTypes(ts),
-		TypeToString: ts.TypeToString,
+		Types:        getTypes(),
+		TypeToString: symbols.GetTerminalTypeStrings(),
 	}
 }
 
-func getTypes(ts *tokens.Tokens) (types []*TypeDef) {
-	for i := range ts.TypeToString {
+func getTypes() (types []*TypeDef) {
+	for _, t := range symbols.GetTerminals() {
 		types = append(types,
 			&TypeDef{
-				Name:    ts.TypeToString[i],
-				Comment: ts.TypeToLiteral[i],
+				Name:    t.TypeString(),
+				Comment: t.Literal(),
 			})
 	}
 	return

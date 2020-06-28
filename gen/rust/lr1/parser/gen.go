@@ -12,7 +12,6 @@ import (
 
 func Gen(pkg string, bprods []*basicprod.Production, states *states.States, actions action.Actions) {
 	genActionTable(pkg, cfg.BaseDir, bprods, states, actions)
-	genErrors(pkg)
 	genGotoTable(cfg.BaseDir, states)
 	genParser(pkg, bprods, states)
 	genProductionsTable(pkg, bprods, states)

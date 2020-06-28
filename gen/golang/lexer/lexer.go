@@ -25,8 +25,8 @@ import (
 
 	"github.com/goccmack/gogll/ast"
 	"github.com/goccmack/gogll/cfg"
-	"github.com/goccmack/gogll/im/tokens"
 	"github.com/goccmack/gogll/lex/items"
+	"github.com/goccmack/gogll/symbols"
 	"github.com/goccmack/goutil/ioutil"
 	"github.com/goccmack/goutil/stringset"
 )
@@ -44,13 +44,13 @@ type Transition struct {
 	NextState int
 }
 
-func Gen(g *ast.GoGLL, ls *items.Sets, ts *tokens.Tokens) {
+func Gen(g *ast.GoGLL, ls *items.Sets) {
 	tmpl, err := template.New("lexer").Parse(tmplSrc)
 	if err != nil {
 		panic(err)
 	}
 	buf := new(bytes.Buffer)
-	if err = tmpl.Execute(buf, getData(g, ls, ts)); err != nil {
+	if err = tmpl.Execute(buf, getData(g, ls)); err != nil {
 		panic(err)
 	}
 	lexFile := filepath.Join(cfg.BaseDir, "lexer", "lexer.go")
@@ -60,18 +60,18 @@ func Gen(g *ast.GoGLL, ls *items.Sets, ts *tokens.Tokens) {
 }
 
 // slits is the set of StringLiterals from the AST
-func getAccept(ls *items.Sets, ts *tokens.Tokens, slits *stringset.StringSet) (tokTypes []string) {
+func getAccept(ls *items.Sets, slits *stringset.StringSet) (tokTypes []string) {
 	for _, s := range ls.Sets() {
 		tok := s.Accept(slits)
-		tokTypes = append(tokTypes, ts.LiteralToString[tok])
+		tokTypes = append(tokTypes, symbols.TerminalLiteralToType(tok).TypeString())
 	}
 	return
 }
 
-func getData(g *ast.GoGLL, ls *items.Sets, ts *tokens.Tokens) *Data {
+func getData(g *ast.GoGLL, ls *items.Sets) *Data {
 	return &Data{
 		Package:     g.Package.GetString(),
-		Accept:      getAccept(ls, ts, g.GetStringLiteralsSet()),
+		Accept:      getAccept(ls, g.GetStringLiteralsSet()),
 		Transitions: getTransitions(ls),
 		Tick:        "`",
 	}

@@ -208,8 +208,7 @@ func (P *Parser) firstRecoveryState() (recoveryState int, canRecover bool) {
 func (P *Parser) newError(err error) error {
 	w := new(bytes.Buffer)
 	ln, col := P.nextToken.GetLineColumn()
-	fmt.Fprintf(w, "Error in S%d: %s @ line %d col %d",
-		P.stack.top(), P.nextToken.LiteralString(), ln, col)
+	fmt.Fprintf(w, "Error @ line %d col %d tok %s", ln, col, P.nextToken)
 	if err != nil {
 		w.WriteString(err.Error())
 	} else {

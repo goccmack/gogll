@@ -22,7 +22,6 @@ import (
 	"github.com/goccmack/gogll/ast"
 	"github.com/goccmack/gogll/frstflw"
 	"github.com/goccmack/gogll/gslot"
-	"github.com/goccmack/gogll/im/tokens"
 	"github.com/goccmack/goutil/ioutil"
 )
 
@@ -30,7 +29,6 @@ type gen struct {
 	g  *ast.GoGLL
 	gs *gslot.GSlot
 	ff *frstflw.FF
-	ts *tokens.Tokens
 }
 
 // Data contains data for the code generation template
@@ -70,8 +68,8 @@ type Symbol struct {
 	Comment   string
 }
 
-func Gen(parserFile string, g *ast.GoGLL, gs *gslot.GSlot, ff *frstflw.FF, ts *tokens.Tokens) {
-	gn := &gen{g, gs, ff, ts}
+func Gen(parserFile string, g *ast.GoGLL, gs *gslot.GSlot, ff *frstflw.FF) {
+	gn := &gen{g, gs, ff}
 	tmpl, err := template.New("Rust parser").Parse(tmplSrc)
 	if err != nil {
 		panic(err)

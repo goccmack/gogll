@@ -38,10 +38,10 @@ func newParser(l *lexer.Lexer) *parser {
 		U:      &descriptors{},
 		popped: make(map[poppedNode]bool),
 		crf: map[clusterNode][]*crfNode{
-			{symbols.NT_GoGLL, 0}: {},
+			{symbols.NT_Expr, 0}: {},
 		},
 		crfNodes:    map[crfNode]*crfNode{},
-		bsrSet:      bsr.New(symbols.NT_GoGLL, l),
+		bsrSet:      bsr.New(symbols.NT_Expr, l),
 		parseErrors: nil,
 	}
 }
@@ -55,7 +55,7 @@ func Parse(l *lexer.Lexer) (*bsr.Set, []*Error) {
 func (p *parser) parse() (*bsr.Set, []*Error) {
 	var L slot.Label
 	m, cU := len(p.lex.Tokens)-1, 0
-	p.ntAdd(symbols.NT_GoGLL, 0)
+	p.ntAdd(symbols.NT_Expr, 0)
 	// p.DumpDescriptors()
 	for !p.R.empty() {
 		L, cU, p.cI = p.R.remove()
@@ -123,7 +123,7 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			panic("This must not happen")
 		}
 	}
-	if !p.bsrSet.Contain(symbols.NT_GoGLL, 0, m) {
+	if !p.bsrSet.Contain(symbols.NT_Expr, 0, m) {
 		p.sortParseErrors()
 		return nil, p.parseErrors
 	}
@@ -362,61 +362,61 @@ func (p *parser) testSelect(l slot.Label) bool {
 var first = []map[token.Type]string{
 	// Expr : ∙var
 	{
-		token.Type1: "var",
+		token.T_1: "var",
 	},
 	// Expr : var ∙
 	{
-		token.Type0: "&",
-		token.EOF:   "EOF",
-		token.Type2: "|",
+		token.EOF: "$",
+		token.T_0: "&",
+		token.T_2: "|",
 	},
 	// Expr : ∙Expr Op Expr
 	{
-		token.Type1: "var",
+		token.T_1: "var",
 	},
 	// Expr : Expr ∙Op Expr
 	{
-		token.Type0: "&",
-		token.Type2: "|",
+		token.T_0: "&",
+		token.T_2: "|",
 	},
 	// Expr : Expr Op ∙Expr
 	{
-		token.Type1: "var",
+		token.T_1: "var",
 	},
 	// Expr : Expr Op Expr ∙
 	{
-		token.Type0: "&",
-		token.EOF:   "EOF",
-		token.Type2: "|",
+		token.EOF: "$",
+		token.T_0: "&",
+		token.T_2: "|",
 	},
 	// Op : ∙&
 	{
-		token.Type0: "&",
+		token.T_0: "&",
 	},
 	// Op : & ∙
 	{
-		token.Type1: "var",
+		token.T_1: "var",
 	},
 	// Op : ∙|
 	{
-		token.Type2: "|",
+		token.T_2: "|",
 	},
 	// Op : | ∙
 	{
-		token.Type1: "var",
+		token.T_1: "var",
 	},
 }
 
 var followSets = []map[token.Type]string{
 	// Expr
 	{
-		token.Type0: "&",
-		token.EOF:   "EOF",
-		token.Type2: "|",
+		token.EOF: "$",
+		token.T_0: "&",
+		token.T_2: "|",
 	},
 	// Op
 	{
-		token.Type1: "var",
+		token.T_1: "var",
 	},
 }
 

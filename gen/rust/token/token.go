@@ -19,7 +19,7 @@ import (
 	"bytes"
 	"text/template"
 
-	"github.com/goccmack/gogll/im/tokens"
+	"github.com/goccmack/gogll/symbols"
 	"github.com/goccmack/goutil/ioutil"
 )
 
@@ -32,14 +32,14 @@ type TypeDef struct {
 	Name, Comment string
 }
 
-func Gen(fname string, ts *tokens.Tokens) {
+func Gen(fname string) {
 	// fmt.Println(fname)
 	tmpl, err := template.New("Rust token").Parse(tmplSrc)
 	if err != nil {
 		panic(err)
 	}
 	w := new(bytes.Buffer)
-	if err := tmpl.Execute(w, getData(ts)); err != nil {
+	if err := tmpl.Execute(w, getData()); err != nil {
 		panic(err)
 	}
 	if err := ioutil.WriteFile(fname, w.Bytes()); err != nil {
@@ -47,19 +47,19 @@ func Gen(fname string, ts *tokens.Tokens) {
 	}
 }
 
-func getData(ts *tokens.Tokens) *Data {
+func getData() *Data {
 	return &Data{
-		Types:        getTypes(ts),
-		TypeToString: ts.TypeToString,
+		Types:        getTypes(),
+		TypeToString: symbols.GetTerminalTypeStrings(),
 	}
 }
 
-func getTypes(ts *tokens.Tokens) (types []*TypeDef) {
-	for i := range ts.TypeToString {
+func getTypes() (types []*TypeDef) {
+	for _, t := range symbols.GetTerminals() {
 		types = append(types,
 			&TypeDef{
-				Name:    ts.TypeToString[i],
-				Comment: ts.TypeToLiteral[i],
+				Name:    t.TypeString(),
+				Comment: t.Literal(),
 			})
 	}
 	return

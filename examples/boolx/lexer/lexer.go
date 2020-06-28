@@ -8,8 +8,6 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/goccmack/goutil/md"
-
 	"github.com/goccmack/gogll/examples/boolx/token"
 )
 
@@ -38,18 +36,39 @@ If the input file is a normal text file NewFile treats all text in the inputfile
 as input text.
 */
 func NewFile(fname string) *Lexer {
-	if strings.HasSuffix(fname, ".md") {
-		src, err := md.GetSource(fname)
-		if err != nil {
-			panic(err)
-		}
-		return New([]rune(src))
-	}
 	buf, err := ioutil.ReadFile(fname)
 	if err != nil {
 		panic(err)
 	}
-	return New([]rune(string(buf)))
+	input := []rune(string(buf))
+	if strings.HasSuffix(fname, ".md") {
+		loadMd(input)
+	}
+	return New(input)
+}
+
+func loadMd(input []rune) {
+	i := 0
+	text := true
+	for i < len(input) {
+		if i <= len(input)-3 && input[i] == '`' && input[i+1] == '`' && input[i+2] == '`' {
+			text = !text
+			for j := 0; j < 3; j++ {
+				input[i+j] = ' '
+			}
+			i += 3
+		}
+		if i < len(input) {
+			if text {
+				if input[i] == '\n' {
+					input[i] = '\n'
+				} else {
+					input[i] = ' '
+				}
+			}
+			i += 1
+		}
+	}
 }
 
 /*
@@ -81,6 +100,7 @@ func (l *Lexer) scan(i int) *token.Token {
 	// fmt.Printf("lexer.scan\n")
 	s, typ, rext := state(0), token.Error, i
 	for s != nullState {
+		// fmt.Printf("S%d '%c' @ %d\n", s, l.I[rext], rext)
 		if rext >= len(l.I) {
 			typ = accept[s]
 			s = nullState
@@ -92,7 +112,7 @@ func (l *Lexer) scan(i int) *token.Token {
 			}
 		}
 	}
-	return token.New(typ, i, rext,l.I)
+	return token.New(typ, i, rext, l.I)
 }
 
 func escape(r rune) string {
@@ -140,7 +160,7 @@ func (l *Lexer) GetString(lext, rext int) string {
 }
 
 func (l *Lexer) add(t token.Type, lext, rext int) {
-	l.addToken(token.New(t, lext, rext, l.I[lext:rext]))
+	l.addToken(token.New(t, lext, rext, l.I))
 }
 
 func (l *Lexer) addToken(tok *token.Token) {
@@ -167,9 +187,9 @@ func not(r rune, set []rune) bool {
 
 var accept = []token.Type{ 
 	token.Error, 
-	token.Type0, 
-	token.Type2, 
-	token.Type1, 
+	token.T_0, 
+	token.T_2, 
+	token.T_1, 
 }
 
 var nextState = []func(r rune) state{ 

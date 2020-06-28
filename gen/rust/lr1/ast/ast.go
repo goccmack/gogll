@@ -127,18 +127,14 @@ use std::rc::Rc;
 #[allow(dead_code)]
 pub enum Node { 
 	NT(NT),
-	Token(Rc<token::Token>),
-}
-
-#[allow(dead_code)]
-pub enum NT { {{range $typ := .Types}}
-	{{$typ}}, {{end}}
+	T(Rc<token::Token>),
+	None,
 }
 {{range $bprod := .BasicProds}}{{$bp := $bprod}}
 /// {{$bp.Comment}}
-pub fn {{$bp.ID}}(mut params: Vec<Option<Box<Node>>>) -> Result<Option<Box<Node>>, String> {
+pub fn {{$bp.ID}}(mut params: Vec<Node>) -> Result<Node, String> {
     println!("ast.{{$bprod.ID}} is unimplemented");
-    Ok(None)
+    Ok(Node::None)
 }
 {{end}}
 `

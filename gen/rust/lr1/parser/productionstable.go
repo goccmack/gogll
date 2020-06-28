@@ -91,7 +91,7 @@ pub struct ProdTabEntry {
 	pub nt_type: usize,
 	index: usize,
 	pub num_symbols: usize,
-	pub reduce_func: fn(Vec<Option<Box<ast::Node>>>) -> Result<Option<Box<ast::Node>>, String>,
+	pub reduce_func: fn(Vec<ast::Node>) -> Result<ast::Node, String>,
 }
 
 lazy_static! {
@@ -105,7 +105,7 @@ lazy_static! {
 			index: {{$i}},
 			num_symbols: {{$entry.NumSymbols}},
 			reduce_func: ast::{{$entry.ReduceFuncID}},
-				// |x: Vec<Option<Box<ast::Node>>>| -> Result<Option<Box<ast::Node>>, String> {
+				// |x: Vec<ast::Node>| -> Result<ast::Node, String> {
 				// 	ast::{{$entry.ReduceFunc}}
 				// },
 		});

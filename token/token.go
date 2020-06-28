@@ -100,94 +100,94 @@ func (t Type) ID() string {
 
 const(
 	Error  Type = iota  // Error 
-	EOF  // EOF 
-	Type0  // ( 
-	Type1  // ) 
-	Type2  // . 
-	Type3  // : 
-	Type4  // ; 
-	Type5  // < 
-	Type6  // > 
-	Type7  // [ 
-	Type8  // ] 
-	Type9  // any 
-	Type10  // char_lit 
-	Type11  // empty 
-	Type12  // letter 
-	Type13  // lowcase 
-	Type14  // not 
-	Type15  // nt 
-	Type16  // number 
-	Type17  // package 
-	Type18  // string_lit 
-	Type19  // tokid 
-	Type20  // upcase 
-	Type21  // { 
-	Type22  // | 
-	Type23  // } 
+	EOF  // $ 
+	T_0  // ( 
+	T_1  // ) 
+	T_2  // . 
+	T_3  // : 
+	T_4  // ; 
+	T_5  // < 
+	T_6  // > 
+	T_7  // [ 
+	T_8  // ] 
+	T_9  // any 
+	T_10  // char_lit 
+	T_11  // empty 
+	T_12  // letter 
+	T_13  // lowcase 
+	T_14  // not 
+	T_15  // nt 
+	T_16  // number 
+	T_17  // package 
+	T_18  // string_lit 
+	T_19  // tokid 
+	T_20  // upcase 
+	T_21  // { 
+	T_22  // | 
+	T_23  // } 
 )
 
 var TypeToString = []string{ 
 	"Error",
 	"EOF",
-	"Type0",
-	"Type1",
-	"Type2",
-	"Type3",
-	"Type4",
-	"Type5",
-	"Type6",
-	"Type7",
-	"Type8",
-	"Type9",
-	"Type10",
-	"Type11",
-	"Type12",
-	"Type13",
-	"Type14",
-	"Type15",
-	"Type16",
-	"Type17",
-	"Type18",
-	"Type19",
-	"Type20",
-	"Type21",
-	"Type22",
-	"Type23",
+	"T_0",
+	"T_1",
+	"T_2",
+	"T_3",
+	"T_4",
+	"T_5",
+	"T_6",
+	"T_7",
+	"T_8",
+	"T_9",
+	"T_10",
+	"T_11",
+	"T_12",
+	"T_13",
+	"T_14",
+	"T_15",
+	"T_16",
+	"T_17",
+	"T_18",
+	"T_19",
+	"T_20",
+	"T_21",
+	"T_22",
+	"T_23",
 }
 
 var StringToType = map[string] Type { 
 	"Error" : Error, 
 	"EOF" : EOF, 
-	"Type0" : Type0, 
-	"Type1" : Type1, 
-	"Type2" : Type2, 
-	"Type3" : Type3, 
-	"Type4" : Type4, 
-	"Type5" : Type5, 
-	"Type6" : Type6, 
-	"Type7" : Type7, 
-	"Type8" : Type8, 
-	"Type9" : Type9, 
-	"Type10" : Type10, 
-	"Type11" : Type11, 
-	"Type12" : Type12, 
-	"Type13" : Type13, 
-	"Type14" : Type14, 
-	"Type15" : Type15, 
-	"Type16" : Type16, 
-	"Type17" : Type17, 
-	"Type18" : Type18, 
-	"Type19" : Type19, 
-	"Type20" : Type20, 
-	"Type21" : Type21, 
-	"Type22" : Type22, 
-	"Type23" : Type23, 
+	"T_0" : T_0, 
+	"T_1" : T_1, 
+	"T_2" : T_2, 
+	"T_3" : T_3, 
+	"T_4" : T_4, 
+	"T_5" : T_5, 
+	"T_6" : T_6, 
+	"T_7" : T_7, 
+	"T_8" : T_8, 
+	"T_9" : T_9, 
+	"T_10" : T_10, 
+	"T_11" : T_11, 
+	"T_12" : T_12, 
+	"T_13" : T_13, 
+	"T_14" : T_14, 
+	"T_15" : T_15, 
+	"T_16" : T_16, 
+	"T_17" : T_17, 
+	"T_18" : T_18, 
+	"T_19" : T_19, 
+	"T_20" : T_20, 
+	"T_21" : T_21, 
+	"T_22" : T_22, 
+	"T_23" : T_23, 
 }
 
 var TypeToID = []string { 
 	"Error", 
-	"EOF", 
+	"$", 
 	"(", 
 	")", 
 	".", 
