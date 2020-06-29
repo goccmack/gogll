@@ -10,7 +10,7 @@ fn main() {
     let lex = lexer::Lexer::new(input.clone());
     match parser::Parser::new(lex).parse() {
         Ok(res) => {
-            if let ast::Node::NT(s) = *res.unwrap() {
+            if let ast::Node::NT(s) = res {
                 println!("{}", s);
             } else {
                 panic!();

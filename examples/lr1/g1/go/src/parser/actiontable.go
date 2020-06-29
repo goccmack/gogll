@@ -15,7 +15,7 @@ var actionTab = actionTable{
 	actionRow{ // S0
         canRecover: false,
 		actions: map[token.Type]action{ 
-			token.Type1:shift(3),		/* a */
+			token.T_1:shift(3),		/* a */
         },
 
 	},
@@ -23,7 +23,7 @@ var actionTab = actionTable{
         canRecover: false,
 		actions: map[token.Type]action{ 
 			token.EOF:accept(true),		/* $ */
-			token.Type0:shift(4),		/* + */
+			token.T_0:shift(4),		/* + */
         },
 
 	},
@@ -31,7 +31,7 @@ var actionTab = actionTable{
         canRecover: false,
 		actions: map[token.Type]action{ 
 			token.EOF:reduce(2),		/* $, reduce: E1 */
-			token.Type0:reduce(2),		/* +, reduce: E1 */
+			token.T_0:reduce(2),		/* +, reduce: E1 */
         },
 
 	},
@@ -39,14 +39,14 @@ var actionTab = actionTable{
         canRecover: false,
 		actions: map[token.Type]action{ 
 			token.EOF:reduce(3),		/* $, reduce: T1 */
-			token.Type0:reduce(3),		/* +, reduce: T1 */
+			token.T_0:reduce(3),		/* +, reduce: T1 */
         },
 
 	},
 	actionRow{ // S4
         canRecover: false,
 		actions: map[token.Type]action{ 
-			token.Type1:shift(3),		/* a */
+			token.T_1:shift(3),		/* a */
         },
 
 	},
@@ -54,7 +54,7 @@ var actionTab = actionTable{
         canRecover: false,
 		actions: map[token.Type]action{ 
 			token.EOF:reduce(1),		/* $, reduce: E1 */
-			token.Type0:reduce(1),		/* +, reduce: E1 */
+			token.T_0:reduce(1),		/* +, reduce: E1 */
         },
 
 	},

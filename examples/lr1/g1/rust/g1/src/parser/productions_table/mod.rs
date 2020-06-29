@@ -9,7 +9,7 @@ pub struct ProdTabEntry {
 	pub nt_type: usize,
 	index: usize,
 	pub num_symbols: usize,
-	pub reduce_func: fn(Vec<Option<Box<ast::Node>>>) -> Result<Option<Box<ast::Node>>, String>,
+	pub reduce_func: fn(Vec<ast::Node>) -> Result<ast::Node, String>,
 }
 
 lazy_static! {
@@ -23,7 +23,7 @@ lazy_static! {
 			index: 0,
 			num_symbols: 1,
 			reduce_func: ast::g_0_0,
-				// |x: Vec<Option<Box<ast::Node>>>| -> Result<Option<Box<ast::Node>>, String> {
+				// |x: Vec<ast::Node>| -> Result<ast::Node, String> {
 				// 	ast::g_0_0(x[0])
 				// },
 		});
@@ -35,7 +35,7 @@ lazy_static! {
 			index: 1,
 			num_symbols: 3,
 			reduce_func: ast::e_1_0,
-				// |x: Vec<Option<Box<ast::Node>>>| -> Result<Option<Box<ast::Node>>, String> {
+				// |x: Vec<ast::Node>| -> Result<ast::Node, String> {
 				// 	ast::e_1_0(x[0],x[1],x[2])
 				// },
 		});
@@ -47,7 +47,7 @@ lazy_static! {
 			index: 2,
 			num_symbols: 1,
 			reduce_func: ast::e_1_1,
-				// |x: Vec<Option<Box<ast::Node>>>| -> Result<Option<Box<ast::Node>>, String> {
+				// |x: Vec<ast::Node>| -> Result<ast::Node, String> {
 				// 	ast::e_1_1(x[0])
 				// },
 		});
@@ -59,7 +59,7 @@ lazy_static! {
 			index: 3,
 			num_symbols: 1,
 			reduce_func: ast::t_1_0,
-				// |x: Vec<Option<Box<ast::Node>>>| -> Result<Option<Box<ast::Node>>, String> {
+				// |x: Vec<ast::Node>| -> Result<ast::Node, String> {
 				// 	ast::t_1_0(x[0])
 				// },
 		});

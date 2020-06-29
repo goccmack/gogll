@@ -190,8 +190,8 @@ fn not(r: char, set: &Vec<char>) -> bool {
 
 static ACCEPT: [token::Type; 3] = [ 
     token::Type::Error, 
-    token::Type::Type0, 
-    token::Type::Type1, 
+    token::Type::T_0, 
+    token::Type::T_1, 
 ];
 
 pub type NextFun = dyn Fn(char) -> State + Sync;

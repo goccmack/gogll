@@ -42,14 +42,10 @@ func Gen(g *ast.GoGLL) ([]*basicprod.Production, *states.States, action.Actions)
 	actions, conflicts := action.GetActions(states)
 	handleConflicts(conflicts, states)
 
-	// if cfg.Verbose2() {
-	// writeBasicProductions(cfg, prods)
-	ioutil.WriteFile(path.Join(cfg.BaseDir, "CFG_items.txt"), []byte(items.String()))
-	// writeCFGSymbols(symbols)
-	// io.WriteFileString(path.Join(cfg.BaseDir, "first.txt"), first.String())
-	ioutil.WriteFile(path.Join(cfg.BaseDir, "LR1_states.txt"), statesString(states, actions))
-	// ioutil.WriteFile(path.Join(cfg.BaseDir, "LR_states.dot"), statesDotString(states, actions, prods))
-	// }
+	if cfg.Verbose {
+		ioutil.WriteFile(path.Join(cfg.BaseDir, "CFG_items.txt"), []byte(items.String()))
+		ioutil.WriteFile(path.Join(cfg.BaseDir, "LR1_states.txt"), statesString(states, actions))
+	}
 
 	return prods, states, actions
 }

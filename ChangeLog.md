@@ -1,5 +1,10 @@
 # Change Log
 
+# 2020-06-28 v3.1.6
+This version of gogll supports generation of Rust and Go LR(1) parsers as
+well as GLL. Pager's Practical General Method and Knuth's original machine are
+both supported.
+
 # v3.1.1
 1. Unnecessary match statements removed from generated Rust lexer code.
 1. Generated Rust lexer markdown loading performance improved.

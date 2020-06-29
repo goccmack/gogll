@@ -23,7 +23,7 @@ import (
 )
 
 // Version is the version of this compiler
-const Version = "v3.1.5"
+const Version = "v3.1.6"
 
 var (
 	BaseDir string
@@ -103,25 +103,37 @@ func fail(msg string) {
 
 func usage() {
 	msg :=
-		`use: gogll [-h][-version][-v][-CPUProf] [-o <out dir>] [-go] [-rust] <source file>
-    
-    <source file> : Mandatory. Name of the source file to be processed. 
+		`use: gogll -h
+    for help, or
+
+use: gogll -version
+    to display the version of goggl, or
+
+use: gogll [-a][-v] [-CPUProf] [-o <out dir>] [-go] [-rust] [-gll] [-pager] [-knuth] [-resolve_conflicts] <source file>
+    to generate a lexer and parser.
+
+    <source file>: Mandatory. Name of the source file to be processed. 
         If the file extension is ".md" the bnf is extracted from markdown code 
         segments enclosed in triple backticks.
     
-    -h : Optional. Display this help.
-
-    -a : Optional. Regenerate all files.
-         WARNING: This may destroy user editing in the LR(1) AST.
+    -a: Optional. Regenerate all files.
+        WARNING: This may destroy user editing in the LR(1) AST.
+        Default: false
+         
+    -v: Optional. Produce verbose output, including first and follow sets,
+        LR(1) sets and lexer FSA sets.
     
     -o <out dir>: Optional. The directory to which code will be generated.
                   Default: the same directory as <source file>.
                   
-    -go : Optional. Generate Go code.
+    -go: Optional. Generate Go code.
           Default: true, but false if -rust is selected
 
     -rust: Optional. Generate Rust code.
            Default: false
+           
+    -gll: Optional. Generate a GLL parser.
+          Default true. False if -knuth or -pager is selected.
                   
     -knuth: Optional. Generate a Knuth LR(1) parser
             Default false
@@ -129,15 +141,11 @@ func usage() {
     -pager: Optional. Generate a Pager PGM LR(1) parser.
             Default false
 
-    - resolve_conflicts: Optional. Automatically resolve LR(1) conflicts.
+    -resolve_conflicts: Optional. Automatically resolve LR(1) conflicts.
             Default: false. Only used when generating LR(1) parsers.
     
     -bs: Optional. Print BSR statistics (GLL only).
     
-    -v : Optional. Verbose: generate additional information files.
-    
-    -version : Optional. Display the version of this compiler
-
     -CPUProf : Optional. Generate a CPU profile. Default false.
         The generated CPU profile is in <cpu.prof>. 
         Use "go tool pprof cpu.prof" to analyse the profile.`

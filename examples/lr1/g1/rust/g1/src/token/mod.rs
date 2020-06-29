@@ -19,9 +19,9 @@ pub struct Token {
 #[derive(PartialEq, Eq, Hash, Clone, Copy)]
 pub enum Type {	
 	Error, // "Error"
-	EOF, // "EOF"
-	Type0, // "+"
-	Type1, // "a"
+	EOF, // "$"
+	T_0, // "+"
+	T_1, // "a"
 }
 
 /**
@@ -100,9 +100,9 @@ lazy_static! {
     static ref TYPE_TO_STRING: HashMap<Type, &'static str> = {
         let mut m = HashMap::new(); 
 		m.insert(Type::Error, "Error");
-		m.insert(Type::EOF, "EOF");
-		m.insert(Type::Type0, "+");
-		m.insert(Type::Type1, "a");
+		m.insert(Type::EOF, "$");
+		m.insert(Type::T_0, "+");
+		m.insert(Type::T_1, "a");
         m
     };
 }
@@ -112,8 +112,8 @@ lazy_static! {
 		let mut m = HashMap::new(); 
 		m.insert("Error", Type::Error); 
 		m.insert("EOF", Type::EOF); 
-		m.insert("Type0", Type::Type0); 
-		m.insert("Type1", Type::Type1); 
+		m.insert("T_0", Type::T_0); 
+		m.insert("T_1", Type::T_1); 
 		m
 	};
 }

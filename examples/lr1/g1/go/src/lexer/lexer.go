@@ -187,8 +187,8 @@ func not(r rune, set []rune) bool {
 
 var accept = []token.Type{ 
 	token.Error, 
-	token.Type0, 
-	token.Type1, 
+	token.T_0, 
+	token.T_1, 
 }
 
 var nextState = []func(r rune) state{ 

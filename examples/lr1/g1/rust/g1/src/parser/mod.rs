@@ -17,7 +17,7 @@ use std::rc::Rc;
 /*** Stack ***/
 struct Stack {
 	state: Vec<usize>,
-	attrib: Vec<Option<Box<ast::Node>>>,
+	attrib: Vec<ast::Node>,
 }
 
 impl Stack {
@@ -32,24 +32,18 @@ impl Stack {
 		return self.state[pos]
 	}
 
-	fn pop_n(&mut self, items: usize) -> Vec<Option<Box<ast::Node>>> {
+	fn pop_n(&mut self, items: usize) -> Vec<ast::Node> {
 		let from = self.state.len() - items;
 
 		self.state.truncate(from);
 		self.attrib.split_off(from)
 	}
 
-	fn push(&mut self, s: usize, a: Option<Box<ast::Node>>) {
+	fn push(&mut self, s: usize, a: ast::Node) {
 		self.state.push(s);
 		self.attrib.push(a);
 	}	
 
-	// TODO: unused, delete
-	// fn reset(&mut self) {
-	// 	self.state.clear();	
-	// 	self.attrib.clear();
-	// }
-	
 	fn top(&self) -> usize {
 		self.state[self.state.len()-1]
 	}		
@@ -59,24 +53,6 @@ impl Stack {
 	}	
 
 }				
-
-
-// TODO: implement or delete
-// func (S *stack) String() string {
-// 	w := new(bytes.Buffer)
-// 	fmt.Fprintf(w, "stack:\n")
-// 	for i, st := range S.state {
-// 		fmt.Fprintf(w, "\t%d:%d , ", i, st)
-// 		if S.attrib[i] == nil {
-// 			fmt.Fprintf(w, "nil")
-// 		} else {
-// 			fmt.Fprintf(w, "%v", S.attrib[i])
-// 		}
-// 		w.WriteString("\n")
-// 	}
-// 	return w.String()
-// }
-
 
 /*** Parser ***/
 
@@ -99,13 +75,13 @@ impl Parser {
 				lex:    lex,
 				i:      1,
 		});
-		p.stack.push(0, None);
+		p.stack.push(0, ast::Node::None);
 		p
 	}
 
-	pub fn parse(&mut self) -> Result<Option<Box<ast::Node>>, String> {
+	pub fn parse(&mut self) -> Result<ast::Node, String> {
 		let mut acc = false;
-		let mut res: Option<Box<ast::Node>> = None;
+		let mut res: ast::Node = ast::Node::None;
 
 		while !acc {
 			match ACTION_TABLE[self.stack.top()].actions.get(&self.next_token.typ) {
@@ -117,7 +93,7 @@ impl Parser {
 							acc = true;
 						},
 						Shift(state) => {
-							self.stack.push(*state, Some(Box::new(T(self.next_token.clone()))));
+							self.stack.push(*state, T(self.next_token.clone()));
 							self.next();
 						},
 						Reduce(production) => {

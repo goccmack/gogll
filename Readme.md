@@ -4,17 +4,22 @@
 Copyright 2019 Marius Ackerman. 
 
 # GoGLL
-Gogll generates a GLL parser and FSA-based lexer for any context-free grammar. 
+Gogll generates a GLL or LR(1) parser and FSA-based lexer for any context-free grammar. 
 The generated code is Go or Rust.
 
 [Click here](https://goccmack.github.io/posts/2020-05-31_gogll/) for an introduction
 to GLL.
 
-The generated parser is a clustered nonterminal parser (CNP) following 
+See the [LR(1) documentation](doc/lr1/Readme.md) for generating LR(1) parsers.
+
+The generated GLL parser is a clustered nonterminal parser (CNP) following 
 [[Scott et al 2019](#Scott-et-al-2019)]. 
 CNP is a version of generalised LL parsing (GLL) 
 [[Scott & Johnstone 2016](#Scott-et-al-2016)]. 
 GLL parsers can parse all context free (CF) languages.
+
+The generated LR(1) parser is a Pager's PGM or Knuth's original LR(1) 
+machine [[Pager 1977](Pager-1977)].
 
 The generated lexer is a linear-time finite state automaton FSA 
 [[Grune et al 2012](#Grune-et-al-2012)].
@@ -33,6 +38,17 @@ than [gocc](https://github.com/goccmack/gocc) (FSA/LR-1).
 See the table below.
 
 # News
+## 2020-06-28
+1. Gogll now also generates LR(1) parsers. It supports 
+_Pager's Practical General Method, weak compatibility_ as well as 
+_Knuths original LR(1) machine_ for
+comparison. Pager's PGM generates LR(1) parser tables similar is size to LALR. 
+The option to generate a Knuth LR(1) machine is provide for reference.  
+See [LR(1) documentation](doc/lr1/Readme.md) for details.
+
+2. Please note that the `-t <target>` option has been replace by `-go` and `-rust`.
+See see [usage](#Usage) below.
+
 ## 2020-06-01
 [See](https://goccmack.github.io/posts/2020-05-31_gogll/) for an introduction
 to GLL and a performance comparison of the generated Go and Rust code parsers.
@@ -62,26 +78,32 @@ Gogll generates Go code by default.
 1. This version of *GoGLL is faster than gocc*. It compiles a sample grammar in  
 0.074 s, which GoCC compiles in 0.118 s. Gogll compiles itself in 0.041s.
 
-# Benefits and disadvantages
-The following table compares GLL parsers with LL-k/LR-k parsers and [PEGs](#Ford-2004)
+# 
 
-|| GoGLL v3 | GoGLL V2 | GoCC (LR-1)  | PEG
-|---|---|---|---|---|
-General CF grammars | Yes | Yes | No | No
-Composable CF grammars | Yes | Yes | No | No
-Handle ambiguity | Yes | Yes | No | No
-Indirect left recursion | No problem | No problem | Bad | Bad
-Speed (time to compile the same grammar) | 0.074 s| - | 0.118 s | -
+# Benefits and disadvantages of GLL and LR(1)
+GLL is a parsing technique that can handle any context-free (CF) language. GLL has
+worst case cubic time and space complexity.
 
-* General CF grammars allow the parser developer to write grammars that match the language most naturally.
-* Composability allows pre-existing grammar modules to be imported.
-* GLL produces a forest of all valid parses of a string. This provides a more systematic basis for disambiguation than k>1 lookahead and solves the problem of PEGs that hide ambiguity by selecting the first valid parse.
-* Operator precedence can be implemented very easily by disambiguating the parse forest [[Afroozeh et al 2013](#Afroozeh-et-al-2013), [Basten & Vinju 2012](#Basten-2012)].
+LR(1) handles a subset of the context-free languages that can be parsed bottom-up
+with one token look-ahead. LR(1) has linear time complexity and its table driven
+parser is very efficient. Pager's _Practical General Method_ (PGM) combines
+compatible states as they are generated, keeping the state space small.
 
-But
+A GLL parser has more expensive bookkeeping than an LR(1) parser, making the 
+LR(1) parser more efficient for parsing very large inputs.
 
-* Most non-trivial context free grammars will generate ambiguous parsers, requiring explicit disambiguation.
-* GLL parsers are worst-case cubic in time and space complexity. The LL-1 parts of the grammar have linear complexity.
+## When to use GLL
+1. When the CF grammar that best expresses the problem is not LR(1).
+2. When the LR(1) parser has more than a few conflicts that require additional
+language symbols or complex grammar refactorisation to resolve.
+3. The inputs to be parsed are not too big. GLL works very well for DSLs or 
+programming languages.
+
+## When to use LR(1)
+1. When the language can be expressed as an LR(1) grammar. A grammar is LR(1) if 
+gogll can generate a conflict-free parser for it.
+2. When the input is very big, for example: log files containing tens of thousands
+of lines.
 
 # Motivation for a separate lexer
 The following observations were made while using GoGLLv2 on a couple of projects.
@@ -114,26 +136,52 @@ it is installed.
 Enter `gogll -h` or `gogll` for the following help:
 
 ```
-use: gogll [-h][-version][-v][-CPUProf] [-o <out dir>] [-t <target>] <source file>
-    
-    <source file> : Mandatory. Name of the source file to be processed. 
+use: gogll -h
+    for help, or
+
+use: gogll -version
+    to display the version of goggl, or
+
+use: gogll [-a][-v] [-CPUProf] [-o <out dir>] [-go] [-rust] [-gll] [-pager] [-knuth] [-resolve_conflicts] <source file>
+    to generate a lexer and parser.
+
+    <source file>: Mandatory. Name of the source file to be processed. 
         If the file extension is ".md" the bnf is extracted from markdown code 
         segments enclosed in triple backticks.
     
-    -h : Optional. Display this help.
+    -a: Optional. Regenerate all files.
+        WARNING: This may destroy user editing in the LR(1) AST.
+        Default: false
+         
+    -v: Optional. Produce verbose output, including first and follow sets,
+        LR(1) sets and lexer FSA sets.
     
     -o <out dir>: Optional. The directory to which code will be generated.
                   Default: the same directory as <source file>.
                   
-    -t <target>: Optional. The target language for code generation.
-                 Default: go
-                 Valid options: go, rust
+    -go: Optional. Generate Go code.
+          Default: true, but false if -rust is selected
+
+    -rust: Optional. Generate Rust code.
+           Default: false
+           
+    -gll: Optional. Generate a GLL parser.
+          Default true. False if -knuth or -pager is selected.
+                  
+    -knuth: Optional. Generate a Knuth LR(1) parser
+            Default false
+
+    -pager: Optional. Generate a Pager PGM LR(1) parser.
+            Default false
+
+    -resolve_conflicts: Optional. Automatically resolve LR(1) conflicts.
+            Default: false. Only used when generating LR(1) parsers.
     
-    -bs: Optional. Print BSR statistics.
+    -bs: Optional. Print BSR statistics (GLL only).
     
-    -v : Optional. Verbose: generate additional information files.
-    
-    -version : Optional. Display the version of this compiler
+    -CPUProf : Optional. Generate a CPU profile. Default false.
+        The generated CPU profile is in <cpu.prof>. 
+        Use "go tool pprof cpu.prof" to analyse the profile.
 ```
 
 # Using the generated lexer and parser
@@ -322,7 +370,8 @@ func buildExpr(b bsr.BSR) *Expr {
 ```
 
 # Status
-* `gogll v3` generates a matching lexer and parser. v3 compiles itself.
+* `gogll v3` generates a matching lexer and parser. It generates GLL and LR(1) 
+parsers. v3 compiles itself.
 v3 is used in a real-world project.
 * `gogll v2` had the last vestiges of the bootstrap compiler grammar removed from
 its input grammar. v2 compiled itself.
@@ -331,7 +380,6 @@ v1 compiled itself.
 * `gogll v0` was a bootstrap compiler implemented by a [gocc](https://github.com/goccmack/gocc) lexer and parser.
 
 # Features considered for future implementation
-1. Generating Rust lexers and parsers.
 1. Better error reporting.
 1. Better documentation, including how to traverse the binary subtree representation (BSR [Scott et al 2019](#Scott-et-al-2019)) of the parse forest as well as on disambiguating 
 parse forests.
@@ -344,10 +392,18 @@ At the moment this document and the [gogll grammar](gogll.md) are the only docum
 Alternatively look at `gogll.md` which is the input grammar and also the grammar
 from which the `parser` for this version of `gogll` was generated. `gogll/da` disambiguates the parse forest for an input string.
 
+## LR(1)
+See the [LR(1) documentation](doc/lr1/Readme.md).
+
 # Changelog
 [see](ChangeLog.md)
 
 # Bibliography
+<a name=Pager-1977></a>
+* [Pager 1977] David Pager   
+A Practical General Method for Constructing LR(k) Parsers   
+Acta Informatica 7, 1977
+
 <a name=Scott-et-al-2019a></a>
 * [Scott & Johnstone 2019] Elizabeth Scott and Adrian Johnstone  
 Multiple lexicalisation (a Java based study)  

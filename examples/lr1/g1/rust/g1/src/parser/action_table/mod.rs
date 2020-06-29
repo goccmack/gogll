@@ -36,21 +36,21 @@ lazy_static! {
         v.resize_with(6, Default::default);
 		
 		v[0].can_recover = false;
-		v[0].actions.insert(token::Type::Type1, Action::Shift(3),		/* a */); 
+		v[0].actions.insert(token::Type::T_1, Action::Shift(3),		/* a */); 
 		v[1].can_recover = false;
 		v[1].actions.insert(token::Type::EOF, Action::Accept,		/* $ */); 
-		v[1].actions.insert(token::Type::Type0, Action::Shift(4),		/* + */); 
+		v[1].actions.insert(token::Type::T_0, Action::Shift(4),		/* + */); 
 		v[2].can_recover = false;
 		v[2].actions.insert(token::Type::EOF, Action::Reduce(2),		/* $, Reduce: E1 */); 
-		v[2].actions.insert(token::Type::Type0, Action::Reduce(2),		/* +, Reduce: E1 */); 
+		v[2].actions.insert(token::Type::T_0, Action::Reduce(2),		/* +, Reduce: E1 */); 
 		v[3].can_recover = false;
 		v[3].actions.insert(token::Type::EOF, Action::Reduce(3),		/* $, Reduce: T1 */); 
-		v[3].actions.insert(token::Type::Type0, Action::Reduce(3),		/* +, Reduce: T1 */); 
+		v[3].actions.insert(token::Type::T_0, Action::Reduce(3),		/* +, Reduce: T1 */); 
 		v[4].can_recover = false;
-		v[4].actions.insert(token::Type::Type1, Action::Shift(3),		/* a */); 
+		v[4].actions.insert(token::Type::T_1, Action::Shift(3),		/* a */); 
 		v[5].can_recover = false;
 		v[5].actions.insert(token::Type::EOF, Action::Reduce(1),		/* $, Reduce: E1 */); 
-		v[5].actions.insert(token::Type::Type0, Action::Reduce(1),		/* +, Reduce: E1 */); 
+		v[5].actions.insert(token::Type::T_0, Action::Reduce(1),		/* +, Reduce: E1 */); 
 
 		v
 	};
