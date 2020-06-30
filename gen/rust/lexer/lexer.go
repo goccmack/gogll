@@ -105,11 +105,11 @@ func getCondition(event ast.LexBase) string {
 	case *ast.Any:
 		return "true"
 	case *ast.AnyOf:
-		return fmt.Sprintf("any(c, %s)", toVec(e.Set))
+		return fmt.Sprintf("any(c, %s)", toSlice(e.Set))
 	case *ast.CharLiteral:
 		return fmt.Sprintf("c == %s", string(e.Literal))
 	case *ast.Not:
-		return fmt.Sprintf("not(c, %s)", toVec(e.Set))
+		return fmt.Sprintf("not(c, %s)", toSlice(e.Set))
 	case *ast.UnicodeClass:
 		switch e.Type {
 		case ast.Letter:
@@ -144,9 +144,9 @@ func escape(c rune) string {
 	return string(c)
 }
 
-func toVec(rs *runeset.RuneSet) string {
+func toSlice(rs *runeset.RuneSet) string {
 	w := new(bytes.Buffer)
-	fmt.Fprint(w, "&vec![")
+	fmt.Fprint(w, "&[")
 	for i, r := range rs.Elements() {
 		if i > 0 {
 			fmt.Fprint(w, ",")
@@ -328,7 +328,7 @@ fn load_md(input: &mut Vec<char>) -> io::Result<()> {
 }
 
 #[allow(dead_code)]
-fn any(r: char, set: &Vec<char>) -> bool {
+fn any(r: char, set: &'static [char]) -> bool {
 	for r1 in set.iter() {
 		if &r == r1 {
 			return true
@@ -338,7 +338,7 @@ fn any(r: char, set: &Vec<char>) -> bool {
 }
 
 #[allow(dead_code)]
-fn not(r: char, set: &Vec<char>) -> bool {
+fn not(r: char, set: &'static [char]) -> bool {
 	for r1 in set.iter() {
 		if &r == r1 {
 			return false
