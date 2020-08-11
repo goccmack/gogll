@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Type",""]],"fn":[["new","New returns a new token.   lext is the left extent and rext the right extent of the token in the input.   input is the input slice scanned by the lexer."]],"struct":[["STRING_TO_TYPE",""],["TYPE_TO_STRING",""],["Token","Token is returned by the lexer for every scanned lexical token"]]});

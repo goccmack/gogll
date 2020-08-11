@@ -45,7 +45,7 @@ func Gen(fname string, g *ast.GoGLL) {
 func getData(g *ast.GoGLL) *Data {
 	return &Data{
 		NonTerminals: g.NonTerminals.ElementsSorted(),
-		Terminals:    append([]string{"ERROR", "EOF"}, g.Terminals.ElementsSorted()...),
+		Terminals:    g.Terminals.ElementsSorted(),
 	}
 }
 

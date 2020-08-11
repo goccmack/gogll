@@ -446,48 +446,48 @@ impl fmt::Display for Error {
         let mut fmap = HashMap::new(); 
         // Exp : ∙Exp Op Exp 
             let mut hset = Box::new(HashSet::new()); 
-            hset.insert(token::Type::Type1); // id 
+            hset.insert(token::Type::T_1); // id 
             fmap.insert(Label::Exp0R0, hset);
         // Exp : Exp ∙Op Exp 
             let mut hset = Box::new(HashSet::new()); 
-            hset.insert(token::Type::Type0); // & 
-            hset.insert(token::Type::Type2); // | 
+            hset.insert(token::Type::T_0); // & 
+            hset.insert(token::Type::T_2); // | 
             fmap.insert(Label::Exp0R1, hset);
         // Exp : Exp Op ∙Exp 
             let mut hset = Box::new(HashSet::new()); 
-            hset.insert(token::Type::Type1); // id 
+            hset.insert(token::Type::T_1); // id 
             fmap.insert(Label::Exp0R2, hset);
         // Exp : Exp Op Exp ∙
             let mut hset = Box::new(HashSet::new()); 
-            hset.insert(token::Type::Type0); // & 
-            hset.insert(token::Type::EOF); // EOF 
-            hset.insert(token::Type::Type2); // | 
+            hset.insert(token::Type::EOF); // $ 
+            hset.insert(token::Type::T_0); // & 
+            hset.insert(token::Type::T_2); // | 
             fmap.insert(Label::Exp0R3, hset);
         // Exp : ∙id 
             let mut hset = Box::new(HashSet::new()); 
-            hset.insert(token::Type::Type1); // id 
+            hset.insert(token::Type::T_1); // id 
             fmap.insert(Label::Exp1R0, hset);
         // Exp : id ∙
             let mut hset = Box::new(HashSet::new()); 
-            hset.insert(token::Type::Type0); // & 
-            hset.insert(token::Type::EOF); // EOF 
-            hset.insert(token::Type::Type2); // | 
+            hset.insert(token::Type::EOF); // $ 
+            hset.insert(token::Type::T_0); // & 
+            hset.insert(token::Type::T_2); // | 
             fmap.insert(Label::Exp1R1, hset);
         // Op : ∙& 
             let mut hset = Box::new(HashSet::new()); 
-            hset.insert(token::Type::Type0); // & 
+            hset.insert(token::Type::T_0); // & 
             fmap.insert(Label::Op0R0, hset);
         // Op : & ∙
             let mut hset = Box::new(HashSet::new()); 
-            hset.insert(token::Type::Type1); // id 
+            hset.insert(token::Type::T_1); // id 
             fmap.insert(Label::Op0R1, hset);
         // Op : ∙| 
             let mut hset = Box::new(HashSet::new()); 
-            hset.insert(token::Type::Type2); // | 
+            hset.insert(token::Type::T_2); // | 
             fmap.insert(Label::Op1R0, hset);
         // Op : | ∙
             let mut hset = Box::new(HashSet::new()); 
-            hset.insert(token::Type::Type1); // id 
+            hset.insert(token::Type::T_1); // id 
             fmap.insert(Label::Op1R1, hset);
         fmap
     };
@@ -496,13 +496,13 @@ impl fmt::Display for Error {
         let mut fmap = HashMap::new(); 
         // Exp
             let mut hset = Box::new(HashSet::new()); 
-            hset.insert(token::Type::Type0); // & 
-            hset.insert(token::Type::EOF); // EOF 
-            hset.insert(token::Type::Type2); // | 
+            hset.insert(token::Type::EOF); // $ 
+            hset.insert(token::Type::T_0); // & 
+            hset.insert(token::Type::T_2); // | 
             fmap.insert(NT::Exp, hset);
         // Op
             let mut hset = Box::new(HashSet::new()); 
-            hset.insert(token::Type::Type1); // id 
+            hset.insert(token::Type::T_1); // id 
             fmap.insert(NT::Op, hset);
         fmap
     };

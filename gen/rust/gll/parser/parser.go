@@ -255,7 +255,7 @@ impl Parser {
                 match l { {{range $alt := .Alternates}}
                     // {{$alt.Comment}}
                     Label::{{.AltLabel}} => { {{if .Empty}}
-                        self.bsrSet.AddEmpty(slot.{{.AltLabel}},cI); 
+                        self.bsr_set.add_empty(Label::{{$alt.AltLabel}},self.c_i); 
                         {{else}}{{range $i, $slot := .Slots}}{{if $i}}if !self.test_select(Label::{{$slot.PreLabel}}){ 
                             self.error_first(Label::{{$slot.PreLabel}}, self.c_i);
                             return; 

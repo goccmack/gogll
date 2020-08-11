@@ -54,6 +54,7 @@ type T int
 const (
 	Error T = iota
 	EoF
+	StartOfTokens // First user defined token
 )
 
 // $ is the EOF symbol

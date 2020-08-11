@@ -108,7 +108,7 @@ func getSymbols(syms symbols.Symbols) []string {
 		case symbols.NT:
 			ss[i] = fmt.Sprintf("NT(NT::%s)", s.Literal())
 		case symbols.T:
-			ss[i] = fmt.Sprintf("T(T::T%d)", s)
+			ss[i] = fmt.Sprintf("T(T::T%d)", s-symbols.StartOfTokens)
 		default:
 			panic("invalid")
 		}

@@ -98,6 +98,7 @@ fn build_expr(set: &bsr::Set, b: Rc<bsr::BSR>) -> Option<Box<Expr>> {
 	// return an expression node
     let l: Box<Expr> = left.unwrap();
     let r: Box<Expr> = right.unwrap();
+
     match op {
         Op::And => Some(Box::new(Expr::And{left:l, right: r})),
         Op::Or => Some(Box::new(Expr::Or{left:l, right: r})),
@@ -106,7 +107,7 @@ fn build_expr(set: &bsr::Set, b: Rc<bsr::BSR>) -> Option<Box<Expr>> {
 
 // Exp : id
 fn build_id(set: &bsr::Set, b: Rc<bsr::BSR>) -> Box<Expr> {
-    let id: Rc<Token> = set.get_t_child_i(b, 0);
+    let id: Rc<Token> = set.get_t_child_i(b.clone(), 0);
     let id_str: String = id.literal().iter().collect();
     Box::new(Expr::Id(id_str))
 }

@@ -19,10 +19,10 @@ pub struct Token {
 #[derive(PartialEq, Eq, Hash, Clone, Copy)]
 pub enum Type {	
 	Error, // "Error"
-	EOF, // "EOF"
-	Type0, // "&"
-	Type1, // "id"
-	Type2, // "|"
+	EOF, // "$"
+	T_0, // "&"
+	T_1, // "id"
+	T_2, // "|"
 }
 
 /**
@@ -59,17 +59,18 @@ impl Token {
 		(line, col)
 	}
 	
-	/// get_input returns the input from which t was parsed.
-	// pub fn get_input(&self) -> Rc<Vec<char>> {
-	// 	Rc::clone(&self.input)
-	// }
-	
 	/// literal returns the literal runes of t scanned by the lexer
 	pub fn literal(&self) -> Vec<char> {
 		self.input[self.lext..self.rext].to_vec()
 	}
 	
-}
+    /// literal_string returs the literal string of t scanned by the lexer
+    #[allow(dead_code)]
+	pub fn literal_string(&self) -> String {
+		self.literal().iter().collect::<String>()
+    }
+
+} // impl Token
 
 impl <'a>fmt::Display for Token {
 	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -100,10 +101,10 @@ lazy_static! {
     static ref TYPE_TO_STRING: HashMap<Type, &'static str> = {
         let mut m = HashMap::new(); 
 		m.insert(Type::Error, "Error");
-		m.insert(Type::EOF, "EOF");
-		m.insert(Type::Type0, "&");
-		m.insert(Type::Type1, "id");
-		m.insert(Type::Type2, "|");
+		m.insert(Type::EOF, "$");
+		m.insert(Type::T_0, "&");
+		m.insert(Type::T_1, "id");
+		m.insert(Type::T_2, "|");
         m
     };
 }
@@ -113,9 +114,9 @@ lazy_static! {
 		let mut m = HashMap::new(); 
 		m.insert("Error", Type::Error); 
 		m.insert("EOF", Type::EOF); 
-		m.insert("Type0", Type::Type0); 
-		m.insert("Type1", Type::Type1); 
-		m.insert("Type2", Type::Type2); 
+		m.insert("T_0", Type::T_0); 
+		m.insert("T_1", Type::T_1); 
+		m.insert("T_2", Type::T_2); 
 		m
 	};
 }

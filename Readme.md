@@ -35,7 +35,6 @@ LL productions [[Scott et al 2016](#Scott-et-al-2016)].
 CPU time measurements of an extreme ambiguous example.
 For comparable grammars tested so far gogll produces faster lexers and parsers 
 than [gocc](https://github.com/goccmack/gocc) (FSA/LR-1).
-See the table below.
 
 # News
 ## 2020-06-28
@@ -380,6 +379,7 @@ v1 compiled itself.
 * `gogll v0` was a bootstrap compiler implemented by a [gocc](https://github.com/goccmack/gocc) lexer and parser.
 
 # Features considered for future implementation
+1. Tokens suppressed by the lexer, e.g.: code comments.
 1. Better error reporting.
 1. Better documentation, including how to traverse the binary subtree representation (BSR [Scott et al 2019](#Scott-et-al-2019)) of the parse forest as well as on disambiguating 
 parse forests.
@@ -439,5 +439,3 @@ Springer 2012
 <a name="Basten-2012"></a>
 * [Basten & Vinju 2012] Basten H.J.S., Vinju J.J. (2012) Parse Forest Diagnostics with Dr. Ambiguity. In: Sloane A., Aßmann U. (eds) Software Language Engineering. SLE 2011. [Lecture Notes in Computer Science, vol 6940. Springer, Berlin, Heidelberg](https://homepages.cwi.nl/~jurgenv/papers/SLE2011-2.pdf)
 
-<a name="Ford-2004"></a>
-* [Ford 2002] Bryan Ford. [Parsing Expression Grammars: A Recognition-Based Syntactic Foundation.](https://bford.info/pub/lang/peg.pdf)

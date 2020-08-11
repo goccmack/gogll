@@ -146,7 +146,7 @@ fn load_md(input: &mut Vec<char>) -> io::Result<()> {
     let mut i = 0;
     let mut text = true;
     while i < input.len() {
-        if i < input.len() - 3 && 
+        if i <= input.len() - 3 && 
         || -> bool { input[i] == '`' && input[i+1] == '`' && input[i+2] == '`' }()
         {
             text = !text;
@@ -169,7 +169,7 @@ fn load_md(input: &mut Vec<char>) -> io::Result<()> {
 }
 
 #[allow(dead_code)]
-fn any(r: char, set: &Vec<char>) -> bool {
+fn any(r: char, set: &'static [char]) -> bool {
 	for r1 in set.iter() {
 		if &r == r1 {
 			return true
@@ -179,7 +179,7 @@ fn any(r: char, set: &Vec<char>) -> bool {
 }
 
 #[allow(dead_code)]
-fn not(r: char, set: &Vec<char>) -> bool {
+fn not(r: char, set: &'static [char]) -> bool {
 	for r1 in set.iter() {
 		if &r == r1 {
 			return false
@@ -190,10 +190,10 @@ fn not(r: char, set: &Vec<char>) -> bool {
 
 static ACCEPT: [token::Type; 5] = [ 
     token::Type::Error, 
-    token::Type::Type0, 
-    token::Type::Type2, 
+    token::Type::T_0, 
+    token::Type::T_2, 
     token::Type::Error, 
-    token::Type::Type1, 
+    token::Type::T_1, 
 ];
 
 pub type NextFun = dyn Fn(char) -> State + Sync;

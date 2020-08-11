@@ -1,5 +1,8 @@
 # Change Log
 
+# 2020-08-11 
+Bug fixed in handling of empty productions.
+
 # 2020-06-28 v3.1.6
 This version of gogll supports generation of Rust and Go LR(1) parsers as
 well as GLL. Pager's Practical General Method and Knuth's original machine are

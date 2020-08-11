@@ -295,13 +295,25 @@ func (b BSR) GetNTChildrenI(i int) []BSR {
 // GetTChildI returns the terminal symbol at position i in b.
 // GetTChildI panics if symbol i is not a valid terminal
 func (b BSR) GetTChildI(i int) *token.Token {
-	if i >= len(b.Label.Symbols()) {
+	symbols := b.Label.Symbols()
+
+	if i >= len(symbols) {
 		panic(fmt.Sprintf("%s has no T child %d", b, i))
 	}
-	if b.Label.Symbols()[i].IsNonTerminal() {
+	if symbols[i].IsNonTerminal() {
 		panic(fmt.Sprintf("symbol %d in %s is an NT", i, b))
 	}
-	return b.set.lex.Tokens[b.LeftExtent()+i]
+
+	lext := b.leftExtent
+	for j := 0; j < i; j++ {
+		if symbols[j].IsNonTerminal() {
+			nt := b.GetNTChildI(j)
+			lext += nt.rightExtent - nt.leftExtent
+		} else {
+			lext++
+		}
+	}
+	return b.set.lex.Tokens[lext]
 }
 
 func deleteNTSlotEntry(b BSR) {

@@ -306,13 +306,26 @@ impl Set {
     */
     #[allow(dead_code)]
     pub fn get_t_child_i(&self, b: Rc<BSR>, i: usize) -> Rc<Token> {
-        if i >= b.label.symbols().len() {
+		let symbols = b.label.symbols();
+
+        if i >= symbols.len() {
             panic!("{} has no T child {}", b, i);
         }
-        if b.label.symbols()[i].is_nt() {
+        if symbols[i].is_nt() {
             panic!("symbol {} in {} is an NT", i, b);
-        }
-        self.lex.tokens[b.lext+i].clone()
+		}
+		
+		let mut lext: usize = b.lext;
+		for j in 0..i {
+			if symbols[j].is_nt() {
+				let nt = self.get_nt_child_i(b.clone(), j);
+				lext += nt.rext - nt.lext;
+			} else {
+				lext += 1;
+			}
+		}
+
+        self.lex.tokens[lext].clone()
     }
 
     /// Returns true if the BSR set does not have exactly one root, or

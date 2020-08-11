@@ -105,7 +105,7 @@ type SlotData struct {
 }
 
 const altCodeTmpl = `		case slot.{{.AltLabel}}: // {{.AltComment}}{{if .Empty}}
-			p.bsrSet.AddEmpty(slot.{{.AltLabel}},cI)
+			p.bsrSet.AddEmpty(slot.{{.AltLabel}},p.cI)
 		{{else}}{{range $i, $slot := .Slots}}
 			{{if $i}}if !p.testSelect(slot.{{$slot.PreLabel}}){ 
 				p.parseError(slot.{{$slot.PreLabel}}, p.cI, first[slot.{{$slot.PreLabel}}])

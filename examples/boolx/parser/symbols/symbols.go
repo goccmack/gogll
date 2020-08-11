@@ -21,11 +21,9 @@ const(
 // T is the type of terminals symbols
 type T int
 const( 
-	T_0 T = iota // ERROR 
-	T_1  // EOF 
-	T_2  // & 
-	T_3  // var 
-	T_4  // | 
+	T_0 T = iota // & 
+	T_1  // var 
+	T_2  // | 
 )
 
 type Symbols []Symbol
@@ -60,11 +58,9 @@ var ntToString = []string {
 }
 
 var tToString = []string { 
-	"ERROR", /* T_0 */
-	"EOF", /* T_1 */
-	"&", /* T_2 */
-	"var", /* T_3 */
-	"|", /* T_4 */ 
+	"&", /* T_0 */
+	"var", /* T_1 */
+	"|", /* T_2 */ 
 }
 
 var stringNT = map[string]NT{ 

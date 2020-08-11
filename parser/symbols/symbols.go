@@ -38,32 +38,30 @@ const(
 // T is the type of terminals symbols
 type T int
 const( 
-	T_0 T = iota // ERROR 
-	T_1  // EOF 
-	T_2  // ( 
-	T_3  // ) 
-	T_4  // . 
-	T_5  // : 
-	T_6  // ; 
-	T_7  // < 
-	T_8  // > 
-	T_9  // [ 
-	T_10  // ] 
-	T_11  // any 
-	T_12  // char_lit 
-	T_13  // empty 
-	T_14  // letter 
-	T_15  // lowcase 
-	T_16  // not 
-	T_17  // nt 
-	T_18  // number 
-	T_19  // package 
-	T_20  // string_lit 
-	T_21  // tokid 
-	T_22  // upcase 
-	T_23  // { 
-	T_24  // | 
-	T_25  // } 
+	T_0 T = iota // ( 
+	T_1  // ) 
+	T_2  // . 
+	T_3  // : 
+	T_4  // ; 
+	T_5  // < 
+	T_6  // > 
+	T_7  // [ 
+	T_8  // ] 
+	T_9  // any 
+	T_10  // char_lit 
+	T_11  // empty 
+	T_12  // letter 
+	T_13  // lowcase 
+	T_14  // not 
+	T_15  // nt 
+	T_16  // number 
+	T_17  // package 
+	T_18  // string_lit 
+	T_19  // tokid 
+	T_20  // upcase 
+	T_21  // { 
+	T_22  // | 
+	T_23  // } 
 )
 
 type Symbols []Symbol
@@ -115,32 +113,30 @@ var ntToString = []string {
 }
 
 var tToString = []string { 
-	"ERROR", /* T_0 */
-	"EOF", /* T_1 */
-	"(", /* T_2 */
-	")", /* T_3 */
-	".", /* T_4 */
-	":", /* T_5 */
-	";", /* T_6 */
-	"<", /* T_7 */
-	">", /* T_8 */
-	"[", /* T_9 */
-	"]", /* T_10 */
-	"any", /* T_11 */
-	"char_lit", /* T_12 */
-	"empty", /* T_13 */
-	"letter", /* T_14 */
-	"lowcase", /* T_15 */
-	"not", /* T_16 */
-	"nt", /* T_17 */
-	"number", /* T_18 */
-	"package", /* T_19 */
-	"string_lit", /* T_20 */
-	"tokid", /* T_21 */
-	"upcase", /* T_22 */
-	"{", /* T_23 */
-	"|", /* T_24 */
-	"}", /* T_25 */ 
+	"(", /* T_0 */
+	")", /* T_1 */
+	".", /* T_2 */
+	":", /* T_3 */
+	";", /* T_4 */
+	"<", /* T_5 */
+	">", /* T_6 */
+	"[", /* T_7 */
+	"]", /* T_8 */
+	"any", /* T_9 */
+	"char_lit", /* T_10 */
+	"empty", /* T_11 */
+	"letter", /* T_12 */
+	"lowcase", /* T_13 */
+	"not", /* T_14 */
+	"nt", /* T_15 */
+	"number", /* T_16 */
+	"package", /* T_17 */
+	"string_lit", /* T_18 */
+	"tokid", /* T_19 */
+	"upcase", /* T_20 */
+	"{", /* T_21 */
+	"|", /* T_22 */
+	"}", /* T_23 */ 
 }
 
 var stringNT = map[string]NT{ 

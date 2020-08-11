@@ -362,61 +362,61 @@ func (p *parser) testSelect(l slot.Label) bool {
 var first = []map[token.Type]string{
 	// Exp : ∙Exp Op Exp
 	{
-		token.Type1: "id",
+		token.T_1: "id",
 	},
 	// Exp : Exp ∙Op Exp
 	{
-		token.Type0: "&",
-		token.Type2: "|",
+		token.T_0: "&",
+		token.T_2: "|",
 	},
 	// Exp : Exp Op ∙Exp
 	{
-		token.Type1: "id",
+		token.T_1: "id",
 	},
 	// Exp : Exp Op Exp ∙
 	{
-		token.Type0: "&",
-		token.EOF:   "EOF",
-		token.Type2: "|",
+		token.EOF: "$",
+		token.T_0: "&",
+		token.T_2: "|",
 	},
 	// Exp : ∙id
 	{
-		token.Type1: "id",
+		token.T_1: "id",
 	},
 	// Exp : id ∙
 	{
-		token.Type0: "&",
-		token.EOF:   "EOF",
-		token.Type2: "|",
+		token.EOF: "$",
+		token.T_0: "&",
+		token.T_2: "|",
 	},
 	// Op : ∙&
 	{
-		token.Type0: "&",
+		token.T_0: "&",
 	},
 	// Op : & ∙
 	{
-		token.Type1: "id",
+		token.T_1: "id",
 	},
 	// Op : ∙|
 	{
-		token.Type2: "|",
+		token.T_2: "|",
 	},
 	// Op : | ∙
 	{
-		token.Type1: "id",
+		token.T_1: "id",
 	},
 }
 
 var followSets = []map[token.Type]string{
 	// Exp
 	{
-		token.Type0: "&",
-		token.EOF:   "EOF",
-		token.Type2: "|",
+		token.EOF: "$",
+		token.T_0: "&",
+		token.T_2: "|",
 	},
 	// Op
 	{
-		token.Type1: "id",
+		token.T_1: "id",
 	},
 }
 
