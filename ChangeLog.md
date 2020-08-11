@@ -1,6 +1,6 @@
 # Change Log
 
-# 2020-08-11 
+# 2020-08-11 v3.1.8
 Bug fixed in handling of empty productions.
 
 # 2020-06-28 v3.1.6
