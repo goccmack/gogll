@@ -37,6 +37,9 @@ For comparable grammars tested so far gogll produces faster lexers and parsers
 than [gocc](https://github.com/goccmack/gocc) (FSA/LR-1).
 
 # News
+## 2020-08-12
+From v3.2.0 gogll supports tokens that can be suppressed by the lexer. This is useful, for example, to implement code comments. See [example](examples/comments/comments.md).
+
 ## 2020-06-28
 1. Gogll now also generates LR(1) parsers. It supports 
 _Pager's Practical General Method, weak compatibility_ as well as 

@@ -1,6 +1,5 @@
 gogll
 ToDo.md
-*.txt
 .vscode
 cpu.prof*
 cpuprof.*

@@ -112,6 +112,7 @@ LexRule
     ;
 ```
 The first alternate of `LexRule` is a normal token definition. The second alternate, which starts with `!` defines a token that will be suppressed by the lexer. An example of the use of suppressed tokens is to define code comments.
+See [example](examples/comments/comments.md)
 ```
 tokid : lowcase <letter|number|'_'> ; 
 ```

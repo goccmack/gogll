@@ -190,17 +190,20 @@ fn not(r: char, set: &'static [char]) -> bool {
 	return true
 }
 
-static ACCEPT: [token::Type; 5] = [ 
+static ACCEPT: [token::Type; 8] = [ 
+    token::Type::Error, 
+    token::Type::Error, 
+    token::Type::T_2, 
+    token::Type::Error, 
     token::Type::Error, 
     token::Type::Error, 
     token::Type::T_1, 
-    token::Type::Error, 
     token::Type::T_0, 
 ];
 
 pub type NextFun = dyn Fn(char) -> State + Sync;
 
-static NEXT_STATE: &'static [&NextFun; 5] = &[  
+static NEXT_STATE: &'static [&NextFun; 8] = &[  
 	// Set0 
 	&|c| -> State {  
         if c == '/' { return 1 }; 
@@ -209,7 +212,8 @@ static NEXT_STATE: &'static [&NextFun; 5] = &[
 	}, 
 	// Set1 
 	&|c| -> State {  
-        if c == '/' { return 3 }; 
+        if c == '*' { return 3 }; 
+        if c == '/' { return 4 }; 
         NULL_STATE
 	}, 
 	// Set2 
@@ -220,11 +224,26 @@ static NEXT_STATE: &'static [&NextFun; 5] = &[
 	}, 
 	// Set3 
 	&|c| -> State {  
-        if c == '\n' { return 4 }; 
-        if not(c, &['\n']) { return 3 }; 
+        if c == '*' { return 5 }; 
+        if not(c, &['*']) { return 3 }; 
         NULL_STATE
 	}, 
 	// Set4 
+	&|c| -> State {  
+        if c == '\n' { return 6 }; 
+        if not(c, &['\n']) { return 4 }; 
+        NULL_STATE
+	}, 
+	// Set5 
+	&|c| -> State {  
+        if c == '/' { return 7 }; 
+        NULL_STATE
+	}, 
+	// Set6 
+	&|_| -> State {  
+        NULL_STATE
+	}, 
+	// Set7 
 	&|_| -> State {  
         NULL_STATE
 	}, 

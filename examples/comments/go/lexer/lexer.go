@@ -190,8 +190,11 @@ func not(r rune, set []rune) bool {
 var accept = []token.Type{ 
 	token.Error, 
 	token.Error, 
-	token.T_1, 
+	token.T_2, 
 	token.Error, 
+	token.Error, 
+	token.Error, 
+	token.T_1, 
 	token.T_0, 
 }
 
@@ -209,8 +212,10 @@ var nextState = []func(r rune) state{
 	// Set1
 	func(r rune) state {
 		switch { 
-		case r == '/':
+		case r == '*':
 			return 3 
+		case r == '/':
+			return 4 
 		}
 		return nullState
 	}, 
@@ -227,14 +232,38 @@ var nextState = []func(r rune) state{
 	// Set3
 	func(r rune) state {
 		switch { 
-		case r == '\n':
-			return 4 
-		case not(r, []rune{'\n'}):
+		case r == '*':
+			return 5 
+		case not(r, []rune{'*'}):
 			return 3 
 		}
 		return nullState
 	}, 
 	// Set4
+	func(r rune) state {
+		switch { 
+		case r == '\n':
+			return 6 
+		case not(r, []rune{'\n'}):
+			return 4 
+		}
+		return nullState
+	}, 
+	// Set5
+	func(r rune) state {
+		switch { 
+		case r == '/':
+			return 7 
+		}
+		return nullState
+	}, 
+	// Set6
+	func(r rune) state {
+		switch { 
+		}
+		return nullState
+	}, 
+	// Set7
 	func(r rune) state {
 		switch { 
 		}

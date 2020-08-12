@@ -1,5 +1,8 @@
 # Change Log
 
+# 2020-08-12 v3.2.0
+Suppressed tokens added to lexer. See [gogll.md](gogll.md)
+
 # 2020-08-11 v3.1.8
 Bug fixed in handling of empty productions.
 

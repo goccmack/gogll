@@ -21,8 +21,9 @@ pub struct Token {
 pub enum Type {	
 	Error, // "Error"
 	EOF, // "$"
-	T_0, // "comment"
-	T_1, // "name"
+	T_0, // "block_comment"
+	T_1, // "line_comment"
+	T_2, // "name"
 }
 
 /**
@@ -114,8 +115,9 @@ lazy_static! {
         let mut m = HashMap::new(); 
 		m.insert(Type::Error, "Error");
 		m.insert(Type::EOF, "$");
-		m.insert(Type::T_0, "comment");
-		m.insert(Type::T_1, "name");
+		m.insert(Type::T_0, "block_comment");
+		m.insert(Type::T_1, "line_comment");
+		m.insert(Type::T_2, "name");
         m
     };
 }
@@ -125,8 +127,9 @@ lazy_static! {
 		let mut m = HashMap::new(); 
 		m.insert("Error", Type::Error); 
 		m.insert("$", Type::EOF); 
-		m.insert("comment", Type::T_0); 
-		m.insert("name", Type::T_1); 
+		m.insert("block_comment", Type::T_0); 
+		m.insert("line_comment", Type::T_1); 
+		m.insert("name", Type::T_2); 
 		m
 	};
 }
@@ -138,6 +141,7 @@ lazy_static! {
 		m.insert("EOF", Type::EOF); 
 		m.insert("T_0", Type::T_0); 
 		m.insert("T_1", Type::T_1); 
+		m.insert("T_2", Type::T_2); 
 		m
 	};
 }
@@ -148,7 +152,8 @@ lazy_static! {
 		m.insert(Type::Error, false);
 		m.insert(Type::EOF, false);
 		m.insert(Type::T_0, true);
-		m.insert(Type::T_1, false);
+		m.insert(Type::T_1, true);
+		m.insert(Type::T_2, false);
         m
     };
 }
