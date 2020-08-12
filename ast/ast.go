@@ -129,6 +129,7 @@ func (t *TokID) String() string {
 	return t.tok.LiteralString()
 }
 
+// TODO: This looks like a duplication of TokID.ID()
 func (t *TokID) Token() string {
 	return t.tok.LiteralString()
 }

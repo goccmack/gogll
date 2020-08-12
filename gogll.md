@@ -103,11 +103,16 @@ RegExp : LexSymbol | LexSymbol RegExp ;
 ```
 # Lexical Rules
 Gogll generates a lexer from the set of `string_lit` `SyntaxSymbol`s in the specification
-(see **Syntax Rules** below) plus the 
-set of `LexRule`s defined by the user.
+(see **Syntax Rules** below) plus the set of `LexRule`s defined by the user.
 
 ```
-LexRule : tokid ":" RegExp ";" ;
+LexRule
+    : tokid ":" RegExp ";"
+    | "!" tokid ":" RegExp ";"
+    ;
+```
+The first alternate of `LexRule` is a normal token definition. The second alternate, which starts with `!` defines a token that will be suppressed by the lexer. An example of the use of suppressed tokens is to define code comments.
+```
 tokid : lowcase <letter|number|'_'> ; 
 ```
 `tokid` is a token ID, which starts with a lower case letter, followed by one

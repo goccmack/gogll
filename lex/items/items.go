@@ -261,7 +261,7 @@ func (sets *Sets) add(set *Set) *Sets {
 }
 
 func stringLitToRule(sl *ast.StringLit) *ast.LexRule {
-	return &ast.LexRule{ast.StringLitToTokID(sl), stringLitToRegExp(sl)}
+	return &ast.LexRule{false, ast.StringLitToTokID(sl), stringLitToRegExp(sl)}
 }
 
 func stringLitToRegExp(sl *ast.StringLit) *ast.RegExp {

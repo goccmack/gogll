@@ -148,11 +148,21 @@ func (bld *builder) getStringLiterals(rules []*SyntaxRule) map[string]*StringLit
 
 /*** Lex Rules ***/
 
-// LexRule : tokid ":" RegExp ";" ;
+// LexRule
+//     : tokid ":" RegExp ";"
+//     | "!" tokid ":" RegExp ";"
+//     ;
 func (bld *builder) lexRule(b bsr.BSR) *LexRule {
+	if b.Alternate() == 0 {
+		return &LexRule{
+			TokID:  bld.tokID(b.GetTChildI(0)),
+			RegExp: bld.regexp(b.GetNTChildI(2)),
+		}
+	}
 	return &LexRule{
-		TokID:  bld.tokID(b.GetTChildI(0)),
-		RegExp: bld.regexp(b.GetNTChildI(2)),
+		Suppress: true,
+		TokID:    bld.tokID(b.GetTChildI(1)),
+		RegExp:   bld.regexp(b.GetNTChildI(3)),
 	}
 }
 
@@ -172,7 +182,7 @@ func (bld *builder) regexp(b bsr.BSR) *RegExp {
 func (bld *builder) lexSymbol(b bsr.BSR) LexSymbol {
 	switch b.Alternate() {
 	case 0:
-		return bld.any(b.GetNTChildI(0))
+		return bld.any(b.GetTChildI(0))
 	case 1:
 		return bld.anyOf(b.GetTChildI(0), b.GetTChildI(1))
 	case 2:
@@ -188,9 +198,9 @@ func (bld *builder) lexSymbol(b bsr.BSR) LexSymbol {
 }
 
 // Any : "." ;
-func (bld *builder) any(b bsr.BSR) *Any {
+func (bld *builder) any(t *token.Token) *Any {
 	return &Any{
-		tok: b.GetTChildI(0),
+		tok: t,
 	}
 }
 

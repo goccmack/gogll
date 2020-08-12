@@ -83,8 +83,9 @@ func (*Not) isLexBase()          {}
 func (*UnicodeClass) isLexBase() {}
 
 type LexRule struct {
-	TokID  *TokID
-	RegExp *RegExp
+	Suppress bool
+	TokID    *TokID
+	RegExp   *RegExp
 }
 
 type LexSymbol interface {

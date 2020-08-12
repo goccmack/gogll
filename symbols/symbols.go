@@ -73,6 +73,9 @@ var (
 	literalToT    map[string]T
 	tToLiteral    []string
 	tToTypeString []string
+	tSuppress     []bool
+
+	tToID []string
 )
 
 // Init initialises the symbols
@@ -91,6 +94,8 @@ func Init(g *ast.GoGLL) {
 	tToLiteral = make([]string, len(ts)+2)
 	literalToT = make(map[string]T, len(ts)+2)
 	tToTypeString = make([]string, len(ts)+2)
+	tSuppress = make([]bool, len(ts)+2)
+	tToID = make([]string, len(ts)+2)
 
 	tToLiteral[0] = "Error"
 	literalToT["Error"] = T(0)
@@ -99,10 +104,21 @@ func Init(g *ast.GoGLL) {
 	literalToT["$"] = T(1)
 	tToTypeString[1] = "EOF"
 
+	tToID[Error] = "Error"
+	tToID[EoF] = "EOF"
+
 	for i, t := range ts {
+		typeStr := fmt.Sprintf("T_%d", i)
+
 		tToLiteral[i+2] = t
 		literalToT[t] = T(i + 2)
-		tToTypeString[i+2] = fmt.Sprintf("T_%d", i)
+		tToTypeString[i+2] = typeStr
+		tToID[i+2] = t
+	}
+
+	for _, lr := range g.LexRules {
+		typ := literalToT[lr.ID()]
+		tSuppress[typ] = lr.Suppress
 	}
 
 	initialisized = true
@@ -193,6 +209,10 @@ func (t T) GoString() string {
 	return tToTypeString[t]
 }
 
+func (t T) ID() string {
+	return tToID[t]
+}
+
 // TypeString returns the Go representation of t used by code generation modules
 func (t T) TypeString() string {
 	if !initialisized {
@@ -207,6 +227,11 @@ func (t T) String() string {
 		panic("Uninitialised")
 	}
 	return tToLiteral[t]
+}
+
+// Suppress returns true iff t is suppressed by the lexer
+func (t T) Suppress() bool {
+	return tSuppress[t]
 }
 
 /***/

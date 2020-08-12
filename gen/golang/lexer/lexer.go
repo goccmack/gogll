@@ -219,7 +219,9 @@ func New(input []rune) *Lexer {
 		if lext < len(lex.I) {
 			tok := lex.scan(lext)
 			lext = tok.Rext()
-			lex.addToken(tok)
+			if !tok.Suppress() {
+				lex.addToken(tok)
+			}
 		}
 	}
 	lex.add(token.EOF, len(input), len(input))
