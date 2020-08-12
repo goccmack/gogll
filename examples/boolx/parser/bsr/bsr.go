@@ -6,11 +6,6 @@ Package bsr implements a Binary Subtree Representation set as defined in
 	Scott et al
 	Derivation representation using binary subtree sets,
 	Science of Computer Programming 175 (2019)
-
-ToDo:   
-
-* stringBSR is specific to a grammar slot rather than a symbol string. In an
-ambiguous grammar this leads to more string BSRs than necessary.
 */
 package bsr
 
@@ -20,10 +15,10 @@ import (
 	"strings"
 	"unicode/utf8"
 
-	"github.com/goccmack/gogll/examples/boolx/lexer"
-	"github.com/goccmack/gogll/examples/boolx/parser/slot"
-	"github.com/goccmack/gogll/examples/boolx/parser/symbols"
-	"github.com/goccmack/gogll/examples/boolx/token"
+	"boolx/lexer"
+	"boolx/parser/slot"
+	"boolx/parser/symbols"
+	"boolx/token"
 )
 
 type bsr interface {

@@ -68,7 +68,7 @@ func getData(g *ast.GoGLL, gs *gslot.GSlot, ff *frstflw.FF) *Data {
 
 func getAltData(g *ast.GoGLL, gs *gslot.GSlot, ff *frstflw.FF) (data []*AltData) {
 	for _, r := range g.SyntaxRules {
-		d := &AltData{r.Head.Token(), getLabelList(r, g, gs, ff)}
+		d := &AltData{r.Head.ID(), getLabelList(r, g, gs, ff)}
 		data = append(data, d)
 	}
 	return
@@ -80,7 +80,7 @@ func getLabelList(rule *ast.SyntaxRule, g *ast.GoGLL, gs *gslot.GSlot, ff *frstf
 		if i > 0 {
 			buf.WriteString(",")
 		}
-		buf.WriteString(gslot.NewLabel(rule.Head.Token(), i, 0, gs, ff).Label())
+		buf.WriteString(gslot.NewLabel(rule.Head.ID(), i, 0, gs, ff).Label())
 	}
 	return buf.String()
 }

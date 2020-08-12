@@ -233,7 +233,7 @@ func (l *LexBracket) RightBracket() string {
 
 // Returns the id of the lex rule
 func (l *LexRule) ID() string {
-	return l.TokID.Token()
+	return l.TokID.ID()
 }
 
 func (l *LexRule) Lext() int {
@@ -313,6 +313,11 @@ func (lb *LexBracket) String() string {
 
 func (n *Not) String() string {
 	return fmt.Sprintf("not %s", string(n.strLit.Literal()))
+}
+
+func (sl *StringLit) ID() string {
+	lit := sl.tok.Literal()
+	return string(lit[1 : len(lit)-1])
 }
 
 func (sl *StringLit) Literal() []rune {

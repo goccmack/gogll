@@ -137,29 +137,4 @@ impl fmt::Display for Symbol {
     }
 }
 
-// ToDo: Delete
-// impl fmt::Display for NT {
-//     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-//         match self { {{range $nt := .NonTerminals}} 
-//             NT::{{$nt}} => write!(f, "{{$nt}}"),{{end}}
-//         }
-//     }
-// }
-
-// impl fmt::Display for T {
-//     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-//         match self { {{range $i, $t := .EscapedTerminals}} 
-//             T::T{{$i}} => write!(f, "{{$t}}"),{{end}}
-//         }
-//     }
-// }
-
-// impl fmt::Display for Symbol {
-//     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-//         match self { 
-//             Symbol::NT(nt) => write!(f, "Symbol::NT({})", nt),
-//             Symbol::T(t) => write!(f, "Symbol::T({})", t)
-//         }
-//     }
-// }
 `

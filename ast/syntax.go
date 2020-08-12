@@ -31,7 +31,11 @@ type SyntaxSymbol interface {
 	isSyntaxSymbol()
 	// Lext returns the left extent of SyntaxSymbol in the input string
 	Lext() int
-	Token() string
+
+	// The ID of the symbol, which is the literal string of a LexRule, SyntaxRule
+	// or StringLit.
+	ID() string
+
 	String() string
 }
 
@@ -44,7 +48,7 @@ func (*StringLit) isSyntaxSymbol() {}
 func (a *SyntaxAlternate) GetSymbols() []string {
 	symbols := make([]string, len(a.Symbols))
 	for i, s := range a.Symbols {
-		symbols[i] = s.Token()
+		symbols[i] = s.ID()
 	}
 	return symbols
 }

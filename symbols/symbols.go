@@ -200,7 +200,6 @@ func (t T) Literal() string {
 	return tToLiteral[t]
 }
 
-// TODO: obsolete
 // GoString returns the Go representation of t used by code generation modules
 func (t T) GoString() string {
 	if !initialisized {
@@ -260,9 +259,6 @@ func GetSymbols() []string {
 	symbols := make([]string, 0, len(ntToLiteral)+len(tToTypeString)+1)
 	symbols = append(symbols, ntToLiteral...)
 	symbols = append(symbols, tToLiteral...)
-
-	// TODO: clean up
-	// symbols = append(symbols, EOF.GoString())
 
 	return symbols
 }

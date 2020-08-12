@@ -74,31 +74,3 @@ impl fmt::Display for Symbol {
     }
 }
 
-// ToDo: Delete
-// impl fmt::Display for NT {
-//     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-//         match self {  
-//             NT::Exp => write!(f, "Exp"), 
-//             NT::Op => write!(f, "Op"),
-//         }
-//     }
-// }
-
-// impl fmt::Display for T {
-//     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-//         match self {  
-//             T::T0 => write!(f, "&"), 
-//             T::T1 => write!(f, "id"), 
-//             T::T2 => write!(f, "|"),
-//         }
-//     }
-// }
-
-// impl fmt::Display for Symbol {
-//     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-//         match self { 
-//             Symbol::NT(nt) => write!(f, "Symbol::NT({})", nt),
-//             Symbol::T(t) => write!(f, "Symbol::T({})", t)
-//         }
-//     }
-// }

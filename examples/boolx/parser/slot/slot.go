@@ -6,7 +6,7 @@ import(
 	"bytes"
 	"fmt"
 	
-	"github.com/goccmack/gogll/examples/boolx/parser/symbols"
+	"boolx/parser/symbols"
 )
 
 type Label int

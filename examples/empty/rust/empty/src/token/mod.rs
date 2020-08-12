@@ -13,6 +13,7 @@ pub struct Token {
 	pub typ: Type,
 	pub lext: usize, 
 	pub rext: usize,
+	
 	input: Rc<Vec<char>>,
 }
 
@@ -57,17 +58,29 @@ impl Token {
 		}
 		(line, col)
 	}
+
+	/// returns the id of the token
+	#[allow(dead_code)]
+	pub fn id(&self) -> &'static str {
+		TYPE_TO_ID[&self.typ]
+	}
 	
 	/// literal returns the literal runes of t scanned by the lexer
 	pub fn literal(&self) -> Vec<char> {
 		self.input[self.lext..self.rext].to_vec()
 	}
 	
-    /// literal_string returs the literal string of t scanned by the lexer
+    /// literal_string returns the literal string of t scanned by the lexer
     #[allow(dead_code)]
 	pub fn literal_string(&self) -> String {
 		self.literal().iter().collect::<String>()
-    }
+	}
+	
+	/// returns true iff this token is suppressed by the lexer
+	#[allow(dead_code)]
+	pub fn suppress(&self) -> bool {
+		SUPPRESS[&self.typ]
+	}
 
 } // impl Token
 
@@ -84,20 +97,20 @@ impl <'a>Type {
 	/// id returns the token type ID of token Type t
 	#[allow(dead_code)]
 	pub fn id(&self) -> &'a str {
-		TYPE_TO_STRING[self]
+		TYPE_TO_ID[self]
 	}
 	
 }
 
 impl <'a>fmt::Display for Type {
 	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-		write!(f, "{}", TYPE_TO_STRING[self])
+		write!(f, "{}", TYPE_TO_ID[self])
 	}
 
 }
 
 lazy_static! {
-    static ref TYPE_TO_STRING: HashMap<Type, &'static str> = {
+    static ref TYPE_TO_ID: HashMap<Type, &'static str> = {
         let mut m = HashMap::new(); 
 		m.insert(Type::Error, "Error");
 		m.insert(Type::EOF, "$");
@@ -105,6 +118,17 @@ lazy_static! {
 		m.insert(Type::T_1, "name");
         m
     };
+}
+
+lazy_static! {
+	static ref ID_TO_TYPE: HashMap<&'static str, Type> = {
+		let mut m = HashMap::new(); 
+		m.insert("Error", Type::Error); 
+		m.insert("$", Type::EOF); 
+		m.insert("int", Type::T_0); 
+		m.insert("name", Type::T_1); 
+		m
+	};
 }
 
 lazy_static! {
@@ -116,4 +140,15 @@ lazy_static! {
 		m.insert("T_1", Type::T_1); 
 		m
 	};
+}
+
+lazy_static! {
+    static ref SUPPRESS: HashMap<Type, bool> = {
+        let mut m = HashMap::new(); 
+		m.insert(Type::Error, false);
+		m.insert(Type::EOF, false);
+		m.insert(Type::T_0, false);
+		m.insert(Type::T_1, false);
+        m
+    };
 }

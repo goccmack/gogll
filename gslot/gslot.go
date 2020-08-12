@@ -156,7 +156,7 @@ func (gs *GSlot) genSlots() {
 
 func (gs *GSlot) genSlotsOfRule(r *ast.SyntaxRule) {
 	for i, a := range r.Alternates {
-		gs.genSlotsOfAlternate(r.Head.Token(), i, getSymbols(a.GetSymbols())...)
+		gs.genSlotsOfAlternate(r.Head.ID(), i, getSymbols(a.GetSymbols())...)
 	}
 }
 

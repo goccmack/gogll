@@ -8,10 +8,6 @@ Module bsr implements a Binary Subtree Representation set as defined in
     Derivation representation using binary subtree sets,
     Science of Computer Programming 175 (2019)
 
-ToDo:
-
-* StrBSR is specific to a grammar slot rather than a symbol string. In an
-ambiguous grammar this leads to more string BSRs than necessary.
 */
 
 use crate::lexer;
@@ -283,7 +279,7 @@ impl Set {
             panic!("symbol {} in {} is an NT", i, b);
 		}
 		
-		let mut lext: usize = 0;
+		let mut lext: usize = b.lext;
 		for j in 0..i {
 			if symbols[j].is_nt() {
 				let nt = self.get_nt_child_i(b.clone(), j);

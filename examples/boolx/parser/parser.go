@@ -7,11 +7,11 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/goccmack/gogll/examples/boolx/lexer"
-	"github.com/goccmack/gogll/examples/boolx/parser/bsr"
-	"github.com/goccmack/gogll/examples/boolx/parser/slot"
-	"github.com/goccmack/gogll/examples/boolx/parser/symbols"
-	"github.com/goccmack/gogll/examples/boolx/token"
+	"boolx/lexer"
+	"boolx/parser/bsr"
+	"boolx/parser/slot"
+	"boolx/parser/symbols"
+	"boolx/token"
 )
 
 type parser struct {

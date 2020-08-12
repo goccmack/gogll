@@ -5,10 +5,10 @@ import (
 	"os"
 	"testing"
 
-	"github.com/goccmack/gogll/examples/boolx/lexer"
-	"github.com/goccmack/gogll/examples/boolx/parser"
-	"github.com/goccmack/gogll/examples/boolx/parser/bsr"
-	"github.com/goccmack/gogll/examples/boolx/token"
+	"boolx/lexer"
+	"boolx/parser"
+	"boolx/parser/bsr"
+	"boolx/token"
 )
 
 type ExprType int

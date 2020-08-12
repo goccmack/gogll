@@ -56,7 +56,9 @@ impl Lexer {
 			if lext < lex.i.len() {
 				let tok = lex.scan(lext);
 				lext = tok.rext;
-				lex.add_token(tok)
+				if !tok.suppress() {
+					lex.add_token(tok)
+				}
 			}
 		}
 		lex.add(token::Type::EOF, input.len(), input.len());

@@ -40,10 +40,6 @@ Module bsr implements a Binary Subtree Representation set as defined in
     Derivation representation using binary subtree sets,
     Science of Computer Programming 175 (2019)
 
-ToDo:
-
-* StrBSR is specific to a grammar slot rather than a symbol string. In an
-ambiguous grammar this leads to more string BSRs than necessary.
 */
 
 use crate::lexer;

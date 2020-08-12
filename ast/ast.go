@@ -53,7 +53,7 @@ type Terminal interface {
 
 func (g *GoGLL) GetLexRule(id string) *LexRule {
 	for _, r := range g.LexRules {
-		if r.TokID.Token() == id {
+		if r.TokID.ID() == id {
 			return r
 		}
 	}
@@ -77,7 +77,7 @@ func (g *GoGLL) GetStringLiteralsSet() *stringset.StringSet {
 
 func (g *GoGLL) GetSyntaxRule(nt string) *SyntaxRule {
 	for _, r := range g.SyntaxRules {
-		if r.Head.Token() == nt {
+		if r.Head.ID() == nt {
 			return r
 		}
 	}
@@ -89,14 +89,10 @@ func (g *GoGLL) GetSymbols() []string {
 }
 
 func (g *GoGLL) StartSymbol() string {
-	return g.SyntaxRules[0].Head.Token()
+	return g.SyntaxRules[0].Head.ID()
 }
 
 func (n *NT) String() string {
-	return n.tok.LiteralString()
-}
-
-func (n *NT) Token() string {
 	return n.tok.LiteralString()
 }
 
@@ -117,20 +113,11 @@ func (s *StringLit) String() string {
 	return string(s.tok.Literal()[1 : len(s.tok.Literal())-1])
 }
 
-func (s *StringLit) Token() string {
-	return string(s.tok.Literal()[1 : len(s.tok.Literal())-1])
-}
-
 func (s *StringLit) Lext() int {
 	return s.tok.Lext()
 }
 
 func (t *TokID) String() string {
-	return t.tok.LiteralString()
-}
-
-// TODO: This looks like a duplication of TokID.ID()
-func (t *TokID) Token() string {
 	return t.tok.LiteralString()
 }
 

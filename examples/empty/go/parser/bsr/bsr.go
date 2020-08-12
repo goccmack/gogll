@@ -6,11 +6,6 @@ Package bsr implements a Binary Subtree Representation set as defined in
 	Scott et al
 	Derivation representation using binary subtree sets,
 	Science of Computer Programming 175 (2019)
-
-ToDo:   
-
-* stringBSR is specific to a grammar slot rather than a symbol string. In an
-ambiguous grammar this leads to more string BSRs than necessary.
 */
 package bsr
 

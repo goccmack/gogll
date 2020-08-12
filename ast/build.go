@@ -106,10 +106,10 @@ func (bld *builder) rules(b bsr.BSR) []brule {
 func (bld *builder) nonTerminals(rules []*SyntaxRule) *stringset.StringSet {
 	nts := stringset.New()
 	for _, r := range rules {
-		if nts.Contain(r.Head.Token()) {
-			bld.fail(fmt.Errorf("Duplicate rule %s", r.Head.Token()), r.Head.Lext())
+		if nts.Contain(r.Head.ID()) {
+			bld.fail(fmt.Errorf("Duplicate rule %s", r.Head.ID()), r.Head.Lext())
 		} else {
-			nts.Add(r.Head.Token())
+			nts.Add(r.Head.ID())
 		}
 	}
 	return nts
@@ -138,7 +138,7 @@ func (bld *builder) getStringLiterals(rules []*SyntaxRule) map[string]*StringLit
 		for _, a := range r.Alternates {
 			for _, s := range a.Symbols {
 				if sl, ok := s.(*StringLit); ok {
-					slits[sl.Token()] = sl
+					slits[sl.ID()] = sl
 				}
 			}
 		}

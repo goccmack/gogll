@@ -126,11 +126,6 @@ struct Parser {
 	bsr_set: Box<bsr::Set>,
 }
 
-// ToDo: delete
-// struct Descriptors {
-// 	set: Vec<Box<Descriptor>>,
-// }
-
 #[derive(Hash,Eq,PartialEq,Debug)]
 struct Descriptor {
 	l: Label,

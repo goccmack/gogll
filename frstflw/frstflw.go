@@ -157,9 +157,6 @@ func (ff *FF) genFollow() {
 	}
 }
 
-/*
-TODO: genFollow only processes syntax rules
-*/
 func (ff *FF) genFollowOf(nt string) *stringset.StringSet {
 	// fmt.Printf("genFollowOf(%s)=%s\n", nt, followSets[nt])
 	follow := stringset.New()
@@ -171,7 +168,7 @@ func (ff *FF) genFollowOf(nt string) *stringset.StringSet {
 				follow.AddSet(first)
 				if first.Contain(Empty) {
 					// fmt.Printf("  add folow(%s)\n", r.Head.StringValue())
-					follow.AddSet(ff.Follow(r.Head.Token()))
+					follow.AddSet(ff.Follow(r.Head.ID()))
 				}
 			}
 		}

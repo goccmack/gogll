@@ -56,7 +56,9 @@ impl Lexer {
 			if lext < lex.i.len() {
 				let tok = lex.scan(lext);
 				lext = tok.rext;
-				lex.add_token(tok)
+				if !tok.suppress() {
+					lex.add_token(tok)
+				}
 			}
 		}
 		lex.add(token::Type::EOF, input.len(), input.len());
@@ -169,7 +171,7 @@ fn load_md(input: &mut Vec<char>) -> io::Result<()> {
 }
 
 #[allow(dead_code)]
-fn any(r: char, set: &Vec<char>) -> bool {
+fn any(r: char, set: &'static [char]) -> bool {
 	for r1 in set.iter() {
 		if &r == r1 {
 			return true
@@ -179,7 +181,7 @@ fn any(r: char, set: &Vec<char>) -> bool {
 }
 
 #[allow(dead_code)]
-fn not(r: char, set: &Vec<char>) -> bool {
+fn not(r: char, set: &'static [char]) -> bool {
 	for r1 in set.iter() {
 		if &r == r1 {
 			return false

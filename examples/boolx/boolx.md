@@ -1,7 +1,7 @@
 # Grammar for example: boolx
 
 ```
-package "github.com/goccmack/gogll/examples/boolx"
+package "boolx"
 
 Expr :   var
      |   Expr Op Expr

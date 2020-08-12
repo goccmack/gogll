@@ -72,30 +72,3 @@ impl fmt::Display for Symbol {
     }
 }
 
-// ToDo: Delete
-// impl fmt::Display for NT {
-//     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-//         match self {  
-//             NT::A1 => write!(f, "A1"), 
-//             NT::Name => write!(f, "Name"),
-//         }
-//     }
-// }
-
-// impl fmt::Display for T {
-//     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-//         match self {  
-//             T::T0 => write!(f, "int"), 
-//             T::T1 => write!(f, "name"),
-//         }
-//     }
-// }
-
-// impl fmt::Display for Symbol {
-//     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-//         match self { 
-//             Symbol::NT(nt) => write!(f, "Symbol::NT({})", nt),
-//             Symbol::T(t) => write!(f, "Symbol::T({})", t)
-//         }
-//     }
-// }
