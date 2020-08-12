@@ -14,12 +14,12 @@ package "comments"
 
 name : letter {letter | number} ;
 
-!line_comment : '/' '/' {not "\n"} '\n' ;
+!line_comment : '/' '/' {not "\n"} ;
 ```
 `!line_comment` is a c-style line comment. Everything from the first slash to the end of line
 is a comment.
 ```
-!block_comment : '/''*' {not "*"} '*''/' ;
+!block_comment : '/''*' {not "*" | '*' not "/"} '*''/' ;
 ```
 `!block_comment` is a c-style block comment. Everything between and including 
 `/*` and `*/` is a comment. 

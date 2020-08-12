@@ -190,20 +190,19 @@ fn not(r: char, set: &'static [char]) -> bool {
 	return true
 }
 
-static ACCEPT: [token::Type; 8] = [ 
+static ACCEPT: [token::Type; 7] = [ 
     token::Type::Error, 
     token::Type::Error, 
     token::Type::T_2, 
     token::Type::Error, 
-    token::Type::Error, 
-    token::Type::Error, 
     token::Type::T_1, 
+    token::Type::Error, 
     token::Type::T_0, 
 ];
 
 pub type NextFun = dyn Fn(char) -> State + Sync;
 
-static NEXT_STATE: &'static [&NextFun; 8] = &[  
+static NEXT_STATE: &'static [&NextFun; 7] = &[  
 	// Set0 
 	&|c| -> State {  
         if c == '/' { return 1 }; 
@@ -230,20 +229,16 @@ static NEXT_STATE: &'static [&NextFun; 8] = &[
 	}, 
 	// Set4 
 	&|c| -> State {  
-        if c == '\n' { return 6 }; 
         if not(c, &['\n']) { return 4 }; 
         NULL_STATE
 	}, 
 	// Set5 
 	&|c| -> State {  
-        if c == '/' { return 7 }; 
+        if c == '/' { return 6 }; 
+        if not(c, &['/']) { return 3 }; 
         NULL_STATE
 	}, 
 	// Set6 
-	&|_| -> State {  
-        NULL_STATE
-	}, 
-	// Set7 
 	&|_| -> State {  
         NULL_STATE
 	}, 
