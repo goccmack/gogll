@@ -3,7 +3,7 @@
 package lexer
 
 import (
-	"fmt"
+	// "fmt"
 	"io/ioutil"
 	"strings"
 	"unicode"
@@ -99,10 +99,10 @@ func New(input []rune) *Lexer {
 }
 
 func (l *Lexer) scan(i int) *token.Token {
-	fmt.Printf("lexer.scan(%d)\n", i)
+	// fmt.Printf("lexer.scan(%d)\n", i)
 	s, typ, rext := nullState, token.Error, i+1
 	if i < len(l.I) {
-		fmt.Printf("  rext %d, i %d\n", rext, i)
+		// fmt.Printf("  rext %d, i %d\n", rext, i)
 		s = nextState[0](l.I[i])
 	}
 	for s != nullState {
@@ -118,7 +118,7 @@ func (l *Lexer) scan(i int) *token.Token {
 		}
 	}
 	tok := token.New(typ, i, rext, l.I)
-	fmt.Printf("  %s\n", tok)
+	// fmt.Printf("  %s\n", tok)
 	return tok
 }
 

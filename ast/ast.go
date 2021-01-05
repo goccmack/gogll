@@ -64,8 +64,6 @@ func (g *GoGLL) GetLexRule(id string) *LexRule {
 func (g *GoGLL) GetStringLiterals() []string {
 	slits := make([]string, 0, len(g.StringLiterals))
 	for _, sl := range g.StringLiterals {
-		// TODO: cleanup
-		// fmt.Printf("ast.GetStringLiterals %s %s\n", sl.tok.LiteralString(), string(sl.Value()))
 		slits = append(slits, string(sl.Value()))
 	}
 	sort.Slice(slits, func(i, j int) bool { return slits[i] < slits[j] })

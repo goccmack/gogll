@@ -63,9 +63,6 @@ func Gen(g *ast.GoGLL, ls *items.Sets) {
 func getAccept(ls *items.Sets, slits *stringset.StringSet) (tokTypes []string) {
 	for _, s := range ls.Sets() {
 		tok := s.Accept(slits)
-		if tok == "" {
-			panic("TODO: fix me")
-		}
 		tokTypes = append(tokTypes, symbols.TerminalLiteralToType(tok).TypeString())
 	}
 	return
