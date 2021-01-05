@@ -7,7 +7,7 @@ import (
 	"github.com/goccmack/gogll/test/lex/lex5/parser"
 )
 
-var src = []string{"\"", "\\", "Hello   World"}
+var src = []string{"\"", "\\"}
 
 func Test1(t *testing.T) {
 	for _, s := range src {

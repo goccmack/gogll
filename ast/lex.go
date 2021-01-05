@@ -317,6 +317,16 @@ func (n *Not) String() string {
 	return fmt.Sprintf("not %s", string(n.strLit.Literal()))
 }
 
+func (sl *StringLit) ContainsWhiteSpace() bool {
+	for _, r := range sl.tok.LiteralStripEscape() {
+		switch r {
+		case ' ', '\t', '\n', '\r':
+			return true
+		}
+	}
+	return false
+}
+
 func (sl *StringLit) ID() string {
 	return string(sl.Value())
 }

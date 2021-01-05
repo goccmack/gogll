@@ -360,7 +360,13 @@ func (bld *builder) symbol(b bsr.BSR) SyntaxSymbol {
 	case 1:
 		return bld.tokID(b.GetTChildI(0))
 	case 2:
-		return bld.stringLit(b.GetTChildI(0))
+		sl := bld.stringLit(b.GetTChildI(0))
+		if sl.ContainsWhiteSpace() {
+			bld.fail(
+				fmt.Errorf("A string_lit SyntaxSymbol may not contain whitespace"),
+				b.GetTChildI(0).Lext())
+		}
+		return sl
 	}
 	panic(fmt.Sprintf("invalid alternate %d", b.Alternate()))
 }

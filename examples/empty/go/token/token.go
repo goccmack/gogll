@@ -54,7 +54,7 @@ func (t *Token) Lext() int {
     return t.lext
 }
 
-// Literal returs the literal runes of t scanned by the lexer
+// Literal returns the literal runes of t scanned by the lexer
 func (t *Token) Literal() []rune {
     return t.input[t.lext:t.rext]
 }
@@ -62,6 +62,35 @@ func (t *Token) Literal() []rune {
 // LiteralString returns string(t.Literal())
 func (t *Token) LiteralString() string {
     return string(t.Literal())
+}
+
+// LiteralStripEscape returns the literal runes of t scanned by the lexer
+func (t *Token) LiteralStripEscape() []rune {
+	lit := t.Literal()
+	strip := make([]rune, 0, len(lit))
+	for i := 0; i < len(lit); i++ {
+		if lit[i] == '\\' {
+			i++
+			switch lit[i] {
+			case 't':
+				strip = append(strip, '\t')
+			case 'r':
+				strip = append(strip, '\r')
+			case 'n':
+				strip = append(strip, '\r')
+			default:
+				strip = append(strip, lit[i])
+			}
+		} else {
+			strip = append(strip, lit[i])
+		}
+	}
+	return strip
+}
+
+// LiteralStringStripEscape returns string(t.LiteralStripEscape())
+func (t *Token) LiteralStringStripEscape() string {
+	return string(t.LiteralStripEscape())
 }
 
 // Rext returns the right extent of t in the input

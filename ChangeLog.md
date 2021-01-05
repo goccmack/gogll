@@ -1,5 +1,12 @@
 # Change Log
 
+# 2021-01-05 v3.2.1
+Escaped characters are now correctly handled in `string_lit`. 
+Please see the [grammar](gogll.md) for constraints enforced by gogll on the use
+of certain escaped characters `string_lit` as `SyntaxSymbol`.
+
+This version does not support Rust.
+
 # 2020-08-12 v3.2.0
 Suppressed tokens added to lexer. See [gogll.md](gogll.md)
 

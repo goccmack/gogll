@@ -63,6 +63,9 @@ func GetParams() {
 	getFileBase()
 	getParserType()
 	if *Rust {
+		fmt.Printf("Version %s does not support Rust\n", Version)
+		fmt.Println("Please log an issue if you need Rust support")
+
 		*Go = false
 	}
 	Verbose = *verbose

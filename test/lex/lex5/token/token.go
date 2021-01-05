@@ -136,8 +136,7 @@ const(
     Error  Type = iota  // Error 
     EOF  // $ 
     T_0  // \" 
-    T_1  // Hello\tWorld 
-    T_2  // \\ 
+    T_1  // \\ 
 )
 
 var TypeToString = []string{ 
@@ -145,7 +144,6 @@ var TypeToString = []string{
     "EOF",
     "T_0",
     "T_1",
-    "T_2",
 }
 
 var StringToType = map[string] Type { 
@@ -153,19 +151,16 @@ var StringToType = map[string] Type {
     "EOF" : EOF, 
     "T_0" : T_0, 
     "T_1" : T_1, 
-    "T_2" : T_2, 
 }
 
 var TypeToID = []string { 
     "Error", 
     "$", 
     "\"", 
-    "Hello\tWorld", 
     "\\", 
 }
 
 var Suppress = []bool { 
-    false, 
     false, 
     false, 
     false, 

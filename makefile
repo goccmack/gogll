@@ -1,4 +1,4 @@
-.PHONY: all clean install
+.PHONY: all clean install test
 
 all: parser/parser.go
 	go install
@@ -12,4 +12,7 @@ clean:
 	rm symbols.txt; \
 	rm -rf parser ; \
 	rm gogll
+
+test:
+	make -C test
 

@@ -1,6 +1,6 @@
 # Gogll v3
 
-[Copyright 2019 Marius Ackerman](License.txt)
+[Copyright 2020 Marius Ackerman](License.txt)
 
 This document contains a documented BNF specification for gogll 3. The formal
 specification is contained the markdown code blocks, which are delimited by triple
@@ -122,10 +122,10 @@ The following production, which defines a token `string_lit`,
 is an example of a `LexRule`.
 "
 ```
-string_lit : '"' {not "\\\"" | '\\' any "\\\"nrt"} '"' ;
+string_lit : '"' <not "\\\"" | '\\' any "\\\"nrt"> '"' ;
 ```
 `string_lit` defines a (possibly empty) string literal. Note that `string_lit`
-does not have the same set of escape characters as `char_lit`.
+does not have the same set of escape characters as `char_lit` or `char_set`.
 
 # Syntax Rules
 Gogll uses the specified syntax rules to generate the parser.
@@ -146,7 +146,7 @@ SyntaxAlternates
 ```
 
 Each `SyntaxAlternate` is a sequence of `SyntaxSymbol`. An optional syntax rule may
-have an altenate `empty`.
+have an alternate `empty`.
 ```
 SyntaxAlternate
     :   SyntaxSymbols                     
@@ -160,3 +160,4 @@ SyntaxSymbols
 
 SyntaxSymbol : nt | tokid | string_lit ;
 ```
+A `string_lit` `SyntaxSymbol` may not contain whitespace characters.

@@ -3,6 +3,9 @@
 
 Copyright 2019 Marius Ackerman. 
 
+# Note
+This version does not support Rust. Please log an issue if you need Rust support.
+
 # GoGLL
 Gogll generates a GLL or LR(1) parser and FSA-based lexer for any context-free grammar. 
 The generated code is Go or Rust.
