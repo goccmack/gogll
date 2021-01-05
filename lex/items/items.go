@@ -94,7 +94,6 @@ func (set *Set) Accept(slits *stringset.StringSet) string {
 	}
 
 	if len(acceptItems) > 0 {
-		fmt.Printf("items.Accept: %s\n", acceptItems[0].Rule)
 		return acceptItems[0].Rule.ID()
 	}
 

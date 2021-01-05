@@ -361,8 +361,6 @@ func CharLitFromStringLit(sl *StringLit, i int, escaped bool) *CharLiteral {
 	}
 	lit = append(lit, '\'')
 
-	fmt.Printf("lex.CharLitFromStringLit: %s\n", string(lit))
-
 	rext := sl.Lext() + i + 1
 	if escaped {
 		rext++
