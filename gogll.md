@@ -120,7 +120,7 @@ tokid : lowcase <letter|number|'_'> ;
 or more `letter`, `number` or `'_'`.
 The following production, which defines a token `string_lit`, 
 is an example of a `LexRule`.
-
+"
 ```
 string_lit : '"' {not "\\\"" | '\\' any "\\\"nrt"} '"' ;
 ```

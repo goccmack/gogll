@@ -168,9 +168,11 @@ func NewCharLiteral(tok *token.Token, literal []rune) *CharLiteral {
 
 func (c *CharLiteral) Char() rune {
 	if c.Literal[1] == '\\' {
-		switch c.tok.Literal()[2] {
+		switch c.Literal[2] {
 		case '\'':
 			return '\''
+		case '"':
+			return '"'
 		case '\\':
 			return '\\'
 		case 't':
@@ -316,8 +318,7 @@ func (n *Not) String() string {
 }
 
 func (sl *StringLit) ID() string {
-	lit := sl.tok.Literal()
-	return string(lit[1 : len(lit)-1])
+	return string(sl.Value())
 }
 
 func (sl *StringLit) Literal() []rune {
@@ -325,7 +326,10 @@ func (sl *StringLit) Literal() []rune {
 }
 
 func (sl *StringLit) Value() []rune {
-	return sl.tok.Literal()[1 : len(sl.tok.Literal())-1]
+	slit := sl.tok.LiteralStripEscape()
+	value := slit[1 : len(slit)-1]
+	// fmt.Printf("*StringLit.Value %s %s\n", string(slit), string(value))
+	return value
 }
 
 func (u *UnicodeClass) String() string {
@@ -343,7 +347,31 @@ func StringLitToTokID(id *StringLit) *TokID {
 }
 
 // CharLitFromStringLit returns a dummy CharLiteral with Literal sl.Literal[i]
-func CharLitFromStringLit(sl *StringLit, i int) *CharLiteral {
-	return NewCharLiteral(token.New(token.StringToType["char_lit"], sl.Lext()+i, sl.Lext()+i+1, sl.tok.GetInput()),
-		[]rune{'\'', sl.Value()[i], '\''})
+// If escaped sl.Literal[i] == '\\' and sl.Literal[i+1] is the escaped char.
+func CharLitFromStringLit(sl *StringLit, i int, escaped bool) *CharLiteral {
+	// Make char literal
+	lit := []rune{'\''}
+	if escaped {
+		if sl.Literal()[i+1] != '"' {
+			lit = append(lit, '\\')
+		}
+		lit = append(lit, sl.Literal()[i+1])
+	} else {
+		lit = append(lit, sl.Literal()[i])
+	}
+	lit = append(lit, '\'')
+
+	fmt.Printf("lex.CharLitFromStringLit: %s\n", string(lit))
+
+	rext := sl.Lext() + i + 1
+	if escaped {
+		rext++
+	}
+
+	cl := NewCharLiteral(
+		token.New(
+			token.StringToType["char_lit"],
+			sl.Lext()+i, rext, sl.tok.GetInput()),
+		lit)
+	return cl
 }

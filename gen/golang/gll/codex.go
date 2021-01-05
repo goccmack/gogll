@@ -89,9 +89,7 @@ func (g *gen) getSlotData(nt string, altI int, symbol string, pos int) *SlotData
 		Comment:   postLabel.String(),
 		Head:      nt,
 	}
-	sd.IsNT = !g.g.Terminals.Contain(symbol)
-	// fmt.Printf("getSlotData: altlabel:%s, pre:%s, post:%s\n",
-	// 	sd.AltLabel, sd.PreLabel, sd.PostLabel)
+	sd.IsNT = g.g.NonTerminals.Contain(symbol)
 	return sd
 }
 

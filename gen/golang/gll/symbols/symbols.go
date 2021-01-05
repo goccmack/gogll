@@ -20,6 +20,7 @@ import (
 	"text/template"
 
 	"github.com/goccmack/gogll/ast"
+	"github.com/goccmack/gogll/gen/golang/utils"
 	"github.com/goccmack/goutil/ioutil"
 )
 
@@ -45,7 +46,7 @@ func Gen(fname string, g *ast.GoGLL) {
 func getData(g *ast.GoGLL) *Data {
 	return &Data{
 		NonTerminals: g.NonTerminals.ElementsSorted(),
-		Terminals:    g.Terminals.ElementsSorted(),
+		Terminals:    utils.EscapeAll(g.Terminals.ElementsSorted()...),
 	}
 }
 

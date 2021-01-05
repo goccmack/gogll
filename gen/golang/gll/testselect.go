@@ -22,6 +22,7 @@ import (
 	"text/template"
 
 	"github.com/goccmack/gogll/frstflw"
+	"github.com/goccmack/gogll/gen/golang/utils"
 	"github.com/goccmack/gogll/gslot"
 	"github.com/goccmack/gogll/symbols"
 )
@@ -114,7 +115,7 @@ func (g *gen) getFirst(l gslot.Label) (tokens []*Symbol) {
 			tokens = append(tokens,
 				&Symbol{
 					TokType: symbols.TerminalLiteralToType(sym).TypeString(),
-					Label:   sym,
+					Label:   utils.Escape(sym),
 				})
 		}
 	}
@@ -136,7 +137,7 @@ func (g *gen) getFollowConditions(nt string) (tokens []*Symbol) {
 		tokens = append(tokens,
 			&Symbol{
 				TokType: symbols.TerminalLiteralToType(sym).TypeString(),
-				Label:   sym,
+				Label:   utils.Escape(sym),
 			})
 	}
 	return

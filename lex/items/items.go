@@ -94,6 +94,7 @@ func (set *Set) Accept(slits *stringset.StringSet) string {
 	}
 
 	if len(acceptItems) > 0 {
+		fmt.Printf("items.Accept: %s\n", acceptItems[0].Rule)
 		return acceptItems[0].Rule.ID()
 	}
 
@@ -269,10 +270,15 @@ func stringLitToRegExp(sl *ast.StringLit) *ast.RegExp {
 }
 
 func stringLitToLexSymbols(sl *ast.StringLit) (symbols []ast.LexSymbol) {
-	// fmt.Printf("items.stringLitToLexSymbols sl %s value() %s\n", string(sl.Literal()), string(sl.Value()))
-	for i := range sl.Value() {
-		symbols = append(symbols, ast.CharLitFromStringLit(sl, i))
-		// fmt.Printf("  %s\n", symbols[len(symbols)-1])
+	slit := sl.Literal()
+	for i := 1; i < len(slit)-1; i++ {
+		if slit[i] == '\\' {
+			symbols = append(symbols, ast.CharLitFromStringLit(sl, i, true))
+			i++
+		} else {
+			symbols = append(symbols, ast.CharLitFromStringLit(sl, i, false))
+		}
 	}
+
 	return
 }

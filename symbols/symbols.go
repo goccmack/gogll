@@ -108,6 +108,7 @@ func Init(g *ast.GoGLL) {
 	tToID[EoF] = "EOF"
 
 	for i, t := range ts {
+		fmt.Printf("symbols.Init: ts='%s'\n", t)
 		typeStr := fmt.Sprintf("T_%d", i)
 
 		tToLiteral[i+2] = t
@@ -148,7 +149,7 @@ func TerminalLiteralToType(s string) T {
 	if t, ok := literalToT[s]; ok {
 		return t
 	} else {
-		panic(fmt.Sprintf("Unknown terminal %s", s))
+		panic(fmt.Sprintf("Unknown terminal >%s<", s))
 	}
 }
 
