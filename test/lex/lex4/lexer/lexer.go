@@ -89,7 +89,9 @@ func New(input []rune) *Lexer {
 		if lext < len(lex.I) {
 			tok := lex.scan(lext)
 			lext = tok.Rext()
-			lex.addToken(tok)
+			if !tok.Suppress() {
+				lex.addToken(tok)
+			}
 		}
 	}
 	lex.add(token.EOF, len(input), len(input))
@@ -97,10 +99,13 @@ func New(input []rune) *Lexer {
 }
 
 func (l *Lexer) scan(i int) *token.Token {
-	// fmt.Printf("lexer.scan\n")
-	s, typ, rext := state(0), token.Error, i
+	// fmt.Printf("lexer.scan(%d)\n", i)
+	s, typ, rext := nullState, token.Error, i+1
+	if i < len(l.I) {
+		// fmt.Printf("  rext %d, i %d\n", rext, i)
+		s = nextState[0](l.I[i])
+	}
 	for s != nullState {
-		// fmt.Printf("S%d '%c' @ %d\n", s, l.I[rext], rext)
 		if rext >= len(l.I) {
 			typ = accept[s]
 			s = nullState
@@ -112,7 +117,9 @@ func (l *Lexer) scan(i int) *token.Token {
 			}
 		}
 	}
-	return token.New(typ, i, rext, l.I)
+	tok := token.New(typ, i, rext, l.I)
+	// fmt.Printf("  %s\n", tok)
+	return tok
 }
 
 func escape(r rune) string {
@@ -187,10 +194,10 @@ func not(r rune, set []rune) bool {
 
 var accept = []token.Type{ 
 	token.Error, 
-	token.Type0, 
-	token.Type2, 
+	token.T_0, 
+	token.T_2, 
 	token.Error, 
-	token.Type1, 
+	token.T_1, 
 }
 
 var nextState = []func(r rune) state{ 

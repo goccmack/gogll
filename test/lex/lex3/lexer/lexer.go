@@ -8,8 +8,6 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/goccmack/goutil/md"
-
 	"github.com/goccmack/gogll/test/lex/lex3/token"
 )
 
@@ -17,26 +15,67 @@ type state int
 
 const nullState state = -1
 
+
+// Lexer contains both the input slice of runes and the slice of tokens
+// parsed from the input
 type Lexer struct {
+	// I is the input slice of runes
 	I      []rune
+
+	// Tokens is the slice of tokens constructed by the lexer from I
 	Tokens []*token.Token
 }
 
+/*
+NewFile constructs a Lexer created from the input file, fname. 
+
+If the input file is a markdown file NewFile process treats all text outside
+code blocks as whitespace. All text inside code blocks are treated as input text.
+
+If the input file is a normal text file NewFile treats all text in the inputfile
+as input text.
+*/
 func NewFile(fname string) *Lexer {
-	if strings.HasSuffix(fname, ".md") {
-		src, err := md.GetSource(fname)
-		if err != nil {
-			panic(err)
-		}
-		return New([]rune(src))
-	}
 	buf, err := ioutil.ReadFile(fname)
 	if err != nil {
 		panic(err)
 	}
-	return New([]rune(string(buf)))
+	input := []rune(string(buf))
+	if strings.HasSuffix(fname, ".md") {
+		loadMd(input)
+	}
+	return New(input)
 }
 
+func loadMd(input []rune) {
+	i := 0
+	text := true
+	for i < len(input) {
+		if i <= len(input)-3 && input[i] == '`' && input[i+1] == '`' && input[i+2] == '`' {
+			text = !text
+			for j := 0; j < 3; j++ {
+				input[i+j] = ' '
+			}
+			i += 3
+		}
+		if i < len(input) {
+			if text {
+				if input[i] == '\n' {
+					input[i] = '\n'
+				} else {
+					input[i] = ' '
+				}
+			}
+			i += 1
+		}
+	}
+}
+
+/*
+New constructs a Lexer from a slice of runes. 
+
+All contents of the input slice are treated as input text.
+*/
 func New(input []rune) *Lexer {
 	lex := &Lexer{
 		I:      input,
@@ -49,8 +88,10 @@ func New(input []rune) *Lexer {
 		}
 		if lext < len(lex.I) {
 			tok := lex.scan(lext)
-			lext = tok.Rext
-			lex.addToken(tok)
+			lext = tok.Rext()
+			if !tok.Suppress() {
+				lex.addToken(tok)
+			}
 		}
 	}
 	lex.add(token.EOF, len(input), len(input))
@@ -58,28 +99,26 @@ func New(input []rune) *Lexer {
 }
 
 func (l *Lexer) scan(i int) *token.Token {
-	// fmt.Printf("lexer.scan\n")
-	s, tok := state(0), token.New(token.Error, i, i, nil)
+	// fmt.Printf("lexer.scan(%d)\n", i)
+	s, typ, rext := nullState, token.Error, i+1
+	if i < len(l.I) {
+		// fmt.Printf("  rext %d, i %d\n", rext, i)
+		s = nextState[0](l.I[i])
+	}
 	for s != nullState {
-		// if tok.Rext >= len(l.I) {
-		// 	fmt.Printf(" scan: state=%d tok=%s \"%s\" r=EOF\n", 
-		// 	s, tok, string(l.I[tok.Lext:tok.Rext]))
-		// } else {
-		// 	fmt.Printf(" scan: state=%d tok=%s \"%s\" r='%s'\n", 
-		// 	s, tok, string(l.I[tok.Lext:tok.Rext]), escape(l.I[tok.Rext]))
-		// }
-		if tok.Rext >= len(l.I) {
+		if rext >= len(l.I) {
+			typ = accept[s]
 			s = nullState
 		} else {
-			tok.Type = accept[s]
-			s = nextState[s](l.I[tok.Rext])
-			if s != nullState || tok.Type == token.Error {
-				tok.Rext++
+			typ = accept[s]
+			s = nextState[s](l.I[rext])
+			if s != nullState || typ == token.Error {
+				rext++
 			}
 		}
 	}
-	tok.Literal = l.I[tok.Lext:tok.Rext]
-	// fmt.Printf(" scan: state=%d tok=%s\n", s, tok)
+	tok := token.New(typ, i, rext, l.I)
+	// fmt.Printf("  %s\n", tok)
 	return tok
 }
 
@@ -116,18 +155,19 @@ func (l *Lexer) GetLineColumn(i int) (line, col int) {
 	return
 }
 
+// GetLineColumnOfToken returns the line and column of token[i] in the imput
 func (l *Lexer) GetLineColumnOfToken(i int) (line, col int) {
-	return l.GetLineColumn(l.Tokens[i].Lext)
+	return l.GetLineColumn(l.Tokens[i].Lext())
 }
 
 // GetString returns the input string from the left extent of Token[lext] to
 // the right extent of Token[rext]
 func (l *Lexer) GetString(lext, rext int) string {
-	return string(l.I[l.Tokens[lext].Lext:l.Tokens[rext].Rext])
+	return string(l.I[l.Tokens[lext].Lext():l.Tokens[rext].Rext()])
 }
 
 func (l *Lexer) add(t token.Type, lext, rext int) {
-	l.addToken(token.New(t, lext, rext, l.I[lext:rext]))
+	l.addToken(token.New(t, lext, rext, l.I))
 }
 
 func (l *Lexer) addToken(tok *token.Token) {
@@ -155,7 +195,7 @@ func not(r rune, set []rune) bool {
 var accept = []token.Type{ 
 	token.Error, 
 	token.Error, 
-	token.Type2, 
+	token.T_0, 
 }
 
 var nextState = []func(r rune) state{ 
