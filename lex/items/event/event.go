@@ -194,7 +194,7 @@ func sortEvents(events []ast.LexBase) {
 			case *ast.Not:
 				return e1.Set.Subset(e2.Set)
 			case *ast.UnicodeClass:
-				unicodeClassContains(e2, e1.Set.Elements()...)
+				return unicodeClassContains(e2, e1.Set.Elements()...)
 			default:
 				panic("Invalid")
 			}
