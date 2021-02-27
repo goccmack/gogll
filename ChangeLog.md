@@ -1,5 +1,8 @@
 # Change Log
 
+# 2021-02-27 v3.2.2
+Bug in lexer state machine generation fixed by Paul Samways
+
 # 2021-01-05 v3.2.1
 Escaped characters are now correctly handled in `string_lit`. 
 Please see the [grammar](gogll.md) for constraints enforced by gogll on the use
