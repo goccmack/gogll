@@ -1,6 +1,4 @@
-module github.com/goccmack/gogll
-
-go 1.15
+module github.com/goccmack/gogll/v3
 
 require (
 	github.com/goccmack/goutil v1.2.1

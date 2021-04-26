@@ -21,10 +21,10 @@ import (
 	"sort"
 	"text/template"
 
-	"github.com/goccmack/gogll/frstflw"
-	"github.com/goccmack/gogll/gen/golang/utils"
-	"github.com/goccmack/gogll/gslot"
-	"github.com/goccmack/gogll/symbols"
+	"github.com/goccmack/gogll/v3/frstflw"
+	"github.com/goccmack/gogll/v3/gen/golang/utils"
+	"github.com/goccmack/gogll/v3/gslot"
+	"github.com/goccmack/gogll/v3/symbols"
 )
 
 func (g *gen) genTestSelect() string {

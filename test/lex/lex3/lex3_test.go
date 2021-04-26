@@ -3,7 +3,7 @@ package lex2
 import (
 	"testing"
 
-	"github.com/goccmack/gogll/test/lex/lex3/lexer"
+	"github.com/goccmack/gogll/v3/test/lex/lex3/lexer"
 )
 
 type Test struct {

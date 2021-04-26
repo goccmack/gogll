@@ -19,9 +19,9 @@ import (
 	"bytes"
 	"text/template"
 
-	"github.com/goccmack/gogll/ast"
-	"github.com/goccmack/gogll/frstflw"
-	"github.com/goccmack/gogll/gslot"
+	"github.com/goccmack/gogll/v3/ast"
+	"github.com/goccmack/gogll/v3/frstflw"
+	"github.com/goccmack/gogll/v3/gslot"
 	"github.com/goccmack/goutil/ioutil"
 )
 

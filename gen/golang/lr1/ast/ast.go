@@ -24,9 +24,9 @@ import (
 
 	"github.com/iancoleman/strcase"
 
-	"github.com/goccmack/gogll/ast"
-	"github.com/goccmack/gogll/cfg"
-	"github.com/goccmack/gogll/lr1/basicprod"
+	"github.com/goccmack/gogll/v3/ast"
+	"github.com/goccmack/gogll/v3/cfg"
+	"github.com/goccmack/gogll/v3/lr1/basicprod"
 	"github.com/goccmack/goutil/ioutil"
 )
 

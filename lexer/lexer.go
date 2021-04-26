@@ -8,7 +8,7 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/goccmack/gogll/token"
+	"github.com/goccmack/gogll/v3/token"
 )
 
 type state int
@@ -309,9 +309,9 @@ var nextState = []func(r rune) state{
 			return 20 
 		case r == '}':
 			return 21 
-		case unicode.IsUpper(r):
-			return 22 
 		case unicode.IsLower(r):
+			return 22 
+		case unicode.IsUpper(r):
 			return 23 
 		}
 		return nullState
@@ -506,11 +506,11 @@ var nextState = []func(r rune) state{
 	func(r rune) state {
 		switch { 
 		case r == '_':
-			return 37 
+			return 28 
 		case unicode.IsLetter(r):
-			return 37 
+			return 28 
 		case unicode.IsNumber(r):
-			return 37 
+			return 28 
 		}
 		return nullState
 	}, 
@@ -518,11 +518,11 @@ var nextState = []func(r rune) state{
 	func(r rune) state {
 		switch { 
 		case r == '_':
-			return 28 
+			return 37 
 		case unicode.IsLetter(r):
-			return 28 
+			return 37 
 		case unicode.IsNumber(r):
-			return 28 
+			return 37 
 		}
 		return nullState
 	}, 

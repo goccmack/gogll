@@ -18,11 +18,11 @@ Package lr1 generates Go code for the LR(1) parser
 package lr1
 
 import (
-	"github.com/goccmack/gogll/gen/golang/lr1/ast"
-	"github.com/goccmack/gogll/gen/golang/lr1/parser"
-	"github.com/goccmack/gogll/lr1/action"
-	"github.com/goccmack/gogll/lr1/basicprod"
-	"github.com/goccmack/gogll/lr1/states"
+	"github.com/goccmack/gogll/v3/gen/golang/lr1/ast"
+	"github.com/goccmack/gogll/v3/gen/golang/lr1/parser"
+	"github.com/goccmack/gogll/v3/lr1/action"
+	"github.com/goccmack/gogll/v3/lr1/basicprod"
+	"github.com/goccmack/gogll/v3/lr1/states"
 )
 
 func Gen(pkg string, bprods []*basicprod.Production, states *states.States, actions action.Actions) {

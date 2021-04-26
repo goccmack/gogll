@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/goccmack/gogll/ast"
-	"github.com/goccmack/gogll/lexer"
+	"github.com/goccmack/gogll/v3/ast"
+	"github.com/goccmack/gogll/v3/lexer"
 )
 
 func Go(g *ast.GoGLL, l *lexer.Lexer) {

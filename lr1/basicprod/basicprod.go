@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/goccmack/gogll/ast"
+	"github.com/goccmack/gogll/v3/ast"
 )
 
 type Production struct {

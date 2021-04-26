@@ -30,9 +30,9 @@ import (
 	"os"
 	"sort"
 
-	"github.com/goccmack/gogll/ast"
-	"github.com/goccmack/gogll/lex/item"
-	"github.com/goccmack/gogll/lex/items/event"
+	"github.com/goccmack/gogll/v3/ast"
+	"github.com/goccmack/gogll/v3/lex/item"
+	"github.com/goccmack/gogll/v3/lex/items/event"
 	"github.com/goccmack/goutil/stringset"
 )
 

@@ -4,7 +4,7 @@ all: parser/parser.go
 	go install
 
 parser/parser.go: gogll.md
-	gogll gogll.md 
+	gogll -o . gogll.md 
 
 clean:
 	rm first_follow.txt; \
