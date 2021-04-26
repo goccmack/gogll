@@ -18,8 +18,8 @@ import (
 	"bytes"
 	"fmt"
 
-	"github.com/goccmack/gogll/lr1/first"
-	"github.com/goccmack/gogll/lr1/items"
+	"github.com/goccmack/gogll/v3/lr1/first"
+	"github.com/goccmack/gogll/v3/lr1/items"
 )
 
 type States struct {

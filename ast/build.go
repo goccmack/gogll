@@ -22,11 +22,11 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/goccmack/gogll/lexer"
-	"github.com/goccmack/gogll/parser/bsr"
-	"github.com/goccmack/gogll/parser/symbols"
-	"github.com/goccmack/gogll/token"
-	"github.com/goccmack/gogll/util/runeset"
+	"github.com/goccmack/gogll/v3/lexer"
+	"github.com/goccmack/gogll/v3/parser/bsr"
+	"github.com/goccmack/gogll/v3/parser/symbols"
+	"github.com/goccmack/gogll/v3/token"
+	"github.com/goccmack/gogll/v3/util/runeset"
 	"github.com/goccmack/goutil/stringset"
 )
 

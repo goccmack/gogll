@@ -20,10 +20,10 @@ import (
 	"path"
 	"text/template"
 
-	"github.com/goccmack/gogll/lr1/action"
-	"github.com/goccmack/gogll/lr1/basicprod"
-	"github.com/goccmack/gogll/lr1/states"
-	"github.com/goccmack/gogll/symbols"
+	"github.com/goccmack/gogll/v3/lr1/action"
+	"github.com/goccmack/gogll/v3/lr1/basicprod"
+	"github.com/goccmack/gogll/v3/lr1/states"
+	"github.com/goccmack/gogll/v3/symbols"
 	"github.com/goccmack/goutil/ioutil"
 )
 

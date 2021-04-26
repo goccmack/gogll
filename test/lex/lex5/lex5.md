@@ -1,6 +1,6 @@
 # Test back tick
 ```
-package "github.com/goccmack/gogll/test/lex/lex5"
+package "github.com/goccmack/gogll/v3/test/lex/lex5"
 
 Aa: "\\" | "\"" ;
 ```

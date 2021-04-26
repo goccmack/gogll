@@ -1,5 +1,8 @@
 # Change Log
 
+# 2021-04-26 v3.2.3
+Module path supports major version v3
+
 # 2021-02-27 v3.2.2
 Bug in lexer state machine generation fixed by Paul Samways
 

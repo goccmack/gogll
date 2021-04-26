@@ -12,7 +12,7 @@ Gogll treats this paragraph as whitespace. The following is the first code block
 of this document.
 
 ```
-package "github.com/goccmack/gogll"
+package "github.com/goccmack/gogll/v3"
 ```
 Every gogll v3 input specification starts with a package specification. The
 package of this specification is `"github.com/goccmack/gogll"`.
@@ -24,7 +24,7 @@ imports:
 	"github.com/goccmack/gogll/parser/bsr"
 	"github.com/goccmack/gogll/parser/slot"
 	"github.com/goccmack/gogll/parser/symbols"
-	"github.com/goccmack/gogll/token"
+	"github.com/goccmack/gogll/v3/token"
 
 The following grammar defines the input specification for gogll. `GoGLL` is syntax
 start symbol and the root of the parse forest produced by the parser.

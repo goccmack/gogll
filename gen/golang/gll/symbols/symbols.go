@@ -19,8 +19,8 @@ import (
 	"bytes"
 	"text/template"
 
-	"github.com/goccmack/gogll/ast"
-	"github.com/goccmack/gogll/gen/golang/utils"
+	"github.com/goccmack/gogll/v3/ast"
+	"github.com/goccmack/gogll/v3/gen/golang/utils"
 	"github.com/goccmack/goutil/ioutil"
 )
 

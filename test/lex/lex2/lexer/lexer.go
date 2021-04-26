@@ -8,7 +8,7 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/goccmack/gogll/test/lex/lex2/token"
+	"github.com/goccmack/gogll/v3/test/lex/lex2/token"
 )
 
 type state int

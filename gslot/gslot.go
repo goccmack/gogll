@@ -20,9 +20,9 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/goccmack/gogll/ast"
-	"github.com/goccmack/gogll/frstflw"
-	"github.com/goccmack/gogll/symbols"
+	"github.com/goccmack/gogll/v3/ast"
+	"github.com/goccmack/gogll/v3/frstflw"
+	"github.com/goccmack/gogll/v3/symbols"
 )
 
 type Label struct {

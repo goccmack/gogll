@@ -18,8 +18,8 @@ import (
 	"bytes"
 	"text/template"
 
-	"github.com/goccmack/gogll/lr1/states"
-	"github.com/goccmack/gogll/symbols"
+	"github.com/goccmack/gogll/v3/lr1/states"
+	"github.com/goccmack/gogll/v3/symbols"
 )
 
 func genGotoRow(state *states.State) string {

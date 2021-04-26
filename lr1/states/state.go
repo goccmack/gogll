@@ -15,9 +15,9 @@
 package states
 
 import (
-	"github.com/goccmack/gogll/lr1/first"
-	lr0items "github.com/goccmack/gogll/lr1/items"
-	"github.com/goccmack/gogll/symbols"
+	"github.com/goccmack/gogll/v3/lr1/first"
+	lr0items "github.com/goccmack/gogll/v3/lr1/items"
+	"github.com/goccmack/gogll/v3/symbols"
 
 	"bytes"
 	"fmt"

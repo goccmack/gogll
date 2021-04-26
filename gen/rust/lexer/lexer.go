@@ -22,10 +22,10 @@ import (
 	"fmt"
 	"text/template"
 
-	"github.com/goccmack/gogll/ast"
-	"github.com/goccmack/gogll/lex/items"
-	"github.com/goccmack/gogll/symbols"
-	"github.com/goccmack/gogll/util/runeset"
+	"github.com/goccmack/gogll/v3/ast"
+	"github.com/goccmack/gogll/v3/lex/items"
+	"github.com/goccmack/gogll/v3/symbols"
+	"github.com/goccmack/gogll/v3/util/runeset"
 	"github.com/goccmack/goutil/ioutil"
 	"github.com/goccmack/goutil/stringset"
 )

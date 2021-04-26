@@ -3,8 +3,8 @@ package lex5
 import (
 	"testing"
 
-	"github.com/goccmack/gogll/test/lex/lex5/lexer"
-	"github.com/goccmack/gogll/test/lex/lex5/parser"
+	"github.com/goccmack/gogll/v3/test/lex/lex5/lexer"
+	"github.com/goccmack/gogll/v3/test/lex/lex5/parser"
 )
 
 var src = []string{"\"", "\\"}

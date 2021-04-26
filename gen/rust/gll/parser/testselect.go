@@ -19,9 +19,9 @@ import (
 	"os"
 	"sort"
 
-	"github.com/goccmack/gogll/frstflw"
-	"github.com/goccmack/gogll/gslot"
-	"github.com/goccmack/gogll/symbols"
+	"github.com/goccmack/gogll/v3/frstflw"
+	"github.com/goccmack/gogll/v3/gslot"
+	"github.com/goccmack/gogll/v3/symbols"
 )
 
 func (g *gen) getTSData() (data []*TSData) {

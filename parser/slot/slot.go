@@ -6,7 +6,7 @@ import(
 	"bytes"
 	"fmt"
 	
-	"github.com/goccmack/gogll/parser/symbols"
+	"github.com/goccmack/gogll/v3/parser/symbols"
 )
 
 type Label int

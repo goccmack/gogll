@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"fmt"
 
-	lr0items "github.com/goccmack/gogll/lr1/items"
+	lr0items "github.com/goccmack/gogll/v3/lr1/items"
 )
 
 type ConfigGroupSet struct {

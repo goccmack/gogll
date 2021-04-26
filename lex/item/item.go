@@ -23,8 +23,8 @@ import (
 	"bytes"
 	"fmt"
 
-	"github.com/goccmack/gogll/ast"
-	"github.com/goccmack/gogll/lex/item/pos"
+	"github.com/goccmack/gogll/v3/ast"
+	"github.com/goccmack/gogll/v3/lex/item/pos"
 )
 
 // Item contains the dotted item for one lex rule
