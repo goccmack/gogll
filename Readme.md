@@ -133,7 +133,7 @@ Gogll v3 has a BNF grammar. See [gogll.md](gogll.md)
 
 # Installation
 1. Install Go from [https://golang.org](https://golang.org)
-1. `go get github.com/goccmack/gogll` or 
+1. `go get github.com/goccmack/gogll/v3` or 
 1. Clone this repository and run `go install` in the root of the directory where
 it is installed.
 
