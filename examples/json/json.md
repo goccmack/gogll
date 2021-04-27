@@ -6,7 +6,7 @@ To run this example, run `gogll json.md` and then `go test` on this folder.
 
 ## GoGLL Header
 ```
-package "github.com/goccmack/gogll/examples/json"
+package "github.com/goccmack/gogll/v3/examples/json"
 
 GoGLL: Value;
 ``` 

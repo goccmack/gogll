@@ -1,22 +1,22 @@
-.PHONY: all go rust clean
+.PHONY: all go  clean
 
-RUSTDIR = rust/g1
+# RUSTDIR = rust/g1
 GODIR = go/src
 
-all: go rust
+all: go 
 
 go: $(GODIR)/go.mod
 	gogll -pager -o $(GODIR) g1.md
 
-rust: $(RUSTDIR)/Cargo.toml
-	gogll -rust -pager -o $(RUSTDIR) g1.md
+# rust: $(RUSTDIR)/Cargo.toml
+# 	gogll -rust -pager -o $(RUSTDIR) g1.md
 
 $(GODIR)/go.mod: 
 	mkdir -p $(GODIR)
 	cd $(GODIR); go mod init g1
 
-$(RUSTDIR)/Cargo.toml: 
-	cargo new $(RUSTDIR)
+# $(RUSTDIR)/Cargo.toml: 
+# 	cargo new $(RUSTDIR)
 
 clean:
 	rm go/src/*.txt; \

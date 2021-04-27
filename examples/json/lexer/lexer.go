@@ -8,7 +8,7 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/goccmack/gogll/examples/json/token"
+	"github.com/goccmack/gogll/v3/examples/json/token"
 )
 
 type state int

@@ -6,7 +6,7 @@ import(
 	"bytes"
 	"fmt"
 	
-	"github.com/goccmack/gogll/examples/json/parser/symbols"
+	"github.com/goccmack/gogll/v3/examples/json/parser/symbols"
 )
 
 type Label int

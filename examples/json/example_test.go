@@ -3,8 +3,8 @@ package json
 import (
 	"fmt"
 
-	"github.com/goccmack/gogll/examples/json/lexer"
-	"github.com/goccmack/gogll/examples/json/parser"
+	"github.com/goccmack/gogll/v3/examples/json/lexer"
+	"github.com/goccmack/gogll/v3/examples/json/parser"
 )
 
 var input = []rune(`{ "key1": "hello world", "key2": [-1234.5678E-9, 10] }`)

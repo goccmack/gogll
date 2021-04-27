@@ -7,11 +7,11 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/goccmack/gogll/examples/json/lexer"
-	"github.com/goccmack/gogll/examples/json/parser/bsr"
-	"github.com/goccmack/gogll/examples/json/parser/slot"
-	"github.com/goccmack/gogll/examples/json/parser/symbols"
-	"github.com/goccmack/gogll/examples/json/token"
+	"github.com/goccmack/gogll/v3/examples/json/lexer"
+	"github.com/goccmack/gogll/v3/examples/json/parser/bsr"
+	"github.com/goccmack/gogll/v3/examples/json/parser/slot"
+	"github.com/goccmack/gogll/v3/examples/json/parser/symbols"
+	"github.com/goccmack/gogll/v3/examples/json/token"
 )
 
 type parser struct {
