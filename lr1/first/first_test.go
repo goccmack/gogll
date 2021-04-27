@@ -6,8 +6,8 @@ import (
 	"github.com/goccmack/gogll/ast/rewrite"
 	"github.com/goccmack/gogll/frontend/lexer"
 	"github.com/goccmack/gogll/frontend/parser"
-	"github.com/goccmack/gogll/parser/symbols"
 	"github.com/goccmack/gogll/v3/ast"
+	"github.com/goccmack/gogll/v3/parser/symbols"
 )
 
 const src = `
