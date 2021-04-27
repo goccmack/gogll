@@ -23,7 +23,7 @@ import (
 )
 
 // Version is the version of this compiler
-const Version = "v3.2.5"
+const Version = "v3.2.6"
 
 var (
 	BaseDir string
