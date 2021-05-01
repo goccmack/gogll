@@ -1,5 +1,8 @@
 # Change Log
 
+# 2021-05-01
+Issue Generated files are set as executable #15 fixed
+
 # 2021-04-26 v3.2.3
 Module path supports major version v3
 
