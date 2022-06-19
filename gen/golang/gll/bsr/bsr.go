@@ -388,8 +388,12 @@ func (b BSR) Pivot() int {
 }
 
 func (b BSR) String() string {
-	return fmt.Sprintf("%s,%d,%d,%d - %s", b.Label, b.leftExtent, b.pivot, b.rightExtent,
-		b.set.lex.GetString(b.LeftExtent(), b.RightExtent()-1))
+	srcStr := "ℇ"
+	if b.leftExtent < b.rightExtent {
+		srcStr = b.set.lex.GetString(b.LeftExtent(), b.RightExtent()-1)
+	}
+	return fmt.Sprintf("%s,%d,%d,%d - %s",
+		b.Label, b.leftExtent, b.pivot, b.rightExtent, srcStr)
 }
 
 func (s stringBSR) LeftExtent() int {

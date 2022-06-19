@@ -51,9 +51,11 @@ type Symbol struct {
 
 type TSData struct {
 	Label   string
-	Symbols []*Symbol
+	Symbols Symbols
 	// Conditions []*Condition
 }
+
+type Symbols []*Symbol
 
 // type Condition struct {
 // 	Cond string
@@ -91,14 +93,28 @@ func (g *gen) getTSData() (data []*TSData) {
 }
 
 func (g *gen) getSlotTSData(l gslot.Label) *TSData {
-	return &TSData{
+	data := &TSData{
 		Label:   l.String(),
 		Symbols: g.getFirst(l),
 		// Conditions: g.getSlotTSConditions(s),
 	}
+	checkDuplicateSymbols(data)
+	return data
 }
 
-func (g *gen) getFirst(l gslot.Label) (tokens []*Symbol) {
+func checkDuplicateSymbols(data *TSData) {
+	for i := 0; i < len(data.Symbols)-1; i++ {
+		for j := i + 1; j < len(data.Symbols); j++ {
+			if data.Symbols[i].Label == data.Symbols[j].Label {
+				fmt.Printf("Duplicate symbol %s in %s\n",
+					data.Symbols[i], data.Label)
+				panic("cleanup")
+			}
+		}
+	}
+}
+
+func (g *gen) getFirst(l gslot.Label) (tokens Symbols) {
 	// fmt.Printf("testSelect.getFirst(%s)\n", l)
 
 	ss := l.Symbols()[l.Pos:]
@@ -107,8 +123,6 @@ func (g *gen) getFirst(l gslot.Label) (tokens []*Symbol) {
 	sort.Slice(
 		firstSymbols,
 		func(i, j int) bool { return firstSymbols[i] < firstSymbols[j] })
-
-	// fmt.Printf("  first: %s\n", frst)
 
 	for _, sym := range firstSymbols {
 		if sym != frstflw.Empty {
@@ -120,8 +134,18 @@ func (g *gen) getFirst(l gslot.Label) (tokens []*Symbol) {
 		}
 	}
 	if frst.Contain(frstflw.Empty) {
-		tokens = append(tokens, g.getFollowConditions(l.Head)...)
+		for _, s := range g.getFollowConditions(l.Head) {
+			if !tokens.contains(s.Label) {
+				tokens = append(tokens, s)
+			}
+		}
 	}
+
+	// fmt.Printf("  first:\n")
+	// for _, t := range tokens {
+	// 	fmt.Println("    ", t.Label)
+	// }
+
 	return
 }
 
@@ -141,6 +165,15 @@ func (g *gen) getFollowConditions(nt string) (tokens []*Symbol) {
 			})
 	}
 	return
+}
+
+func (ss Symbols) contains(label string) bool {
+	for _, s := range ss {
+		if s.Label == label {
+			return true
+		}
+	}
+	return false
 }
 
 const testSelectTmpl = `

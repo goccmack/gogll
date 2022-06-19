@@ -1,5 +1,9 @@
 # Change Log
 
+# 2022-06-19
+* Fixed duplicate symbols in first sets.
+* Fixed BSR String() bug
+* 
 # 2021-05-01
 Issue Generated files are set as executable #15 fixed
 
