@@ -40,6 +40,9 @@ For comparable grammars tested so far gogll produces faster lexers and parsers
 than [gocc](https://github.com/goccmack/gocc) (FSA/LR-1).
 
 # News
+## 2022-08-09
+Gogll is used to build DAU [DASL](https://dau-technology.github.io/dau-blog/post/2022-08-02-dasl/)
+
 ## 2020-08-12
 From v3.2.0 gogll supports tokens that can be suppressed by the lexer. This is useful, for example, to implement code comments. See [example](examples/comments/comments.md).
 
