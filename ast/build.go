@@ -31,8 +31,10 @@ import (
 )
 
 type builder struct {
+	file         string
 	lex          *lexer.Lexer
 	charLiterals *stringset.StringSet
+	gogll        *GoGLL
 }
 
 // builder rule
@@ -44,35 +46,25 @@ func (*LexRule) isBrule()    {}
 func (*SyntaxRule) isBrule() {}
 
 // Build builds an AST from the BSR root. `root` is the root of a disambiguated BSR forest
-//
-func Build(root bsr.BSR, l *lexer.Lexer) *GoGLL {
+func Build(root bsr.BSR, l *lexer.Lexer, file string) *GoGLL {
 	bld := &builder{
+		file:         file,
 		lex:          l,
 		charLiterals: stringset.New(),
 	}
-	gogll := bld.gogll(root)
-	gogll.NonTerminals = bld.nonTerminals(gogll.SyntaxRules)
-	gogll.StringLiterals = bld.getStringLiterals(gogll.SyntaxRules)
-	gogll.Terminals = bld.terminals(gogll, gogll.GetStringLiterals())
-	return gogll
+	bld.goGLL(root)
+	bld.gogll.NonTerminals = bld.nonTerminals()
+	bld.gogll.StringLiterals = bld.getStringLiterals()
+	bld.gogll.Terminals = bld.terminals()
+	return bld.gogll
 }
 
 // GoGLL : Package Rules ;
-func (bld *builder) gogll(b bsr.BSR) *GoGLL {
-	gogll := &GoGLL{
+func (bld *builder) goGLL(b bsr.BSR) {
+	bld.gogll = &GoGLL{
 		Package: bld.packge(b.GetNTChild(symbols.NT_Package, 0)),
 	}
-	for _, rule := range bld.rules(b.GetNTChildI(1)) {
-		switch r := rule.(type) {
-		case *LexRule:
-			bld.addLexRule(r, gogll)
-		case *SyntaxRule:
-			bld.addSyntaxRule(r, gogll)
-		default:
-			panic(fmt.Sprintf("Invalid %T", rule))
-		}
-	}
-	return gogll
+	bld.rules(b.GetNTChildI(1))
 }
 
 // Package : "package" string_lit ;
@@ -83,29 +75,31 @@ func (bld *builder) packge(b bsr.BSR) *Package {
 }
 
 // Rule : LexRule | SyntaxRule ;
-func (bld *builder) rule(b bsr.BSR) brule {
+func (bld *builder) rule(b bsr.BSR) {
 	// fmt.Printf("build.rule: %s\n", b)
 	if b.Alternate() == 0 {
-		return bld.lexRule(b.GetNTChildI(0))
+		bld.addLexRule(bld.lexRule(b.GetNTChildI(0)))
+	} else {
+		bld.addSyntaxRule(bld.syntaxRule(b.GetNTChildI(0)))
 	}
-	return bld.syntaxRule(b.GetNTChildI(0))
 }
 
 // Rules
-//     :   Rule
-//     |   Rule Rules
-//     ;
-func (bld *builder) rules(b bsr.BSR) []brule {
-	rules := []brule{bld.rule(b.GetNTChildI(0))}
-	if b.Alternate() == 1 {
-		rules = append(rules, bld.rules(b.GetNTChildI(1))...)
+//
+//	:   Rule
+//	|   Rule Rules
+//	;
+func (bld *builder) rules(b bsr.BSR) {
+	for b.Alternate() == 1 {
+		bld.rule(b.GetNTChildI(0))
+		b = b.GetNTChild(symbols.NT_Rules, 0)
 	}
-	return rules
+	bld.rule(b.GetNTChildI(0))
 }
 
-func (bld *builder) nonTerminals(rules []*SyntaxRule) *stringset.StringSet {
+func (bld *builder) nonTerminals() *stringset.StringSet {
 	nts := stringset.New()
-	for _, r := range rules {
+	for _, r := range bld.gogll.SyntaxRules {
 		if nts.Contain(r.Head.ID()) {
 			bld.fail(fmt.Errorf("Duplicate rule %s", r.Head.ID()), r.Head.Lext())
 		} else {
@@ -115,9 +109,9 @@ func (bld *builder) nonTerminals(rules []*SyntaxRule) *stringset.StringSet {
 	return nts
 }
 
-func (bld *builder) terminals(g *GoGLL, stringLiterals []string) *stringset.StringSet {
-	terminals := bld.getLexRuleIDs(g.LexRules)
-	terminals.Add(stringLiterals...)
+func (bld *builder) terminals() *stringset.StringSet {
+	terminals := bld.getLexRuleIDs(bld.gogll.LexRules)
+	terminals.Add(bld.gogll.GetStringLiterals()...)
 	return terminals
 }
 
@@ -132,9 +126,9 @@ func (bld *builder) getLexRuleIDs(rules []*LexRule) *stringset.StringSet {
 	return terminals
 }
 
-func (bld *builder) getStringLiterals(rules []*SyntaxRule) map[string]*StringLit {
+func (bld *builder) getStringLiterals() map[string]*StringLit {
 	slits := make(map[string]*StringLit)
-	for _, r := range rules {
+	for _, r := range bld.gogll.SyntaxRules {
 		for _, a := range r.Alternates {
 			for _, s := range a.Symbols {
 				if sl, ok := s.(*StringLit); ok {
@@ -149,9 +143,10 @@ func (bld *builder) getStringLiterals(rules []*SyntaxRule) map[string]*StringLit
 /*** Lex Rules ***/
 
 // LexRule
-//     : tokid ":" RegExp ";"
-//     | "!" tokid ":" RegExp ";"
-//     ;
+//
+//	: tokid ":" RegExp ";"
+//	| "!" tokid ":" RegExp ";"
+//	;
 func (bld *builder) lexRule(b bsr.BSR) *LexRule {
 	if b.Alternate() == 0 {
 		return &LexRule{
@@ -166,16 +161,43 @@ func (bld *builder) lexRule(b bsr.BSR) *LexRule {
 	}
 }
 
-// RegExp : LexSymbol | LexSymbol RegExp ;
+// RegExp
+//
+//	: LexSymbol
+//	| tokid
+//	| LexSymbol RegExp
+//	| tokid RegExp
+//	;
 func (bld *builder) regexp(b bsr.BSR) *RegExp {
 	re := &RegExp{
-		Symbols: []LexSymbol{bld.lexSymbol(b.GetNTChildI(0))},
+		Symbols: []LexSymbol{},
 	}
-	if b.Alternate() == 1 {
-		re1 := bld.regexp(b.GetNTChildI(1))
+	switch b.Alternate() {
+	case 0:
+		re.Symbols = []LexSymbol{bld.lexSymbol(b.GetNTChildI(0))}
+	case 1:
+		re.Symbols = bld.getLexRuleBody(b.GetTChildI(0))
+	case 2:
+		re.Symbols = []LexSymbol{bld.lexSymbol(b.GetNTChildI(0))}
+		re1 := bld.regexp(b.GetNTChild(symbols.NT_RegExp, 0))
 		re.Symbols = append(re.Symbols, re1.Symbols...)
+	case 3:
+		re.Symbols = bld.getLexRuleBody(b.GetTChildI(0))
+		re1 := bld.regexp(b.GetNTChild(symbols.NT_RegExp, 0))
+		re.Symbols = append(re.Symbols, re1.Symbols...)
+	default:
+		panic("impossible")
 	}
+
 	return re
+}
+
+func (bld *builder) getLexRuleBody(tokid *token.Token) []LexSymbol {
+	lexRule := bld.gogll.GetLexRule(tokid.LiteralString())
+	if lexRule == nil {
+		bld.fail(fmt.Errorf("token %s not defined yet", tokid.LiteralString()), tokid.Lext())
+	}
+	return lexRule.RegExp.Symbols
 }
 
 // LexSymbol : "." | any string_lit | char_lit | LexBracket | not string_lit | UnicodeClass ;
@@ -319,9 +341,10 @@ func (bld *builder) unicodeClass(b bsr.BSR) *UnicodeClass {
 /*** Syntax Rules ***/
 
 // SyntaxAlternate
-//     :   SyntaxSymbols
-//     |   "empty"
-//     ;
+//
+//	:   SyntaxSymbols
+//	|   "empty"
+//	;
 func (bld *builder) syntaxAlternate(b bsr.BSR) *SyntaxAlternate {
 	alt := &SyntaxAlternate{}
 	if b.Alternate() == 0 {
@@ -331,9 +354,10 @@ func (bld *builder) syntaxAlternate(b bsr.BSR) *SyntaxAlternate {
 }
 
 // SyntaxAlternates
-//     :   SyntaxAlternate
-//     |   SyntaxAlternate "|" SyntaxAlternates
-//     ;
+//
+//	:   SyntaxAlternate
+//	|   SyntaxAlternate "|" SyntaxAlternates
+//	;
 func (bld *builder) syntaxAlternates(b bsr.BSR) []*SyntaxAlternate {
 	alts := []*SyntaxAlternate{
 		bld.syntaxAlternate(b.GetNTChild(symbols.NT_SyntaxAlternate, 0)),
@@ -345,7 +369,7 @@ func (bld *builder) syntaxAlternates(b bsr.BSR) []*SyntaxAlternate {
 }
 
 // SyntaxRule : nt ":" SyntaxAlternates ";"  ;
-func (bld *builder) syntaxRule(b bsr.BSR) brule {
+func (bld *builder) syntaxRule(b bsr.BSR) *SyntaxRule {
 	return &SyntaxRule{
 		Head:       bld.nt(b.GetTChildI(0)),
 		Alternates: bld.syntaxAlternates(b.GetNTChild(symbols.NT_SyntaxAlternates, 0)),
@@ -372,9 +396,10 @@ func (bld *builder) symbol(b bsr.BSR) SyntaxSymbol {
 }
 
 // SyntaxSyntaxSymbols
-//     :   SyntaxSymbol
-//     |   SyntaxSymbol SyntaxSymbols
-//     ;
+//
+//	:   SyntaxSymbol
+//	|   SyntaxSymbol SyntaxSymbols
+//	;
 func (bld *builder) syntaxSymbols(b bsr.BSR) []SyntaxSymbol {
 	symbols := []SyntaxSymbol{bld.symbol(b.GetNTChildI(0))}
 	if b.Alternate() == 1 {
@@ -407,18 +432,18 @@ func (bld *builder) tokID(tok *token.Token) *TokID {
 
 /*** Utils ***/
 
-func (bld *builder) addLexRule(r *LexRule, gogll *GoGLL) {
-	if nil != gogll.GetLexRule(r.ID()) {
+func (bld *builder) addLexRule(r *LexRule) {
+	if nil != bld.gogll.GetLexRule(r.ID()) {
 		bld.fail(fmt.Errorf("duplicate lex rule %s", r.ID()), r.Lext())
 	}
-	gogll.LexRules = append(gogll.LexRules, r)
+	bld.gogll.LexRules = append(bld.gogll.LexRules, r)
 }
 
-func (bld *builder) addSyntaxRule(r *SyntaxRule, gogll *GoGLL) {
-	if nil != gogll.GetSyntaxRule(r.ID()) {
+func (bld *builder) addSyntaxRule(r *SyntaxRule) {
+	if nil != bld.gogll.GetSyntaxRule(r.ID()) {
 		bld.fail(fmt.Errorf("duplicate syntax rule %s", r.ID()), r.Lext())
 	}
-	gogll.SyntaxRules = append(gogll.SyntaxRules, r)
+	bld.gogll.SyntaxRules = append(bld.gogll.SyntaxRules, r)
 }
 
 // parse the string set from tokens any or not
@@ -453,6 +478,6 @@ func (bld *builder) parseStringSet(strLit *token.Token) *runeset.RuneSet {
 // i is the position of the failure in input slice of runes
 func (bld *builder) fail(err error, i int) {
 	ln, col := bld.lex.GetLineColumn(i)
-	fmt.Printf("AST Error: %s at line %d col %d\n", err, ln, col)
+	fmt.Printf("AST Error: %s:%d:%d: %s\n", bld.file, ln, col, err)
 	os.Exit(1)
 }

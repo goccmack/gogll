@@ -419,23 +419,49 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 			} else {
 				p.parseError(slot.RegExp0R0, p.cI, followSets[symbols.NT_RegExp])
 			}
-		case slot.RegExp1R0: // RegExp : ∙LexSymbol RegExp
+		case slot.RegExp1R0: // RegExp : ∙tokid
 
-			p.call(slot.RegExp1R1, cU, p.cI)
-		case slot.RegExp1R1: // RegExp : LexSymbol ∙RegExp
-
-			if !p.testSelect(slot.RegExp1R1) {
-				p.parseError(slot.RegExp1R1, p.cI, first[slot.RegExp1R1])
-				break
-			}
-
-			p.call(slot.RegExp1R2, cU, p.cI)
-		case slot.RegExp1R2: // RegExp : LexSymbol RegExp ∙
-
+			p.bsrSet.Add(slot.RegExp1R1, cU, p.cI, p.cI+1)
+			p.cI++
 			if p.follow(symbols.NT_RegExp) {
 				p.rtn(symbols.NT_RegExp, cU, p.cI)
 			} else {
 				p.parseError(slot.RegExp1R0, p.cI, followSets[symbols.NT_RegExp])
+			}
+		case slot.RegExp2R0: // RegExp : ∙LexSymbol RegExp
+
+			p.call(slot.RegExp2R1, cU, p.cI)
+		case slot.RegExp2R1: // RegExp : LexSymbol ∙RegExp
+
+			if !p.testSelect(slot.RegExp2R1) {
+				p.parseError(slot.RegExp2R1, p.cI, first[slot.RegExp2R1])
+				break
+			}
+
+			p.call(slot.RegExp2R2, cU, p.cI)
+		case slot.RegExp2R2: // RegExp : LexSymbol RegExp ∙
+
+			if p.follow(symbols.NT_RegExp) {
+				p.rtn(symbols.NT_RegExp, cU, p.cI)
+			} else {
+				p.parseError(slot.RegExp2R0, p.cI, followSets[symbols.NT_RegExp])
+			}
+		case slot.RegExp3R0: // RegExp : ∙tokid RegExp
+
+			p.bsrSet.Add(slot.RegExp3R1, cU, p.cI, p.cI+1)
+			p.cI++
+			if !p.testSelect(slot.RegExp3R1) {
+				p.parseError(slot.RegExp3R1, p.cI, first[slot.RegExp3R1])
+				break
+			}
+
+			p.call(slot.RegExp3R2, cU, p.cI)
+		case slot.RegExp3R2: // RegExp : tokid RegExp ∙
+
+			if p.follow(symbols.NT_RegExp) {
+				p.rtn(symbols.NT_RegExp, cU, p.cI)
+			} else {
+				p.parseError(slot.RegExp3R0, p.cI, followSets[symbols.NT_RegExp])
 			}
 		case slot.Rule0R0: // Rule : ∙LexRule
 
@@ -929,6 +955,7 @@ var first = []map[token.Type]string{
 		token.T_14: "lowcase",
 		token.T_15: "not",
 		token.T_17: "number",
+		token.T_20: "tokid",
 		token.T_21: "upcase",
 		token.T_22: "{",
 	},
@@ -951,6 +978,7 @@ var first = []map[token.Type]string{
 		token.T_14: "lowcase",
 		token.T_15: "not",
 		token.T_17: "number",
+		token.T_20: "tokid",
 		token.T_21: "upcase",
 		token.T_22: "{",
 	},
@@ -970,6 +998,7 @@ var first = []map[token.Type]string{
 		token.T_14: "lowcase",
 		token.T_15: "not",
 		token.T_17: "number",
+		token.T_20: "tokid",
 		token.T_21: "upcase",
 		token.T_22: "{",
 	},
@@ -1000,6 +1029,7 @@ var first = []map[token.Type]string{
 		token.T_14: "lowcase",
 		token.T_15: "not",
 		token.T_17: "number",
+		token.T_20: "tokid",
 		token.T_21: "upcase",
 		token.T_22: "{",
 		token.T_23: "|",
@@ -1025,6 +1055,7 @@ var first = []map[token.Type]string{
 		token.T_14: "lowcase",
 		token.T_15: "not",
 		token.T_17: "number",
+		token.T_20: "tokid",
 		token.T_21: "upcase",
 		token.T_22: "{",
 		token.T_23: "|",
@@ -1050,6 +1081,7 @@ var first = []map[token.Type]string{
 		token.T_14: "lowcase",
 		token.T_15: "not",
 		token.T_17: "number",
+		token.T_20: "tokid",
 		token.T_21: "upcase",
 		token.T_22: "{",
 		token.T_23: "|",
@@ -1075,6 +1107,7 @@ var first = []map[token.Type]string{
 		token.T_14: "lowcase",
 		token.T_15: "not",
 		token.T_17: "number",
+		token.T_20: "tokid",
 		token.T_21: "upcase",
 		token.T_22: "{",
 		token.T_23: "|",
@@ -1096,6 +1129,7 @@ var first = []map[token.Type]string{
 		token.T_14: "lowcase",
 		token.T_15: "not",
 		token.T_17: "number",
+		token.T_20: "tokid",
 		token.T_21: "upcase",
 		token.T_22: "{",
 	},
@@ -1119,6 +1153,7 @@ var first = []map[token.Type]string{
 		token.T_14: "lowcase",
 		token.T_15: "not",
 		token.T_17: "number",
+		token.T_20: "tokid",
 		token.T_21: "upcase",
 		token.T_22: "{",
 		token.T_23: "|",
@@ -1140,6 +1175,7 @@ var first = []map[token.Type]string{
 		token.T_14: "lowcase",
 		token.T_15: "not",
 		token.T_17: "number",
+		token.T_20: "tokid",
 		token.T_21: "upcase",
 		token.T_22: "{",
 	},
@@ -1163,6 +1199,7 @@ var first = []map[token.Type]string{
 		token.T_14: "lowcase",
 		token.T_15: "not",
 		token.T_17: "number",
+		token.T_20: "tokid",
 		token.T_21: "upcase",
 		token.T_22: "{",
 		token.T_23: "|",
@@ -1184,6 +1221,7 @@ var first = []map[token.Type]string{
 		token.T_14: "lowcase",
 		token.T_15: "not",
 		token.T_17: "number",
+		token.T_20: "tokid",
 		token.T_21: "upcase",
 		token.T_22: "{",
 	},
@@ -1207,6 +1245,7 @@ var first = []map[token.Type]string{
 		token.T_14: "lowcase",
 		token.T_15: "not",
 		token.T_17: "number",
+		token.T_20: "tokid",
 		token.T_21: "upcase",
 		token.T_22: "{",
 		token.T_23: "|",
@@ -1232,6 +1271,7 @@ var first = []map[token.Type]string{
 		token.T_14: "lowcase",
 		token.T_15: "not",
 		token.T_17: "number",
+		token.T_20: "tokid",
 		token.T_21: "upcase",
 		token.T_22: "{",
 	},
@@ -1270,6 +1310,7 @@ var first = []map[token.Type]string{
 		token.T_14: "lowcase",
 		token.T_15: "not",
 		token.T_17: "number",
+		token.T_20: "tokid",
 		token.T_21: "upcase",
 		token.T_22: "{",
 	},
@@ -1304,6 +1345,7 @@ var first = []map[token.Type]string{
 		token.T_14: "lowcase",
 		token.T_15: "not",
 		token.T_17: "number",
+		token.T_20: "tokid",
 		token.T_21: "upcase",
 		token.T_22: "{",
 		token.T_23: "|",
@@ -1333,6 +1375,7 @@ var first = []map[token.Type]string{
 		token.T_14: "lowcase",
 		token.T_15: "not",
 		token.T_17: "number",
+		token.T_20: "tokid",
 		token.T_21: "upcase",
 		token.T_22: "{",
 		token.T_23: "|",
@@ -1358,6 +1401,7 @@ var first = []map[token.Type]string{
 		token.T_14: "lowcase",
 		token.T_15: "not",
 		token.T_17: "number",
+		token.T_20: "tokid",
 		token.T_21: "upcase",
 		token.T_22: "{",
 		token.T_23: "|",
@@ -1386,6 +1430,7 @@ var first = []map[token.Type]string{
 		token.T_14: "lowcase",
 		token.T_15: "not",
 		token.T_17: "number",
+		token.T_20: "tokid",
 		token.T_21: "upcase",
 		token.T_22: "{",
 		token.T_23: "|",
@@ -1415,6 +1460,7 @@ var first = []map[token.Type]string{
 		token.T_14: "lowcase",
 		token.T_15: "not",
 		token.T_17: "number",
+		token.T_20: "tokid",
 		token.T_21: "upcase",
 		token.T_22: "{",
 		token.T_23: "|",
@@ -1443,6 +1489,7 @@ var first = []map[token.Type]string{
 		token.T_14: "lowcase",
 		token.T_15: "not",
 		token.T_17: "number",
+		token.T_20: "tokid",
 		token.T_21: "upcase",
 		token.T_22: "{",
 		token.T_23: "|",
@@ -1464,6 +1511,7 @@ var first = []map[token.Type]string{
 		token.T_14: "lowcase",
 		token.T_15: "not",
 		token.T_17: "number",
+		token.T_20: "tokid",
 		token.T_21: "upcase",
 		token.T_22: "{",
 	},
@@ -1487,6 +1535,7 @@ var first = []map[token.Type]string{
 		token.T_14: "lowcase",
 		token.T_15: "not",
 		token.T_17: "number",
+		token.T_20: "tokid",
 		token.T_21: "upcase",
 		token.T_22: "{",
 		token.T_23: "|",
@@ -1530,6 +1579,19 @@ var first = []map[token.Type]string{
 		token.T_23: "|",
 		token.T_24: "}",
 	},
+	// RegExp : ∙tokid
+	{
+		token.T_20: "tokid",
+	},
+	// RegExp : tokid ∙
+	{
+		token.T_2:  ")",
+		token.T_5:  ";",
+		token.T_7:  ">",
+		token.T_9:  "]",
+		token.T_23: "|",
+		token.T_24: "}",
+	},
 	// RegExp : ∙LexSymbol RegExp
 	{
 		token.T_1:  "(",
@@ -1557,10 +1619,40 @@ var first = []map[token.Type]string{
 		token.T_14: "lowcase",
 		token.T_15: "not",
 		token.T_17: "number",
+		token.T_20: "tokid",
 		token.T_21: "upcase",
 		token.T_22: "{",
 	},
 	// RegExp : LexSymbol RegExp ∙
+	{
+		token.T_2:  ")",
+		token.T_5:  ";",
+		token.T_7:  ">",
+		token.T_9:  "]",
+		token.T_23: "|",
+		token.T_24: "}",
+	},
+	// RegExp : ∙tokid RegExp
+	{
+		token.T_20: "tokid",
+	},
+	// RegExp : tokid ∙RegExp
+	{
+		token.T_1:  "(",
+		token.T_3:  ".",
+		token.T_6:  "<",
+		token.T_8:  "[",
+		token.T_10: "any",
+		token.T_11: "char_lit",
+		token.T_13: "letter",
+		token.T_14: "lowcase",
+		token.T_15: "not",
+		token.T_17: "number",
+		token.T_20: "tokid",
+		token.T_21: "upcase",
+		token.T_22: "{",
+	},
+	// RegExp : tokid RegExp ∙
 	{
 		token.T_2:  ")",
 		token.T_5:  ";",
@@ -1781,6 +1873,7 @@ var first = []map[token.Type]string{
 		token.T_14: "lowcase",
 		token.T_15: "not",
 		token.T_17: "number",
+		token.T_20: "tokid",
 		token.T_21: "upcase",
 		token.T_22: "{",
 		token.T_23: "|",
@@ -1806,6 +1899,7 @@ var first = []map[token.Type]string{
 		token.T_14: "lowcase",
 		token.T_15: "not",
 		token.T_17: "number",
+		token.T_20: "tokid",
 		token.T_21: "upcase",
 		token.T_22: "{",
 		token.T_23: "|",
@@ -1831,6 +1925,7 @@ var first = []map[token.Type]string{
 		token.T_14: "lowcase",
 		token.T_15: "not",
 		token.T_17: "number",
+		token.T_20: "tokid",
 		token.T_21: "upcase",
 		token.T_22: "{",
 		token.T_23: "|",
@@ -1856,6 +1951,7 @@ var first = []map[token.Type]string{
 		token.T_14: "lowcase",
 		token.T_15: "not",
 		token.T_17: "number",
+		token.T_20: "tokid",
 		token.T_21: "upcase",
 		token.T_22: "{",
 		token.T_23: "|",
@@ -1891,6 +1987,7 @@ var followSets = []map[token.Type]string{
 		token.T_14: "lowcase",
 		token.T_15: "not",
 		token.T_17: "number",
+		token.T_20: "tokid",
 		token.T_21: "upcase",
 		token.T_22: "{",
 		token.T_23: "|",
@@ -1912,6 +2009,7 @@ var followSets = []map[token.Type]string{
 		token.T_14: "lowcase",
 		token.T_15: "not",
 		token.T_17: "number",
+		token.T_20: "tokid",
 		token.T_21: "upcase",
 		token.T_22: "{",
 		token.T_23: "|",
@@ -1933,6 +2031,7 @@ var followSets = []map[token.Type]string{
 		token.T_14: "lowcase",
 		token.T_15: "not",
 		token.T_17: "number",
+		token.T_20: "tokid",
 		token.T_21: "upcase",
 		token.T_22: "{",
 		token.T_23: "|",
@@ -1954,6 +2053,7 @@ var followSets = []map[token.Type]string{
 		token.T_14: "lowcase",
 		token.T_15: "not",
 		token.T_17: "number",
+		token.T_20: "tokid",
 		token.T_21: "upcase",
 		token.T_22: "{",
 		token.T_23: "|",
@@ -1982,6 +2082,7 @@ var followSets = []map[token.Type]string{
 		token.T_14: "lowcase",
 		token.T_15: "not",
 		token.T_17: "number",
+		token.T_20: "tokid",
 		token.T_21: "upcase",
 		token.T_22: "{",
 		token.T_23: "|",
@@ -2003,6 +2104,7 @@ var followSets = []map[token.Type]string{
 		token.T_14: "lowcase",
 		token.T_15: "not",
 		token.T_17: "number",
+		token.T_20: "tokid",
 		token.T_21: "upcase",
 		token.T_22: "{",
 		token.T_23: "|",
@@ -2079,6 +2181,7 @@ var followSets = []map[token.Type]string{
 		token.T_14: "lowcase",
 		token.T_15: "not",
 		token.T_17: "number",
+		token.T_20: "tokid",
 		token.T_21: "upcase",
 		token.T_22: "{",
 		token.T_23: "|",

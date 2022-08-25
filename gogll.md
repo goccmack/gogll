@@ -65,8 +65,15 @@ which are used to specify tokens:
 `any`, `not`, `letter`, `upcase`, `lowcase` and `number` are the only reserved
 words of gogll.
 ```
-LexSymbol : "." | "any" string_lit | char_lit | LexBracket | "not" string_lit | UnicodeClass ;
-UnicodeClass : "letter" | "upcase" | "lowcase" | "number" ;
+LexSymbol 
+    :   "." | "any" string_lit | char_lit | LexBracket | "not" string_lit 
+    |   UnicodeClass 
+    ;
+
+UnicodeClass 
+    :   "letter" | "upcase" | "lowcase" | "number" 
+    ;
+
 char_lit : '\'' (not "'" | '\\' any "\\'nrt") '\'' ;
 ```
 `char_lit` is a character literal enclosed in single quotes. A char literal may
@@ -99,8 +106,17 @@ LexOptional : "[" LexAlternates "]" ;
 LexZeroOrMore : "{" LexAlternates "}" ;
 LexOneOrMore : "<" LexAlternates ">" ;
 LexAlternates : RegExp | RegExp "|" LexAlternates ;
-RegExp : LexSymbol | LexSymbol RegExp ;
+RegExp 
+    : LexSymbol 
+    | tokid
+    | LexSymbol RegExp 
+    | tokid RegExp 
+    ;
 ```
+A defined token, `tokid`, may be used as a lexical symbol in another token definition
+as long as it introduces no direct or indirect recursion and it is defined before
+it is referenced in another token definition. The compiler checks for recursion. 
+
 # Lexical Rules
 Gogll generates a lexer from the set of `string_lit` `SyntaxSymbol`s in the specification
 (see **Syntax Rules** below) plus the set of `LexRule`s defined by the user.

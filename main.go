@@ -74,7 +74,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	g := ast.Build(bsrSet.GetRoot(), lex)
+	g := ast.Build(bsrSet.GetRoot(), lex, cfg.SrcFile)
 	sc.Go(g, lex)
 	symbols.Init(g)
 

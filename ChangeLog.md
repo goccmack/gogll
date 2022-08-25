@@ -1,5 +1,9 @@
 # Change Log
 
+# V3.3.0 2022-08-20
+* Add regular definitions to lexical rules
+* Support the Unicode category and property range tables supported by Go package unicode.
+
 # 2022-06-19
 * Fixed duplicate symbols in first sets.
 * Fixed BSR String() bug

@@ -77,7 +77,12 @@ const(
 	RegExp0R1
 	RegExp1R0
 	RegExp1R1
-	RegExp1R2
+	RegExp2R0
+	RegExp2R1
+	RegExp2R2
+	RegExp3R0
+	RegExp3R1
+	RegExp3R2
 	Rule0R0
 	Rule0R1
 	Rule1R0
@@ -745,26 +750,64 @@ var slots = map[Label]*Slot{
 	RegExp1R0: {
 		symbols.NT_RegExp, 1, 0, 
 		symbols.Symbols{  
-			symbols.NT_LexSymbol, 
-			symbols.NT_RegExp,
+			symbols.T_20,
 		}, 
 		RegExp1R0, 
 	},
 	RegExp1R1: {
 		symbols.NT_RegExp, 1, 1, 
 		symbols.Symbols{  
-			symbols.NT_LexSymbol, 
-			symbols.NT_RegExp,
+			symbols.T_20,
 		}, 
 		RegExp1R1, 
 	},
-	RegExp1R2: {
-		symbols.NT_RegExp, 1, 2, 
+	RegExp2R0: {
+		symbols.NT_RegExp, 2, 0, 
 		symbols.Symbols{  
 			symbols.NT_LexSymbol, 
 			symbols.NT_RegExp,
 		}, 
-		RegExp1R2, 
+		RegExp2R0, 
+	},
+	RegExp2R1: {
+		symbols.NT_RegExp, 2, 1, 
+		symbols.Symbols{  
+			symbols.NT_LexSymbol, 
+			symbols.NT_RegExp,
+		}, 
+		RegExp2R1, 
+	},
+	RegExp2R2: {
+		symbols.NT_RegExp, 2, 2, 
+		symbols.Symbols{  
+			symbols.NT_LexSymbol, 
+			symbols.NT_RegExp,
+		}, 
+		RegExp2R2, 
+	},
+	RegExp3R0: {
+		symbols.NT_RegExp, 3, 0, 
+		symbols.Symbols{  
+			symbols.T_20, 
+			symbols.NT_RegExp,
+		}, 
+		RegExp3R0, 
+	},
+	RegExp3R1: {
+		symbols.NT_RegExp, 3, 1, 
+		symbols.Symbols{  
+			symbols.T_20, 
+			symbols.NT_RegExp,
+		}, 
+		RegExp3R1, 
+	},
+	RegExp3R2: {
+		symbols.NT_RegExp, 3, 2, 
+		symbols.Symbols{  
+			symbols.T_20, 
+			symbols.NT_RegExp,
+		}, 
+		RegExp3R2, 
 	},
 	Rule0R0: {
 		symbols.NT_Rule, 0, 0, 
@@ -1164,7 +1207,12 @@ var slotIndex = map[Index]Label {
 	Index{ symbols.NT_RegExp,0,1 }: RegExp0R1,
 	Index{ symbols.NT_RegExp,1,0 }: RegExp1R0,
 	Index{ symbols.NT_RegExp,1,1 }: RegExp1R1,
-	Index{ symbols.NT_RegExp,1,2 }: RegExp1R2,
+	Index{ symbols.NT_RegExp,2,0 }: RegExp2R0,
+	Index{ symbols.NT_RegExp,2,1 }: RegExp2R1,
+	Index{ symbols.NT_RegExp,2,2 }: RegExp2R2,
+	Index{ symbols.NT_RegExp,3,0 }: RegExp3R0,
+	Index{ symbols.NT_RegExp,3,1 }: RegExp3R1,
+	Index{ symbols.NT_RegExp,3,2 }: RegExp3R2,
 	Index{ symbols.NT_Rule,0,0 }: Rule0R0,
 	Index{ symbols.NT_Rule,0,1 }: Rule0R1,
 	Index{ symbols.NT_Rule,1,0 }: Rule1R0,
@@ -1223,7 +1271,7 @@ var alternates = map[symbols.NT][]Label{
 	symbols.NT_LexZeroOrMore:[]Label{ LexZeroOrMore0R0 },
 	symbols.NT_LexOneOrMore:[]Label{ LexOneOrMore0R0 },
 	symbols.NT_LexAlternates:[]Label{ LexAlternates0R0,LexAlternates1R0 },
-	symbols.NT_RegExp:[]Label{ RegExp0R0,RegExp1R0 },
+	symbols.NT_RegExp:[]Label{ RegExp0R0,RegExp1R0,RegExp2R0,RegExp3R0 },
 	symbols.NT_LexRule:[]Label{ LexRule0R0,LexRule1R0 },
 	symbols.NT_SyntaxRule:[]Label{ SyntaxRule0R0 },
 	symbols.NT_SyntaxAlternates:[]Label{ SyntaxAlternates0R0,SyntaxAlternates1R0 },
