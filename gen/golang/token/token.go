@@ -227,6 +227,10 @@ var TypeToID = []string { {{range $typ := .Types}}
     "{{$typ.Comment}}", {{end}}
 }
 
+var IDToType = map[string]Type { {{range $i, $typ := .Types}}
+    "{{$typ.Comment}}": {{$i}}, {{end}}
+}
+
 var Suppress = []bool { {{range $typ := .Types}}
     {{$typ.Suppress}}, {{end}}
 }

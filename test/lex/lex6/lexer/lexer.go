@@ -195,8 +195,10 @@ func not(r rune, set []rune) bool {
 var accept = []token.Type{ 
 	token.Error, 
 	token.Error, 
+	token.Error, 
 	token.T_0, 
 	token.T_1, 
+	token.T_2, 
 	token.Error, 
 	token.Error, 
 }
@@ -205,68 +207,84 @@ var nextState = []func(r rune) state{
 	// Set0
 	func(r rune) state {
 		switch { 
-		case unicode.IsLower(r):
+		case r == '\'':
 			return 1 
+		case unicode.IsLower(r):
+			return 2 
 		}
 		return nullState
 	}, 
 	// Set1
 	func(r rune) state {
 		switch { 
-		case r == '_':
-			return 2 
-		case unicode.IsLetter(r):
-			return 2 
-		case unicode.IsNumber(r):
-			return 2 
+		case r == '[':
+			return 3 
 		}
 		return nullState
 	}, 
 	// Set2
 	func(r rune) state {
 		switch { 
-		case r == '-':
-			return 3 
 		case r == '_':
-			return 2 
+			return 4 
 		case unicode.IsLetter(r):
-			return 2 
+			return 4 
 		case unicode.IsNumber(r):
-			return 2 
+			return 4 
 		}
 		return nullState
 	}, 
 	// Set3
 	func(r rune) state {
 		switch { 
-		case unicode.IsLower(r):
-			return 4 
 		}
 		return nullState
 	}, 
 	// Set4
 	func(r rune) state {
 		switch { 
+		case r == '-':
+			return 5 
 		case r == '_':
-			return 5 
+			return 4 
 		case unicode.IsLetter(r):
-			return 5 
+			return 4 
 		case unicode.IsNumber(r):
-			return 5 
+			return 4 
 		}
 		return nullState
 	}, 
 	// Set5
 	func(r rune) state {
 		switch { 
-		case r == '-':
-			return 3 
+		case unicode.IsLower(r):
+			return 6 
+		}
+		return nullState
+	}, 
+	// Set6
+	func(r rune) state {
+		switch { 
 		case r == '_':
-			return 5 
+			return 7 
 		case unicode.IsLetter(r):
-			return 5 
+			return 7 
 		case unicode.IsNumber(r):
+			return 7 
+		}
+		return nullState
+	}, 
+	// Set7
+	func(r rune) state {
+		switch { 
+		case r == '-':
 			return 5 
+		case r == '_':
+			return 7 
+		case unicode.IsLetter(r):
+			return 7 
+		case unicode.IsNumber(r):
+			return 7 
 		}
 		return nullState
 	}, 

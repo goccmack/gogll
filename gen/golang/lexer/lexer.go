@@ -107,7 +107,11 @@ func getCondition(event ast.LexBase) string {
 	case *ast.AnyOf:
 		return fmt.Sprintf("any(r, %s)", e.Set)
 	case *ast.CharLiteral:
-		return fmt.Sprintf("r == %s", string(e.Literal))
+		cstr := string(e.Literal)
+		if cstr == "'''" {
+			return "r == '\\''"
+		}
+		return fmt.Sprintf("r == %s", cstr)
 	case *ast.Not:
 		return fmt.Sprintf("not(r, %s)", e.Set)
 	case *ast.UnicodeClass:

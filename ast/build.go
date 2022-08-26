@@ -200,7 +200,11 @@ func (bld *builder) getLexRuleBody(tokid *token.Token) []LexSymbol {
 	return lexRule.RegExp.Symbols
 }
 
-// LexSymbol : "." | any string_lit | char_lit | LexBracket | not string_lit | UnicodeClass ;
+// LexSymbol
+//
+//	:   "." | "any" string_lit | char_lit | LexBracket | "not" string_lit
+//	|   UnicodeClass
+//	;
 func (bld *builder) lexSymbol(b bsr.BSR) LexSymbol {
 	switch b.Alternate() {
 	case 0:
@@ -215,6 +219,12 @@ func (bld *builder) lexSymbol(b bsr.BSR) LexSymbol {
 		return bld.not(b.GetTChildI(0), b.GetTChildI(1))
 	case 5:
 		return bld.unicodeClass(b.GetNTChildI(0))
+		// case 6:
+		// 	return bld.littleU(b.GetTChildI(0))
+		// case 7:
+		// 	return bld.bigU(b.GetTChildI(0))
+		// case 8:
+		// 	return bld.unicodeSet(B.GetNTChild(Un))
 	}
 	panic(fmt.Sprintf("Invalid case %d", b.Alternate()))
 }

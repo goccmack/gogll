@@ -65,6 +65,21 @@ which are used to specify tokens:
 `any`, `not`, `letter`, `upcase`, `lowcase` and `number` are the only reserved
 words of gogll.
 ```
+hex_digit 
+    :   (   '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' 
+    |       'a' | 'b' | 'c' | 'd' | 'e' | 'f' 
+    |       'A' | 'B' | 'C' | 'D' | 'E' | 'F' ) 
+    ;
+
+bigU 
+    :   '\'' '\\' 'u' 
+        hex_digit hex_digit hex_digit hex_digit 
+        hex_digit hex_digit hex_digit hex_digit 
+        '\''
+    ;
+
+littleU : '\'' '\\' 'u' hex_digit hex_digit hex_digit hex_digit '\'';
+
 LexSymbol 
     :   "." | "any" string_lit | char_lit | LexBracket | "not" string_lit 
     |   UnicodeClass 
@@ -73,6 +88,12 @@ LexSymbol
 UnicodeClass 
     :   "letter" | "upcase" | "lowcase" | "number" 
     ;
+
+```
+    |   littleU | bigU
+    |   UnicodeSet
+UnicodeSet : "'[" "\\p{}" "]'" ;
+```
 
 char_lit : '\'' (not "'" | '\\' any "\\'nrt") '\'' ;
 ```

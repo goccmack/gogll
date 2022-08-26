@@ -6,8 +6,8 @@ import (
 	"github.com/goccmack/gogll/v3/test/lex/lex6/lexer"
 )
 
-var src = []string{"name", "name-name-"}
-var tokType = []string{"id", "ids"}
+var src = []string{"name", "name-name-", "'["}
+var tokType = []string{"id", "ids", "'["}
 
 func Test1(t *testing.T) {
 	for i, s := range src {

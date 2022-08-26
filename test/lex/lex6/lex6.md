@@ -5,4 +5,6 @@ package "github.com/goccmack/gogll/v3/test/lex/lex6"
 id : lowcase <letter|number|'_'> ; 
 
 ids: <id '-'> ;
+
+P1 : "'[" ;
 ```

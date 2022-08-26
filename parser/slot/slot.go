@@ -257,7 +257,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_LexAlternates, 1, 0, 
 		symbols.Symbols{  
 			symbols.NT_RegExp, 
-			symbols.T_23, 
+			symbols.T_26, 
 			symbols.NT_LexAlternates,
 		}, 
 		LexAlternates1R0, 
@@ -266,7 +266,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_LexAlternates, 1, 1, 
 		symbols.Symbols{  
 			symbols.NT_RegExp, 
-			symbols.T_23, 
+			symbols.T_26, 
 			symbols.NT_LexAlternates,
 		}, 
 		LexAlternates1R1, 
@@ -275,7 +275,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_LexAlternates, 1, 2, 
 		symbols.Symbols{  
 			symbols.NT_RegExp, 
-			symbols.T_23, 
+			symbols.T_26, 
 			symbols.NT_LexAlternates,
 		}, 
 		LexAlternates1R2, 
@@ -284,7 +284,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_LexAlternates, 1, 3, 
 		symbols.Symbols{  
 			symbols.NT_RegExp, 
-			symbols.T_23, 
+			symbols.T_26, 
 			symbols.NT_LexAlternates,
 		}, 
 		LexAlternates1R3, 
@@ -456,7 +456,7 @@ var slots = map[Label]*Slot{
 	LexRule0R0: {
 		symbols.NT_LexRule, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_20, 
+			symbols.T_23, 
 			symbols.T_4, 
 			symbols.NT_RegExp, 
 			symbols.T_5,
@@ -466,7 +466,7 @@ var slots = map[Label]*Slot{
 	LexRule0R1: {
 		symbols.NT_LexRule, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_20, 
+			symbols.T_23, 
 			symbols.T_4, 
 			symbols.NT_RegExp, 
 			symbols.T_5,
@@ -476,7 +476,7 @@ var slots = map[Label]*Slot{
 	LexRule0R2: {
 		symbols.NT_LexRule, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_20, 
+			symbols.T_23, 
 			symbols.T_4, 
 			symbols.NT_RegExp, 
 			symbols.T_5,
@@ -486,7 +486,7 @@ var slots = map[Label]*Slot{
 	LexRule0R3: {
 		symbols.NT_LexRule, 0, 3, 
 		symbols.Symbols{  
-			symbols.T_20, 
+			symbols.T_23, 
 			symbols.T_4, 
 			symbols.NT_RegExp, 
 			symbols.T_5,
@@ -496,7 +496,7 @@ var slots = map[Label]*Slot{
 	LexRule0R4: {
 		symbols.NT_LexRule, 0, 4, 
 		symbols.Symbols{  
-			symbols.T_20, 
+			symbols.T_23, 
 			symbols.T_4, 
 			symbols.NT_RegExp, 
 			symbols.T_5,
@@ -507,7 +507,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_LexRule, 1, 0, 
 		symbols.Symbols{  
 			symbols.T_0, 
-			symbols.T_20, 
+			symbols.T_23, 
 			symbols.T_4, 
 			symbols.NT_RegExp, 
 			symbols.T_5,
@@ -518,7 +518,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_LexRule, 1, 1, 
 		symbols.Symbols{  
 			symbols.T_0, 
-			symbols.T_20, 
+			symbols.T_23, 
 			symbols.T_4, 
 			symbols.NT_RegExp, 
 			symbols.T_5,
@@ -529,7 +529,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_LexRule, 1, 2, 
 		symbols.Symbols{  
 			symbols.T_0, 
-			symbols.T_20, 
+			symbols.T_23, 
 			symbols.T_4, 
 			symbols.NT_RegExp, 
 			symbols.T_5,
@@ -540,7 +540,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_LexRule, 1, 3, 
 		symbols.Symbols{  
 			symbols.T_0, 
-			symbols.T_20, 
+			symbols.T_23, 
 			symbols.T_4, 
 			symbols.NT_RegExp, 
 			symbols.T_5,
@@ -551,7 +551,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_LexRule, 1, 4, 
 		symbols.Symbols{  
 			symbols.T_0, 
-			symbols.T_20, 
+			symbols.T_23, 
 			symbols.T_4, 
 			symbols.NT_RegExp, 
 			symbols.T_5,
@@ -562,7 +562,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_LexRule, 1, 5, 
 		symbols.Symbols{  
 			symbols.T_0, 
-			symbols.T_20, 
+			symbols.T_23, 
 			symbols.T_4, 
 			symbols.NT_RegExp, 
 			symbols.T_5,
@@ -587,7 +587,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_LexSymbol, 1, 0, 
 		symbols.Symbols{  
 			symbols.T_10, 
-			symbols.T_19,
+			symbols.T_22,
 		}, 
 		LexSymbol1R0, 
 	},
@@ -595,7 +595,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_LexSymbol, 1, 1, 
 		symbols.Symbols{  
 			symbols.T_10, 
-			symbols.T_19,
+			symbols.T_22,
 		}, 
 		LexSymbol1R1, 
 	},
@@ -603,21 +603,21 @@ var slots = map[Label]*Slot{
 		symbols.NT_LexSymbol, 1, 2, 
 		symbols.Symbols{  
 			symbols.T_10, 
-			symbols.T_19,
+			symbols.T_22,
 		}, 
 		LexSymbol1R2, 
 	},
 	LexSymbol2R0: {
 		symbols.NT_LexSymbol, 2, 0, 
 		symbols.Symbols{  
-			symbols.T_11,
+			symbols.T_12,
 		}, 
 		LexSymbol2R0, 
 	},
 	LexSymbol2R1: {
 		symbols.NT_LexSymbol, 2, 1, 
 		symbols.Symbols{  
-			symbols.T_11,
+			symbols.T_12,
 		}, 
 		LexSymbol2R1, 
 	},
@@ -638,24 +638,24 @@ var slots = map[Label]*Slot{
 	LexSymbol4R0: {
 		symbols.NT_LexSymbol, 4, 0, 
 		symbols.Symbols{  
-			symbols.T_15, 
-			symbols.T_19,
+			symbols.T_18, 
+			symbols.T_22,
 		}, 
 		LexSymbol4R0, 
 	},
 	LexSymbol4R1: {
 		symbols.NT_LexSymbol, 4, 1, 
 		symbols.Symbols{  
-			symbols.T_15, 
-			symbols.T_19,
+			symbols.T_18, 
+			symbols.T_22,
 		}, 
 		LexSymbol4R1, 
 	},
 	LexSymbol4R2: {
 		symbols.NT_LexSymbol, 4, 2, 
 		symbols.Symbols{  
-			symbols.T_15, 
-			symbols.T_19,
+			symbols.T_18, 
+			symbols.T_22,
 		}, 
 		LexSymbol4R2, 
 	},
@@ -676,60 +676,60 @@ var slots = map[Label]*Slot{
 	LexZeroOrMore0R0: {
 		symbols.NT_LexZeroOrMore, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_22, 
+			symbols.T_25, 
 			symbols.NT_LexAlternates, 
-			symbols.T_24,
+			symbols.T_27,
 		}, 
 		LexZeroOrMore0R0, 
 	},
 	LexZeroOrMore0R1: {
 		symbols.NT_LexZeroOrMore, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_22, 
+			symbols.T_25, 
 			symbols.NT_LexAlternates, 
-			symbols.T_24,
+			symbols.T_27,
 		}, 
 		LexZeroOrMore0R1, 
 	},
 	LexZeroOrMore0R2: {
 		symbols.NT_LexZeroOrMore, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_22, 
+			symbols.T_25, 
 			symbols.NT_LexAlternates, 
-			symbols.T_24,
+			symbols.T_27,
 		}, 
 		LexZeroOrMore0R2, 
 	},
 	LexZeroOrMore0R3: {
 		symbols.NT_LexZeroOrMore, 0, 3, 
 		symbols.Symbols{  
-			symbols.T_22, 
+			symbols.T_25, 
 			symbols.NT_LexAlternates, 
-			symbols.T_24,
+			symbols.T_27,
 		}, 
 		LexZeroOrMore0R3, 
 	},
 	Package0R0: {
 		symbols.NT_Package, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_18, 
-			symbols.T_19,
+			symbols.T_21, 
+			symbols.T_22,
 		}, 
 		Package0R0, 
 	},
 	Package0R1: {
 		symbols.NT_Package, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_18, 
-			symbols.T_19,
+			symbols.T_21, 
+			symbols.T_22,
 		}, 
 		Package0R1, 
 	},
 	Package0R2: {
 		symbols.NT_Package, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_18, 
-			symbols.T_19,
+			symbols.T_21, 
+			symbols.T_22,
 		}, 
 		Package0R2, 
 	},
@@ -750,14 +750,14 @@ var slots = map[Label]*Slot{
 	RegExp1R0: {
 		symbols.NT_RegExp, 1, 0, 
 		symbols.Symbols{  
-			symbols.T_20,
+			symbols.T_23,
 		}, 
 		RegExp1R0, 
 	},
 	RegExp1R1: {
 		symbols.NT_RegExp, 1, 1, 
 		symbols.Symbols{  
-			symbols.T_20,
+			symbols.T_23,
 		}, 
 		RegExp1R1, 
 	},
@@ -788,7 +788,7 @@ var slots = map[Label]*Slot{
 	RegExp3R0: {
 		symbols.NT_RegExp, 3, 0, 
 		symbols.Symbols{  
-			symbols.T_20, 
+			symbols.T_23, 
 			symbols.NT_RegExp,
 		}, 
 		RegExp3R0, 
@@ -796,7 +796,7 @@ var slots = map[Label]*Slot{
 	RegExp3R1: {
 		symbols.NT_RegExp, 3, 1, 
 		symbols.Symbols{  
-			symbols.T_20, 
+			symbols.T_23, 
 			symbols.NT_RegExp,
 		}, 
 		RegExp3R1, 
@@ -804,7 +804,7 @@ var slots = map[Label]*Slot{
 	RegExp3R2: {
 		symbols.NT_RegExp, 3, 2, 
 		symbols.Symbols{  
-			symbols.T_20, 
+			symbols.T_23, 
 			symbols.NT_RegExp,
 		}, 
 		RegExp3R2, 
@@ -892,14 +892,14 @@ var slots = map[Label]*Slot{
 	SyntaxAlternate1R0: {
 		symbols.NT_SyntaxAlternate, 1, 0, 
 		symbols.Symbols{  
-			symbols.T_12,
+			symbols.T_13,
 		}, 
 		SyntaxAlternate1R0, 
 	},
 	SyntaxAlternate1R1: {
 		symbols.NT_SyntaxAlternate, 1, 1, 
 		symbols.Symbols{  
-			symbols.T_12,
+			symbols.T_13,
 		}, 
 		SyntaxAlternate1R1, 
 	},
@@ -921,7 +921,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_SyntaxAlternates, 1, 0, 
 		symbols.Symbols{  
 			symbols.NT_SyntaxAlternate, 
-			symbols.T_23, 
+			symbols.T_26, 
 			symbols.NT_SyntaxAlternates,
 		}, 
 		SyntaxAlternates1R0, 
@@ -930,7 +930,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_SyntaxAlternates, 1, 1, 
 		symbols.Symbols{  
 			symbols.NT_SyntaxAlternate, 
-			symbols.T_23, 
+			symbols.T_26, 
 			symbols.NT_SyntaxAlternates,
 		}, 
 		SyntaxAlternates1R1, 
@@ -939,7 +939,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_SyntaxAlternates, 1, 2, 
 		symbols.Symbols{  
 			symbols.NT_SyntaxAlternate, 
-			symbols.T_23, 
+			symbols.T_26, 
 			symbols.NT_SyntaxAlternates,
 		}, 
 		SyntaxAlternates1R2, 
@@ -948,7 +948,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_SyntaxAlternates, 1, 3, 
 		symbols.Symbols{  
 			symbols.NT_SyntaxAlternate, 
-			symbols.T_23, 
+			symbols.T_26, 
 			symbols.NT_SyntaxAlternates,
 		}, 
 		SyntaxAlternates1R3, 
@@ -956,7 +956,7 @@ var slots = map[Label]*Slot{
 	SyntaxRule0R0: {
 		symbols.NT_SyntaxRule, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_16, 
+			symbols.T_19, 
 			symbols.T_4, 
 			symbols.NT_SyntaxAlternates, 
 			symbols.T_5,
@@ -966,7 +966,7 @@ var slots = map[Label]*Slot{
 	SyntaxRule0R1: {
 		symbols.NT_SyntaxRule, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_16, 
+			symbols.T_19, 
 			symbols.T_4, 
 			symbols.NT_SyntaxAlternates, 
 			symbols.T_5,
@@ -976,7 +976,7 @@ var slots = map[Label]*Slot{
 	SyntaxRule0R2: {
 		symbols.NT_SyntaxRule, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_16, 
+			symbols.T_19, 
 			symbols.T_4, 
 			symbols.NT_SyntaxAlternates, 
 			symbols.T_5,
@@ -986,7 +986,7 @@ var slots = map[Label]*Slot{
 	SyntaxRule0R3: {
 		symbols.NT_SyntaxRule, 0, 3, 
 		symbols.Symbols{  
-			symbols.T_16, 
+			symbols.T_19, 
 			symbols.T_4, 
 			symbols.NT_SyntaxAlternates, 
 			symbols.T_5,
@@ -996,7 +996,7 @@ var slots = map[Label]*Slot{
 	SyntaxRule0R4: {
 		symbols.NT_SyntaxRule, 0, 4, 
 		symbols.Symbols{  
-			symbols.T_16, 
+			symbols.T_19, 
 			symbols.T_4, 
 			symbols.NT_SyntaxAlternates, 
 			symbols.T_5,
@@ -1006,42 +1006,42 @@ var slots = map[Label]*Slot{
 	SyntaxSymbol0R0: {
 		symbols.NT_SyntaxSymbol, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_16,
+			symbols.T_19,
 		}, 
 		SyntaxSymbol0R0, 
 	},
 	SyntaxSymbol0R1: {
 		symbols.NT_SyntaxSymbol, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_16,
+			symbols.T_19,
 		}, 
 		SyntaxSymbol0R1, 
 	},
 	SyntaxSymbol1R0: {
 		symbols.NT_SyntaxSymbol, 1, 0, 
 		symbols.Symbols{  
-			symbols.T_20,
+			symbols.T_23,
 		}, 
 		SyntaxSymbol1R0, 
 	},
 	SyntaxSymbol1R1: {
 		symbols.NT_SyntaxSymbol, 1, 1, 
 		symbols.Symbols{  
-			symbols.T_20,
+			symbols.T_23,
 		}, 
 		SyntaxSymbol1R1, 
 	},
 	SyntaxSymbol2R0: {
 		symbols.NT_SyntaxSymbol, 2, 0, 
 		symbols.Symbols{  
-			symbols.T_19,
+			symbols.T_22,
 		}, 
 		SyntaxSymbol2R0, 
 	},
 	SyntaxSymbol2R1: {
 		symbols.NT_SyntaxSymbol, 2, 1, 
 		symbols.Symbols{  
-			symbols.T_19,
+			symbols.T_22,
 		}, 
 		SyntaxSymbol2R1, 
 	},
@@ -1086,56 +1086,56 @@ var slots = map[Label]*Slot{
 	UnicodeClass0R0: {
 		symbols.NT_UnicodeClass, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_13,
+			symbols.T_15,
 		}, 
 		UnicodeClass0R0, 
 	},
 	UnicodeClass0R1: {
 		symbols.NT_UnicodeClass, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_13,
+			symbols.T_15,
 		}, 
 		UnicodeClass0R1, 
 	},
 	UnicodeClass1R0: {
 		symbols.NT_UnicodeClass, 1, 0, 
 		symbols.Symbols{  
-			symbols.T_21,
+			symbols.T_24,
 		}, 
 		UnicodeClass1R0, 
 	},
 	UnicodeClass1R1: {
 		symbols.NT_UnicodeClass, 1, 1, 
 		symbols.Symbols{  
-			symbols.T_21,
+			symbols.T_24,
 		}, 
 		UnicodeClass1R1, 
 	},
 	UnicodeClass2R0: {
 		symbols.NT_UnicodeClass, 2, 0, 
 		symbols.Symbols{  
-			symbols.T_14,
+			symbols.T_17,
 		}, 
 		UnicodeClass2R0, 
 	},
 	UnicodeClass2R1: {
 		symbols.NT_UnicodeClass, 2, 1, 
 		symbols.Symbols{  
-			symbols.T_14,
+			symbols.T_17,
 		}, 
 		UnicodeClass2R1, 
 	},
 	UnicodeClass3R0: {
 		symbols.NT_UnicodeClass, 3, 0, 
 		symbols.Symbols{  
-			symbols.T_17,
+			symbols.T_20,
 		}, 
 		UnicodeClass3R0, 
 	},
 	UnicodeClass3R1: {
 		symbols.NT_UnicodeClass, 3, 1, 
 		symbols.Symbols{  
-			symbols.T_17,
+			symbols.T_20,
 		}, 
 		UnicodeClass3R1, 
 	},

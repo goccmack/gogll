@@ -51,7 +51,7 @@ type eventPair struct {
 }
 
 // GetOrdered returns the set of unique transition events for items, ordered
-// by the event precidence.
+// by the event precedence.
 func GetOrdered(items ...*item.Item) (events []ast.LexBase) {
 	events = getEvents(items...)
 	incompatibleEvents := []eventPair{}
