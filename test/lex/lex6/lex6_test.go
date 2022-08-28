@@ -1,19 +1,25 @@
 package lex6
 
 import (
+	"fmt"
 	"testing"
+	"unicode"
 
 	"github.com/goccmack/gogll/v3/test/lex/lex6/lexer"
 )
 
-var src = []string{"name", "name-name-", "'["}
-var tokType = []string{"id", "ids", "'["}
+var src = []string{"name", "<"}
+var tokType = []string{"id_start", "ptrn_stx"}
+
+func Test0(t *testing.T) {
+	fmt.Printf("< %t\n", unicode.In('<', unicode.Pattern_Syntax))
+}
 
 func Test1(t *testing.T) {
 	for i, s := range src {
 		lxr := lexer.New([]rune(s))
 		if lxr.Tokens[0].TypeID() != tokType[i] {
-			t.Error()
+			t.Errorf("%s: %s", lxr.Tokens[0].LiteralString(), lxr.Tokens[0].TypeID())
 		}
 	}
 }

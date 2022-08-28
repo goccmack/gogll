@@ -66,6 +66,8 @@ const(
 	LexSymbol4R2
 	LexSymbol5R0
 	LexSymbol5R1
+	LexSymbol6R0
+	LexSymbol6R1
 	LexZeroOrMore0R0
 	LexZeroOrMore0R1
 	LexZeroOrMore0R2
@@ -73,6 +75,11 @@ const(
 	Package0R0
 	Package0R1
 	Package0R2
+	PlusOrMinUnicodeSet0R0
+	PlusOrMinUnicodeSet0R1
+	PlusOrMinUnicodeSet1R0
+	PlusOrMinUnicodeSet1R1
+	PlusOrMinUnicodeSet1R2
 	RegExp0R0
 	RegExp0R1
 	RegExp1R0
@@ -118,6 +125,100 @@ const(
 	SyntaxSymbols1R0
 	SyntaxSymbols1R1
 	SyntaxSymbols1R2
+	UnicodeCategory0R0
+	UnicodeCategory0R1
+	UnicodeCategory1R0
+	UnicodeCategory1R1
+	UnicodeCategory2R0
+	UnicodeCategory2R1
+	UnicodeCategory3R0
+	UnicodeCategory3R1
+	UnicodeCategory4R0
+	UnicodeCategory4R1
+	UnicodeCategory5R0
+	UnicodeCategory5R1
+	UnicodeCategory6R0
+	UnicodeCategory6R1
+	UnicodeCategory7R0
+	UnicodeCategory7R1
+	UnicodeCategory8R0
+	UnicodeCategory8R1
+	UnicodeCategory9R0
+	UnicodeCategory9R1
+	UnicodeCategory10R0
+	UnicodeCategory10R1
+	UnicodeCategory11R0
+	UnicodeCategory11R1
+	UnicodeCategory12R0
+	UnicodeCategory12R1
+	UnicodeCategory13R0
+	UnicodeCategory13R1
+	UnicodeCategory14R0
+	UnicodeCategory14R1
+	UnicodeCategory15R0
+	UnicodeCategory15R1
+	UnicodeCategory16R0
+	UnicodeCategory16R1
+	UnicodeCategory17R0
+	UnicodeCategory17R1
+	UnicodeCategory18R0
+	UnicodeCategory18R1
+	UnicodeCategory19R0
+	UnicodeCategory19R1
+	UnicodeCategory20R0
+	UnicodeCategory20R1
+	UnicodeCategory21R0
+	UnicodeCategory21R1
+	UnicodeCategory22R0
+	UnicodeCategory22R1
+	UnicodeCategory23R0
+	UnicodeCategory23R1
+	UnicodeCategory24R0
+	UnicodeCategory24R1
+	UnicodeCategory25R0
+	UnicodeCategory25R1
+	UnicodeCategory26R0
+	UnicodeCategory26R1
+	UnicodeCategory27R0
+	UnicodeCategory27R1
+	UnicodeCategory28R0
+	UnicodeCategory28R1
+	UnicodeCategory29R0
+	UnicodeCategory29R1
+	UnicodeCategory30R0
+	UnicodeCategory30R1
+	UnicodeCategory31R0
+	UnicodeCategory31R1
+	UnicodeCategory32R0
+	UnicodeCategory32R1
+	UnicodeCategory33R0
+	UnicodeCategory33R1
+	UnicodeCategory34R0
+	UnicodeCategory34R1
+	UnicodeCategory35R0
+	UnicodeCategory35R1
+	UnicodeCategory36R0
+	UnicodeCategory36R1
+	UnicodeCategory37R0
+	UnicodeCategory37R1
+	UnicodeCategory38R0
+	UnicodeCategory38R1
+	UnicodeCategory39R0
+	UnicodeCategory39R1
+	UnicodeCategory40R0
+	UnicodeCategory40R1
+	UnicodeCategory41R0
+	UnicodeCategory41R1
+	UnicodeCategory42R0
+	UnicodeCategory42R1
+	UnicodeCategory43R0
+	UnicodeCategory43R1
+	UnicodeCategory44R0
+	UnicodeCategory44R1
+	UnicodeCategory45R0
+	UnicodeCategory45R1
+	UnicodeCategory46R0
+	UnicodeCategory46R1
 	UnicodeClass0R0
 	UnicodeClass0R1
 	UnicodeClass1R0
@@ -126,6 +227,97 @@ const(
 	UnicodeClass2R1
 	UnicodeClass3R0
 	UnicodeClass3R1
+	UnicodeProperty0R0
+	UnicodeProperty0R1
+	UnicodeProperty1R0
+	UnicodeProperty1R1
+	UnicodeProperty2R0
+	UnicodeProperty2R1
+	UnicodeProperty3R0
+	UnicodeProperty3R1
+	UnicodeProperty4R0
+	UnicodeProperty4R1
+	UnicodeProperty5R0
+	UnicodeProperty5R1
+	UnicodeProperty6R0
+	UnicodeProperty6R1
+	UnicodeProperty7R0
+	UnicodeProperty7R1
+	UnicodeProperty8R0
+	UnicodeProperty8R1
+	UnicodeProperty9R0
+	UnicodeProperty9R1
+	UnicodeProperty10R0
+	UnicodeProperty10R1
+	UnicodeProperty11R0
+	UnicodeProperty11R1
+	UnicodeProperty12R0
+	UnicodeProperty12R1
+	UnicodeProperty13R0
+	UnicodeProperty13R1
+	UnicodeProperty14R0
+	UnicodeProperty14R1
+	UnicodeProperty15R0
+	UnicodeProperty15R1
+	UnicodeProperty16R0
+	UnicodeProperty16R1
+	UnicodeProperty17R0
+	UnicodeProperty17R1
+	UnicodeProperty18R0
+	UnicodeProperty18R1
+	UnicodeProperty19R0
+	UnicodeProperty19R1
+	UnicodeProperty20R0
+	UnicodeProperty20R1
+	UnicodeProperty21R0
+	UnicodeProperty21R1
+	UnicodeProperty22R0
+	UnicodeProperty22R1
+	UnicodeProperty23R0
+	UnicodeProperty23R1
+	UnicodeProperty24R0
+	UnicodeProperty24R1
+	UnicodeProperty25R0
+	UnicodeProperty25R1
+	UnicodeProperty26R0
+	UnicodeProperty26R1
+	UnicodeProperty27R0
+	UnicodeProperty27R1
+	UnicodeProperty28R0
+	UnicodeProperty28R1
+	UnicodeProperty29R0
+	UnicodeProperty29R1
+	UnicodeProperty30R0
+	UnicodeProperty30R1
+	UnicodeProperty31R0
+	UnicodeProperty31R1
+	UnicodeProperty32R0
+	UnicodeProperty32R1
+	UnicodeProperty33R0
+	UnicodeProperty33R1
+	UnicodeProperty34R0
+	UnicodeProperty34R1
+	UnicodeRange0R0
+	UnicodeRange0R1
+	UnicodeRange1R0
+	UnicodeRange1R1
+	UnicodeSet0R0
+	UnicodeSet0R1
+	UnicodeSet0R2
+	UnicodeSet0R3
+	UnicodeSet0R4
+	UnicodeSetSpec0R0
+	UnicodeSetSpec0R1
+	UnicodeSetSpec0R2
+	UnicodeSetSpec0R3
+	UnicodeSetSpecs0R0
+	UnicodeSetSpecs1R0
+	UnicodeSetSpecs1R1
+	UnicodeSpecList0R0
+	UnicodeSpecList0R1
+	UnicodeSpecList1R0
+	UnicodeSpecList1R1
+	UnicodeSpecList1R2
 )
 
 type Slot struct {
@@ -257,7 +449,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_LexAlternates, 1, 0, 
 		symbols.Symbols{  
 			symbols.NT_RegExp, 
-			symbols.T_26, 
+			symbols.T_112, 
 			symbols.NT_LexAlternates,
 		}, 
 		LexAlternates1R0, 
@@ -266,7 +458,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_LexAlternates, 1, 1, 
 		symbols.Symbols{  
 			symbols.NT_RegExp, 
-			symbols.T_26, 
+			symbols.T_112, 
 			symbols.NT_LexAlternates,
 		}, 
 		LexAlternates1R1, 
@@ -275,7 +467,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_LexAlternates, 1, 2, 
 		symbols.Symbols{  
 			symbols.NT_RegExp, 
-			symbols.T_26, 
+			symbols.T_112, 
 			symbols.NT_LexAlternates,
 		}, 
 		LexAlternates1R2, 
@@ -284,7 +476,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_LexAlternates, 1, 3, 
 		symbols.Symbols{  
 			symbols.NT_RegExp, 
-			symbols.T_26, 
+			symbols.T_112, 
 			symbols.NT_LexAlternates,
 		}, 
 		LexAlternates1R3, 
@@ -348,158 +540,158 @@ var slots = map[Label]*Slot{
 	LexGroup0R0: {
 		symbols.NT_LexGroup, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_1, 
+			symbols.T_2, 
 			symbols.NT_LexAlternates, 
-			symbols.T_2,
+			symbols.T_3,
 		}, 
 		LexGroup0R0, 
 	},
 	LexGroup0R1: {
 		symbols.NT_LexGroup, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_1, 
+			symbols.T_2, 
 			symbols.NT_LexAlternates, 
-			symbols.T_2,
+			symbols.T_3,
 		}, 
 		LexGroup0R1, 
 	},
 	LexGroup0R2: {
 		symbols.NT_LexGroup, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_1, 
+			symbols.T_2, 
 			symbols.NT_LexAlternates, 
-			symbols.T_2,
+			symbols.T_3,
 		}, 
 		LexGroup0R2, 
 	},
 	LexGroup0R3: {
 		symbols.NT_LexGroup, 0, 3, 
 		symbols.Symbols{  
-			symbols.T_1, 
+			symbols.T_2, 
 			symbols.NT_LexAlternates, 
-			symbols.T_2,
+			symbols.T_3,
 		}, 
 		LexGroup0R3, 
 	},
 	LexOneOrMore0R0: {
 		symbols.NT_LexOneOrMore, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_6, 
+			symbols.T_8, 
 			symbols.NT_LexAlternates, 
-			symbols.T_7,
+			symbols.T_9,
 		}, 
 		LexOneOrMore0R0, 
 	},
 	LexOneOrMore0R1: {
 		symbols.NT_LexOneOrMore, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_6, 
+			symbols.T_8, 
 			symbols.NT_LexAlternates, 
-			symbols.T_7,
+			symbols.T_9,
 		}, 
 		LexOneOrMore0R1, 
 	},
 	LexOneOrMore0R2: {
 		symbols.NT_LexOneOrMore, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_6, 
+			symbols.T_8, 
 			symbols.NT_LexAlternates, 
-			symbols.T_7,
+			symbols.T_9,
 		}, 
 		LexOneOrMore0R2, 
 	},
 	LexOneOrMore0R3: {
 		symbols.NT_LexOneOrMore, 0, 3, 
 		symbols.Symbols{  
-			symbols.T_6, 
+			symbols.T_8, 
 			symbols.NT_LexAlternates, 
-			symbols.T_7,
+			symbols.T_9,
 		}, 
 		LexOneOrMore0R3, 
 	},
 	LexOptional0R0: {
 		symbols.NT_LexOptional, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_8, 
+			symbols.T_92, 
 			symbols.NT_LexAlternates, 
-			symbols.T_9,
+			symbols.T_94,
 		}, 
 		LexOptional0R0, 
 	},
 	LexOptional0R1: {
 		symbols.NT_LexOptional, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_8, 
+			symbols.T_92, 
 			symbols.NT_LexAlternates, 
-			symbols.T_9,
+			symbols.T_94,
 		}, 
 		LexOptional0R1, 
 	},
 	LexOptional0R2: {
 		symbols.NT_LexOptional, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_8, 
+			symbols.T_92, 
 			symbols.NT_LexAlternates, 
-			symbols.T_9,
+			symbols.T_94,
 		}, 
 		LexOptional0R2, 
 	},
 	LexOptional0R3: {
 		symbols.NT_LexOptional, 0, 3, 
 		symbols.Symbols{  
-			symbols.T_8, 
+			symbols.T_92, 
 			symbols.NT_LexAlternates, 
-			symbols.T_9,
+			symbols.T_94,
 		}, 
 		LexOptional0R3, 
 	},
 	LexRule0R0: {
 		symbols.NT_LexRule, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_23, 
-			symbols.T_4, 
+			symbols.T_109, 
+			symbols.T_6, 
 			symbols.NT_RegExp, 
-			symbols.T_5,
+			symbols.T_7,
 		}, 
 		LexRule0R0, 
 	},
 	LexRule0R1: {
 		symbols.NT_LexRule, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_23, 
-			symbols.T_4, 
+			symbols.T_109, 
+			symbols.T_6, 
 			symbols.NT_RegExp, 
-			symbols.T_5,
+			symbols.T_7,
 		}, 
 		LexRule0R1, 
 	},
 	LexRule0R2: {
 		symbols.NT_LexRule, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_23, 
-			symbols.T_4, 
+			symbols.T_109, 
+			symbols.T_6, 
 			symbols.NT_RegExp, 
-			symbols.T_5,
+			symbols.T_7,
 		}, 
 		LexRule0R2, 
 	},
 	LexRule0R3: {
 		symbols.NT_LexRule, 0, 3, 
 		symbols.Symbols{  
-			symbols.T_23, 
-			symbols.T_4, 
+			symbols.T_109, 
+			symbols.T_6, 
 			symbols.NT_RegExp, 
-			symbols.T_5,
+			symbols.T_7,
 		}, 
 		LexRule0R3, 
 	},
 	LexRule0R4: {
 		symbols.NT_LexRule, 0, 4, 
 		symbols.Symbols{  
-			symbols.T_23, 
-			symbols.T_4, 
+			symbols.T_109, 
+			symbols.T_6, 
 			symbols.NT_RegExp, 
-			symbols.T_5,
+			symbols.T_7,
 		}, 
 		LexRule0R4, 
 	},
@@ -507,10 +699,10 @@ var slots = map[Label]*Slot{
 		symbols.NT_LexRule, 1, 0, 
 		symbols.Symbols{  
 			symbols.T_0, 
-			symbols.T_23, 
-			symbols.T_4, 
+			symbols.T_109, 
+			symbols.T_6, 
 			symbols.NT_RegExp, 
-			symbols.T_5,
+			symbols.T_7,
 		}, 
 		LexRule1R0, 
 	},
@@ -518,10 +710,10 @@ var slots = map[Label]*Slot{
 		symbols.NT_LexRule, 1, 1, 
 		symbols.Symbols{  
 			symbols.T_0, 
-			symbols.T_23, 
-			symbols.T_4, 
+			symbols.T_109, 
+			symbols.T_6, 
 			symbols.NT_RegExp, 
-			symbols.T_5,
+			symbols.T_7,
 		}, 
 		LexRule1R1, 
 	},
@@ -529,10 +721,10 @@ var slots = map[Label]*Slot{
 		symbols.NT_LexRule, 1, 2, 
 		symbols.Symbols{  
 			symbols.T_0, 
-			symbols.T_23, 
-			symbols.T_4, 
+			symbols.T_109, 
+			symbols.T_6, 
 			symbols.NT_RegExp, 
-			symbols.T_5,
+			symbols.T_7,
 		}, 
 		LexRule1R2, 
 	},
@@ -540,10 +732,10 @@ var slots = map[Label]*Slot{
 		symbols.NT_LexRule, 1, 3, 
 		symbols.Symbols{  
 			symbols.T_0, 
-			symbols.T_23, 
-			symbols.T_4, 
+			symbols.T_109, 
+			symbols.T_6, 
 			symbols.NT_RegExp, 
-			symbols.T_5,
+			symbols.T_7,
 		}, 
 		LexRule1R3, 
 	},
@@ -551,10 +743,10 @@ var slots = map[Label]*Slot{
 		symbols.NT_LexRule, 1, 4, 
 		symbols.Symbols{  
 			symbols.T_0, 
-			symbols.T_23, 
-			symbols.T_4, 
+			symbols.T_109, 
+			symbols.T_6, 
 			symbols.NT_RegExp, 
-			symbols.T_5,
+			symbols.T_7,
 		}, 
 		LexRule1R4, 
 	},
@@ -562,62 +754,62 @@ var slots = map[Label]*Slot{
 		symbols.NT_LexRule, 1, 5, 
 		symbols.Symbols{  
 			symbols.T_0, 
-			symbols.T_23, 
-			symbols.T_4, 
+			symbols.T_109, 
+			symbols.T_6, 
 			symbols.NT_RegExp, 
-			symbols.T_5,
+			symbols.T_7,
 		}, 
 		LexRule1R5, 
 	},
 	LexSymbol0R0: {
 		symbols.NT_LexSymbol, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_3,
+			symbols.T_5,
 		}, 
 		LexSymbol0R0, 
 	},
 	LexSymbol0R1: {
 		symbols.NT_LexSymbol, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_3,
+			symbols.T_5,
 		}, 
 		LexSymbol0R1, 
 	},
 	LexSymbol1R0: {
 		symbols.NT_LexSymbol, 1, 0, 
 		symbols.Symbols{  
-			symbols.T_10, 
-			symbols.T_22,
+			symbols.T_96, 
+			symbols.T_108,
 		}, 
 		LexSymbol1R0, 
 	},
 	LexSymbol1R1: {
 		symbols.NT_LexSymbol, 1, 1, 
 		symbols.Symbols{  
-			symbols.T_10, 
-			symbols.T_22,
+			symbols.T_96, 
+			symbols.T_108,
 		}, 
 		LexSymbol1R1, 
 	},
 	LexSymbol1R2: {
 		symbols.NT_LexSymbol, 1, 2, 
 		symbols.Symbols{  
-			symbols.T_10, 
-			symbols.T_22,
+			symbols.T_96, 
+			symbols.T_108,
 		}, 
 		LexSymbol1R2, 
 	},
 	LexSymbol2R0: {
 		symbols.NT_LexSymbol, 2, 0, 
 		symbols.Symbols{  
-			symbols.T_12,
+			symbols.T_98,
 		}, 
 		LexSymbol2R0, 
 	},
 	LexSymbol2R1: {
 		symbols.NT_LexSymbol, 2, 1, 
 		symbols.Symbols{  
-			symbols.T_12,
+			symbols.T_98,
 		}, 
 		LexSymbol2R1, 
 	},
@@ -638,24 +830,24 @@ var slots = map[Label]*Slot{
 	LexSymbol4R0: {
 		symbols.NT_LexSymbol, 4, 0, 
 		symbols.Symbols{  
-			symbols.T_18, 
-			symbols.T_22,
+			symbols.T_104, 
+			symbols.T_108,
 		}, 
 		LexSymbol4R0, 
 	},
 	LexSymbol4R1: {
 		symbols.NT_LexSymbol, 4, 1, 
 		symbols.Symbols{  
-			symbols.T_18, 
-			symbols.T_22,
+			symbols.T_104, 
+			symbols.T_108,
 		}, 
 		LexSymbol4R1, 
 	},
 	LexSymbol4R2: {
 		symbols.NT_LexSymbol, 4, 2, 
 		symbols.Symbols{  
-			symbols.T_18, 
-			symbols.T_22,
+			symbols.T_104, 
+			symbols.T_108,
 		}, 
 		LexSymbol4R2, 
 	},
@@ -673,65 +865,117 @@ var slots = map[Label]*Slot{
 		}, 
 		LexSymbol5R1, 
 	},
+	LexSymbol6R0: {
+		symbols.NT_LexSymbol, 6, 0, 
+		symbols.Symbols{  
+			symbols.NT_UnicodeSet,
+		}, 
+		LexSymbol6R0, 
+	},
+	LexSymbol6R1: {
+		symbols.NT_LexSymbol, 6, 1, 
+		symbols.Symbols{  
+			symbols.NT_UnicodeSet,
+		}, 
+		LexSymbol6R1, 
+	},
 	LexZeroOrMore0R0: {
 		symbols.NT_LexZeroOrMore, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_25, 
+			symbols.T_111, 
 			symbols.NT_LexAlternates, 
-			symbols.T_27,
+			symbols.T_113,
 		}, 
 		LexZeroOrMore0R0, 
 	},
 	LexZeroOrMore0R1: {
 		symbols.NT_LexZeroOrMore, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_25, 
+			symbols.T_111, 
 			symbols.NT_LexAlternates, 
-			symbols.T_27,
+			symbols.T_113,
 		}, 
 		LexZeroOrMore0R1, 
 	},
 	LexZeroOrMore0R2: {
 		symbols.NT_LexZeroOrMore, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_25, 
+			symbols.T_111, 
 			symbols.NT_LexAlternates, 
-			symbols.T_27,
+			symbols.T_113,
 		}, 
 		LexZeroOrMore0R2, 
 	},
 	LexZeroOrMore0R3: {
 		symbols.NT_LexZeroOrMore, 0, 3, 
 		symbols.Symbols{  
-			symbols.T_25, 
+			symbols.T_111, 
 			symbols.NT_LexAlternates, 
-			symbols.T_27,
+			symbols.T_113,
 		}, 
 		LexZeroOrMore0R3, 
 	},
 	Package0R0: {
 		symbols.NT_Package, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_21, 
-			symbols.T_22,
+			symbols.T_107, 
+			symbols.T_108,
 		}, 
 		Package0R0, 
 	},
 	Package0R1: {
 		symbols.NT_Package, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_21, 
-			symbols.T_22,
+			symbols.T_107, 
+			symbols.T_108,
 		}, 
 		Package0R1, 
 	},
 	Package0R2: {
 		symbols.NT_Package, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_21, 
-			symbols.T_22,
+			symbols.T_107, 
+			symbols.T_108,
 		}, 
 		Package0R2, 
+	},
+	PlusOrMinUnicodeSet0R0: {
+		symbols.NT_PlusOrMinUnicodeSet, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_UnicodeSetSpec,
+		}, 
+		PlusOrMinUnicodeSet0R0, 
+	},
+	PlusOrMinUnicodeSet0R1: {
+		symbols.NT_PlusOrMinUnicodeSet, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_UnicodeSetSpec,
+		}, 
+		PlusOrMinUnicodeSet0R1, 
+	},
+	PlusOrMinUnicodeSet1R0: {
+		symbols.NT_PlusOrMinUnicodeSet, 1, 0, 
+		symbols.Symbols{  
+			symbols.T_4, 
+			symbols.NT_UnicodeSetSpec,
+		}, 
+		PlusOrMinUnicodeSet1R0, 
+	},
+	PlusOrMinUnicodeSet1R1: {
+		symbols.NT_PlusOrMinUnicodeSet, 1, 1, 
+		symbols.Symbols{  
+			symbols.T_4, 
+			symbols.NT_UnicodeSetSpec,
+		}, 
+		PlusOrMinUnicodeSet1R1, 
+	},
+	PlusOrMinUnicodeSet1R2: {
+		symbols.NT_PlusOrMinUnicodeSet, 1, 2, 
+		symbols.Symbols{  
+			symbols.T_4, 
+			symbols.NT_UnicodeSetSpec,
+		}, 
+		PlusOrMinUnicodeSet1R2, 
 	},
 	RegExp0R0: {
 		symbols.NT_RegExp, 0, 0, 
@@ -750,14 +994,14 @@ var slots = map[Label]*Slot{
 	RegExp1R0: {
 		symbols.NT_RegExp, 1, 0, 
 		symbols.Symbols{  
-			symbols.T_23,
+			symbols.T_109,
 		}, 
 		RegExp1R0, 
 	},
 	RegExp1R1: {
 		symbols.NT_RegExp, 1, 1, 
 		symbols.Symbols{  
-			symbols.T_23,
+			symbols.T_109,
 		}, 
 		RegExp1R1, 
 	},
@@ -788,7 +1032,7 @@ var slots = map[Label]*Slot{
 	RegExp3R0: {
 		symbols.NT_RegExp, 3, 0, 
 		symbols.Symbols{  
-			symbols.T_23, 
+			symbols.T_109, 
 			symbols.NT_RegExp,
 		}, 
 		RegExp3R0, 
@@ -796,7 +1040,7 @@ var slots = map[Label]*Slot{
 	RegExp3R1: {
 		symbols.NT_RegExp, 3, 1, 
 		symbols.Symbols{  
-			symbols.T_23, 
+			symbols.T_109, 
 			symbols.NT_RegExp,
 		}, 
 		RegExp3R1, 
@@ -804,7 +1048,7 @@ var slots = map[Label]*Slot{
 	RegExp3R2: {
 		symbols.NT_RegExp, 3, 2, 
 		symbols.Symbols{  
-			symbols.T_23, 
+			symbols.T_109, 
 			symbols.NT_RegExp,
 		}, 
 		RegExp3R2, 
@@ -892,14 +1136,14 @@ var slots = map[Label]*Slot{
 	SyntaxAlternate1R0: {
 		symbols.NT_SyntaxAlternate, 1, 0, 
 		symbols.Symbols{  
-			symbols.T_13,
+			symbols.T_99,
 		}, 
 		SyntaxAlternate1R0, 
 	},
 	SyntaxAlternate1R1: {
 		symbols.NT_SyntaxAlternate, 1, 1, 
 		symbols.Symbols{  
-			symbols.T_13,
+			symbols.T_99,
 		}, 
 		SyntaxAlternate1R1, 
 	},
@@ -921,7 +1165,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_SyntaxAlternates, 1, 0, 
 		symbols.Symbols{  
 			symbols.NT_SyntaxAlternate, 
-			symbols.T_26, 
+			symbols.T_112, 
 			symbols.NT_SyntaxAlternates,
 		}, 
 		SyntaxAlternates1R0, 
@@ -930,7 +1174,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_SyntaxAlternates, 1, 1, 
 		symbols.Symbols{  
 			symbols.NT_SyntaxAlternate, 
-			symbols.T_26, 
+			symbols.T_112, 
 			symbols.NT_SyntaxAlternates,
 		}, 
 		SyntaxAlternates1R1, 
@@ -939,7 +1183,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_SyntaxAlternates, 1, 2, 
 		symbols.Symbols{  
 			symbols.NT_SyntaxAlternate, 
-			symbols.T_26, 
+			symbols.T_112, 
 			symbols.NT_SyntaxAlternates,
 		}, 
 		SyntaxAlternates1R2, 
@@ -948,7 +1192,7 @@ var slots = map[Label]*Slot{
 		symbols.NT_SyntaxAlternates, 1, 3, 
 		symbols.Symbols{  
 			symbols.NT_SyntaxAlternate, 
-			symbols.T_26, 
+			symbols.T_112, 
 			symbols.NT_SyntaxAlternates,
 		}, 
 		SyntaxAlternates1R3, 
@@ -956,92 +1200,92 @@ var slots = map[Label]*Slot{
 	SyntaxRule0R0: {
 		symbols.NT_SyntaxRule, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_19, 
-			symbols.T_4, 
+			symbols.T_105, 
+			symbols.T_6, 
 			symbols.NT_SyntaxAlternates, 
-			symbols.T_5,
+			symbols.T_7,
 		}, 
 		SyntaxRule0R0, 
 	},
 	SyntaxRule0R1: {
 		symbols.NT_SyntaxRule, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_19, 
-			symbols.T_4, 
+			symbols.T_105, 
+			symbols.T_6, 
 			symbols.NT_SyntaxAlternates, 
-			symbols.T_5,
+			symbols.T_7,
 		}, 
 		SyntaxRule0R1, 
 	},
 	SyntaxRule0R2: {
 		symbols.NT_SyntaxRule, 0, 2, 
 		symbols.Symbols{  
-			symbols.T_19, 
-			symbols.T_4, 
+			symbols.T_105, 
+			symbols.T_6, 
 			symbols.NT_SyntaxAlternates, 
-			symbols.T_5,
+			symbols.T_7,
 		}, 
 		SyntaxRule0R2, 
 	},
 	SyntaxRule0R3: {
 		symbols.NT_SyntaxRule, 0, 3, 
 		symbols.Symbols{  
-			symbols.T_19, 
-			symbols.T_4, 
+			symbols.T_105, 
+			symbols.T_6, 
 			symbols.NT_SyntaxAlternates, 
-			symbols.T_5,
+			symbols.T_7,
 		}, 
 		SyntaxRule0R3, 
 	},
 	SyntaxRule0R4: {
 		symbols.NT_SyntaxRule, 0, 4, 
 		symbols.Symbols{  
-			symbols.T_19, 
-			symbols.T_4, 
+			symbols.T_105, 
+			symbols.T_6, 
 			symbols.NT_SyntaxAlternates, 
-			symbols.T_5,
+			symbols.T_7,
 		}, 
 		SyntaxRule0R4, 
 	},
 	SyntaxSymbol0R0: {
 		symbols.NT_SyntaxSymbol, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_19,
+			symbols.T_105,
 		}, 
 		SyntaxSymbol0R0, 
 	},
 	SyntaxSymbol0R1: {
 		symbols.NT_SyntaxSymbol, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_19,
+			symbols.T_105,
 		}, 
 		SyntaxSymbol0R1, 
 	},
 	SyntaxSymbol1R0: {
 		symbols.NT_SyntaxSymbol, 1, 0, 
 		symbols.Symbols{  
-			symbols.T_23,
+			symbols.T_109,
 		}, 
 		SyntaxSymbol1R0, 
 	},
 	SyntaxSymbol1R1: {
 		symbols.NT_SyntaxSymbol, 1, 1, 
 		symbols.Symbols{  
-			symbols.T_23,
+			symbols.T_109,
 		}, 
 		SyntaxSymbol1R1, 
 	},
 	SyntaxSymbol2R0: {
 		symbols.NT_SyntaxSymbol, 2, 0, 
 		symbols.Symbols{  
-			symbols.T_22,
+			symbols.T_108,
 		}, 
 		SyntaxSymbol2R0, 
 	},
 	SyntaxSymbol2R1: {
 		symbols.NT_SyntaxSymbol, 2, 1, 
 		symbols.Symbols{  
-			symbols.T_22,
+			symbols.T_108,
 		}, 
 		SyntaxSymbol2R1, 
 	},
@@ -1083,61 +1327,1381 @@ var slots = map[Label]*Slot{
 		}, 
 		SyntaxSymbols1R2, 
 	},
+	UnicodeCategory0R0: {
+		symbols.NT_UnicodeCategory, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_13,
+		}, 
+		UnicodeCategory0R0, 
+	},
+	UnicodeCategory0R1: {
+		symbols.NT_UnicodeCategory, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_13,
+		}, 
+		UnicodeCategory0R1, 
+	},
+	UnicodeCategory1R0: {
+		symbols.NT_UnicodeCategory, 1, 0, 
+		symbols.Symbols{  
+			symbols.T_14,
+		}, 
+		UnicodeCategory1R0, 
+	},
+	UnicodeCategory1R1: {
+		symbols.NT_UnicodeCategory, 1, 1, 
+		symbols.Symbols{  
+			symbols.T_14,
+		}, 
+		UnicodeCategory1R1, 
+	},
+	UnicodeCategory2R0: {
+		symbols.NT_UnicodeCategory, 2, 0, 
+		symbols.Symbols{  
+			symbols.T_15,
+		}, 
+		UnicodeCategory2R0, 
+	},
+	UnicodeCategory2R1: {
+		symbols.NT_UnicodeCategory, 2, 1, 
+		symbols.Symbols{  
+			symbols.T_15,
+		}, 
+		UnicodeCategory2R1, 
+	},
+	UnicodeCategory3R0: {
+		symbols.NT_UnicodeCategory, 3, 0, 
+		symbols.Symbols{  
+			symbols.T_16,
+		}, 
+		UnicodeCategory3R0, 
+	},
+	UnicodeCategory3R1: {
+		symbols.NT_UnicodeCategory, 3, 1, 
+		symbols.Symbols{  
+			symbols.T_16,
+		}, 
+		UnicodeCategory3R1, 
+	},
+	UnicodeCategory4R0: {
+		symbols.NT_UnicodeCategory, 4, 0, 
+		symbols.Symbols{  
+			symbols.T_20,
+		}, 
+		UnicodeCategory4R0, 
+	},
+	UnicodeCategory4R1: {
+		symbols.NT_UnicodeCategory, 4, 1, 
+		symbols.Symbols{  
+			symbols.T_20,
+		}, 
+		UnicodeCategory4R1, 
+	},
+	UnicodeCategory5R0: {
+		symbols.NT_UnicodeCategory, 5, 0, 
+		symbols.Symbols{  
+			symbols.T_43,
+		}, 
+		UnicodeCategory5R0, 
+	},
+	UnicodeCategory5R1: {
+		symbols.NT_UnicodeCategory, 5, 1, 
+		symbols.Symbols{  
+			symbols.T_43,
+		}, 
+		UnicodeCategory5R1, 
+	},
+	UnicodeCategory6R0: {
+		symbols.NT_UnicodeCategory, 6, 0, 
+		symbols.Symbols{  
+			symbols.T_29,
+		}, 
+		UnicodeCategory6R0, 
+	},
+	UnicodeCategory6R1: {
+		symbols.NT_UnicodeCategory, 6, 1, 
+		symbols.Symbols{  
+			symbols.T_29,
+		}, 
+		UnicodeCategory6R1, 
+	},
+	UnicodeCategory7R0: {
+		symbols.NT_UnicodeCategory, 7, 0, 
+		symbols.Symbols{  
+			symbols.T_28,
+		}, 
+		UnicodeCategory7R0, 
+	},
+	UnicodeCategory7R1: {
+		symbols.NT_UnicodeCategory, 7, 1, 
+		symbols.Symbols{  
+			symbols.T_28,
+		}, 
+		UnicodeCategory7R1, 
+	},
+	UnicodeCategory8R0: {
+		symbols.NT_UnicodeCategory, 8, 0, 
+		symbols.Symbols{  
+			symbols.T_31,
+		}, 
+		UnicodeCategory8R0, 
+	},
+	UnicodeCategory8R1: {
+		symbols.NT_UnicodeCategory, 8, 1, 
+		symbols.Symbols{  
+			symbols.T_31,
+		}, 
+		UnicodeCategory8R1, 
+	},
+	UnicodeCategory9R0: {
+		symbols.NT_UnicodeCategory, 9, 0, 
+		symbols.Symbols{  
+			symbols.T_32,
+		}, 
+		UnicodeCategory9R0, 
+	},
+	UnicodeCategory9R1: {
+		symbols.NT_UnicodeCategory, 9, 1, 
+		symbols.Symbols{  
+			symbols.T_32,
+		}, 
+		UnicodeCategory9R1, 
+	},
+	UnicodeCategory10R0: {
+		symbols.NT_UnicodeCategory, 10, 0, 
+		symbols.Symbols{  
+			symbols.T_34,
+		}, 
+		UnicodeCategory10R0, 
+	},
+	UnicodeCategory10R1: {
+		symbols.NT_UnicodeCategory, 10, 1, 
+		symbols.Symbols{  
+			symbols.T_34,
+		}, 
+		UnicodeCategory10R1, 
+	},
+	UnicodeCategory11R0: {
+		symbols.NT_UnicodeCategory, 11, 0, 
+		symbols.Symbols{  
+			symbols.T_30,
+		}, 
+		UnicodeCategory11R0, 
+	},
+	UnicodeCategory11R1: {
+		symbols.NT_UnicodeCategory, 11, 1, 
+		symbols.Symbols{  
+			symbols.T_30,
+		}, 
+		UnicodeCategory11R1, 
+	},
+	UnicodeCategory12R0: {
+		symbols.NT_UnicodeCategory, 12, 0, 
+		symbols.Symbols{  
+			symbols.T_38,
+		}, 
+		UnicodeCategory12R0, 
+	},
+	UnicodeCategory12R1: {
+		symbols.NT_UnicodeCategory, 12, 1, 
+		symbols.Symbols{  
+			symbols.T_38,
+		}, 
+		UnicodeCategory12R1, 
+	},
+	UnicodeCategory13R0: {
+		symbols.NT_UnicodeCategory, 13, 0, 
+		symbols.Symbols{  
+			symbols.T_37,
+		}, 
+		UnicodeCategory13R0, 
+	},
+	UnicodeCategory13R1: {
+		symbols.NT_UnicodeCategory, 13, 1, 
+		symbols.Symbols{  
+			symbols.T_37,
+		}, 
+		UnicodeCategory13R1, 
+	},
+	UnicodeCategory14R0: {
+		symbols.NT_UnicodeCategory, 14, 0, 
+		symbols.Symbols{  
+			symbols.T_39,
+		}, 
+		UnicodeCategory14R0, 
+	},
+	UnicodeCategory14R1: {
+		symbols.NT_UnicodeCategory, 14, 1, 
+		symbols.Symbols{  
+			symbols.T_39,
+		}, 
+		UnicodeCategory14R1, 
+	},
+	UnicodeCategory15R0: {
+		symbols.NT_UnicodeCategory, 15, 0, 
+		symbols.Symbols{  
+			symbols.T_40,
+		}, 
+		UnicodeCategory15R0, 
+	},
+	UnicodeCategory15R1: {
+		symbols.NT_UnicodeCategory, 15, 1, 
+		symbols.Symbols{  
+			symbols.T_40,
+		}, 
+		UnicodeCategory15R1, 
+	},
+	UnicodeCategory16R0: {
+		symbols.NT_UnicodeCategory, 16, 0, 
+		symbols.Symbols{  
+			symbols.T_41,
+		}, 
+		UnicodeCategory16R0, 
+	},
+	UnicodeCategory16R1: {
+		symbols.NT_UnicodeCategory, 16, 1, 
+		symbols.Symbols{  
+			symbols.T_41,
+		}, 
+		UnicodeCategory16R1, 
+	},
+	UnicodeCategory17R0: {
+		symbols.NT_UnicodeCategory, 17, 0, 
+		symbols.Symbols{  
+			symbols.T_44,
+		}, 
+		UnicodeCategory17R0, 
+	},
+	UnicodeCategory17R1: {
+		symbols.NT_UnicodeCategory, 17, 1, 
+		symbols.Symbols{  
+			symbols.T_44,
+		}, 
+		UnicodeCategory17R1, 
+	},
+	UnicodeCategory18R0: {
+		symbols.NT_UnicodeCategory, 18, 0, 
+		symbols.Symbols{  
+			symbols.T_45,
+		}, 
+		UnicodeCategory18R0, 
+	},
+	UnicodeCategory18R1: {
+		symbols.NT_UnicodeCategory, 18, 1, 
+		symbols.Symbols{  
+			symbols.T_45,
+		}, 
+		UnicodeCategory18R1, 
+	},
+	UnicodeCategory19R0: {
+		symbols.NT_UnicodeCategory, 19, 0, 
+		symbols.Symbols{  
+			symbols.T_47,
+		}, 
+		UnicodeCategory19R0, 
+	},
+	UnicodeCategory19R1: {
+		symbols.NT_UnicodeCategory, 19, 1, 
+		symbols.Symbols{  
+			symbols.T_47,
+		}, 
+		UnicodeCategory19R1, 
+	},
+	UnicodeCategory20R0: {
+		symbols.NT_UnicodeCategory, 20, 0, 
+		symbols.Symbols{  
+			symbols.T_42,
+		}, 
+		UnicodeCategory20R0, 
+	},
+	UnicodeCategory20R1: {
+		symbols.NT_UnicodeCategory, 20, 1, 
+		symbols.Symbols{  
+			symbols.T_42,
+		}, 
+		UnicodeCategory20R1, 
+	},
+	UnicodeCategory21R0: {
+		symbols.NT_UnicodeCategory, 21, 0, 
+		symbols.Symbols{  
+			symbols.T_48,
+		}, 
+		UnicodeCategory21R0, 
+	},
+	UnicodeCategory21R1: {
+		symbols.NT_UnicodeCategory, 21, 1, 
+		symbols.Symbols{  
+			symbols.T_48,
+		}, 
+		UnicodeCategory21R1, 
+	},
+	UnicodeCategory22R0: {
+		symbols.NT_UnicodeCategory, 22, 0, 
+		symbols.Symbols{  
+			symbols.T_12,
+		}, 
+		UnicodeCategory22R0, 
+	},
+	UnicodeCategory22R1: {
+		symbols.NT_UnicodeCategory, 22, 1, 
+		symbols.Symbols{  
+			symbols.T_12,
+		}, 
+		UnicodeCategory22R1, 
+	},
+	UnicodeCategory23R0: {
+		symbols.NT_UnicodeCategory, 23, 0, 
+		symbols.Symbols{  
+			symbols.T_60,
+		}, 
+		UnicodeCategory23R0, 
+	},
+	UnicodeCategory23R1: {
+		symbols.NT_UnicodeCategory, 23, 1, 
+		symbols.Symbols{  
+			symbols.T_60,
+		}, 
+		UnicodeCategory23R1, 
+	},
+	UnicodeCategory24R0: {
+		symbols.NT_UnicodeCategory, 24, 0, 
+		symbols.Symbols{  
+			symbols.T_61,
+		}, 
+		UnicodeCategory24R0, 
+	},
+	UnicodeCategory24R1: {
+		symbols.NT_UnicodeCategory, 24, 1, 
+		symbols.Symbols{  
+			symbols.T_61,
+		}, 
+		UnicodeCategory24R1, 
+	},
+	UnicodeCategory25R0: {
+		symbols.NT_UnicodeCategory, 25, 0, 
+		symbols.Symbols{  
+			symbols.T_62,
+		}, 
+		UnicodeCategory25R0, 
+	},
+	UnicodeCategory25R1: {
+		symbols.NT_UnicodeCategory, 25, 1, 
+		symbols.Symbols{  
+			symbols.T_62,
+		}, 
+		UnicodeCategory25R1, 
+	},
+	UnicodeCategory26R0: {
+		symbols.NT_UnicodeCategory, 26, 0, 
+		symbols.Symbols{  
+			symbols.T_63,
+		}, 
+		UnicodeCategory26R0, 
+	},
+	UnicodeCategory26R1: {
+		symbols.NT_UnicodeCategory, 26, 1, 
+		symbols.Symbols{  
+			symbols.T_63,
+		}, 
+		UnicodeCategory26R1, 
+	},
+	UnicodeCategory27R0: {
+		symbols.NT_UnicodeCategory, 27, 0, 
+		symbols.Symbols{  
+			symbols.T_64,
+		}, 
+		UnicodeCategory27R0, 
+	},
+	UnicodeCategory27R1: {
+		symbols.NT_UnicodeCategory, 27, 1, 
+		symbols.Symbols{  
+			symbols.T_64,
+		}, 
+		UnicodeCategory27R1, 
+	},
+	UnicodeCategory28R0: {
+		symbols.NT_UnicodeCategory, 28, 0, 
+		symbols.Symbols{  
+			symbols.T_65,
+		}, 
+		UnicodeCategory28R0, 
+	},
+	UnicodeCategory28R1: {
+		symbols.NT_UnicodeCategory, 28, 1, 
+		symbols.Symbols{  
+			symbols.T_65,
+		}, 
+		UnicodeCategory28R1, 
+	},
+	UnicodeCategory29R0: {
+		symbols.NT_UnicodeCategory, 29, 0, 
+		symbols.Symbols{  
+			symbols.T_67,
+		}, 
+		UnicodeCategory29R0, 
+	},
+	UnicodeCategory29R1: {
+		symbols.NT_UnicodeCategory, 29, 1, 
+		symbols.Symbols{  
+			symbols.T_67,
+		}, 
+		UnicodeCategory29R1, 
+	},
+	UnicodeCategory30R0: {
+		symbols.NT_UnicodeCategory, 30, 0, 
+		symbols.Symbols{  
+			symbols.T_68,
+		}, 
+		UnicodeCategory30R0, 
+	},
+	UnicodeCategory30R1: {
+		symbols.NT_UnicodeCategory, 30, 1, 
+		symbols.Symbols{  
+			symbols.T_68,
+		}, 
+		UnicodeCategory30R1, 
+	},
+	UnicodeCategory31R0: {
+		symbols.NT_UnicodeCategory, 31, 0, 
+		symbols.Symbols{  
+			symbols.T_57,
+		}, 
+		UnicodeCategory31R0, 
+	},
+	UnicodeCategory31R1: {
+		symbols.NT_UnicodeCategory, 31, 1, 
+		symbols.Symbols{  
+			symbols.T_57,
+		}, 
+		UnicodeCategory31R1, 
+	},
+	UnicodeCategory32R0: {
+		symbols.NT_UnicodeCategory, 32, 0, 
+		symbols.Symbols{  
+			symbols.T_74,
+		}, 
+		UnicodeCategory32R0, 
+	},
+	UnicodeCategory32R1: {
+		symbols.NT_UnicodeCategory, 32, 1, 
+		symbols.Symbols{  
+			symbols.T_74,
+		}, 
+		UnicodeCategory32R1, 
+	},
+	UnicodeCategory33R0: {
+		symbols.NT_UnicodeCategory, 33, 0, 
+		symbols.Symbols{  
+			symbols.T_76,
+		}, 
+		UnicodeCategory33R0, 
+	},
+	UnicodeCategory33R1: {
+		symbols.NT_UnicodeCategory, 33, 1, 
+		symbols.Symbols{  
+			symbols.T_76,
+		}, 
+		UnicodeCategory33R1, 
+	},
+	UnicodeCategory34R0: {
+		symbols.NT_UnicodeCategory, 34, 0, 
+		symbols.Symbols{  
+			symbols.T_77,
+		}, 
+		UnicodeCategory34R0, 
+	},
+	UnicodeCategory34R1: {
+		symbols.NT_UnicodeCategory, 34, 1, 
+		symbols.Symbols{  
+			symbols.T_77,
+		}, 
+		UnicodeCategory34R1, 
+	},
+	UnicodeCategory35R0: {
+		symbols.NT_UnicodeCategory, 35, 0, 
+		symbols.Symbols{  
+			symbols.T_78,
+		}, 
+		UnicodeCategory35R0, 
+	},
+	UnicodeCategory35R1: {
+		symbols.NT_UnicodeCategory, 35, 1, 
+		symbols.Symbols{  
+			symbols.T_78,
+		}, 
+		UnicodeCategory35R1, 
+	},
+	UnicodeCategory36R0: {
+		symbols.NT_UnicodeCategory, 36, 0, 
+		symbols.Symbols{  
+			symbols.T_80,
+		}, 
+		UnicodeCategory36R0, 
+	},
+	UnicodeCategory36R1: {
+		symbols.NT_UnicodeCategory, 36, 1, 
+		symbols.Symbols{  
+			symbols.T_80,
+		}, 
+		UnicodeCategory36R1, 
+	},
+	UnicodeCategory37R0: {
+		symbols.NT_UnicodeCategory, 37, 0, 
+		symbols.Symbols{  
+			symbols.T_88,
+		}, 
+		UnicodeCategory37R0, 
+	},
+	UnicodeCategory37R1: {
+		symbols.NT_UnicodeCategory, 37, 1, 
+		symbols.Symbols{  
+			symbols.T_88,
+		}, 
+		UnicodeCategory37R1, 
+	},
+	UnicodeCategory38R0: {
+		symbols.NT_UnicodeCategory, 38, 0, 
+		symbols.Symbols{  
+			symbols.T_81,
+		}, 
+		UnicodeCategory38R0, 
+	},
+	UnicodeCategory38R1: {
+		symbols.NT_UnicodeCategory, 38, 1, 
+		symbols.Symbols{  
+			symbols.T_81,
+		}, 
+		UnicodeCategory38R1, 
+	},
+	UnicodeCategory39R0: {
+		symbols.NT_UnicodeCategory, 39, 0, 
+		symbols.Symbols{  
+			symbols.T_72,
+		}, 
+		UnicodeCategory39R0, 
+	},
+	UnicodeCategory39R1: {
+		symbols.NT_UnicodeCategory, 39, 1, 
+		symbols.Symbols{  
+			symbols.T_72,
+		}, 
+		UnicodeCategory39R1, 
+	},
+	UnicodeCategory40R0: {
+		symbols.NT_UnicodeCategory, 40, 0, 
+		symbols.Symbols{  
+			symbols.T_83,
+		}, 
+		UnicodeCategory40R0, 
+	},
+	UnicodeCategory40R1: {
+		symbols.NT_UnicodeCategory, 40, 1, 
+		symbols.Symbols{  
+			symbols.T_83,
+		}, 
+		UnicodeCategory40R1, 
+	},
+	UnicodeCategory41R0: {
+		symbols.NT_UnicodeCategory, 41, 0, 
+		symbols.Symbols{  
+			symbols.T_35,
+		}, 
+		UnicodeCategory41R0, 
+	},
+	UnicodeCategory41R1: {
+		symbols.NT_UnicodeCategory, 41, 1, 
+		symbols.Symbols{  
+			symbols.T_35,
+		}, 
+		UnicodeCategory41R1, 
+	},
+	UnicodeCategory42R0: {
+		symbols.NT_UnicodeCategory, 42, 0, 
+		symbols.Symbols{  
+			symbols.T_85,
+		}, 
+		UnicodeCategory42R0, 
+	},
+	UnicodeCategory42R1: {
+		symbols.NT_UnicodeCategory, 42, 1, 
+		symbols.Symbols{  
+			symbols.T_85,
+		}, 
+		UnicodeCategory42R1, 
+	},
+	UnicodeCategory43R0: {
+		symbols.NT_UnicodeCategory, 43, 0, 
+		symbols.Symbols{  
+			symbols.T_36,
+		}, 
+		UnicodeCategory43R0, 
+	},
+	UnicodeCategory43R1: {
+		symbols.NT_UnicodeCategory, 43, 1, 
+		symbols.Symbols{  
+			symbols.T_36,
+		}, 
+		UnicodeCategory43R1, 
+	},
+	UnicodeCategory44R0: {
+		symbols.NT_UnicodeCategory, 44, 0, 
+		symbols.Symbols{  
+			symbols.T_89,
+		}, 
+		UnicodeCategory44R0, 
+	},
+	UnicodeCategory44R1: {
+		symbols.NT_UnicodeCategory, 44, 1, 
+		symbols.Symbols{  
+			symbols.T_89,
+		}, 
+		UnicodeCategory44R1, 
+	},
+	UnicodeCategory45R0: {
+		symbols.NT_UnicodeCategory, 45, 0, 
+		symbols.Symbols{  
+			symbols.T_90,
+		}, 
+		UnicodeCategory45R0, 
+	},
+	UnicodeCategory45R1: {
+		symbols.NT_UnicodeCategory, 45, 1, 
+		symbols.Symbols{  
+			symbols.T_90,
+		}, 
+		UnicodeCategory45R1, 
+	},
+	UnicodeCategory46R0: {
+		symbols.NT_UnicodeCategory, 46, 0, 
+		symbols.Symbols{  
+			symbols.T_91,
+		}, 
+		UnicodeCategory46R0, 
+	},
+	UnicodeCategory46R1: {
+		symbols.NT_UnicodeCategory, 46, 1, 
+		symbols.Symbols{  
+			symbols.T_91,
+		}, 
+		UnicodeCategory46R1, 
+	},
 	UnicodeClass0R0: {
 		symbols.NT_UnicodeClass, 0, 0, 
 		symbols.Symbols{  
-			symbols.T_15,
+			symbols.T_101,
 		}, 
 		UnicodeClass0R0, 
 	},
 	UnicodeClass0R1: {
 		symbols.NT_UnicodeClass, 0, 1, 
 		symbols.Symbols{  
-			symbols.T_15,
+			symbols.T_101,
 		}, 
 		UnicodeClass0R1, 
 	},
 	UnicodeClass1R0: {
 		symbols.NT_UnicodeClass, 1, 0, 
 		symbols.Symbols{  
-			symbols.T_24,
+			symbols.T_110,
 		}, 
 		UnicodeClass1R0, 
 	},
 	UnicodeClass1R1: {
 		symbols.NT_UnicodeClass, 1, 1, 
 		symbols.Symbols{  
-			symbols.T_24,
+			symbols.T_110,
 		}, 
 		UnicodeClass1R1, 
 	},
 	UnicodeClass2R0: {
 		symbols.NT_UnicodeClass, 2, 0, 
 		symbols.Symbols{  
-			symbols.T_17,
+			symbols.T_103,
 		}, 
 		UnicodeClass2R0, 
 	},
 	UnicodeClass2R1: {
 		symbols.NT_UnicodeClass, 2, 1, 
 		symbols.Symbols{  
-			symbols.T_17,
+			symbols.T_103,
 		}, 
 		UnicodeClass2R1, 
 	},
 	UnicodeClass3R0: {
 		symbols.NT_UnicodeClass, 3, 0, 
 		symbols.Symbols{  
-			symbols.T_20,
+			symbols.T_106,
 		}, 
 		UnicodeClass3R0, 
 	},
 	UnicodeClass3R1: {
 		symbols.NT_UnicodeClass, 3, 1, 
 		symbols.Symbols{  
-			symbols.T_20,
+			symbols.T_106,
 		}, 
 		UnicodeClass3R1, 
+	},
+	UnicodeProperty0R0: {
+		symbols.NT_UnicodeProperty, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_10,
+		}, 
+		UnicodeProperty0R0, 
+	},
+	UnicodeProperty0R1: {
+		symbols.NT_UnicodeProperty, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_10,
+		}, 
+		UnicodeProperty0R1, 
+	},
+	UnicodeProperty1R0: {
+		symbols.NT_UnicodeProperty, 1, 0, 
+		symbols.Symbols{  
+			symbols.T_11,
+		}, 
+		UnicodeProperty1R0, 
+	},
+	UnicodeProperty1R1: {
+		symbols.NT_UnicodeProperty, 1, 1, 
+		symbols.Symbols{  
+			symbols.T_11,
+		}, 
+		UnicodeProperty1R1, 
+	},
+	UnicodeProperty2R0: {
+		symbols.NT_UnicodeProperty, 2, 0, 
+		symbols.Symbols{  
+			symbols.T_17,
+		}, 
+		UnicodeProperty2R0, 
+	},
+	UnicodeProperty2R1: {
+		symbols.NT_UnicodeProperty, 2, 1, 
+		symbols.Symbols{  
+			symbols.T_17,
+		}, 
+		UnicodeProperty2R1, 
+	},
+	UnicodeProperty3R0: {
+		symbols.NT_UnicodeProperty, 3, 0, 
+		symbols.Symbols{  
+			symbols.T_18,
+		}, 
+		UnicodeProperty3R0, 
+	},
+	UnicodeProperty3R1: {
+		symbols.NT_UnicodeProperty, 3, 1, 
+		symbols.Symbols{  
+			symbols.T_18,
+		}, 
+		UnicodeProperty3R1, 
+	},
+	UnicodeProperty4R0: {
+		symbols.NT_UnicodeProperty, 4, 0, 
+		symbols.Symbols{  
+			symbols.T_19,
+		}, 
+		UnicodeProperty4R0, 
+	},
+	UnicodeProperty4R1: {
+		symbols.NT_UnicodeProperty, 4, 1, 
+		symbols.Symbols{  
+			symbols.T_19,
+		}, 
+		UnicodeProperty4R1, 
+	},
+	UnicodeProperty5R0: {
+		symbols.NT_UnicodeProperty, 5, 0, 
+		symbols.Symbols{  
+			symbols.T_21,
+		}, 
+		UnicodeProperty5R0, 
+	},
+	UnicodeProperty5R1: {
+		symbols.NT_UnicodeProperty, 5, 1, 
+		symbols.Symbols{  
+			symbols.T_21,
+		}, 
+		UnicodeProperty5R1, 
+	},
+	UnicodeProperty6R0: {
+		symbols.NT_UnicodeProperty, 6, 0, 
+		symbols.Symbols{  
+			symbols.T_22,
+		}, 
+		UnicodeProperty6R0, 
+	},
+	UnicodeProperty6R1: {
+		symbols.NT_UnicodeProperty, 6, 1, 
+		symbols.Symbols{  
+			symbols.T_22,
+		}, 
+		UnicodeProperty6R1, 
+	},
+	UnicodeProperty7R0: {
+		symbols.NT_UnicodeProperty, 7, 0, 
+		symbols.Symbols{  
+			symbols.T_23,
+		}, 
+		UnicodeProperty7R0, 
+	},
+	UnicodeProperty7R1: {
+		symbols.NT_UnicodeProperty, 7, 1, 
+		symbols.Symbols{  
+			symbols.T_23,
+		}, 
+		UnicodeProperty7R1, 
+	},
+	UnicodeProperty8R0: {
+		symbols.NT_UnicodeProperty, 8, 0, 
+		symbols.Symbols{  
+			symbols.T_24,
+		}, 
+		UnicodeProperty8R0, 
+	},
+	UnicodeProperty8R1: {
+		symbols.NT_UnicodeProperty, 8, 1, 
+		symbols.Symbols{  
+			symbols.T_24,
+		}, 
+		UnicodeProperty8R1, 
+	},
+	UnicodeProperty9R0: {
+		symbols.NT_UnicodeProperty, 9, 0, 
+		symbols.Symbols{  
+			symbols.T_25,
+		}, 
+		UnicodeProperty9R0, 
+	},
+	UnicodeProperty9R1: {
+		symbols.NT_UnicodeProperty, 9, 1, 
+		symbols.Symbols{  
+			symbols.T_25,
+		}, 
+		UnicodeProperty9R1, 
+	},
+	UnicodeProperty10R0: {
+		symbols.NT_UnicodeProperty, 10, 0, 
+		symbols.Symbols{  
+			symbols.T_26,
+		}, 
+		UnicodeProperty10R0, 
+	},
+	UnicodeProperty10R1: {
+		symbols.NT_UnicodeProperty, 10, 1, 
+		symbols.Symbols{  
+			symbols.T_26,
+		}, 
+		UnicodeProperty10R1, 
+	},
+	UnicodeProperty11R0: {
+		symbols.NT_UnicodeProperty, 11, 0, 
+		symbols.Symbols{  
+			symbols.T_27,
+		}, 
+		UnicodeProperty11R0, 
+	},
+	UnicodeProperty11R1: {
+		symbols.NT_UnicodeProperty, 11, 1, 
+		symbols.Symbols{  
+			symbols.T_27,
+		}, 
+		UnicodeProperty11R1, 
+	},
+	UnicodeProperty12R0: {
+		symbols.NT_UnicodeProperty, 12, 0, 
+		symbols.Symbols{  
+			symbols.T_33,
+		}, 
+		UnicodeProperty12R0, 
+	},
+	UnicodeProperty12R1: {
+		symbols.NT_UnicodeProperty, 12, 1, 
+		symbols.Symbols{  
+			symbols.T_33,
+		}, 
+		UnicodeProperty12R1, 
+	},
+	UnicodeProperty13R0: {
+		symbols.NT_UnicodeProperty, 13, 0, 
+		symbols.Symbols{  
+			symbols.T_46,
+		}, 
+		UnicodeProperty13R0, 
+	},
+	UnicodeProperty13R1: {
+		symbols.NT_UnicodeProperty, 13, 1, 
+		symbols.Symbols{  
+			symbols.T_46,
+		}, 
+		UnicodeProperty13R1, 
+	},
+	UnicodeProperty14R0: {
+		symbols.NT_UnicodeProperty, 14, 0, 
+		symbols.Symbols{  
+			symbols.T_49,
+		}, 
+		UnicodeProperty14R0, 
+	},
+	UnicodeProperty14R1: {
+		symbols.NT_UnicodeProperty, 14, 1, 
+		symbols.Symbols{  
+			symbols.T_49,
+		}, 
+		UnicodeProperty14R1, 
+	},
+	UnicodeProperty15R0: {
+		symbols.NT_UnicodeProperty, 15, 0, 
+		symbols.Symbols{  
+			symbols.T_50,
+		}, 
+		UnicodeProperty15R0, 
+	},
+	UnicodeProperty15R1: {
+		symbols.NT_UnicodeProperty, 15, 1, 
+		symbols.Symbols{  
+			symbols.T_50,
+		}, 
+		UnicodeProperty15R1, 
+	},
+	UnicodeProperty16R0: {
+		symbols.NT_UnicodeProperty, 16, 0, 
+		symbols.Symbols{  
+			symbols.T_51,
+		}, 
+		UnicodeProperty16R0, 
+	},
+	UnicodeProperty16R1: {
+		symbols.NT_UnicodeProperty, 16, 1, 
+		symbols.Symbols{  
+			symbols.T_51,
+		}, 
+		UnicodeProperty16R1, 
+	},
+	UnicodeProperty17R0: {
+		symbols.NT_UnicodeProperty, 17, 0, 
+		symbols.Symbols{  
+			symbols.T_52,
+		}, 
+		UnicodeProperty17R0, 
+	},
+	UnicodeProperty17R1: {
+		symbols.NT_UnicodeProperty, 17, 1, 
+		symbols.Symbols{  
+			symbols.T_52,
+		}, 
+		UnicodeProperty17R1, 
+	},
+	UnicodeProperty18R0: {
+		symbols.NT_UnicodeProperty, 18, 0, 
+		symbols.Symbols{  
+			symbols.T_53,
+		}, 
+		UnicodeProperty18R0, 
+	},
+	UnicodeProperty18R1: {
+		symbols.NT_UnicodeProperty, 18, 1, 
+		symbols.Symbols{  
+			symbols.T_53,
+		}, 
+		UnicodeProperty18R1, 
+	},
+	UnicodeProperty19R0: {
+		symbols.NT_UnicodeProperty, 19, 0, 
+		symbols.Symbols{  
+			symbols.T_54,
+		}, 
+		UnicodeProperty19R0, 
+	},
+	UnicodeProperty19R1: {
+		symbols.NT_UnicodeProperty, 19, 1, 
+		symbols.Symbols{  
+			symbols.T_54,
+		}, 
+		UnicodeProperty19R1, 
+	},
+	UnicodeProperty20R0: {
+		symbols.NT_UnicodeProperty, 20, 0, 
+		symbols.Symbols{  
+			symbols.T_55,
+		}, 
+		UnicodeProperty20R0, 
+	},
+	UnicodeProperty20R1: {
+		symbols.NT_UnicodeProperty, 20, 1, 
+		symbols.Symbols{  
+			symbols.T_55,
+		}, 
+		UnicodeProperty20R1, 
+	},
+	UnicodeProperty21R0: {
+		symbols.NT_UnicodeProperty, 21, 0, 
+		symbols.Symbols{  
+			symbols.T_56,
+		}, 
+		UnicodeProperty21R0, 
+	},
+	UnicodeProperty21R1: {
+		symbols.NT_UnicodeProperty, 21, 1, 
+		symbols.Symbols{  
+			symbols.T_56,
+		}, 
+		UnicodeProperty21R1, 
+	},
+	UnicodeProperty22R0: {
+		symbols.NT_UnicodeProperty, 22, 0, 
+		symbols.Symbols{  
+			symbols.T_58,
+		}, 
+		UnicodeProperty22R0, 
+	},
+	UnicodeProperty22R1: {
+		symbols.NT_UnicodeProperty, 22, 1, 
+		symbols.Symbols{  
+			symbols.T_58,
+		}, 
+		UnicodeProperty22R1, 
+	},
+	UnicodeProperty23R0: {
+		symbols.NT_UnicodeProperty, 23, 0, 
+		symbols.Symbols{  
+			symbols.T_59,
+		}, 
+		UnicodeProperty23R0, 
+	},
+	UnicodeProperty23R1: {
+		symbols.NT_UnicodeProperty, 23, 1, 
+		symbols.Symbols{  
+			symbols.T_59,
+		}, 
+		UnicodeProperty23R1, 
+	},
+	UnicodeProperty24R0: {
+		symbols.NT_UnicodeProperty, 24, 0, 
+		symbols.Symbols{  
+			symbols.T_66,
+		}, 
+		UnicodeProperty24R0, 
+	},
+	UnicodeProperty24R1: {
+		symbols.NT_UnicodeProperty, 24, 1, 
+		symbols.Symbols{  
+			symbols.T_66,
+		}, 
+		UnicodeProperty24R1, 
+	},
+	UnicodeProperty25R0: {
+		symbols.NT_UnicodeProperty, 25, 0, 
+		symbols.Symbols{  
+			symbols.T_69,
+		}, 
+		UnicodeProperty25R0, 
+	},
+	UnicodeProperty25R1: {
+		symbols.NT_UnicodeProperty, 25, 1, 
+		symbols.Symbols{  
+			symbols.T_69,
+		}, 
+		UnicodeProperty25R1, 
+	},
+	UnicodeProperty26R0: {
+		symbols.NT_UnicodeProperty, 26, 0, 
+		symbols.Symbols{  
+			symbols.T_70,
+		}, 
+		UnicodeProperty26R0, 
+	},
+	UnicodeProperty26R1: {
+		symbols.NT_UnicodeProperty, 26, 1, 
+		symbols.Symbols{  
+			symbols.T_70,
+		}, 
+		UnicodeProperty26R1, 
+	},
+	UnicodeProperty27R0: {
+		symbols.NT_UnicodeProperty, 27, 0, 
+		symbols.Symbols{  
+			symbols.T_71,
+		}, 
+		UnicodeProperty27R0, 
+	},
+	UnicodeProperty27R1: {
+		symbols.NT_UnicodeProperty, 27, 1, 
+		symbols.Symbols{  
+			symbols.T_71,
+		}, 
+		UnicodeProperty27R1, 
+	},
+	UnicodeProperty28R0: {
+		symbols.NT_UnicodeProperty, 28, 0, 
+		symbols.Symbols{  
+			symbols.T_73,
+		}, 
+		UnicodeProperty28R0, 
+	},
+	UnicodeProperty28R1: {
+		symbols.NT_UnicodeProperty, 28, 1, 
+		symbols.Symbols{  
+			symbols.T_73,
+		}, 
+		UnicodeProperty28R1, 
+	},
+	UnicodeProperty29R0: {
+		symbols.NT_UnicodeProperty, 29, 0, 
+		symbols.Symbols{  
+			symbols.T_75,
+		}, 
+		UnicodeProperty29R0, 
+	},
+	UnicodeProperty29R1: {
+		symbols.NT_UnicodeProperty, 29, 1, 
+		symbols.Symbols{  
+			symbols.T_75,
+		}, 
+		UnicodeProperty29R1, 
+	},
+	UnicodeProperty30R0: {
+		symbols.NT_UnicodeProperty, 30, 0, 
+		symbols.Symbols{  
+			symbols.T_79,
+		}, 
+		UnicodeProperty30R0, 
+	},
+	UnicodeProperty30R1: {
+		symbols.NT_UnicodeProperty, 30, 1, 
+		symbols.Symbols{  
+			symbols.T_79,
+		}, 
+		UnicodeProperty30R1, 
+	},
+	UnicodeProperty31R0: {
+		symbols.NT_UnicodeProperty, 31, 0, 
+		symbols.Symbols{  
+			symbols.T_82,
+		}, 
+		UnicodeProperty31R0, 
+	},
+	UnicodeProperty31R1: {
+		symbols.NT_UnicodeProperty, 31, 1, 
+		symbols.Symbols{  
+			symbols.T_82,
+		}, 
+		UnicodeProperty31R1, 
+	},
+	UnicodeProperty32R0: {
+		symbols.NT_UnicodeProperty, 32, 0, 
+		symbols.Symbols{  
+			symbols.T_84,
+		}, 
+		UnicodeProperty32R0, 
+	},
+	UnicodeProperty32R1: {
+		symbols.NT_UnicodeProperty, 32, 1, 
+		symbols.Symbols{  
+			symbols.T_84,
+		}, 
+		UnicodeProperty32R1, 
+	},
+	UnicodeProperty33R0: {
+		symbols.NT_UnicodeProperty, 33, 0, 
+		symbols.Symbols{  
+			symbols.T_86,
+		}, 
+		UnicodeProperty33R0, 
+	},
+	UnicodeProperty33R1: {
+		symbols.NT_UnicodeProperty, 33, 1, 
+		symbols.Symbols{  
+			symbols.T_86,
+		}, 
+		UnicodeProperty33R1, 
+	},
+	UnicodeProperty34R0: {
+		symbols.NT_UnicodeProperty, 34, 0, 
+		symbols.Symbols{  
+			symbols.T_87,
+		}, 
+		UnicodeProperty34R0, 
+	},
+	UnicodeProperty34R1: {
+		symbols.NT_UnicodeProperty, 34, 1, 
+		symbols.Symbols{  
+			symbols.T_87,
+		}, 
+		UnicodeProperty34R1, 
+	},
+	UnicodeRange0R0: {
+		symbols.NT_UnicodeRange, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_UnicodeCategory,
+		}, 
+		UnicodeRange0R0, 
+	},
+	UnicodeRange0R1: {
+		symbols.NT_UnicodeRange, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_UnicodeCategory,
+		}, 
+		UnicodeRange0R1, 
+	},
+	UnicodeRange1R0: {
+		symbols.NT_UnicodeRange, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_UnicodeProperty,
+		}, 
+		UnicodeRange1R0, 
+	},
+	UnicodeRange1R1: {
+		symbols.NT_UnicodeRange, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_UnicodeProperty,
+		}, 
+		UnicodeRange1R1, 
+	},
+	UnicodeSet0R0: {
+		symbols.NT_UnicodeSet, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_1, 
+			symbols.NT_UnicodeSetSpec, 
+			symbols.NT_UnicodeSetSpecs, 
+			symbols.T_95,
+		}, 
+		UnicodeSet0R0, 
+	},
+	UnicodeSet0R1: {
+		symbols.NT_UnicodeSet, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_1, 
+			symbols.NT_UnicodeSetSpec, 
+			symbols.NT_UnicodeSetSpecs, 
+			symbols.T_95,
+		}, 
+		UnicodeSet0R1, 
+	},
+	UnicodeSet0R2: {
+		symbols.NT_UnicodeSet, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_1, 
+			symbols.NT_UnicodeSetSpec, 
+			symbols.NT_UnicodeSetSpecs, 
+			symbols.T_95,
+		}, 
+		UnicodeSet0R2, 
+	},
+	UnicodeSet0R3: {
+		symbols.NT_UnicodeSet, 0, 3, 
+		symbols.Symbols{  
+			symbols.T_1, 
+			symbols.NT_UnicodeSetSpec, 
+			symbols.NT_UnicodeSetSpecs, 
+			symbols.T_95,
+		}, 
+		UnicodeSet0R3, 
+	},
+	UnicodeSet0R4: {
+		symbols.NT_UnicodeSet, 0, 4, 
+		symbols.Symbols{  
+			symbols.T_1, 
+			symbols.NT_UnicodeSetSpec, 
+			symbols.NT_UnicodeSetSpecs, 
+			symbols.T_95,
+		}, 
+		UnicodeSet0R4, 
+	},
+	UnicodeSetSpec0R0: {
+		symbols.NT_UnicodeSetSpec, 0, 0, 
+		symbols.Symbols{  
+			symbols.T_93, 
+			symbols.NT_UnicodeRange, 
+			symbols.T_113,
+		}, 
+		UnicodeSetSpec0R0, 
+	},
+	UnicodeSetSpec0R1: {
+		symbols.NT_UnicodeSetSpec, 0, 1, 
+		symbols.Symbols{  
+			symbols.T_93, 
+			symbols.NT_UnicodeRange, 
+			symbols.T_113,
+		}, 
+		UnicodeSetSpec0R1, 
+	},
+	UnicodeSetSpec0R2: {
+		symbols.NT_UnicodeSetSpec, 0, 2, 
+		symbols.Symbols{  
+			symbols.T_93, 
+			symbols.NT_UnicodeRange, 
+			symbols.T_113,
+		}, 
+		UnicodeSetSpec0R2, 
+	},
+	UnicodeSetSpec0R3: {
+		symbols.NT_UnicodeSetSpec, 0, 3, 
+		symbols.Symbols{  
+			symbols.T_93, 
+			symbols.NT_UnicodeRange, 
+			symbols.T_113,
+		}, 
+		UnicodeSetSpec0R3, 
+	},
+	UnicodeSetSpecs0R0: {
+		symbols.NT_UnicodeSetSpecs, 0, 0, 
+		symbols.Symbols{ 
+		}, 
+		UnicodeSetSpecs0R0, 
+	},
+	UnicodeSetSpecs1R0: {
+		symbols.NT_UnicodeSetSpecs, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_UnicodeSpecList,
+		}, 
+		UnicodeSetSpecs1R0, 
+	},
+	UnicodeSetSpecs1R1: {
+		symbols.NT_UnicodeSetSpecs, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_UnicodeSpecList,
+		}, 
+		UnicodeSetSpecs1R1, 
+	},
+	UnicodeSpecList0R0: {
+		symbols.NT_UnicodeSpecList, 0, 0, 
+		symbols.Symbols{  
+			symbols.NT_PlusOrMinUnicodeSet,
+		}, 
+		UnicodeSpecList0R0, 
+	},
+	UnicodeSpecList0R1: {
+		symbols.NT_UnicodeSpecList, 0, 1, 
+		symbols.Symbols{  
+			symbols.NT_PlusOrMinUnicodeSet,
+		}, 
+		UnicodeSpecList0R1, 
+	},
+	UnicodeSpecList1R0: {
+		symbols.NT_UnicodeSpecList, 1, 0, 
+		symbols.Symbols{  
+			symbols.NT_PlusOrMinUnicodeSet, 
+			symbols.NT_UnicodeSpecList,
+		}, 
+		UnicodeSpecList1R0, 
+	},
+	UnicodeSpecList1R1: {
+		symbols.NT_UnicodeSpecList, 1, 1, 
+		symbols.Symbols{  
+			symbols.NT_PlusOrMinUnicodeSet, 
+			symbols.NT_UnicodeSpecList,
+		}, 
+		UnicodeSpecList1R1, 
+	},
+	UnicodeSpecList1R2: {
+		symbols.NT_UnicodeSpecList, 1, 2, 
+		symbols.Symbols{  
+			symbols.NT_PlusOrMinUnicodeSet, 
+			symbols.NT_UnicodeSpecList,
+		}, 
+		UnicodeSpecList1R2, 
 	},
 }
 
@@ -1196,6 +2760,8 @@ var slotIndex = map[Index]Label {
 	Index{ symbols.NT_LexSymbol,4,2 }: LexSymbol4R2,
 	Index{ symbols.NT_LexSymbol,5,0 }: LexSymbol5R0,
 	Index{ symbols.NT_LexSymbol,5,1 }: LexSymbol5R1,
+	Index{ symbols.NT_LexSymbol,6,0 }: LexSymbol6R0,
+	Index{ symbols.NT_LexSymbol,6,1 }: LexSymbol6R1,
 	Index{ symbols.NT_LexZeroOrMore,0,0 }: LexZeroOrMore0R0,
 	Index{ symbols.NT_LexZeroOrMore,0,1 }: LexZeroOrMore0R1,
 	Index{ symbols.NT_LexZeroOrMore,0,2 }: LexZeroOrMore0R2,
@@ -1203,6 +2769,11 @@ var slotIndex = map[Index]Label {
 	Index{ symbols.NT_Package,0,0 }: Package0R0,
 	Index{ symbols.NT_Package,0,1 }: Package0R1,
 	Index{ symbols.NT_Package,0,2 }: Package0R2,
+	Index{ symbols.NT_PlusOrMinUnicodeSet,0,0 }: PlusOrMinUnicodeSet0R0,
+	Index{ symbols.NT_PlusOrMinUnicodeSet,0,1 }: PlusOrMinUnicodeSet0R1,
+	Index{ symbols.NT_PlusOrMinUnicodeSet,1,0 }: PlusOrMinUnicodeSet1R0,
+	Index{ symbols.NT_PlusOrMinUnicodeSet,1,1 }: PlusOrMinUnicodeSet1R1,
+	Index{ symbols.NT_PlusOrMinUnicodeSet,1,2 }: PlusOrMinUnicodeSet1R2,
 	Index{ symbols.NT_RegExp,0,0 }: RegExp0R0,
 	Index{ symbols.NT_RegExp,0,1 }: RegExp0R1,
 	Index{ symbols.NT_RegExp,1,0 }: RegExp1R0,
@@ -1248,6 +2819,100 @@ var slotIndex = map[Index]Label {
 	Index{ symbols.NT_SyntaxSymbols,1,0 }: SyntaxSymbols1R0,
 	Index{ symbols.NT_SyntaxSymbols,1,1 }: SyntaxSymbols1R1,
 	Index{ symbols.NT_SyntaxSymbols,1,2 }: SyntaxSymbols1R2,
+	Index{ symbols.NT_UnicodeCategory,0,0 }: UnicodeCategory0R0,
+	Index{ symbols.NT_UnicodeCategory,0,1 }: UnicodeCategory0R1,
+	Index{ symbols.NT_UnicodeCategory,1,0 }: UnicodeCategory1R0,
+	Index{ symbols.NT_UnicodeCategory,1,1 }: UnicodeCategory1R1,
+	Index{ symbols.NT_UnicodeCategory,2,0 }: UnicodeCategory2R0,
+	Index{ symbols.NT_UnicodeCategory,2,1 }: UnicodeCategory2R1,
+	Index{ symbols.NT_UnicodeCategory,3,0 }: UnicodeCategory3R0,
+	Index{ symbols.NT_UnicodeCategory,3,1 }: UnicodeCategory3R1,
+	Index{ symbols.NT_UnicodeCategory,4,0 }: UnicodeCategory4R0,
+	Index{ symbols.NT_UnicodeCategory,4,1 }: UnicodeCategory4R1,
+	Index{ symbols.NT_UnicodeCategory,5,0 }: UnicodeCategory5R0,
+	Index{ symbols.NT_UnicodeCategory,5,1 }: UnicodeCategory5R1,
+	Index{ symbols.NT_UnicodeCategory,6,0 }: UnicodeCategory6R0,
+	Index{ symbols.NT_UnicodeCategory,6,1 }: UnicodeCategory6R1,
+	Index{ symbols.NT_UnicodeCategory,7,0 }: UnicodeCategory7R0,
+	Index{ symbols.NT_UnicodeCategory,7,1 }: UnicodeCategory7R1,
+	Index{ symbols.NT_UnicodeCategory,8,0 }: UnicodeCategory8R0,
+	Index{ symbols.NT_UnicodeCategory,8,1 }: UnicodeCategory8R1,
+	Index{ symbols.NT_UnicodeCategory,9,0 }: UnicodeCategory9R0,
+	Index{ symbols.NT_UnicodeCategory,9,1 }: UnicodeCategory9R1,
+	Index{ symbols.NT_UnicodeCategory,10,0 }: UnicodeCategory10R0,
+	Index{ symbols.NT_UnicodeCategory,10,1 }: UnicodeCategory10R1,
+	Index{ symbols.NT_UnicodeCategory,11,0 }: UnicodeCategory11R0,
+	Index{ symbols.NT_UnicodeCategory,11,1 }: UnicodeCategory11R1,
+	Index{ symbols.NT_UnicodeCategory,12,0 }: UnicodeCategory12R0,
+	Index{ symbols.NT_UnicodeCategory,12,1 }: UnicodeCategory12R1,
+	Index{ symbols.NT_UnicodeCategory,13,0 }: UnicodeCategory13R0,
+	Index{ symbols.NT_UnicodeCategory,13,1 }: UnicodeCategory13R1,
+	Index{ symbols.NT_UnicodeCategory,14,0 }: UnicodeCategory14R0,
+	Index{ symbols.NT_UnicodeCategory,14,1 }: UnicodeCategory14R1,
+	Index{ symbols.NT_UnicodeCategory,15,0 }: UnicodeCategory15R0,
+	Index{ symbols.NT_UnicodeCategory,15,1 }: UnicodeCategory15R1,
+	Index{ symbols.NT_UnicodeCategory,16,0 }: UnicodeCategory16R0,
+	Index{ symbols.NT_UnicodeCategory,16,1 }: UnicodeCategory16R1,
+	Index{ symbols.NT_UnicodeCategory,17,0 }: UnicodeCategory17R0,
+	Index{ symbols.NT_UnicodeCategory,17,1 }: UnicodeCategory17R1,
+	Index{ symbols.NT_UnicodeCategory,18,0 }: UnicodeCategory18R0,
+	Index{ symbols.NT_UnicodeCategory,18,1 }: UnicodeCategory18R1,
+	Index{ symbols.NT_UnicodeCategory,19,0 }: UnicodeCategory19R0,
+	Index{ symbols.NT_UnicodeCategory,19,1 }: UnicodeCategory19R1,
+	Index{ symbols.NT_UnicodeCategory,20,0 }: UnicodeCategory20R0,
+	Index{ symbols.NT_UnicodeCategory,20,1 }: UnicodeCategory20R1,
+	Index{ symbols.NT_UnicodeCategory,21,0 }: UnicodeCategory21R0,
+	Index{ symbols.NT_UnicodeCategory,21,1 }: UnicodeCategory21R1,
+	Index{ symbols.NT_UnicodeCategory,22,0 }: UnicodeCategory22R0,
+	Index{ symbols.NT_UnicodeCategory,22,1 }: UnicodeCategory22R1,
+	Index{ symbols.NT_UnicodeCategory,23,0 }: UnicodeCategory23R0,
+	Index{ symbols.NT_UnicodeCategory,23,1 }: UnicodeCategory23R1,
+	Index{ symbols.NT_UnicodeCategory,24,0 }: UnicodeCategory24R0,
+	Index{ symbols.NT_UnicodeCategory,24,1 }: UnicodeCategory24R1,
+	Index{ symbols.NT_UnicodeCategory,25,0 }: UnicodeCategory25R0,
+	Index{ symbols.NT_UnicodeCategory,25,1 }: UnicodeCategory25R1,
+	Index{ symbols.NT_UnicodeCategory,26,0 }: UnicodeCategory26R0,
+	Index{ symbols.NT_UnicodeCategory,26,1 }: UnicodeCategory26R1,
+	Index{ symbols.NT_UnicodeCategory,27,0 }: UnicodeCategory27R0,
+	Index{ symbols.NT_UnicodeCategory,27,1 }: UnicodeCategory27R1,
+	Index{ symbols.NT_UnicodeCategory,28,0 }: UnicodeCategory28R0,
+	Index{ symbols.NT_UnicodeCategory,28,1 }: UnicodeCategory28R1,
+	Index{ symbols.NT_UnicodeCategory,29,0 }: UnicodeCategory29R0,
+	Index{ symbols.NT_UnicodeCategory,29,1 }: UnicodeCategory29R1,
+	Index{ symbols.NT_UnicodeCategory,30,0 }: UnicodeCategory30R0,
+	Index{ symbols.NT_UnicodeCategory,30,1 }: UnicodeCategory30R1,
+	Index{ symbols.NT_UnicodeCategory,31,0 }: UnicodeCategory31R0,
+	Index{ symbols.NT_UnicodeCategory,31,1 }: UnicodeCategory31R1,
+	Index{ symbols.NT_UnicodeCategory,32,0 }: UnicodeCategory32R0,
+	Index{ symbols.NT_UnicodeCategory,32,1 }: UnicodeCategory32R1,
+	Index{ symbols.NT_UnicodeCategory,33,0 }: UnicodeCategory33R0,
+	Index{ symbols.NT_UnicodeCategory,33,1 }: UnicodeCategory33R1,
+	Index{ symbols.NT_UnicodeCategory,34,0 }: UnicodeCategory34R0,
+	Index{ symbols.NT_UnicodeCategory,34,1 }: UnicodeCategory34R1,
+	Index{ symbols.NT_UnicodeCategory,35,0 }: UnicodeCategory35R0,
+	Index{ symbols.NT_UnicodeCategory,35,1 }: UnicodeCategory35R1,
+	Index{ symbols.NT_UnicodeCategory,36,0 }: UnicodeCategory36R0,
+	Index{ symbols.NT_UnicodeCategory,36,1 }: UnicodeCategory36R1,
+	Index{ symbols.NT_UnicodeCategory,37,0 }: UnicodeCategory37R0,
+	Index{ symbols.NT_UnicodeCategory,37,1 }: UnicodeCategory37R1,
+	Index{ symbols.NT_UnicodeCategory,38,0 }: UnicodeCategory38R0,
+	Index{ symbols.NT_UnicodeCategory,38,1 }: UnicodeCategory38R1,
+	Index{ symbols.NT_UnicodeCategory,39,0 }: UnicodeCategory39R0,
+	Index{ symbols.NT_UnicodeCategory,39,1 }: UnicodeCategory39R1,
+	Index{ symbols.NT_UnicodeCategory,40,0 }: UnicodeCategory40R0,
+	Index{ symbols.NT_UnicodeCategory,40,1 }: UnicodeCategory40R1,
+	Index{ symbols.NT_UnicodeCategory,41,0 }: UnicodeCategory41R0,
+	Index{ symbols.NT_UnicodeCategory,41,1 }: UnicodeCategory41R1,
+	Index{ symbols.NT_UnicodeCategory,42,0 }: UnicodeCategory42R0,
+	Index{ symbols.NT_UnicodeCategory,42,1 }: UnicodeCategory42R1,
+	Index{ symbols.NT_UnicodeCategory,43,0 }: UnicodeCategory43R0,
+	Index{ symbols.NT_UnicodeCategory,43,1 }: UnicodeCategory43R1,
+	Index{ symbols.NT_UnicodeCategory,44,0 }: UnicodeCategory44R0,
+	Index{ symbols.NT_UnicodeCategory,44,1 }: UnicodeCategory44R1,
+	Index{ symbols.NT_UnicodeCategory,45,0 }: UnicodeCategory45R0,
+	Index{ symbols.NT_UnicodeCategory,45,1 }: UnicodeCategory45R1,
+	Index{ symbols.NT_UnicodeCategory,46,0 }: UnicodeCategory46R0,
+	Index{ symbols.NT_UnicodeCategory,46,1 }: UnicodeCategory46R1,
 	Index{ symbols.NT_UnicodeClass,0,0 }: UnicodeClass0R0,
 	Index{ symbols.NT_UnicodeClass,0,1 }: UnicodeClass0R1,
 	Index{ symbols.NT_UnicodeClass,1,0 }: UnicodeClass1R0,
@@ -1256,6 +2921,97 @@ var slotIndex = map[Index]Label {
 	Index{ symbols.NT_UnicodeClass,2,1 }: UnicodeClass2R1,
 	Index{ symbols.NT_UnicodeClass,3,0 }: UnicodeClass3R0,
 	Index{ symbols.NT_UnicodeClass,3,1 }: UnicodeClass3R1,
+	Index{ symbols.NT_UnicodeProperty,0,0 }: UnicodeProperty0R0,
+	Index{ symbols.NT_UnicodeProperty,0,1 }: UnicodeProperty0R1,
+	Index{ symbols.NT_UnicodeProperty,1,0 }: UnicodeProperty1R0,
+	Index{ symbols.NT_UnicodeProperty,1,1 }: UnicodeProperty1R1,
+	Index{ symbols.NT_UnicodeProperty,2,0 }: UnicodeProperty2R0,
+	Index{ symbols.NT_UnicodeProperty,2,1 }: UnicodeProperty2R1,
+	Index{ symbols.NT_UnicodeProperty,3,0 }: UnicodeProperty3R0,
+	Index{ symbols.NT_UnicodeProperty,3,1 }: UnicodeProperty3R1,
+	Index{ symbols.NT_UnicodeProperty,4,0 }: UnicodeProperty4R0,
+	Index{ symbols.NT_UnicodeProperty,4,1 }: UnicodeProperty4R1,
+	Index{ symbols.NT_UnicodeProperty,5,0 }: UnicodeProperty5R0,
+	Index{ symbols.NT_UnicodeProperty,5,1 }: UnicodeProperty5R1,
+	Index{ symbols.NT_UnicodeProperty,6,0 }: UnicodeProperty6R0,
+	Index{ symbols.NT_UnicodeProperty,6,1 }: UnicodeProperty6R1,
+	Index{ symbols.NT_UnicodeProperty,7,0 }: UnicodeProperty7R0,
+	Index{ symbols.NT_UnicodeProperty,7,1 }: UnicodeProperty7R1,
+	Index{ symbols.NT_UnicodeProperty,8,0 }: UnicodeProperty8R0,
+	Index{ symbols.NT_UnicodeProperty,8,1 }: UnicodeProperty8R1,
+	Index{ symbols.NT_UnicodeProperty,9,0 }: UnicodeProperty9R0,
+	Index{ symbols.NT_UnicodeProperty,9,1 }: UnicodeProperty9R1,
+	Index{ symbols.NT_UnicodeProperty,10,0 }: UnicodeProperty10R0,
+	Index{ symbols.NT_UnicodeProperty,10,1 }: UnicodeProperty10R1,
+	Index{ symbols.NT_UnicodeProperty,11,0 }: UnicodeProperty11R0,
+	Index{ symbols.NT_UnicodeProperty,11,1 }: UnicodeProperty11R1,
+	Index{ symbols.NT_UnicodeProperty,12,0 }: UnicodeProperty12R0,
+	Index{ symbols.NT_UnicodeProperty,12,1 }: UnicodeProperty12R1,
+	Index{ symbols.NT_UnicodeProperty,13,0 }: UnicodeProperty13R0,
+	Index{ symbols.NT_UnicodeProperty,13,1 }: UnicodeProperty13R1,
+	Index{ symbols.NT_UnicodeProperty,14,0 }: UnicodeProperty14R0,
+	Index{ symbols.NT_UnicodeProperty,14,1 }: UnicodeProperty14R1,
+	Index{ symbols.NT_UnicodeProperty,15,0 }: UnicodeProperty15R0,
+	Index{ symbols.NT_UnicodeProperty,15,1 }: UnicodeProperty15R1,
+	Index{ symbols.NT_UnicodeProperty,16,0 }: UnicodeProperty16R0,
+	Index{ symbols.NT_UnicodeProperty,16,1 }: UnicodeProperty16R1,
+	Index{ symbols.NT_UnicodeProperty,17,0 }: UnicodeProperty17R0,
+	Index{ symbols.NT_UnicodeProperty,17,1 }: UnicodeProperty17R1,
+	Index{ symbols.NT_UnicodeProperty,18,0 }: UnicodeProperty18R0,
+	Index{ symbols.NT_UnicodeProperty,18,1 }: UnicodeProperty18R1,
+	Index{ symbols.NT_UnicodeProperty,19,0 }: UnicodeProperty19R0,
+	Index{ symbols.NT_UnicodeProperty,19,1 }: UnicodeProperty19R1,
+	Index{ symbols.NT_UnicodeProperty,20,0 }: UnicodeProperty20R0,
+	Index{ symbols.NT_UnicodeProperty,20,1 }: UnicodeProperty20R1,
+	Index{ symbols.NT_UnicodeProperty,21,0 }: UnicodeProperty21R0,
+	Index{ symbols.NT_UnicodeProperty,21,1 }: UnicodeProperty21R1,
+	Index{ symbols.NT_UnicodeProperty,22,0 }: UnicodeProperty22R0,
+	Index{ symbols.NT_UnicodeProperty,22,1 }: UnicodeProperty22R1,
+	Index{ symbols.NT_UnicodeProperty,23,0 }: UnicodeProperty23R0,
+	Index{ symbols.NT_UnicodeProperty,23,1 }: UnicodeProperty23R1,
+	Index{ symbols.NT_UnicodeProperty,24,0 }: UnicodeProperty24R0,
+	Index{ symbols.NT_UnicodeProperty,24,1 }: UnicodeProperty24R1,
+	Index{ symbols.NT_UnicodeProperty,25,0 }: UnicodeProperty25R0,
+	Index{ symbols.NT_UnicodeProperty,25,1 }: UnicodeProperty25R1,
+	Index{ symbols.NT_UnicodeProperty,26,0 }: UnicodeProperty26R0,
+	Index{ symbols.NT_UnicodeProperty,26,1 }: UnicodeProperty26R1,
+	Index{ symbols.NT_UnicodeProperty,27,0 }: UnicodeProperty27R0,
+	Index{ symbols.NT_UnicodeProperty,27,1 }: UnicodeProperty27R1,
+	Index{ symbols.NT_UnicodeProperty,28,0 }: UnicodeProperty28R0,
+	Index{ symbols.NT_UnicodeProperty,28,1 }: UnicodeProperty28R1,
+	Index{ symbols.NT_UnicodeProperty,29,0 }: UnicodeProperty29R0,
+	Index{ symbols.NT_UnicodeProperty,29,1 }: UnicodeProperty29R1,
+	Index{ symbols.NT_UnicodeProperty,30,0 }: UnicodeProperty30R0,
+	Index{ symbols.NT_UnicodeProperty,30,1 }: UnicodeProperty30R1,
+	Index{ symbols.NT_UnicodeProperty,31,0 }: UnicodeProperty31R0,
+	Index{ symbols.NT_UnicodeProperty,31,1 }: UnicodeProperty31R1,
+	Index{ symbols.NT_UnicodeProperty,32,0 }: UnicodeProperty32R0,
+	Index{ symbols.NT_UnicodeProperty,32,1 }: UnicodeProperty32R1,
+	Index{ symbols.NT_UnicodeProperty,33,0 }: UnicodeProperty33R0,
+	Index{ symbols.NT_UnicodeProperty,33,1 }: UnicodeProperty33R1,
+	Index{ symbols.NT_UnicodeProperty,34,0 }: UnicodeProperty34R0,
+	Index{ symbols.NT_UnicodeProperty,34,1 }: UnicodeProperty34R1,
+	Index{ symbols.NT_UnicodeRange,0,0 }: UnicodeRange0R0,
+	Index{ symbols.NT_UnicodeRange,0,1 }: UnicodeRange0R1,
+	Index{ symbols.NT_UnicodeRange,1,0 }: UnicodeRange1R0,
+	Index{ symbols.NT_UnicodeRange,1,1 }: UnicodeRange1R1,
+	Index{ symbols.NT_UnicodeSet,0,0 }: UnicodeSet0R0,
+	Index{ symbols.NT_UnicodeSet,0,1 }: UnicodeSet0R1,
+	Index{ symbols.NT_UnicodeSet,0,2 }: UnicodeSet0R2,
+	Index{ symbols.NT_UnicodeSet,0,3 }: UnicodeSet0R3,
+	Index{ symbols.NT_UnicodeSet,0,4 }: UnicodeSet0R4,
+	Index{ symbols.NT_UnicodeSetSpec,0,0 }: UnicodeSetSpec0R0,
+	Index{ symbols.NT_UnicodeSetSpec,0,1 }: UnicodeSetSpec0R1,
+	Index{ symbols.NT_UnicodeSetSpec,0,2 }: UnicodeSetSpec0R2,
+	Index{ symbols.NT_UnicodeSetSpec,0,3 }: UnicodeSetSpec0R3,
+	Index{ symbols.NT_UnicodeSetSpecs,0,0 }: UnicodeSetSpecs0R0,
+	Index{ symbols.NT_UnicodeSetSpecs,1,0 }: UnicodeSetSpecs1R0,
+	Index{ symbols.NT_UnicodeSetSpecs,1,1 }: UnicodeSetSpecs1R1,
+	Index{ symbols.NT_UnicodeSpecList,0,0 }: UnicodeSpecList0R0,
+	Index{ symbols.NT_UnicodeSpecList,0,1 }: UnicodeSpecList0R1,
+	Index{ symbols.NT_UnicodeSpecList,1,0 }: UnicodeSpecList1R0,
+	Index{ symbols.NT_UnicodeSpecList,1,1 }: UnicodeSpecList1R1,
+	Index{ symbols.NT_UnicodeSpecList,1,2 }: UnicodeSpecList1R2,
 }
 
 var alternates = map[symbols.NT][]Label{ 
@@ -1263,8 +3019,16 @@ var alternates = map[symbols.NT][]Label{
 	symbols.NT_Package:[]Label{ Package0R0 },
 	symbols.NT_Rules:[]Label{ Rules0R0,Rules1R0 },
 	symbols.NT_Rule:[]Label{ Rule0R0,Rule1R0 },
-	symbols.NT_LexSymbol:[]Label{ LexSymbol0R0,LexSymbol1R0,LexSymbol2R0,LexSymbol3R0,LexSymbol4R0,LexSymbol5R0 },
+	symbols.NT_LexSymbol:[]Label{ LexSymbol0R0,LexSymbol1R0,LexSymbol2R0,LexSymbol3R0,LexSymbol4R0,LexSymbol5R0,LexSymbol6R0 },
 	symbols.NT_UnicodeClass:[]Label{ UnicodeClass0R0,UnicodeClass1R0,UnicodeClass2R0,UnicodeClass3R0 },
+	symbols.NT_UnicodeSet:[]Label{ UnicodeSet0R0 },
+	symbols.NT_UnicodeSetSpec:[]Label{ UnicodeSetSpec0R0 },
+	symbols.NT_UnicodeSetSpecs:[]Label{ UnicodeSetSpecs0R0,UnicodeSetSpecs1R0 },
+	symbols.NT_UnicodeSpecList:[]Label{ UnicodeSpecList0R0,UnicodeSpecList1R0 },
+	symbols.NT_PlusOrMinUnicodeSet:[]Label{ PlusOrMinUnicodeSet0R0,PlusOrMinUnicodeSet1R0 },
+	symbols.NT_UnicodeRange:[]Label{ UnicodeRange0R0,UnicodeRange1R0 },
+	symbols.NT_UnicodeCategory:[]Label{ UnicodeCategory0R0,UnicodeCategory1R0,UnicodeCategory2R0,UnicodeCategory3R0,UnicodeCategory4R0,UnicodeCategory5R0,UnicodeCategory6R0,UnicodeCategory7R0,UnicodeCategory8R0,UnicodeCategory9R0,UnicodeCategory10R0,UnicodeCategory11R0,UnicodeCategory12R0,UnicodeCategory13R0,UnicodeCategory14R0,UnicodeCategory15R0,UnicodeCategory16R0,UnicodeCategory17R0,UnicodeCategory18R0,UnicodeCategory19R0,UnicodeCategory20R0,UnicodeCategory21R0,UnicodeCategory22R0,UnicodeCategory23R0,UnicodeCategory24R0,UnicodeCategory25R0,UnicodeCategory26R0,UnicodeCategory27R0,UnicodeCategory28R0,UnicodeCategory29R0,UnicodeCategory30R0,UnicodeCategory31R0,UnicodeCategory32R0,UnicodeCategory33R0,UnicodeCategory34R0,UnicodeCategory35R0,UnicodeCategory36R0,UnicodeCategory37R0,UnicodeCategory38R0,UnicodeCategory39R0,UnicodeCategory40R0,UnicodeCategory41R0,UnicodeCategory42R0,UnicodeCategory43R0,UnicodeCategory44R0,UnicodeCategory45R0,UnicodeCategory46R0 },
+	symbols.NT_UnicodeProperty:[]Label{ UnicodeProperty0R0,UnicodeProperty1R0,UnicodeProperty2R0,UnicodeProperty3R0,UnicodeProperty4R0,UnicodeProperty5R0,UnicodeProperty6R0,UnicodeProperty7R0,UnicodeProperty8R0,UnicodeProperty9R0,UnicodeProperty10R0,UnicodeProperty11R0,UnicodeProperty12R0,UnicodeProperty13R0,UnicodeProperty14R0,UnicodeProperty15R0,UnicodeProperty16R0,UnicodeProperty17R0,UnicodeProperty18R0,UnicodeProperty19R0,UnicodeProperty20R0,UnicodeProperty21R0,UnicodeProperty22R0,UnicodeProperty23R0,UnicodeProperty24R0,UnicodeProperty25R0,UnicodeProperty26R0,UnicodeProperty27R0,UnicodeProperty28R0,UnicodeProperty29R0,UnicodeProperty30R0,UnicodeProperty31R0,UnicodeProperty32R0,UnicodeProperty33R0,UnicodeProperty34R0 },
 	symbols.NT_LexBracket:[]Label{ LexBracket0R0,LexBracket1R0,LexBracket2R0,LexBracket3R0 },
 	symbols.NT_LexGroup:[]Label{ LexGroup0R0 },
 	symbols.NT_LexOptional:[]Label{ LexOptional0R0 },

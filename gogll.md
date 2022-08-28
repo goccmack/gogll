@@ -83,17 +83,125 @@ littleU : '\'' '\\' 'u' hex_digit hex_digit hex_digit hex_digit '\'';
 LexSymbol 
     :   "." | "any" string_lit | char_lit | LexBracket | "not" string_lit 
     |   UnicodeClass 
+    |   UnicodeSet
     ;
+
+```
+    |   littleU | bigU
+```
 
 UnicodeClass 
     :   "letter" | "upcase" | "lowcase" | "number" 
     ;
 
-```
-    |   littleU | bigU
-    |   UnicodeSet
-UnicodeSet : "'[" "\\p{}" "]'" ;
-```
+UnicodeSet : "'[" UnicodeSetSpec UnicodeSetSpecs "]'" ;
+
+UnicodeSetSpec : "\\p{" UnicodeRange "}" ;
+
+UnicodeSetSpecs 
+    :   empty
+    |   UnicodeSpecList
+    ;
+
+UnicodeSpecList
+    :   PlusOrMinUnicodeSet
+    |   PlusOrMinUnicodeSet UnicodeSpecList
+    ;
+
+PlusOrMinUnicodeSet
+    :   UnicodeSetSpec
+    |   "-" UnicodeSetSpec
+    ;
+
+UnicodeRange : UnicodeCategory | UnicodeProperty ;
+
+UnicodeCategory 
+    :   "Cc"
+    |   "Cf"
+    |   "Co"
+    |   "Cs"
+    |   "Digit"
+    |   "Nd"
+    |   "Letter"
+    |   "L"
+    |   "Lm"
+    |   "Lo"
+    |   "Lower"
+    |   "Ll"
+    |   "Mark"
+    |   "M"
+    |   "Mc"
+    |   "Me"
+    |   "Mn"
+    |   "Nl"
+    |   "No"
+    |   "Number"
+    |   "N"
+    |   "Other"
+    |   "C"
+    |   "Pc"
+    |   "Pd"
+    |   "Pe"
+    |   "Pf"
+    |   "Pi"
+    |   "Po"
+    |   "Ps"
+    |   "Punct"
+    |   "P"
+    |   "Sc"
+    |   "Sk"
+    |   "Sm"
+    |   "So"
+    |   "Space"
+    |   "Z"
+    |   "Symbol"
+    |   "S"
+    |   "Title"
+    |   "Lt"
+    |   "Upper"
+    |   "Lu"
+    |   "Zl"
+    |   "Zp"
+    |   "Zs"
+    ;
+
+UnicodeProperty
+    :   "ASCII_Hex_Digit"
+    |   "Bidi_Control"
+    |   "Dash"
+    |   "Deprecated"
+    |   "Diacritic"
+    |   "Extender"
+    |   "Hex_Digit"
+    |   "Hyphen"
+    |   "IDS_Binary_Operator"
+    |   "IDS_Trinary_Operator"
+    |   "Ideographic"
+    |   "Join_Control"
+    |   "Logical_Order_Exception"
+    |   "Noncharacter_Code_Point"
+    |   "Other_Alphabetic"
+    |   "Other_Default_Ignorable_Code_Point"
+    |   "Other_Grapheme_Extend"
+    |   "Other_ID_Continue"
+    |   "Other_ID_Start"
+    |   "Other_Lowercase"
+    |   "Other_Math"
+    |   "Other_Uppercase"
+    |   "Pattern_Syntax"
+    |   "Pattern_White_Space"
+    |   "Prepended_Concatenation_Mark"
+    |   "Quotation_Mark"
+    |   "Radical"
+    |   "Regional_Indicator"
+    |   "STerm"
+    |   "Sentence_Terminal"
+    |   "Soft_Dotted"
+    |   "Terminal_Punctuation"
+    |   "Unified_Ideograph"
+    |   "Variation_Selector"
+    |   "White_Space"
+    ;
 
 char_lit : '\'' (not "'" | '\\' any "\\'nrt") '\'' ;
 ```

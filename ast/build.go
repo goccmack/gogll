@@ -204,6 +204,7 @@ func (bld *builder) getLexRuleBody(tokid *token.Token) []LexSymbol {
 //
 //	:   "." | "any" string_lit | char_lit | LexBracket | "not" string_lit
 //	|   UnicodeClass
+//	|   UnicodeSet
 //	;
 func (bld *builder) lexSymbol(b bsr.BSR) LexSymbol {
 	switch b.Alternate() {
@@ -219,12 +220,12 @@ func (bld *builder) lexSymbol(b bsr.BSR) LexSymbol {
 		return bld.not(b.GetTChildI(0), b.GetTChildI(1))
 	case 5:
 		return bld.unicodeClass(b.GetNTChildI(0))
+	case 6:
+		return bld.unicodeSet(b.GetNTChild(symbols.NT_UnicodeSet, 0))
 		// case 6:
 		// 	return bld.littleU(b.GetTChildI(0))
 		// case 7:
 		// 	return bld.bigU(b.GetTChildI(0))
-		// case 8:
-		// 	return bld.unicodeSet(B.GetNTChild(Un))
 	}
 	panic(fmt.Sprintf("Invalid case %d", b.Alternate()))
 }
@@ -440,6 +441,191 @@ func (bld *builder) tokID(tok *token.Token) *TokID {
 	}
 }
 
+// UnicodeSet : "'[" UnicodeSetSpec UnicodeSetSpecs "]'" ;
+func (bld *builder) unicodeSet(b bsr.BSR) *UnicodeSet {
+	ranges := UnicodeRanges{bld.unicodeSetSpec(b.GetNTChild(symbols.NT_UnicodeSetSpec, 0))}
+	ranges = append(ranges, bld.unicodeSetSpecs(b.GetNTChild(symbols.NT_UnicodeSetSpecs, 0))...)
+	return &UnicodeSet{
+		lext:   b.GetTChildI(0).Lext(),
+		Pos:    ranges[0].Pos,
+		Ranges: ranges,
+	}
+}
+
+// UnicodeSetSpec : "\\p{" UnicodeRange "}" ;
+func (bld *builder) unicodeSetSpec(b bsr.BSR) *UnicodeRange {
+	return bld.unicodeRange(b.GetNTChild(symbols.NT_UnicodeRange, 0))
+}
+
+// UnicodeSetSpecs
+//
+//	:   empty
+//	|   UnicodeSpecList
+//	;
+func (bld *builder) unicodeSetSpecs(b bsr.BSR) (ranges UnicodeRanges) {
+	if b.Alternate() == 0 {
+		return nil
+	}
+	return bld.unicodeSetSpecList(b.GetNTChild(symbols.NT_UnicodeSpecList, 0))
+}
+
+// UnicodeSpecList
+//
+//	:   PlusOrMinUnicodeSet
+//	|   PlusOrMinUnicodeSet UnicodeSpecList
+//	;
+func (bld *builder) unicodeSetSpecList(b bsr.BSR) (ranges UnicodeRanges) {
+	for b.Alternate() == 1 {
+		rng := bld.plusOrMinusUnicodeSet(b.GetNTChild(symbols.NT_PlusOrMinUnicodeSet, 0))
+		if ranges.Contain(rng) {
+			bld.fail(fmt.Errorf("duplicate range %s", rng), rng.lext)
+		}
+		ranges = append(ranges, rng)
+		b = b.GetNTChild(symbols.NT_UnicodeSpecList, 0)
+	}
+	rng := bld.plusOrMinusUnicodeSet(b.GetNTChild(symbols.NT_PlusOrMinUnicodeSet, 0))
+	if ranges.Contain(rng) {
+		bld.fail(fmt.Errorf("duplicate range %s", rng), rng.lext)
+	}
+	ranges = append(ranges, rng)
+
+	return
+}
+
+// PlusOrMinUnicodeSet
+//
+//	:   UnicodeSetSpec
+//	|   "-" UnicodeSetSpec
+//	;
+func (bld *builder) plusOrMinusUnicodeSet(b bsr.BSR) *UnicodeRange {
+	rng := bld.unicodeSetSpec(b.GetNTChild(symbols.NT_UnicodeSetSpec, 0))
+	if b.Alternate() == 1 {
+		rng.Exclude = true
+	}
+	return rng
+}
+
+// UnicodeRange : UnicodeCategory | UnicodeProperty ;
+func (bld *builder) unicodeRange(b bsr.BSR) *UnicodeRange {
+	switch b.Alternate() {
+	case 0:
+		return bld.unicodeCategory(b.GetNTChild(symbols.NT_UnicodeCategory, 0))
+	case 1:
+		return bld.unicodeProperty(b.GetNTChild(symbols.NT_UnicodeProperty, 0))
+	}
+	panic("impossible")
+}
+
+// UnicodeCategory
+//
+//	:   "Cc"
+//	|   "Cf"
+//	|   "Co"
+//	|   "Cs"
+//	|   "Digit"
+//	|   "Nd"
+//	|   "Letter"
+//	|   "L"
+//	|   "Lm"
+//	|   "Lo"
+//	|   "Lower"
+//	|   "Ll"
+//	|   "Mark"
+//	|   "M"
+//	|   "Mc"
+//	|   "Me"
+//	|   "Mn"
+//	|   "Nl"
+//	|   "No"
+//	|   "Number"
+//	|   "N"
+//	|   "Other"
+//	|   "C"
+//	|   "Pc"
+//	|   "Pd"
+//	|   "Pe"
+//	|   "Pf"
+//	|   "Pi"
+//	|   "Po"
+//	|   "Ps"
+//	|   "Punct"
+//	|   "P"
+//	|   "Sc"
+//	|   "Sk"
+//	|   "Sm"
+//	|   "So"
+//	|   "Space"
+//	|   "Z"
+//	|   "Symbol"
+//	|   "S"
+//	|   "Title"
+//	|   "Lt"
+//	|   "Upper"
+//	|   "Lu"
+//	|   "Zl"
+//	|   "Zp"
+//	|   "Zs"
+//	;
+func (bld *builder) unicodeCategory(b bsr.BSR) *UnicodeRange {
+	cat := b.GetTChildI(0)
+	return &UnicodeRange{
+		lext:    cat.Lext(),
+		Pos:     bld.getPosition(cat.Lext()),
+		Type:    UnicodeCategory,
+		Exclude: false,
+		Range:   cat.LiteralString(),
+	}
+}
+
+// UnicodeProperty
+//
+//	:   "ASCII_Hex_Digit"
+//	|   "Bidi_Control"
+//	|   "Dash"
+//	|   "Deprecated"
+//	|   "Diacritic"
+//	|   "Extender"
+//	|   "Hex_Digit"
+//	|   "Hyphen"
+//	|   "IDS_Binary_Operator"
+//	|   "IDS_Trinary_Operator"
+//	|   "Ideographic"
+//	|   "Join_Control"
+//	|   "Logical_Order_Exception"
+//	|   "Noncharacter_Code_Point"
+//	|   "Other_Alphabetic"
+//	|   "Other_Default_Ignorable_Code_Point"
+//	|   "Other_Grapheme_Extend"
+//	|   "Other_ID_Continue"
+//	|   "Other_ID_Start"
+//	|   "Other_Lowercase"
+//	|   "Other_Math"
+//	|   "Other_Uppercase"
+//	|   "Pattern_Syntax"
+//	|   "Pattern_White_Space"
+//	|   "Prepended_Concatenation_Mark"
+//	|   "Quotation_Mark"
+//	|   "Radical"
+//	|   "Regional_Indicator"
+//	|   "STerm"
+//	|   "Sentence_Terminal"
+//	|   "Soft_Dotted"
+//	|   "Terminal_Punctuation"
+//	|   "Unified_Ideograph"
+//	|   "Variation_Selector"
+//	|   "White_Space"
+//	;
+func (bld *builder) unicodeProperty(b bsr.BSR) *UnicodeRange {
+	prop := b.GetTChildI(0)
+	return &UnicodeRange{
+		lext:    prop.Lext(),
+		Pos:     bld.getPosition(prop.Lext()),
+		Type:    UnicodeProperty,
+		Exclude: false,
+		Range:   prop.LiteralString(),
+	}
+}
+
 /*** Utils ***/
 
 func (bld *builder) addLexRule(r *LexRule) {
@@ -454,6 +640,15 @@ func (bld *builder) addSyntaxRule(r *SyntaxRule) {
 		bld.fail(fmt.Errorf("duplicate syntax rule %s", r.ID()), r.Lext())
 	}
 	bld.gogll.SyntaxRules = append(bld.gogll.SyntaxRules, r)
+}
+
+func (bld *builder) getPosition(lext int) *Position {
+	ln, col := bld.lex.GetLineColumn(lext)
+	return &Position{
+		Line:   ln,
+		Column: col,
+		File:   bld.file,
+	}
 }
 
 // parse the string set from tokens any or not

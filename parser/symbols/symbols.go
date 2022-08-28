@@ -24,6 +24,7 @@ const(
 	NT_LexSymbol 
 	NT_LexZeroOrMore 
 	NT_Package 
+	NT_PlusOrMinUnicodeSet 
 	NT_RegExp 
 	NT_Rule 
 	NT_Rules 
@@ -32,40 +33,133 @@ const(
 	NT_SyntaxRule 
 	NT_SyntaxSymbol 
 	NT_SyntaxSymbols 
+	NT_UnicodeCategory 
 	NT_UnicodeClass 
+	NT_UnicodeProperty 
+	NT_UnicodeRange 
+	NT_UnicodeSet 
+	NT_UnicodeSetSpec 
+	NT_UnicodeSetSpecs 
+	NT_UnicodeSpecList 
 )
 
 // T is the type of terminals symbols
 type T int
 const( 
 	T_0 T = iota // ! 
-	T_1  // ( 
-	T_2  // ) 
-	T_3  // . 
-	T_4  // : 
-	T_5  // ; 
-	T_6  // < 
-	T_7  // > 
-	T_8  // [ 
-	T_9  // ] 
-	T_10  // any 
-	T_11  // bigU 
-	T_12  // char_lit 
-	T_13  // empty 
-	T_14  // hex_digit 
-	T_15  // letter 
-	T_16  // littleU 
-	T_17  // lowcase 
-	T_18  // not 
-	T_19  // nt 
-	T_20  // number 
-	T_21  // package 
-	T_22  // string_lit 
-	T_23  // tokid 
-	T_24  // upcase 
-	T_25  // { 
-	T_26  // | 
-	T_27  // } 
+	T_1  // '[ 
+	T_2  // ( 
+	T_3  // ) 
+	T_4  // - 
+	T_5  // . 
+	T_6  // : 
+	T_7  // ; 
+	T_8  // < 
+	T_9  // > 
+	T_10  // ASCII_Hex_Digit 
+	T_11  // Bidi_Control 
+	T_12  // C 
+	T_13  // Cc 
+	T_14  // Cf 
+	T_15  // Co 
+	T_16  // Cs 
+	T_17  // Dash 
+	T_18  // Deprecated 
+	T_19  // Diacritic 
+	T_20  // Digit 
+	T_21  // Extender 
+	T_22  // Hex_Digit 
+	T_23  // Hyphen 
+	T_24  // IDS_Binary_Operator 
+	T_25  // IDS_Trinary_Operator 
+	T_26  // Ideographic 
+	T_27  // Join_Control 
+	T_28  // L 
+	T_29  // Letter 
+	T_30  // Ll 
+	T_31  // Lm 
+	T_32  // Lo 
+	T_33  // Logical_Order_Exception 
+	T_34  // Lower 
+	T_35  // Lt 
+	T_36  // Lu 
+	T_37  // M 
+	T_38  // Mark 
+	T_39  // Mc 
+	T_40  // Me 
+	T_41  // Mn 
+	T_42  // N 
+	T_43  // Nd 
+	T_44  // Nl 
+	T_45  // No 
+	T_46  // Noncharacter_Code_Point 
+	T_47  // Number 
+	T_48  // Other 
+	T_49  // Other_Alphabetic 
+	T_50  // Other_Default_Ignorable_Code_Point 
+	T_51  // Other_Grapheme_Extend 
+	T_52  // Other_ID_Continue 
+	T_53  // Other_ID_Start 
+	T_54  // Other_Lowercase 
+	T_55  // Other_Math 
+	T_56  // Other_Uppercase 
+	T_57  // P 
+	T_58  // Pattern_Syntax 
+	T_59  // Pattern_White_Space 
+	T_60  // Pc 
+	T_61  // Pd 
+	T_62  // Pe 
+	T_63  // Pf 
+	T_64  // Pi 
+	T_65  // Po 
+	T_66  // Prepended_Concatenation_Mark 
+	T_67  // Ps 
+	T_68  // Punct 
+	T_69  // Quotation_Mark 
+	T_70  // Radical 
+	T_71  // Regional_Indicator 
+	T_72  // S 
+	T_73  // STerm 
+	T_74  // Sc 
+	T_75  // Sentence_Terminal 
+	T_76  // Sk 
+	T_77  // Sm 
+	T_78  // So 
+	T_79  // Soft_Dotted 
+	T_80  // Space 
+	T_81  // Symbol 
+	T_82  // Terminal_Punctuation 
+	T_83  // Title 
+	T_84  // Unified_Ideograph 
+	T_85  // Upper 
+	T_86  // Variation_Selector 
+	T_87  // White_Space 
+	T_88  // Z 
+	T_89  // Zl 
+	T_90  // Zp 
+	T_91  // Zs 
+	T_92  // [ 
+	T_93  // \\p{ 
+	T_94  // ] 
+	T_95  // ]' 
+	T_96  // any 
+	T_97  // bigU 
+	T_98  // char_lit 
+	T_99  // empty 
+	T_100  // hex_digit 
+	T_101  // letter 
+	T_102  // littleU 
+	T_103  // lowcase 
+	T_104  // not 
+	T_105  // nt 
+	T_106  // number 
+	T_107  // package 
+	T_108  // string_lit 
+	T_109  // tokid 
+	T_110  // upcase 
+	T_111  // { 
+	T_112  // | 
+	T_113  // } 
 )
 
 type Symbols []Symbol
@@ -105,6 +199,7 @@ var ntToString = []string {
 	"LexSymbol", /* NT_LexSymbol */
 	"LexZeroOrMore", /* NT_LexZeroOrMore */
 	"Package", /* NT_Package */
+	"PlusOrMinUnicodeSet", /* NT_PlusOrMinUnicodeSet */
 	"RegExp", /* NT_RegExp */
 	"Rule", /* NT_Rule */
 	"Rules", /* NT_Rules */
@@ -113,38 +208,131 @@ var ntToString = []string {
 	"SyntaxRule", /* NT_SyntaxRule */
 	"SyntaxSymbol", /* NT_SyntaxSymbol */
 	"SyntaxSymbols", /* NT_SyntaxSymbols */
-	"UnicodeClass", /* NT_UnicodeClass */ 
+	"UnicodeCategory", /* NT_UnicodeCategory */
+	"UnicodeClass", /* NT_UnicodeClass */
+	"UnicodeProperty", /* NT_UnicodeProperty */
+	"UnicodeRange", /* NT_UnicodeRange */
+	"UnicodeSet", /* NT_UnicodeSet */
+	"UnicodeSetSpec", /* NT_UnicodeSetSpec */
+	"UnicodeSetSpecs", /* NT_UnicodeSetSpecs */
+	"UnicodeSpecList", /* NT_UnicodeSpecList */ 
 }
 
 var tToString = []string { 
 	"!", /* T_0 */
-	"(", /* T_1 */
-	")", /* T_2 */
-	".", /* T_3 */
-	":", /* T_4 */
-	";", /* T_5 */
-	"<", /* T_6 */
-	">", /* T_7 */
-	"[", /* T_8 */
-	"]", /* T_9 */
-	"any", /* T_10 */
-	"bigU", /* T_11 */
-	"char_lit", /* T_12 */
-	"empty", /* T_13 */
-	"hex_digit", /* T_14 */
-	"letter", /* T_15 */
-	"littleU", /* T_16 */
-	"lowcase", /* T_17 */
-	"not", /* T_18 */
-	"nt", /* T_19 */
-	"number", /* T_20 */
-	"package", /* T_21 */
-	"string_lit", /* T_22 */
-	"tokid", /* T_23 */
-	"upcase", /* T_24 */
-	"{", /* T_25 */
-	"|", /* T_26 */
-	"}", /* T_27 */ 
+	"'[", /* T_1 */
+	"(", /* T_2 */
+	")", /* T_3 */
+	"-", /* T_4 */
+	".", /* T_5 */
+	":", /* T_6 */
+	";", /* T_7 */
+	"<", /* T_8 */
+	">", /* T_9 */
+	"ASCII_Hex_Digit", /* T_10 */
+	"Bidi_Control", /* T_11 */
+	"C", /* T_12 */
+	"Cc", /* T_13 */
+	"Cf", /* T_14 */
+	"Co", /* T_15 */
+	"Cs", /* T_16 */
+	"Dash", /* T_17 */
+	"Deprecated", /* T_18 */
+	"Diacritic", /* T_19 */
+	"Digit", /* T_20 */
+	"Extender", /* T_21 */
+	"Hex_Digit", /* T_22 */
+	"Hyphen", /* T_23 */
+	"IDS_Binary_Operator", /* T_24 */
+	"IDS_Trinary_Operator", /* T_25 */
+	"Ideographic", /* T_26 */
+	"Join_Control", /* T_27 */
+	"L", /* T_28 */
+	"Letter", /* T_29 */
+	"Ll", /* T_30 */
+	"Lm", /* T_31 */
+	"Lo", /* T_32 */
+	"Logical_Order_Exception", /* T_33 */
+	"Lower", /* T_34 */
+	"Lt", /* T_35 */
+	"Lu", /* T_36 */
+	"M", /* T_37 */
+	"Mark", /* T_38 */
+	"Mc", /* T_39 */
+	"Me", /* T_40 */
+	"Mn", /* T_41 */
+	"N", /* T_42 */
+	"Nd", /* T_43 */
+	"Nl", /* T_44 */
+	"No", /* T_45 */
+	"Noncharacter_Code_Point", /* T_46 */
+	"Number", /* T_47 */
+	"Other", /* T_48 */
+	"Other_Alphabetic", /* T_49 */
+	"Other_Default_Ignorable_Code_Point", /* T_50 */
+	"Other_Grapheme_Extend", /* T_51 */
+	"Other_ID_Continue", /* T_52 */
+	"Other_ID_Start", /* T_53 */
+	"Other_Lowercase", /* T_54 */
+	"Other_Math", /* T_55 */
+	"Other_Uppercase", /* T_56 */
+	"P", /* T_57 */
+	"Pattern_Syntax", /* T_58 */
+	"Pattern_White_Space", /* T_59 */
+	"Pc", /* T_60 */
+	"Pd", /* T_61 */
+	"Pe", /* T_62 */
+	"Pf", /* T_63 */
+	"Pi", /* T_64 */
+	"Po", /* T_65 */
+	"Prepended_Concatenation_Mark", /* T_66 */
+	"Ps", /* T_67 */
+	"Punct", /* T_68 */
+	"Quotation_Mark", /* T_69 */
+	"Radical", /* T_70 */
+	"Regional_Indicator", /* T_71 */
+	"S", /* T_72 */
+	"STerm", /* T_73 */
+	"Sc", /* T_74 */
+	"Sentence_Terminal", /* T_75 */
+	"Sk", /* T_76 */
+	"Sm", /* T_77 */
+	"So", /* T_78 */
+	"Soft_Dotted", /* T_79 */
+	"Space", /* T_80 */
+	"Symbol", /* T_81 */
+	"Terminal_Punctuation", /* T_82 */
+	"Title", /* T_83 */
+	"Unified_Ideograph", /* T_84 */
+	"Upper", /* T_85 */
+	"Variation_Selector", /* T_86 */
+	"White_Space", /* T_87 */
+	"Z", /* T_88 */
+	"Zl", /* T_89 */
+	"Zp", /* T_90 */
+	"Zs", /* T_91 */
+	"[", /* T_92 */
+	"\\p{", /* T_93 */
+	"]", /* T_94 */
+	"]'", /* T_95 */
+	"any", /* T_96 */
+	"bigU", /* T_97 */
+	"char_lit", /* T_98 */
+	"empty", /* T_99 */
+	"hex_digit", /* T_100 */
+	"letter", /* T_101 */
+	"littleU", /* T_102 */
+	"lowcase", /* T_103 */
+	"not", /* T_104 */
+	"nt", /* T_105 */
+	"number", /* T_106 */
+	"package", /* T_107 */
+	"string_lit", /* T_108 */
+	"tokid", /* T_109 */
+	"upcase", /* T_110 */
+	"{", /* T_111 */
+	"|", /* T_112 */
+	"}", /* T_113 */ 
 }
 
 var stringNT = map[string]NT{ 
@@ -158,6 +346,7 @@ var stringNT = map[string]NT{
 	"LexSymbol":NT_LexSymbol,
 	"LexZeroOrMore":NT_LexZeroOrMore,
 	"Package":NT_Package,
+	"PlusOrMinUnicodeSet":NT_PlusOrMinUnicodeSet,
 	"RegExp":NT_RegExp,
 	"Rule":NT_Rule,
 	"Rules":NT_Rules,
@@ -166,5 +355,12 @@ var stringNT = map[string]NT{
 	"SyntaxRule":NT_SyntaxRule,
 	"SyntaxSymbol":NT_SyntaxSymbol,
 	"SyntaxSymbols":NT_SyntaxSymbols,
+	"UnicodeCategory":NT_UnicodeCategory,
 	"UnicodeClass":NT_UnicodeClass,
+	"UnicodeProperty":NT_UnicodeProperty,
+	"UnicodeRange":NT_UnicodeRange,
+	"UnicodeSet":NT_UnicodeSet,
+	"UnicodeSetSpec":NT_UnicodeSetSpec,
+	"UnicodeSetSpecs":NT_UnicodeSetSpecs,
+	"UnicodeSpecList":NT_UnicodeSpecList,
 }

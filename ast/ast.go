@@ -49,6 +49,11 @@ type Terminal interface {
 	isTerminal()
 }
 
+type Position struct {
+	Line, Column int
+	File         string
+}
+
 /*** Methods ***/
 
 func (g *GoGLL) GetLexRule(id string) *LexRule {

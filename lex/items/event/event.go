@@ -91,6 +91,8 @@ func Subset(a, b ast.LexBase) TriState {
 			return toTriState(!a1.Set.Subset(b1.Set))
 		case *ast.UnicodeClass:
 			return toTriState(unicodeClassContains(b1, a1.Set.Elements()...))
+		case *ast.UnicodeSet:
+			return toTriState(b1.ContainsRunes(a1.Set.Elements()...))
 		default:
 			panic("Invalid")
 		}
@@ -107,6 +109,8 @@ func Subset(a, b ast.LexBase) TriState {
 			return toTriState(!b1.Set.Contains(a1.Char()))
 		case *ast.UnicodeClass:
 			return toTriState(unicodeClassContains(b1, a1.Char()))
+		case *ast.UnicodeSet:
+			return toTriState(b1.ContainsRune(a1.Char()))
 		default:
 			panic("Invalid")
 		}
@@ -122,6 +126,8 @@ func Subset(a, b ast.LexBase) TriState {
 		case *ast.Not:
 			return toTriState(b1.Set.Subset(a1.Set))
 		case *ast.UnicodeClass:
+			return Undefined
+		case *ast.UnicodeSet:
 			return Undefined
 		default:
 			panic("Invalid")
@@ -140,6 +146,26 @@ func Subset(a, b ast.LexBase) TriState {
 		case *ast.UnicodeClass:
 			return toTriState(a1.Type == b1.Type ||
 				(b1.Type == ast.Letter && (a1.Type == ast.Lowcase || a1.Type == ast.Upcase)))
+		case *ast.UnicodeSet:
+			return toTriState(b1.ContainsClass(a1))
+		default:
+			panic("Invalid")
+		}
+
+	case *ast.UnicodeSet:
+		switch b1 := b.(type) {
+		case *ast.Any:
+			return True
+		case *ast.AnyOf:
+			return Undefined
+		case *ast.CharLiteral:
+			return False
+		case *ast.Not:
+			return False
+		case *ast.UnicodeClass:
+			return toTriState(b1.ContainsSet(a1))
+		case *ast.UnicodeSet:
+			return toTriState(b1.ContainsSet(a1))
 		default:
 			panic("Invalid")
 		}
@@ -195,6 +221,8 @@ func sortEvents(events []ast.LexBase) {
 				return e1.Set.Subset(e2.Set)
 			case *ast.UnicodeClass:
 				return unicodeClassContains(e2, e1.Set.Elements()...)
+			case *ast.UnicodeSet:
+				return e2.ContainsRunes(e1.Set.Elements()...)
 			default:
 				panic("Invalid")
 			}
@@ -209,6 +237,8 @@ func sortEvents(events []ast.LexBase) {
 			case *ast.Not:
 				return true
 			case *ast.UnicodeClass:
+				return true
+			case *ast.UnicodeSet:
 				return true
 			default:
 				panic("Invalid")
@@ -225,6 +255,8 @@ func sortEvents(events []ast.LexBase) {
 				return e1.Set.Subset(e2.Set)
 			case *ast.UnicodeClass:
 				return false
+			case *ast.UnicodeSet:
+				return false
 			default:
 				panic("Invalid")
 			}
@@ -237,9 +269,30 @@ func sortEvents(events []ast.LexBase) {
 			case *ast.CharLiteral:
 				return false
 			case *ast.Not:
+				// TODO: check that this is correct
 				return !unicodeClassContains(e1, e2.Set.Elements()...)
 			case *ast.UnicodeClass:
 				return e2.Type == ast.Letter && (e1.Type == ast.Lowcase || e1.Type == ast.Upcase)
+			case *ast.UnicodeSet:
+				return e2.ContainsClass(e1)
+			default:
+				panic("Invalid")
+			}
+		case *ast.UnicodeSet:
+			switch e2 := events[j].(type) {
+			case *ast.Any:
+				return true
+			case *ast.AnyOf:
+				return false
+			case *ast.CharLiteral:
+				return false
+			case *ast.Not:
+				// TODO: check that this is correct
+				return e1.ContainsRunes(e2.Set.Elements()...)
+			case *ast.UnicodeClass:
+				return e2.ContainsSet(e1)
+			case *ast.UnicodeSet:
+				return e2.ContainsSet(e1)
 			default:
 				panic("Invalid")
 			}

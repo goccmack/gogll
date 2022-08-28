@@ -136,33 +136,119 @@ const(
     Error  Type = iota  // Error 
     EOF  // $ 
     T_0  // ! 
-    T_1  // ( 
-    T_2  // ) 
-    T_3  // . 
-    T_4  // : 
-    T_5  // ; 
-    T_6  // < 
-    T_7  // > 
-    T_8  // [ 
-    T_9  // ] 
-    T_10  // any 
-    T_11  // bigU 
-    T_12  // char_lit 
-    T_13  // empty 
-    T_14  // hex_digit 
-    T_15  // letter 
-    T_16  // littleU 
-    T_17  // lowcase 
-    T_18  // not 
-    T_19  // nt 
-    T_20  // number 
-    T_21  // package 
-    T_22  // string_lit 
-    T_23  // tokid 
-    T_24  // upcase 
-    T_25  // { 
-    T_26  // | 
-    T_27  // } 
+    T_1  // '[ 
+    T_2  // ( 
+    T_3  // ) 
+    T_4  // - 
+    T_5  // . 
+    T_6  // : 
+    T_7  // ; 
+    T_8  // < 
+    T_9  // > 
+    T_10  // ASCII_Hex_Digit 
+    T_11  // Bidi_Control 
+    T_12  // C 
+    T_13  // Cc 
+    T_14  // Cf 
+    T_15  // Co 
+    T_16  // Cs 
+    T_17  // Dash 
+    T_18  // Deprecated 
+    T_19  // Diacritic 
+    T_20  // Digit 
+    T_21  // Extender 
+    T_22  // Hex_Digit 
+    T_23  // Hyphen 
+    T_24  // IDS_Binary_Operator 
+    T_25  // IDS_Trinary_Operator 
+    T_26  // Ideographic 
+    T_27  // Join_Control 
+    T_28  // L 
+    T_29  // Letter 
+    T_30  // Ll 
+    T_31  // Lm 
+    T_32  // Lo 
+    T_33  // Logical_Order_Exception 
+    T_34  // Lower 
+    T_35  // Lt 
+    T_36  // Lu 
+    T_37  // M 
+    T_38  // Mark 
+    T_39  // Mc 
+    T_40  // Me 
+    T_41  // Mn 
+    T_42  // N 
+    T_43  // Nd 
+    T_44  // Nl 
+    T_45  // No 
+    T_46  // Noncharacter_Code_Point 
+    T_47  // Number 
+    T_48  // Other 
+    T_49  // Other_Alphabetic 
+    T_50  // Other_Default_Ignorable_Code_Point 
+    T_51  // Other_Grapheme_Extend 
+    T_52  // Other_ID_Continue 
+    T_53  // Other_ID_Start 
+    T_54  // Other_Lowercase 
+    T_55  // Other_Math 
+    T_56  // Other_Uppercase 
+    T_57  // P 
+    T_58  // Pattern_Syntax 
+    T_59  // Pattern_White_Space 
+    T_60  // Pc 
+    T_61  // Pd 
+    T_62  // Pe 
+    T_63  // Pf 
+    T_64  // Pi 
+    T_65  // Po 
+    T_66  // Prepended_Concatenation_Mark 
+    T_67  // Ps 
+    T_68  // Punct 
+    T_69  // Quotation_Mark 
+    T_70  // Radical 
+    T_71  // Regional_Indicator 
+    T_72  // S 
+    T_73  // STerm 
+    T_74  // Sc 
+    T_75  // Sentence_Terminal 
+    T_76  // Sk 
+    T_77  // Sm 
+    T_78  // So 
+    T_79  // Soft_Dotted 
+    T_80  // Space 
+    T_81  // Symbol 
+    T_82  // Terminal_Punctuation 
+    T_83  // Title 
+    T_84  // Unified_Ideograph 
+    T_85  // Upper 
+    T_86  // Variation_Selector 
+    T_87  // White_Space 
+    T_88  // Z 
+    T_89  // Zl 
+    T_90  // Zp 
+    T_91  // Zs 
+    T_92  // [ 
+    T_93  // \\p{ 
+    T_94  // ] 
+    T_95  // ]' 
+    T_96  // any 
+    T_97  // bigU 
+    T_98  // char_lit 
+    T_99  // empty 
+    T_100  // hex_digit 
+    T_101  // letter 
+    T_102  // littleU 
+    T_103  // lowcase 
+    T_104  // not 
+    T_105  // nt 
+    T_106  // number 
+    T_107  // package 
+    T_108  // string_lit 
+    T_109  // tokid 
+    T_110  // upcase 
+    T_111  // { 
+    T_112  // | 
+    T_113  // } 
 )
 
 var TypeToString = []string{ 
@@ -196,6 +282,92 @@ var TypeToString = []string{
     "T_25",
     "T_26",
     "T_27",
+    "T_28",
+    "T_29",
+    "T_30",
+    "T_31",
+    "T_32",
+    "T_33",
+    "T_34",
+    "T_35",
+    "T_36",
+    "T_37",
+    "T_38",
+    "T_39",
+    "T_40",
+    "T_41",
+    "T_42",
+    "T_43",
+    "T_44",
+    "T_45",
+    "T_46",
+    "T_47",
+    "T_48",
+    "T_49",
+    "T_50",
+    "T_51",
+    "T_52",
+    "T_53",
+    "T_54",
+    "T_55",
+    "T_56",
+    "T_57",
+    "T_58",
+    "T_59",
+    "T_60",
+    "T_61",
+    "T_62",
+    "T_63",
+    "T_64",
+    "T_65",
+    "T_66",
+    "T_67",
+    "T_68",
+    "T_69",
+    "T_70",
+    "T_71",
+    "T_72",
+    "T_73",
+    "T_74",
+    "T_75",
+    "T_76",
+    "T_77",
+    "T_78",
+    "T_79",
+    "T_80",
+    "T_81",
+    "T_82",
+    "T_83",
+    "T_84",
+    "T_85",
+    "T_86",
+    "T_87",
+    "T_88",
+    "T_89",
+    "T_90",
+    "T_91",
+    "T_92",
+    "T_93",
+    "T_94",
+    "T_95",
+    "T_96",
+    "T_97",
+    "T_98",
+    "T_99",
+    "T_100",
+    "T_101",
+    "T_102",
+    "T_103",
+    "T_104",
+    "T_105",
+    "T_106",
+    "T_107",
+    "T_108",
+    "T_109",
+    "T_110",
+    "T_111",
+    "T_112",
+    "T_113",
 }
 
 var StringToType = map[string] Type { 
@@ -229,21 +401,193 @@ var StringToType = map[string] Type {
     "T_25" : T_25, 
     "T_26" : T_26, 
     "T_27" : T_27, 
+    "T_28" : T_28, 
+    "T_29" : T_29, 
+    "T_30" : T_30, 
+    "T_31" : T_31, 
+    "T_32" : T_32, 
+    "T_33" : T_33, 
+    "T_34" : T_34, 
+    "T_35" : T_35, 
+    "T_36" : T_36, 
+    "T_37" : T_37, 
+    "T_38" : T_38, 
+    "T_39" : T_39, 
+    "T_40" : T_40, 
+    "T_41" : T_41, 
+    "T_42" : T_42, 
+    "T_43" : T_43, 
+    "T_44" : T_44, 
+    "T_45" : T_45, 
+    "T_46" : T_46, 
+    "T_47" : T_47, 
+    "T_48" : T_48, 
+    "T_49" : T_49, 
+    "T_50" : T_50, 
+    "T_51" : T_51, 
+    "T_52" : T_52, 
+    "T_53" : T_53, 
+    "T_54" : T_54, 
+    "T_55" : T_55, 
+    "T_56" : T_56, 
+    "T_57" : T_57, 
+    "T_58" : T_58, 
+    "T_59" : T_59, 
+    "T_60" : T_60, 
+    "T_61" : T_61, 
+    "T_62" : T_62, 
+    "T_63" : T_63, 
+    "T_64" : T_64, 
+    "T_65" : T_65, 
+    "T_66" : T_66, 
+    "T_67" : T_67, 
+    "T_68" : T_68, 
+    "T_69" : T_69, 
+    "T_70" : T_70, 
+    "T_71" : T_71, 
+    "T_72" : T_72, 
+    "T_73" : T_73, 
+    "T_74" : T_74, 
+    "T_75" : T_75, 
+    "T_76" : T_76, 
+    "T_77" : T_77, 
+    "T_78" : T_78, 
+    "T_79" : T_79, 
+    "T_80" : T_80, 
+    "T_81" : T_81, 
+    "T_82" : T_82, 
+    "T_83" : T_83, 
+    "T_84" : T_84, 
+    "T_85" : T_85, 
+    "T_86" : T_86, 
+    "T_87" : T_87, 
+    "T_88" : T_88, 
+    "T_89" : T_89, 
+    "T_90" : T_90, 
+    "T_91" : T_91, 
+    "T_92" : T_92, 
+    "T_93" : T_93, 
+    "T_94" : T_94, 
+    "T_95" : T_95, 
+    "T_96" : T_96, 
+    "T_97" : T_97, 
+    "T_98" : T_98, 
+    "T_99" : T_99, 
+    "T_100" : T_100, 
+    "T_101" : T_101, 
+    "T_102" : T_102, 
+    "T_103" : T_103, 
+    "T_104" : T_104, 
+    "T_105" : T_105, 
+    "T_106" : T_106, 
+    "T_107" : T_107, 
+    "T_108" : T_108, 
+    "T_109" : T_109, 
+    "T_110" : T_110, 
+    "T_111" : T_111, 
+    "T_112" : T_112, 
+    "T_113" : T_113, 
 }
 
 var TypeToID = []string { 
     "Error", 
     "$", 
     "!", 
+    "'[", 
     "(", 
     ")", 
+    "-", 
     ".", 
     ":", 
     ";", 
     "<", 
     ">", 
+    "ASCII_Hex_Digit", 
+    "Bidi_Control", 
+    "C", 
+    "Cc", 
+    "Cf", 
+    "Co", 
+    "Cs", 
+    "Dash", 
+    "Deprecated", 
+    "Diacritic", 
+    "Digit", 
+    "Extender", 
+    "Hex_Digit", 
+    "Hyphen", 
+    "IDS_Binary_Operator", 
+    "IDS_Trinary_Operator", 
+    "Ideographic", 
+    "Join_Control", 
+    "L", 
+    "Letter", 
+    "Ll", 
+    "Lm", 
+    "Lo", 
+    "Logical_Order_Exception", 
+    "Lower", 
+    "Lt", 
+    "Lu", 
+    "M", 
+    "Mark", 
+    "Mc", 
+    "Me", 
+    "Mn", 
+    "N", 
+    "Nd", 
+    "Nl", 
+    "No", 
+    "Noncharacter_Code_Point", 
+    "Number", 
+    "Other", 
+    "Other_Alphabetic", 
+    "Other_Default_Ignorable_Code_Point", 
+    "Other_Grapheme_Extend", 
+    "Other_ID_Continue", 
+    "Other_ID_Start", 
+    "Other_Lowercase", 
+    "Other_Math", 
+    "Other_Uppercase", 
+    "P", 
+    "Pattern_Syntax", 
+    "Pattern_White_Space", 
+    "Pc", 
+    "Pd", 
+    "Pe", 
+    "Pf", 
+    "Pi", 
+    "Po", 
+    "Prepended_Concatenation_Mark", 
+    "Ps", 
+    "Punct", 
+    "Quotation_Mark", 
+    "Radical", 
+    "Regional_Indicator", 
+    "S", 
+    "STerm", 
+    "Sc", 
+    "Sentence_Terminal", 
+    "Sk", 
+    "Sm", 
+    "So", 
+    "Soft_Dotted", 
+    "Space", 
+    "Symbol", 
+    "Terminal_Punctuation", 
+    "Title", 
+    "Unified_Ideograph", 
+    "Upper", 
+    "Variation_Selector", 
+    "White_Space", 
+    "Z", 
+    "Zl", 
+    "Zp", 
+    "Zs", 
     "[", 
+    "\\p{", 
     "]", 
+    "]'", 
     "any", 
     "bigU", 
     "char_lit", 
@@ -264,7 +608,212 @@ var TypeToID = []string {
     "}", 
 }
 
+var IDToType = map[string]Type { 
+    "Error": 0, 
+    "$": 1, 
+    "!": 2, 
+    "'[": 3, 
+    "(": 4, 
+    ")": 5, 
+    "-": 6, 
+    ".": 7, 
+    ":": 8, 
+    ";": 9, 
+    "<": 10, 
+    ">": 11, 
+    "ASCII_Hex_Digit": 12, 
+    "Bidi_Control": 13, 
+    "C": 14, 
+    "Cc": 15, 
+    "Cf": 16, 
+    "Co": 17, 
+    "Cs": 18, 
+    "Dash": 19, 
+    "Deprecated": 20, 
+    "Diacritic": 21, 
+    "Digit": 22, 
+    "Extender": 23, 
+    "Hex_Digit": 24, 
+    "Hyphen": 25, 
+    "IDS_Binary_Operator": 26, 
+    "IDS_Trinary_Operator": 27, 
+    "Ideographic": 28, 
+    "Join_Control": 29, 
+    "L": 30, 
+    "Letter": 31, 
+    "Ll": 32, 
+    "Lm": 33, 
+    "Lo": 34, 
+    "Logical_Order_Exception": 35, 
+    "Lower": 36, 
+    "Lt": 37, 
+    "Lu": 38, 
+    "M": 39, 
+    "Mark": 40, 
+    "Mc": 41, 
+    "Me": 42, 
+    "Mn": 43, 
+    "N": 44, 
+    "Nd": 45, 
+    "Nl": 46, 
+    "No": 47, 
+    "Noncharacter_Code_Point": 48, 
+    "Number": 49, 
+    "Other": 50, 
+    "Other_Alphabetic": 51, 
+    "Other_Default_Ignorable_Code_Point": 52, 
+    "Other_Grapheme_Extend": 53, 
+    "Other_ID_Continue": 54, 
+    "Other_ID_Start": 55, 
+    "Other_Lowercase": 56, 
+    "Other_Math": 57, 
+    "Other_Uppercase": 58, 
+    "P": 59, 
+    "Pattern_Syntax": 60, 
+    "Pattern_White_Space": 61, 
+    "Pc": 62, 
+    "Pd": 63, 
+    "Pe": 64, 
+    "Pf": 65, 
+    "Pi": 66, 
+    "Po": 67, 
+    "Prepended_Concatenation_Mark": 68, 
+    "Ps": 69, 
+    "Punct": 70, 
+    "Quotation_Mark": 71, 
+    "Radical": 72, 
+    "Regional_Indicator": 73, 
+    "S": 74, 
+    "STerm": 75, 
+    "Sc": 76, 
+    "Sentence_Terminal": 77, 
+    "Sk": 78, 
+    "Sm": 79, 
+    "So": 80, 
+    "Soft_Dotted": 81, 
+    "Space": 82, 
+    "Symbol": 83, 
+    "Terminal_Punctuation": 84, 
+    "Title": 85, 
+    "Unified_Ideograph": 86, 
+    "Upper": 87, 
+    "Variation_Selector": 88, 
+    "White_Space": 89, 
+    "Z": 90, 
+    "Zl": 91, 
+    "Zp": 92, 
+    "Zs": 93, 
+    "[": 94, 
+    "\\p{": 95, 
+    "]": 96, 
+    "]'": 97, 
+    "any": 98, 
+    "bigU": 99, 
+    "char_lit": 100, 
+    "empty": 101, 
+    "hex_digit": 102, 
+    "letter": 103, 
+    "littleU": 104, 
+    "lowcase": 105, 
+    "not": 106, 
+    "nt": 107, 
+    "number": 108, 
+    "package": 109, 
+    "string_lit": 110, 
+    "tokid": 111, 
+    "upcase": 112, 
+    "{": 113, 
+    "|": 114, 
+    "}": 115, 
+}
+
 var Suppress = []bool { 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
+    false, 
     false, 
     false, 
     false, 

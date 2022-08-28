@@ -21,6 +21,7 @@ package ast
 import (
 	"bytes"
 	"fmt"
+	"unicode"
 
 	"github.com/goccmack/gogll/v3/token"
 	"github.com/goccmack/gogll/v3/util/runeset"
@@ -81,6 +82,7 @@ func (*AnyOf) isLexBase()        {}
 func (*CharLiteral) isLexBase()  {}
 func (*Not) isLexBase()          {}
 func (*UnicodeClass) isLexBase() {}
+func (*UnicodeSet) isLexBase()   {}
 
 type LexRule struct {
 	Suppress bool
@@ -100,6 +102,7 @@ func (*CharLiteral) isLexSymbol()  {}
 func (*LexBracket) isLexSymbol()   {}
 func (*Not) isLexSymbol()          {}
 func (*UnicodeClass) isLexSymbol() {}
+func (*UnicodeSet) isLexSymbol()   {}
 
 type Not struct {
 	not    *token.Token
@@ -128,6 +131,28 @@ const (
 	Lowcase
 	Number
 	Space
+)
+
+type UnicodeSet struct {
+	lext   int
+	Pos    *Position
+	Ranges UnicodeRanges
+}
+
+type UnicodeRanges []*UnicodeRange
+type UnicodeRange struct {
+	lext    int
+	Pos     *Position
+	Type    UnicodeRangeType
+	Exclude bool
+	Range   string
+}
+
+type UnicodeRangeType int
+
+const (
+	UnicodeCategory UnicodeRangeType = iota
+	UnicodeProperty
 )
 
 /*** Methods ***/
@@ -342,8 +367,254 @@ func (sl *StringLit) Value() []rune {
 	return value
 }
 
+func (u *UnicodeClass) ContainsSet(s *UnicodeSet) bool {
+	for _, rng := range s.Ranges {
+		if !rangeTableInRangeTable(rng.GetRangeTable(), u.GetRangeTable()) {
+			return false
+		}
+	}
+	return true
+}
+
+func (u *UnicodeClass) GetRangeTable() *unicode.RangeTable {
+	switch u.Type {
+	case Letter:
+		return unicode.Letter
+	case Upcase:
+		return unicode.Lu
+	case Lowcase:
+		return unicode.Ll
+	case Number:
+		return unicode.Number
+	case Space:
+		return unicode.Space
+	}
+	panic("impossible")
+}
+
 func (u *UnicodeClass) String() string {
 	return string(u.tok.Literal())
+}
+
+func (u *UnicodeRange) Equals(u1 *UnicodeRange) bool {
+	return u.Type == u1.Type &&
+		u.Exclude == u1.Exclude &&
+		u.Range == u1.Range
+}
+
+// EqualsRange ignores the Exclude field
+func (u *UnicodeRange) EqualsRange(u1 *UnicodeRange) bool {
+	return u.Type == u1.Type &&
+		u.Range == u1.Range
+}
+
+func (u *UnicodeRange) String() string {
+	return u.Range
+}
+
+func (u UnicodeRanges) Contain(rng *UnicodeRange) bool {
+	for _, rng1 := range u {
+		if rng1.Equals(rng) {
+			return true
+		}
+	}
+	return false
+}
+
+// ContainRanges ignores the Exclude field
+func (u UnicodeRanges) ContainRange(rng *UnicodeRange) bool {
+	for _, rng1 := range u {
+		if rng1.EqualsRange(rng) {
+			return true
+		}
+	}
+	return false
+}
+
+func (u UnicodeRanges) Equal(other UnicodeRanges) bool {
+	if other == nil {
+		return false
+	}
+	for _, rng := range u {
+		if !other.Contain(rng) {
+			return false
+		}
+	}
+	return true
+}
+
+// EqualRange ignores Exclude field
+func (u UnicodeRanges) EqualRange(other UnicodeRanges) bool {
+	if other == nil {
+		return false
+	}
+	for _, rng := range u {
+		if !other.ContainRange(rng) {
+			return false
+		}
+	}
+	return true
+}
+
+func (u UnicodeRanges) Lext() int {
+	return u[0].lext
+}
+
+func (u UnicodeRanges) String() string {
+	w := new(bytes.Buffer)
+	for i, rng := range u {
+		if i > 0 {
+			fmt.Fprint(w, ",")
+		}
+		if rng.Exclude {
+			fmt.Fprint(w, "-")
+		}
+		fmt.Fprint(w, "\\p{%s}", rng)
+	}
+	return w.String()
+}
+
+func (u *UnicodeRange) ContainsClass(c *UnicodeClass) bool {
+	switch c.Type {
+	case Letter:
+		return rangeTableInRangeTable(unicode.Letter, u.GetRangeTable())
+	case Upcase:
+		return rangeTableInRangeTable(unicode.Lu, u.GetRangeTable())
+	case Lowcase:
+		return rangeTableInRangeTable(unicode.Ll, u.GetRangeTable())
+	case Number:
+		return rangeTableInRangeTable(unicode.Number, u.GetRangeTable())
+	case Space:
+		return rangeTableInRangeTable(unicode.Space, u.GetRangeTable())
+	}
+	panic("impossible")
+}
+
+// rangeInRange returns true iff b contains a
+func rangeTableInRangeTable(a, b *unicode.RangeTable) bool {
+	if a == nil || b == nil {
+		fmt.Printf("a=%p, b=%p\n", a, b)
+		panic("nil")
+	}
+	for _, rng := range a.R32 {
+		if !unicode.In(rune(rng.Lo), b) || !unicode.In(rune(rng.Hi), b) {
+			return false
+		}
+	}
+	return true
+}
+
+// GetRangeTable returns the category or property RangeTable of r
+func (u *UnicodeRange) GetRangeTable() *unicode.RangeTable {
+	switch u.Type {
+	case UnicodeCategory:
+		if unicode.Categories[u.Range] == nil {
+			panic(u.Range)
+		}
+		return unicode.Categories[u.Range]
+	case UnicodeProperty:
+		if unicode.Properties[u.Range] == nil {
+			panic(u.Range)
+		}
+		return unicode.Properties[u.Range]
+	}
+	panic("impossible")
+}
+
+// In returns true iff rng contains u
+func (u *UnicodeRange) In(rng *UnicodeRange) bool {
+	return rangeTableInRangeTable(u.GetRangeTable(), rng.GetRangeTable())
+}
+
+// Subset returns true iff f is a subset or equal of sup
+func (u *UnicodeRange) Subset(sup *UnicodeSet) bool {
+	for _, rsup := range sup.Ranges {
+		if u.In(rsup) {
+			return true
+		}
+	}
+	return false
+}
+
+func (u *UnicodeSet) ContainsClass(c *UnicodeClass) bool {
+	for _, rng := range u.Ranges {
+		if rng.ContainsClass(c) {
+			return true
+		}
+	}
+	return false
+}
+
+func (u *UnicodeSet) ContainsRune(r rune) bool {
+	incl, excl := u.GetRangeTables()
+	return unicode.In(r, incl...) && !unicode.In(r, excl...)
+}
+
+func (u *UnicodeSet) ContainsRunes(runes ...rune) bool {
+	for _, r := range runes {
+		if !u.ContainsRune(r) {
+			return false
+		}
+	}
+	return true
+}
+
+func (u *UnicodeSet) ContainsRangeTable(rngTab *unicode.RangeTable) bool {
+	for _, rng := range u.Ranges {
+		if rangeTableInRangeTable(rngTab, rng.GetRangeTable()) {
+			return true
+		}
+	}
+	return false
+}
+
+func (u *UnicodeSet) ContainsSet(u1 *UnicodeSet) bool {
+	for _, rng := range u1.Ranges {
+		if !u.ContainsRangeTable(rng.GetRangeTable()) {
+			return false
+		}
+	}
+	return true
+}
+
+func (u *UnicodeSet) Equal(other LexBase) bool {
+	if other == nil {
+		return false
+	}
+	u1, ok := other.(*UnicodeSet)
+	if !ok {
+		return false
+	}
+	return u.Ranges.Equal(u1.Ranges)
+}
+
+func (u *UnicodeSet) GetRangeTables() (incl, excl []*unicode.RangeTable) {
+	for _, rng := range u.Ranges {
+		if rng.Exclude {
+			excl = append(excl, rng.GetRangeTable())
+		} else {
+			incl = append(incl, rng.GetRangeTable())
+		}
+	}
+	return
+}
+
+func (u *UnicodeSet) Lext() int {
+	return u.lext
+}
+
+func (u *UnicodeSet) String() string {
+	return "'[" + u.Ranges.String() + "]'"
+}
+
+// Subset returns true iff u is a subset or equal of sup
+func (u *UnicodeSet) Subset(sup *UnicodeSet) bool {
+	for _, rng := range u.Ranges {
+		if !rng.Subset(sup) {
+			return false
+		}
+	}
+	return true
 }
 
 /*** Utils ***/
