@@ -143,23 +143,21 @@ const(
 	T_94  // ] 
 	T_95  // ]' 
 	T_96  // any 
-	T_97  // bigU 
-	T_98  // char_lit 
-	T_99  // empty 
-	T_100  // hex_digit 
-	T_101  // letter 
-	T_102  // littleU 
-	T_103  // lowcase 
-	T_104  // not 
-	T_105  // nt 
-	T_106  // number 
-	T_107  // package 
-	T_108  // string_lit 
-	T_109  // tokid 
-	T_110  // upcase 
-	T_111  // { 
-	T_112  // | 
-	T_113  // } 
+	T_97  // char_lit 
+	T_98  // empty 
+	T_99  // hex_digit 
+	T_100  // letter 
+	T_101  // lowcase 
+	T_102  // not 
+	T_103  // nt 
+	T_104  // number 
+	T_105  // package 
+	T_106  // string_lit 
+	T_107  // tokid 
+	T_108  // upcase 
+	T_109  // { 
+	T_110  // | 
+	T_111  // } 
 )
 
 type Symbols []Symbol
@@ -316,23 +314,21 @@ var tToString = []string {
 	"]", /* T_94 */
 	"]'", /* T_95 */
 	"any", /* T_96 */
-	"bigU", /* T_97 */
-	"char_lit", /* T_98 */
-	"empty", /* T_99 */
-	"hex_digit", /* T_100 */
-	"letter", /* T_101 */
-	"littleU", /* T_102 */
-	"lowcase", /* T_103 */
-	"not", /* T_104 */
-	"nt", /* T_105 */
-	"number", /* T_106 */
-	"package", /* T_107 */
-	"string_lit", /* T_108 */
-	"tokid", /* T_109 */
-	"upcase", /* T_110 */
-	"{", /* T_111 */
-	"|", /* T_112 */
-	"}", /* T_113 */ 
+	"char_lit", /* T_97 */
+	"empty", /* T_98 */
+	"hex_digit", /* T_99 */
+	"letter", /* T_100 */
+	"lowcase", /* T_101 */
+	"not", /* T_102 */
+	"nt", /* T_103 */
+	"number", /* T_104 */
+	"package", /* T_105 */
+	"string_lit", /* T_106 */
+	"tokid", /* T_107 */
+	"upcase", /* T_108 */
+	"{", /* T_109 */
+	"|", /* T_110 */
+	"}", /* T_111 */ 
 }
 
 var stringNT = map[string]NT{ 

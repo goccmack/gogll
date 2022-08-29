@@ -71,30 +71,24 @@ hex_digit
     |       'A' | 'B' | 'C' | 'D' | 'E' | 'F' ) 
     ;
 
-bigU 
-    :   '\'' '\\' 'u' 
-        hex_digit hex_digit hex_digit hex_digit 
-        hex_digit hex_digit hex_digit hex_digit 
-        '\''
-    ;
-
-littleU : '\'' '\\' 'u' hex_digit hex_digit hex_digit hex_digit '\'';
-
 LexSymbol 
     :   "." | "any" string_lit | char_lit | LexBracket | "not" string_lit 
     |   UnicodeClass 
     |   UnicodeSet
     ;
 
-```
-    |   littleU | bigU
-```
-
 UnicodeClass 
     :   "letter" | "upcase" | "lowcase" | "number" 
     ;
 
 UnicodeSet : "'[" UnicodeSetSpec UnicodeSetSpecs "]'" ;
+```
+`UnicodeSet` is used to specify a set of Unicode character properties, e.g.:  
+    `id_start : '[\p{L}\p{Nl}\p{Other_ID_Start}-\p{Pattern_Syntax}-\p{Pattern_White_Space}]' ;`
+
+A character property may be included in a set, e.g.: `\p{L}`;   
+or excluded from a set, e.g.: `-\p{Pattern_Syntax}`
+```
 
 UnicodeSetSpec : "\\p{" UnicodeRange "}" ;
 
@@ -114,7 +108,13 @@ PlusOrMinUnicodeSet
     ;
 
 UnicodeRange : UnicodeCategory | UnicodeProperty ;
+```
+`UnicodeCategory` and `UnicodeProperty` correspond with the matching range table variable
+definitions in Go *package unicode*.
 
+`UnicodeCategory` is the set of Unicode [*General Categories*](https://www.unicode.org/versions/Unicode14.0.0/ch04.pdf#G134153), as specified as variables in *package unicode*.
+These categories may be used in the specification of a `UnicodeSet`.
+```
 UnicodeCategory 
     :   "Cc"
     |   "Cf"
@@ -164,7 +164,10 @@ UnicodeCategory
     |   "Zp"
     |   "Zs"
     ;
-
+```
+`UnicodeProperty` is the set of Unicode character properties supported in 
+*package unicode*. They may be used in `UnicodeSet` specifications.
+```
 UnicodeProperty
     :   "ASCII_Hex_Digit"
     |   "Bidi_Control"

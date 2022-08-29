@@ -283,6 +283,7 @@ func not(r rune, set []rune) bool {
 
 var accept = []token.Type{ 
 	token.Error, 
+	token.T_0, 
 	token.T_1, 
 	token.T_0, 
 }
@@ -291,9 +292,9 @@ var nextState = []func(r rune) state{
 	// Set0
 	func(r rune) state {
 		switch { 
-		case r == '<':
-			return 1 
 		case unicode.In(r, _L, _Nl, _Other_ID_Start) && !unicode.In(r, _Pattern_Syntax, _Pattern_White_Space):
+			return 1 
+		case unicode.In(r, _Mn, _Mc, _Nd, _Pc, _Other_ID_Continue) && !unicode.In(r, _Pattern_Syntax, _Pattern_White_Space):
 			return 2 
 		}
 		return nullState
@@ -301,12 +302,26 @@ var nextState = []func(r rune) state{
 	// Set1
 	func(r rune) state {
 		switch { 
+		case unicode.In(r, _L, _Nl, _Other_ID_Start) && !unicode.In(r, _Pattern_Syntax, _Pattern_White_Space):
+			return 3 
+		case unicode.In(r, _Mn, _Mc, _Nd, _Pc, _Other_ID_Continue) && !unicode.In(r, _Pattern_Syntax, _Pattern_White_Space):
+			return 3 
 		}
 		return nullState
 	}, 
 	// Set2
 	func(r rune) state {
 		switch { 
+		}
+		return nullState
+	}, 
+	// Set3
+	func(r rune) state {
+		switch { 
+		case unicode.In(r, _L, _Nl, _Other_ID_Start) && !unicode.In(r, _Pattern_Syntax, _Pattern_White_Space):
+			return 3 
+		case unicode.In(r, _Mn, _Mc, _Nd, _Pc, _Other_ID_Continue) && !unicode.In(r, _Pattern_Syntax, _Pattern_White_Space):
+			return 3 
 		}
 		return nullState
 	}, 

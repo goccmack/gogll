@@ -1832,13 +1832,13 @@ func (p *parser) testSelect(l slot.Label) bool {
 var first = []map[token.Type]string{
 	// GoGLL : ∙Package Rules
 	{
-		token.T_107: "package",
+		token.T_105: "package",
 	},
 	// GoGLL : Package ∙Rules
 	{
 		token.T_0:   "!",
-		token.T_105: "nt",
-		token.T_109: "tokid",
+		token.T_103: "nt",
+		token.T_107: "tokid",
 	},
 	// GoGLL : Package Rules ∙
 	{
@@ -1852,21 +1852,21 @@ var first = []map[token.Type]string{
 		token.T_8:   "<",
 		token.T_92:  "[",
 		token.T_96:  "any",
-		token.T_98:  "char_lit",
-		token.T_101: "letter",
-		token.T_103: "lowcase",
-		token.T_104: "not",
-		token.T_106: "number",
-		token.T_109: "tokid",
-		token.T_110: "upcase",
-		token.T_111: "{",
+		token.T_97:  "char_lit",
+		token.T_100: "letter",
+		token.T_101: "lowcase",
+		token.T_102: "not",
+		token.T_104: "number",
+		token.T_107: "tokid",
+		token.T_108: "upcase",
+		token.T_109: "{",
 	},
 	// LexAlternates : RegExp ∙
 	{
 		token.T_3:   ")",
 		token.T_9:   ">",
 		token.T_94:  "]",
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// LexAlternates : ∙RegExp | LexAlternates
 	{
@@ -1876,18 +1876,18 @@ var first = []map[token.Type]string{
 		token.T_8:   "<",
 		token.T_92:  "[",
 		token.T_96:  "any",
-		token.T_98:  "char_lit",
-		token.T_101: "letter",
-		token.T_103: "lowcase",
-		token.T_104: "not",
-		token.T_106: "number",
-		token.T_109: "tokid",
-		token.T_110: "upcase",
-		token.T_111: "{",
+		token.T_97:  "char_lit",
+		token.T_100: "letter",
+		token.T_101: "lowcase",
+		token.T_102: "not",
+		token.T_104: "number",
+		token.T_107: "tokid",
+		token.T_108: "upcase",
+		token.T_109: "{",
 	},
 	// LexAlternates : RegExp ∙| LexAlternates
 	{
-		token.T_112: "|",
+		token.T_110: "|",
 	},
 	// LexAlternates : RegExp | ∙LexAlternates
 	{
@@ -1897,21 +1897,21 @@ var first = []map[token.Type]string{
 		token.T_8:   "<",
 		token.T_92:  "[",
 		token.T_96:  "any",
-		token.T_98:  "char_lit",
-		token.T_101: "letter",
-		token.T_103: "lowcase",
-		token.T_104: "not",
-		token.T_106: "number",
-		token.T_109: "tokid",
-		token.T_110: "upcase",
-		token.T_111: "{",
+		token.T_97:  "char_lit",
+		token.T_100: "letter",
+		token.T_101: "lowcase",
+		token.T_102: "not",
+		token.T_104: "number",
+		token.T_107: "tokid",
+		token.T_108: "upcase",
+		token.T_109: "{",
 	},
 	// LexAlternates : RegExp | LexAlternates ∙
 	{
 		token.T_3:   ")",
 		token.T_9:   ">",
 		token.T_94:  "]",
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// LexBracket : ∙LexGroup
 	{
@@ -1929,16 +1929,16 @@ var first = []map[token.Type]string{
 		token.T_92:  "[",
 		token.T_94:  "]",
 		token.T_96:  "any",
-		token.T_98:  "char_lit",
-		token.T_101: "letter",
-		token.T_103: "lowcase",
-		token.T_104: "not",
-		token.T_106: "number",
-		token.T_109: "tokid",
-		token.T_110: "upcase",
-		token.T_111: "{",
-		token.T_112: "|",
-		token.T_113: "}",
+		token.T_97:  "char_lit",
+		token.T_100: "letter",
+		token.T_101: "lowcase",
+		token.T_102: "not",
+		token.T_104: "number",
+		token.T_107: "tokid",
+		token.T_108: "upcase",
+		token.T_109: "{",
+		token.T_110: "|",
+		token.T_111: "}",
 	},
 	// LexBracket : ∙LexOptional
 	{
@@ -1956,20 +1956,20 @@ var first = []map[token.Type]string{
 		token.T_92:  "[",
 		token.T_94:  "]",
 		token.T_96:  "any",
-		token.T_98:  "char_lit",
-		token.T_101: "letter",
-		token.T_103: "lowcase",
-		token.T_104: "not",
-		token.T_106: "number",
-		token.T_109: "tokid",
-		token.T_110: "upcase",
-		token.T_111: "{",
-		token.T_112: "|",
-		token.T_113: "}",
+		token.T_97:  "char_lit",
+		token.T_100: "letter",
+		token.T_101: "lowcase",
+		token.T_102: "not",
+		token.T_104: "number",
+		token.T_107: "tokid",
+		token.T_108: "upcase",
+		token.T_109: "{",
+		token.T_110: "|",
+		token.T_111: "}",
 	},
 	// LexBracket : ∙LexZeroOrMore
 	{
-		token.T_111: "{",
+		token.T_109: "{",
 	},
 	// LexBracket : LexZeroOrMore ∙
 	{
@@ -1983,16 +1983,16 @@ var first = []map[token.Type]string{
 		token.T_92:  "[",
 		token.T_94:  "]",
 		token.T_96:  "any",
-		token.T_98:  "char_lit",
-		token.T_101: "letter",
-		token.T_103: "lowcase",
-		token.T_104: "not",
-		token.T_106: "number",
-		token.T_109: "tokid",
-		token.T_110: "upcase",
-		token.T_111: "{",
-		token.T_112: "|",
-		token.T_113: "}",
+		token.T_97:  "char_lit",
+		token.T_100: "letter",
+		token.T_101: "lowcase",
+		token.T_102: "not",
+		token.T_104: "number",
+		token.T_107: "tokid",
+		token.T_108: "upcase",
+		token.T_109: "{",
+		token.T_110: "|",
+		token.T_111: "}",
 	},
 	// LexBracket : ∙LexOneOrMore
 	{
@@ -2010,16 +2010,16 @@ var first = []map[token.Type]string{
 		token.T_92:  "[",
 		token.T_94:  "]",
 		token.T_96:  "any",
-		token.T_98:  "char_lit",
-		token.T_101: "letter",
-		token.T_103: "lowcase",
-		token.T_104: "not",
-		token.T_106: "number",
-		token.T_109: "tokid",
-		token.T_110: "upcase",
-		token.T_111: "{",
-		token.T_112: "|",
-		token.T_113: "}",
+		token.T_97:  "char_lit",
+		token.T_100: "letter",
+		token.T_101: "lowcase",
+		token.T_102: "not",
+		token.T_104: "number",
+		token.T_107: "tokid",
+		token.T_108: "upcase",
+		token.T_109: "{",
+		token.T_110: "|",
+		token.T_111: "}",
 	},
 	// LexGroup : ∙( LexAlternates )
 	{
@@ -2033,14 +2033,14 @@ var first = []map[token.Type]string{
 		token.T_8:   "<",
 		token.T_92:  "[",
 		token.T_96:  "any",
-		token.T_98:  "char_lit",
-		token.T_101: "letter",
-		token.T_103: "lowcase",
-		token.T_104: "not",
-		token.T_106: "number",
-		token.T_109: "tokid",
-		token.T_110: "upcase",
-		token.T_111: "{",
+		token.T_97:  "char_lit",
+		token.T_100: "letter",
+		token.T_101: "lowcase",
+		token.T_102: "not",
+		token.T_104: "number",
+		token.T_107: "tokid",
+		token.T_108: "upcase",
+		token.T_109: "{",
 	},
 	// LexGroup : ( LexAlternates ∙)
 	{
@@ -2058,16 +2058,16 @@ var first = []map[token.Type]string{
 		token.T_92:  "[",
 		token.T_94:  "]",
 		token.T_96:  "any",
-		token.T_98:  "char_lit",
-		token.T_101: "letter",
-		token.T_103: "lowcase",
-		token.T_104: "not",
-		token.T_106: "number",
-		token.T_109: "tokid",
-		token.T_110: "upcase",
-		token.T_111: "{",
-		token.T_112: "|",
-		token.T_113: "}",
+		token.T_97:  "char_lit",
+		token.T_100: "letter",
+		token.T_101: "lowcase",
+		token.T_102: "not",
+		token.T_104: "number",
+		token.T_107: "tokid",
+		token.T_108: "upcase",
+		token.T_109: "{",
+		token.T_110: "|",
+		token.T_111: "}",
 	},
 	// LexOneOrMore : ∙< LexAlternates >
 	{
@@ -2081,14 +2081,14 @@ var first = []map[token.Type]string{
 		token.T_8:   "<",
 		token.T_92:  "[",
 		token.T_96:  "any",
-		token.T_98:  "char_lit",
-		token.T_101: "letter",
-		token.T_103: "lowcase",
-		token.T_104: "not",
-		token.T_106: "number",
-		token.T_109: "tokid",
-		token.T_110: "upcase",
-		token.T_111: "{",
+		token.T_97:  "char_lit",
+		token.T_100: "letter",
+		token.T_101: "lowcase",
+		token.T_102: "not",
+		token.T_104: "number",
+		token.T_107: "tokid",
+		token.T_108: "upcase",
+		token.T_109: "{",
 	},
 	// LexOneOrMore : < LexAlternates ∙>
 	{
@@ -2106,16 +2106,16 @@ var first = []map[token.Type]string{
 		token.T_92:  "[",
 		token.T_94:  "]",
 		token.T_96:  "any",
-		token.T_98:  "char_lit",
-		token.T_101: "letter",
-		token.T_103: "lowcase",
-		token.T_104: "not",
-		token.T_106: "number",
-		token.T_109: "tokid",
-		token.T_110: "upcase",
-		token.T_111: "{",
-		token.T_112: "|",
-		token.T_113: "}",
+		token.T_97:  "char_lit",
+		token.T_100: "letter",
+		token.T_101: "lowcase",
+		token.T_102: "not",
+		token.T_104: "number",
+		token.T_107: "tokid",
+		token.T_108: "upcase",
+		token.T_109: "{",
+		token.T_110: "|",
+		token.T_111: "}",
 	},
 	// LexOptional : ∙[ LexAlternates ]
 	{
@@ -2129,14 +2129,14 @@ var first = []map[token.Type]string{
 		token.T_8:   "<",
 		token.T_92:  "[",
 		token.T_96:  "any",
-		token.T_98:  "char_lit",
-		token.T_101: "letter",
-		token.T_103: "lowcase",
-		token.T_104: "not",
-		token.T_106: "number",
-		token.T_109: "tokid",
-		token.T_110: "upcase",
-		token.T_111: "{",
+		token.T_97:  "char_lit",
+		token.T_100: "letter",
+		token.T_101: "lowcase",
+		token.T_102: "not",
+		token.T_104: "number",
+		token.T_107: "tokid",
+		token.T_108: "upcase",
+		token.T_109: "{",
 	},
 	// LexOptional : [ LexAlternates ∙]
 	{
@@ -2154,20 +2154,20 @@ var first = []map[token.Type]string{
 		token.T_92:  "[",
 		token.T_94:  "]",
 		token.T_96:  "any",
-		token.T_98:  "char_lit",
-		token.T_101: "letter",
-		token.T_103: "lowcase",
-		token.T_104: "not",
-		token.T_106: "number",
-		token.T_109: "tokid",
-		token.T_110: "upcase",
-		token.T_111: "{",
-		token.T_112: "|",
-		token.T_113: "}",
+		token.T_97:  "char_lit",
+		token.T_100: "letter",
+		token.T_101: "lowcase",
+		token.T_102: "not",
+		token.T_104: "number",
+		token.T_107: "tokid",
+		token.T_108: "upcase",
+		token.T_109: "{",
+		token.T_110: "|",
+		token.T_111: "}",
 	},
 	// LexRule : ∙tokid : RegExp ;
 	{
-		token.T_109: "tokid",
+		token.T_107: "tokid",
 	},
 	// LexRule : tokid ∙: RegExp ;
 	{
@@ -2181,14 +2181,14 @@ var first = []map[token.Type]string{
 		token.T_8:   "<",
 		token.T_92:  "[",
 		token.T_96:  "any",
-		token.T_98:  "char_lit",
-		token.T_101: "letter",
-		token.T_103: "lowcase",
-		token.T_104: "not",
-		token.T_106: "number",
-		token.T_109: "tokid",
-		token.T_110: "upcase",
-		token.T_111: "{",
+		token.T_97:  "char_lit",
+		token.T_100: "letter",
+		token.T_101: "lowcase",
+		token.T_102: "not",
+		token.T_104: "number",
+		token.T_107: "tokid",
+		token.T_108: "upcase",
+		token.T_109: "{",
 	},
 	// LexRule : tokid : RegExp ∙;
 	{
@@ -2198,8 +2198,8 @@ var first = []map[token.Type]string{
 	{
 		token.T_0:   "!",
 		token.EOF:   "$",
-		token.T_105: "nt",
-		token.T_109: "tokid",
+		token.T_103: "nt",
+		token.T_107: "tokid",
 	},
 	// LexRule : ∙! tokid : RegExp ;
 	{
@@ -2207,7 +2207,7 @@ var first = []map[token.Type]string{
 	},
 	// LexRule : ! ∙tokid : RegExp ;
 	{
-		token.T_109: "tokid",
+		token.T_107: "tokid",
 	},
 	// LexRule : ! tokid ∙: RegExp ;
 	{
@@ -2221,14 +2221,14 @@ var first = []map[token.Type]string{
 		token.T_8:   "<",
 		token.T_92:  "[",
 		token.T_96:  "any",
-		token.T_98:  "char_lit",
-		token.T_101: "letter",
-		token.T_103: "lowcase",
-		token.T_104: "not",
-		token.T_106: "number",
-		token.T_109: "tokid",
-		token.T_110: "upcase",
-		token.T_111: "{",
+		token.T_97:  "char_lit",
+		token.T_100: "letter",
+		token.T_101: "lowcase",
+		token.T_102: "not",
+		token.T_104: "number",
+		token.T_107: "tokid",
+		token.T_108: "upcase",
+		token.T_109: "{",
 	},
 	// LexRule : ! tokid : RegExp ∙;
 	{
@@ -2238,8 +2238,8 @@ var first = []map[token.Type]string{
 	{
 		token.T_0:   "!",
 		token.EOF:   "$",
-		token.T_105: "nt",
-		token.T_109: "tokid",
+		token.T_103: "nt",
+		token.T_107: "tokid",
 	},
 	// LexSymbol : ∙.
 	{
@@ -2257,16 +2257,16 @@ var first = []map[token.Type]string{
 		token.T_92:  "[",
 		token.T_94:  "]",
 		token.T_96:  "any",
-		token.T_98:  "char_lit",
-		token.T_101: "letter",
-		token.T_103: "lowcase",
-		token.T_104: "not",
-		token.T_106: "number",
-		token.T_109: "tokid",
-		token.T_110: "upcase",
-		token.T_111: "{",
-		token.T_112: "|",
-		token.T_113: "}",
+		token.T_97:  "char_lit",
+		token.T_100: "letter",
+		token.T_101: "lowcase",
+		token.T_102: "not",
+		token.T_104: "number",
+		token.T_107: "tokid",
+		token.T_108: "upcase",
+		token.T_109: "{",
+		token.T_110: "|",
+		token.T_111: "}",
 	},
 	// LexSymbol : ∙any string_lit
 	{
@@ -2274,7 +2274,7 @@ var first = []map[token.Type]string{
 	},
 	// LexSymbol : any ∙string_lit
 	{
-		token.T_108: "string_lit",
+		token.T_106: "string_lit",
 	},
 	// LexSymbol : any string_lit ∙
 	{
@@ -2288,20 +2288,20 @@ var first = []map[token.Type]string{
 		token.T_92:  "[",
 		token.T_94:  "]",
 		token.T_96:  "any",
-		token.T_98:  "char_lit",
-		token.T_101: "letter",
-		token.T_103: "lowcase",
-		token.T_104: "not",
-		token.T_106: "number",
-		token.T_109: "tokid",
-		token.T_110: "upcase",
-		token.T_111: "{",
-		token.T_112: "|",
-		token.T_113: "}",
+		token.T_97:  "char_lit",
+		token.T_100: "letter",
+		token.T_101: "lowcase",
+		token.T_102: "not",
+		token.T_104: "number",
+		token.T_107: "tokid",
+		token.T_108: "upcase",
+		token.T_109: "{",
+		token.T_110: "|",
+		token.T_111: "}",
 	},
 	// LexSymbol : ∙char_lit
 	{
-		token.T_98: "char_lit",
+		token.T_97: "char_lit",
 	},
 	// LexSymbol : char_lit ∙
 	{
@@ -2315,23 +2315,23 @@ var first = []map[token.Type]string{
 		token.T_92:  "[",
 		token.T_94:  "]",
 		token.T_96:  "any",
-		token.T_98:  "char_lit",
-		token.T_101: "letter",
-		token.T_103: "lowcase",
-		token.T_104: "not",
-		token.T_106: "number",
-		token.T_109: "tokid",
-		token.T_110: "upcase",
-		token.T_111: "{",
-		token.T_112: "|",
-		token.T_113: "}",
+		token.T_97:  "char_lit",
+		token.T_100: "letter",
+		token.T_101: "lowcase",
+		token.T_102: "not",
+		token.T_104: "number",
+		token.T_107: "tokid",
+		token.T_108: "upcase",
+		token.T_109: "{",
+		token.T_110: "|",
+		token.T_111: "}",
 	},
 	// LexSymbol : ∙LexBracket
 	{
 		token.T_2:   "(",
 		token.T_8:   "<",
 		token.T_92:  "[",
-		token.T_111: "{",
+		token.T_109: "{",
 	},
 	// LexSymbol : LexBracket ∙
 	{
@@ -2345,24 +2345,24 @@ var first = []map[token.Type]string{
 		token.T_92:  "[",
 		token.T_94:  "]",
 		token.T_96:  "any",
-		token.T_98:  "char_lit",
-		token.T_101: "letter",
-		token.T_103: "lowcase",
-		token.T_104: "not",
-		token.T_106: "number",
-		token.T_109: "tokid",
-		token.T_110: "upcase",
-		token.T_111: "{",
-		token.T_112: "|",
-		token.T_113: "}",
+		token.T_97:  "char_lit",
+		token.T_100: "letter",
+		token.T_101: "lowcase",
+		token.T_102: "not",
+		token.T_104: "number",
+		token.T_107: "tokid",
+		token.T_108: "upcase",
+		token.T_109: "{",
+		token.T_110: "|",
+		token.T_111: "}",
 	},
 	// LexSymbol : ∙not string_lit
 	{
-		token.T_104: "not",
+		token.T_102: "not",
 	},
 	// LexSymbol : not ∙string_lit
 	{
-		token.T_108: "string_lit",
+		token.T_106: "string_lit",
 	},
 	// LexSymbol : not string_lit ∙
 	{
@@ -2376,23 +2376,23 @@ var first = []map[token.Type]string{
 		token.T_92:  "[",
 		token.T_94:  "]",
 		token.T_96:  "any",
-		token.T_98:  "char_lit",
-		token.T_101: "letter",
-		token.T_103: "lowcase",
-		token.T_104: "not",
-		token.T_106: "number",
-		token.T_109: "tokid",
-		token.T_110: "upcase",
-		token.T_111: "{",
-		token.T_112: "|",
-		token.T_113: "}",
+		token.T_97:  "char_lit",
+		token.T_100: "letter",
+		token.T_101: "lowcase",
+		token.T_102: "not",
+		token.T_104: "number",
+		token.T_107: "tokid",
+		token.T_108: "upcase",
+		token.T_109: "{",
+		token.T_110: "|",
+		token.T_111: "}",
 	},
 	// LexSymbol : ∙UnicodeClass
 	{
-		token.T_101: "letter",
-		token.T_103: "lowcase",
-		token.T_106: "number",
-		token.T_110: "upcase",
+		token.T_100: "letter",
+		token.T_101: "lowcase",
+		token.T_104: "number",
+		token.T_108: "upcase",
 	},
 	// LexSymbol : UnicodeClass ∙
 	{
@@ -2406,16 +2406,16 @@ var first = []map[token.Type]string{
 		token.T_92:  "[",
 		token.T_94:  "]",
 		token.T_96:  "any",
-		token.T_98:  "char_lit",
-		token.T_101: "letter",
-		token.T_103: "lowcase",
-		token.T_104: "not",
-		token.T_106: "number",
-		token.T_109: "tokid",
-		token.T_110: "upcase",
-		token.T_111: "{",
-		token.T_112: "|",
-		token.T_113: "}",
+		token.T_97:  "char_lit",
+		token.T_100: "letter",
+		token.T_101: "lowcase",
+		token.T_102: "not",
+		token.T_104: "number",
+		token.T_107: "tokid",
+		token.T_108: "upcase",
+		token.T_109: "{",
+		token.T_110: "|",
+		token.T_111: "}",
 	},
 	// LexSymbol : ∙UnicodeSet
 	{
@@ -2433,20 +2433,20 @@ var first = []map[token.Type]string{
 		token.T_92:  "[",
 		token.T_94:  "]",
 		token.T_96:  "any",
-		token.T_98:  "char_lit",
-		token.T_101: "letter",
-		token.T_103: "lowcase",
-		token.T_104: "not",
-		token.T_106: "number",
-		token.T_109: "tokid",
-		token.T_110: "upcase",
-		token.T_111: "{",
-		token.T_112: "|",
-		token.T_113: "}",
+		token.T_97:  "char_lit",
+		token.T_100: "letter",
+		token.T_101: "lowcase",
+		token.T_102: "not",
+		token.T_104: "number",
+		token.T_107: "tokid",
+		token.T_108: "upcase",
+		token.T_109: "{",
+		token.T_110: "|",
+		token.T_111: "}",
 	},
 	// LexZeroOrMore : ∙{ LexAlternates }
 	{
-		token.T_111: "{",
+		token.T_109: "{",
 	},
 	// LexZeroOrMore : { ∙LexAlternates }
 	{
@@ -2456,18 +2456,18 @@ var first = []map[token.Type]string{
 		token.T_8:   "<",
 		token.T_92:  "[",
 		token.T_96:  "any",
-		token.T_98:  "char_lit",
-		token.T_101: "letter",
-		token.T_103: "lowcase",
-		token.T_104: "not",
-		token.T_106: "number",
-		token.T_109: "tokid",
-		token.T_110: "upcase",
-		token.T_111: "{",
+		token.T_97:  "char_lit",
+		token.T_100: "letter",
+		token.T_101: "lowcase",
+		token.T_102: "not",
+		token.T_104: "number",
+		token.T_107: "tokid",
+		token.T_108: "upcase",
+		token.T_109: "{",
 	},
 	// LexZeroOrMore : { LexAlternates ∙}
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// LexZeroOrMore : { LexAlternates } ∙
 	{
@@ -2481,30 +2481,30 @@ var first = []map[token.Type]string{
 		token.T_92:  "[",
 		token.T_94:  "]",
 		token.T_96:  "any",
-		token.T_98:  "char_lit",
-		token.T_101: "letter",
-		token.T_103: "lowcase",
-		token.T_104: "not",
-		token.T_106: "number",
-		token.T_109: "tokid",
-		token.T_110: "upcase",
-		token.T_111: "{",
-		token.T_112: "|",
-		token.T_113: "}",
+		token.T_97:  "char_lit",
+		token.T_100: "letter",
+		token.T_101: "lowcase",
+		token.T_102: "not",
+		token.T_104: "number",
+		token.T_107: "tokid",
+		token.T_108: "upcase",
+		token.T_109: "{",
+		token.T_110: "|",
+		token.T_111: "}",
 	},
 	// Package : ∙package string_lit
 	{
-		token.T_107: "package",
+		token.T_105: "package",
 	},
 	// Package : package ∙string_lit
 	{
-		token.T_108: "string_lit",
+		token.T_106: "string_lit",
 	},
 	// Package : package string_lit ∙
 	{
 		token.T_0:   "!",
-		token.T_105: "nt",
-		token.T_109: "tokid",
+		token.T_103: "nt",
+		token.T_107: "tokid",
 	},
 	// PlusOrMinUnicodeSet : ∙UnicodeSetSpec
 	{
@@ -2538,13 +2538,13 @@ var first = []map[token.Type]string{
 		token.T_8:   "<",
 		token.T_92:  "[",
 		token.T_96:  "any",
-		token.T_98:  "char_lit",
-		token.T_101: "letter",
-		token.T_103: "lowcase",
-		token.T_104: "not",
-		token.T_106: "number",
-		token.T_110: "upcase",
-		token.T_111: "{",
+		token.T_97:  "char_lit",
+		token.T_100: "letter",
+		token.T_101: "lowcase",
+		token.T_102: "not",
+		token.T_104: "number",
+		token.T_108: "upcase",
+		token.T_109: "{",
 	},
 	// RegExp : LexSymbol ∙
 	{
@@ -2552,12 +2552,12 @@ var first = []map[token.Type]string{
 		token.T_7:   ";",
 		token.T_9:   ">",
 		token.T_94:  "]",
-		token.T_112: "|",
-		token.T_113: "}",
+		token.T_110: "|",
+		token.T_111: "}",
 	},
 	// RegExp : ∙tokid
 	{
-		token.T_109: "tokid",
+		token.T_107: "tokid",
 	},
 	// RegExp : tokid ∙
 	{
@@ -2565,8 +2565,8 @@ var first = []map[token.Type]string{
 		token.T_7:   ";",
 		token.T_9:   ">",
 		token.T_94:  "]",
-		token.T_112: "|",
-		token.T_113: "}",
+		token.T_110: "|",
+		token.T_111: "}",
 	},
 	// RegExp : ∙LexSymbol RegExp
 	{
@@ -2576,13 +2576,13 @@ var first = []map[token.Type]string{
 		token.T_8:   "<",
 		token.T_92:  "[",
 		token.T_96:  "any",
-		token.T_98:  "char_lit",
-		token.T_101: "letter",
-		token.T_103: "lowcase",
-		token.T_104: "not",
-		token.T_106: "number",
-		token.T_110: "upcase",
-		token.T_111: "{",
+		token.T_97:  "char_lit",
+		token.T_100: "letter",
+		token.T_101: "lowcase",
+		token.T_102: "not",
+		token.T_104: "number",
+		token.T_108: "upcase",
+		token.T_109: "{",
 	},
 	// RegExp : LexSymbol ∙RegExp
 	{
@@ -2592,14 +2592,14 @@ var first = []map[token.Type]string{
 		token.T_8:   "<",
 		token.T_92:  "[",
 		token.T_96:  "any",
-		token.T_98:  "char_lit",
-		token.T_101: "letter",
-		token.T_103: "lowcase",
-		token.T_104: "not",
-		token.T_106: "number",
-		token.T_109: "tokid",
-		token.T_110: "upcase",
-		token.T_111: "{",
+		token.T_97:  "char_lit",
+		token.T_100: "letter",
+		token.T_101: "lowcase",
+		token.T_102: "not",
+		token.T_104: "number",
+		token.T_107: "tokid",
+		token.T_108: "upcase",
+		token.T_109: "{",
 	},
 	// RegExp : LexSymbol RegExp ∙
 	{
@@ -2607,12 +2607,12 @@ var first = []map[token.Type]string{
 		token.T_7:   ";",
 		token.T_9:   ">",
 		token.T_94:  "]",
-		token.T_112: "|",
-		token.T_113: "}",
+		token.T_110: "|",
+		token.T_111: "}",
 	},
 	// RegExp : ∙tokid RegExp
 	{
-		token.T_109: "tokid",
+		token.T_107: "tokid",
 	},
 	// RegExp : tokid ∙RegExp
 	{
@@ -2622,14 +2622,14 @@ var first = []map[token.Type]string{
 		token.T_8:   "<",
 		token.T_92:  "[",
 		token.T_96:  "any",
-		token.T_98:  "char_lit",
-		token.T_101: "letter",
-		token.T_103: "lowcase",
-		token.T_104: "not",
-		token.T_106: "number",
-		token.T_109: "tokid",
-		token.T_110: "upcase",
-		token.T_111: "{",
+		token.T_97:  "char_lit",
+		token.T_100: "letter",
+		token.T_101: "lowcase",
+		token.T_102: "not",
+		token.T_104: "number",
+		token.T_107: "tokid",
+		token.T_108: "upcase",
+		token.T_109: "{",
 	},
 	// RegExp : tokid RegExp ∙
 	{
@@ -2637,37 +2637,37 @@ var first = []map[token.Type]string{
 		token.T_7:   ";",
 		token.T_9:   ">",
 		token.T_94:  "]",
-		token.T_112: "|",
-		token.T_113: "}",
+		token.T_110: "|",
+		token.T_111: "}",
 	},
 	// Rule : ∙LexRule
 	{
 		token.T_0:   "!",
-		token.T_109: "tokid",
+		token.T_107: "tokid",
 	},
 	// Rule : LexRule ∙
 	{
 		token.T_0:   "!",
 		token.EOF:   "$",
-		token.T_105: "nt",
-		token.T_109: "tokid",
+		token.T_103: "nt",
+		token.T_107: "tokid",
 	},
 	// Rule : ∙SyntaxRule
 	{
-		token.T_105: "nt",
+		token.T_103: "nt",
 	},
 	// Rule : SyntaxRule ∙
 	{
 		token.T_0:   "!",
 		token.EOF:   "$",
-		token.T_105: "nt",
-		token.T_109: "tokid",
+		token.T_103: "nt",
+		token.T_107: "tokid",
 	},
 	// Rules : ∙Rule
 	{
 		token.T_0:   "!",
-		token.T_105: "nt",
-		token.T_109: "tokid",
+		token.T_103: "nt",
+		token.T_107: "tokid",
 	},
 	// Rules : Rule ∙
 	{
@@ -2676,14 +2676,14 @@ var first = []map[token.Type]string{
 	// Rules : ∙Rule Rules
 	{
 		token.T_0:   "!",
-		token.T_105: "nt",
-		token.T_109: "tokid",
+		token.T_103: "nt",
+		token.T_107: "tokid",
 	},
 	// Rules : Rule ∙Rules
 	{
 		token.T_0:   "!",
-		token.T_105: "nt",
-		token.T_109: "tokid",
+		token.T_103: "nt",
+		token.T_107: "tokid",
 	},
 	// Rules : Rule Rules ∙
 	{
@@ -2691,30 +2691,30 @@ var first = []map[token.Type]string{
 	},
 	// SyntaxAlternate : ∙SyntaxSymbols
 	{
-		token.T_105: "nt",
-		token.T_108: "string_lit",
-		token.T_109: "tokid",
+		token.T_103: "nt",
+		token.T_106: "string_lit",
+		token.T_107: "tokid",
 	},
 	// SyntaxAlternate : SyntaxSymbols ∙
 	{
 		token.T_7:   ";",
-		token.T_112: "|",
+		token.T_110: "|",
 	},
 	// SyntaxAlternate : ∙empty
 	{
-		token.T_99: "empty",
+		token.T_98: "empty",
 	},
 	// SyntaxAlternate : empty ∙
 	{
 		token.T_7:   ";",
-		token.T_112: "|",
+		token.T_110: "|",
 	},
 	// SyntaxAlternates : ∙SyntaxAlternate
 	{
-		token.T_99:  "empty",
-		token.T_105: "nt",
-		token.T_108: "string_lit",
-		token.T_109: "tokid",
+		token.T_98:  "empty",
+		token.T_103: "nt",
+		token.T_106: "string_lit",
+		token.T_107: "tokid",
 	},
 	// SyntaxAlternates : SyntaxAlternate ∙
 	{
@@ -2722,21 +2722,21 @@ var first = []map[token.Type]string{
 	},
 	// SyntaxAlternates : ∙SyntaxAlternate | SyntaxAlternates
 	{
-		token.T_99:  "empty",
-		token.T_105: "nt",
-		token.T_108: "string_lit",
-		token.T_109: "tokid",
+		token.T_98:  "empty",
+		token.T_103: "nt",
+		token.T_106: "string_lit",
+		token.T_107: "tokid",
 	},
 	// SyntaxAlternates : SyntaxAlternate ∙| SyntaxAlternates
 	{
-		token.T_112: "|",
+		token.T_110: "|",
 	},
 	// SyntaxAlternates : SyntaxAlternate | ∙SyntaxAlternates
 	{
-		token.T_99:  "empty",
-		token.T_105: "nt",
-		token.T_108: "string_lit",
-		token.T_109: "tokid",
+		token.T_98:  "empty",
+		token.T_103: "nt",
+		token.T_106: "string_lit",
+		token.T_107: "tokid",
 	},
 	// SyntaxAlternates : SyntaxAlternate | SyntaxAlternates ∙
 	{
@@ -2744,7 +2744,7 @@ var first = []map[token.Type]string{
 	},
 	// SyntaxRule : ∙nt : SyntaxAlternates ;
 	{
-		token.T_105: "nt",
+		token.T_103: "nt",
 	},
 	// SyntaxRule : nt ∙: SyntaxAlternates ;
 	{
@@ -2752,10 +2752,10 @@ var first = []map[token.Type]string{
 	},
 	// SyntaxRule : nt : ∙SyntaxAlternates ;
 	{
-		token.T_99:  "empty",
-		token.T_105: "nt",
-		token.T_108: "string_lit",
-		token.T_109: "tokid",
+		token.T_98:  "empty",
+		token.T_103: "nt",
+		token.T_106: "string_lit",
+		token.T_107: "tokid",
 	},
 	// SyntaxRule : nt : SyntaxAlternates ∙;
 	{
@@ -2765,72 +2765,72 @@ var first = []map[token.Type]string{
 	{
 		token.T_0:   "!",
 		token.EOF:   "$",
-		token.T_105: "nt",
-		token.T_109: "tokid",
+		token.T_103: "nt",
+		token.T_107: "tokid",
 	},
 	// SyntaxSymbol : ∙nt
 	{
-		token.T_105: "nt",
+		token.T_103: "nt",
 	},
 	// SyntaxSymbol : nt ∙
 	{
 		token.T_7:   ";",
-		token.T_105: "nt",
-		token.T_108: "string_lit",
-		token.T_109: "tokid",
-		token.T_112: "|",
+		token.T_103: "nt",
+		token.T_106: "string_lit",
+		token.T_107: "tokid",
+		token.T_110: "|",
 	},
 	// SyntaxSymbol : ∙tokid
 	{
-		token.T_109: "tokid",
+		token.T_107: "tokid",
 	},
 	// SyntaxSymbol : tokid ∙
 	{
 		token.T_7:   ";",
-		token.T_105: "nt",
-		token.T_108: "string_lit",
-		token.T_109: "tokid",
-		token.T_112: "|",
+		token.T_103: "nt",
+		token.T_106: "string_lit",
+		token.T_107: "tokid",
+		token.T_110: "|",
 	},
 	// SyntaxSymbol : ∙string_lit
 	{
-		token.T_108: "string_lit",
+		token.T_106: "string_lit",
 	},
 	// SyntaxSymbol : string_lit ∙
 	{
 		token.T_7:   ";",
-		token.T_105: "nt",
-		token.T_108: "string_lit",
-		token.T_109: "tokid",
-		token.T_112: "|",
+		token.T_103: "nt",
+		token.T_106: "string_lit",
+		token.T_107: "tokid",
+		token.T_110: "|",
 	},
 	// SyntaxSymbols : ∙SyntaxSymbol
 	{
-		token.T_105: "nt",
-		token.T_108: "string_lit",
-		token.T_109: "tokid",
+		token.T_103: "nt",
+		token.T_106: "string_lit",
+		token.T_107: "tokid",
 	},
 	// SyntaxSymbols : SyntaxSymbol ∙
 	{
 		token.T_7:   ";",
-		token.T_112: "|",
+		token.T_110: "|",
 	},
 	// SyntaxSymbols : ∙SyntaxSymbol SyntaxSymbols
 	{
-		token.T_105: "nt",
-		token.T_108: "string_lit",
-		token.T_109: "tokid",
+		token.T_103: "nt",
+		token.T_106: "string_lit",
+		token.T_107: "tokid",
 	},
 	// SyntaxSymbols : SyntaxSymbol ∙SyntaxSymbols
 	{
-		token.T_105: "nt",
-		token.T_108: "string_lit",
-		token.T_109: "tokid",
+		token.T_103: "nt",
+		token.T_106: "string_lit",
+		token.T_107: "tokid",
 	},
 	// SyntaxSymbols : SyntaxSymbol SyntaxSymbols ∙
 	{
 		token.T_7:   ";",
-		token.T_112: "|",
+		token.T_110: "|",
 	},
 	// UnicodeCategory : ∙Cc
 	{
@@ -2838,7 +2838,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : Cc ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙Cf
 	{
@@ -2846,7 +2846,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : Cf ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙Co
 	{
@@ -2854,7 +2854,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : Co ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙Cs
 	{
@@ -2862,7 +2862,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : Cs ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙Digit
 	{
@@ -2870,7 +2870,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : Digit ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙Nd
 	{
@@ -2878,7 +2878,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : Nd ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙Letter
 	{
@@ -2886,7 +2886,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : Letter ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙L
 	{
@@ -2894,7 +2894,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : L ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙Lm
 	{
@@ -2902,7 +2902,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : Lm ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙Lo
 	{
@@ -2910,7 +2910,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : Lo ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙Lower
 	{
@@ -2918,7 +2918,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : Lower ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙Ll
 	{
@@ -2926,7 +2926,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : Ll ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙Mark
 	{
@@ -2934,7 +2934,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : Mark ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙M
 	{
@@ -2942,7 +2942,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : M ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙Mc
 	{
@@ -2950,7 +2950,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : Mc ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙Me
 	{
@@ -2958,7 +2958,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : Me ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙Mn
 	{
@@ -2966,7 +2966,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : Mn ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙Nl
 	{
@@ -2974,7 +2974,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : Nl ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙No
 	{
@@ -2982,7 +2982,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : No ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙Number
 	{
@@ -2990,7 +2990,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : Number ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙N
 	{
@@ -2998,7 +2998,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : N ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙Other
 	{
@@ -3006,7 +3006,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : Other ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙C
 	{
@@ -3014,7 +3014,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : C ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙Pc
 	{
@@ -3022,7 +3022,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : Pc ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙Pd
 	{
@@ -3030,7 +3030,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : Pd ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙Pe
 	{
@@ -3038,7 +3038,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : Pe ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙Pf
 	{
@@ -3046,7 +3046,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : Pf ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙Pi
 	{
@@ -3054,7 +3054,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : Pi ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙Po
 	{
@@ -3062,7 +3062,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : Po ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙Ps
 	{
@@ -3070,7 +3070,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : Ps ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙Punct
 	{
@@ -3078,7 +3078,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : Punct ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙P
 	{
@@ -3086,7 +3086,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : P ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙Sc
 	{
@@ -3094,7 +3094,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : Sc ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙Sk
 	{
@@ -3102,7 +3102,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : Sk ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙Sm
 	{
@@ -3110,7 +3110,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : Sm ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙So
 	{
@@ -3118,7 +3118,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : So ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙Space
 	{
@@ -3126,7 +3126,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : Space ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙Z
 	{
@@ -3134,7 +3134,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : Z ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙Symbol
 	{
@@ -3142,7 +3142,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : Symbol ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙S
 	{
@@ -3150,7 +3150,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : S ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙Title
 	{
@@ -3158,7 +3158,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : Title ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙Lt
 	{
@@ -3166,7 +3166,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : Lt ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙Upper
 	{
@@ -3174,7 +3174,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : Upper ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙Lu
 	{
@@ -3182,7 +3182,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : Lu ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙Zl
 	{
@@ -3190,7 +3190,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : Zl ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙Zp
 	{
@@ -3198,7 +3198,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : Zp ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeCategory : ∙Zs
 	{
@@ -3206,11 +3206,11 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeCategory : Zs ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeClass : ∙letter
 	{
-		token.T_101: "letter",
+		token.T_100: "letter",
 	},
 	// UnicodeClass : letter ∙
 	{
@@ -3224,20 +3224,20 @@ var first = []map[token.Type]string{
 		token.T_92:  "[",
 		token.T_94:  "]",
 		token.T_96:  "any",
-		token.T_98:  "char_lit",
-		token.T_101: "letter",
-		token.T_103: "lowcase",
-		token.T_104: "not",
-		token.T_106: "number",
-		token.T_109: "tokid",
-		token.T_110: "upcase",
-		token.T_111: "{",
-		token.T_112: "|",
-		token.T_113: "}",
+		token.T_97:  "char_lit",
+		token.T_100: "letter",
+		token.T_101: "lowcase",
+		token.T_102: "not",
+		token.T_104: "number",
+		token.T_107: "tokid",
+		token.T_108: "upcase",
+		token.T_109: "{",
+		token.T_110: "|",
+		token.T_111: "}",
 	},
 	// UnicodeClass : ∙upcase
 	{
-		token.T_110: "upcase",
+		token.T_108: "upcase",
 	},
 	// UnicodeClass : upcase ∙
 	{
@@ -3251,20 +3251,20 @@ var first = []map[token.Type]string{
 		token.T_92:  "[",
 		token.T_94:  "]",
 		token.T_96:  "any",
-		token.T_98:  "char_lit",
-		token.T_101: "letter",
-		token.T_103: "lowcase",
-		token.T_104: "not",
-		token.T_106: "number",
-		token.T_109: "tokid",
-		token.T_110: "upcase",
-		token.T_111: "{",
-		token.T_112: "|",
-		token.T_113: "}",
+		token.T_97:  "char_lit",
+		token.T_100: "letter",
+		token.T_101: "lowcase",
+		token.T_102: "not",
+		token.T_104: "number",
+		token.T_107: "tokid",
+		token.T_108: "upcase",
+		token.T_109: "{",
+		token.T_110: "|",
+		token.T_111: "}",
 	},
 	// UnicodeClass : ∙lowcase
 	{
-		token.T_103: "lowcase",
+		token.T_101: "lowcase",
 	},
 	// UnicodeClass : lowcase ∙
 	{
@@ -3278,20 +3278,20 @@ var first = []map[token.Type]string{
 		token.T_92:  "[",
 		token.T_94:  "]",
 		token.T_96:  "any",
-		token.T_98:  "char_lit",
-		token.T_101: "letter",
-		token.T_103: "lowcase",
-		token.T_104: "not",
-		token.T_106: "number",
-		token.T_109: "tokid",
-		token.T_110: "upcase",
-		token.T_111: "{",
-		token.T_112: "|",
-		token.T_113: "}",
+		token.T_97:  "char_lit",
+		token.T_100: "letter",
+		token.T_101: "lowcase",
+		token.T_102: "not",
+		token.T_104: "number",
+		token.T_107: "tokid",
+		token.T_108: "upcase",
+		token.T_109: "{",
+		token.T_110: "|",
+		token.T_111: "}",
 	},
 	// UnicodeClass : ∙number
 	{
-		token.T_106: "number",
+		token.T_104: "number",
 	},
 	// UnicodeClass : number ∙
 	{
@@ -3305,16 +3305,16 @@ var first = []map[token.Type]string{
 		token.T_92:  "[",
 		token.T_94:  "]",
 		token.T_96:  "any",
-		token.T_98:  "char_lit",
-		token.T_101: "letter",
-		token.T_103: "lowcase",
-		token.T_104: "not",
-		token.T_106: "number",
-		token.T_109: "tokid",
-		token.T_110: "upcase",
-		token.T_111: "{",
-		token.T_112: "|",
-		token.T_113: "}",
+		token.T_97:  "char_lit",
+		token.T_100: "letter",
+		token.T_101: "lowcase",
+		token.T_102: "not",
+		token.T_104: "number",
+		token.T_107: "tokid",
+		token.T_108: "upcase",
+		token.T_109: "{",
+		token.T_110: "|",
+		token.T_111: "}",
 	},
 	// UnicodeProperty : ∙ASCII_Hex_Digit
 	{
@@ -3322,7 +3322,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeProperty : ASCII_Hex_Digit ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeProperty : ∙Bidi_Control
 	{
@@ -3330,7 +3330,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeProperty : Bidi_Control ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeProperty : ∙Dash
 	{
@@ -3338,7 +3338,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeProperty : Dash ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeProperty : ∙Deprecated
 	{
@@ -3346,7 +3346,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeProperty : Deprecated ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeProperty : ∙Diacritic
 	{
@@ -3354,7 +3354,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeProperty : Diacritic ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeProperty : ∙Extender
 	{
@@ -3362,7 +3362,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeProperty : Extender ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeProperty : ∙Hex_Digit
 	{
@@ -3370,7 +3370,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeProperty : Hex_Digit ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeProperty : ∙Hyphen
 	{
@@ -3378,7 +3378,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeProperty : Hyphen ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeProperty : ∙IDS_Binary_Operator
 	{
@@ -3386,7 +3386,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeProperty : IDS_Binary_Operator ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeProperty : ∙IDS_Trinary_Operator
 	{
@@ -3394,7 +3394,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeProperty : IDS_Trinary_Operator ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeProperty : ∙Ideographic
 	{
@@ -3402,7 +3402,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeProperty : Ideographic ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeProperty : ∙Join_Control
 	{
@@ -3410,7 +3410,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeProperty : Join_Control ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeProperty : ∙Logical_Order_Exception
 	{
@@ -3418,7 +3418,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeProperty : Logical_Order_Exception ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeProperty : ∙Noncharacter_Code_Point
 	{
@@ -3426,7 +3426,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeProperty : Noncharacter_Code_Point ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeProperty : ∙Other_Alphabetic
 	{
@@ -3434,7 +3434,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeProperty : Other_Alphabetic ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeProperty : ∙Other_Default_Ignorable_Code_Point
 	{
@@ -3442,7 +3442,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeProperty : Other_Default_Ignorable_Code_Point ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeProperty : ∙Other_Grapheme_Extend
 	{
@@ -3450,7 +3450,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeProperty : Other_Grapheme_Extend ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeProperty : ∙Other_ID_Continue
 	{
@@ -3458,7 +3458,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeProperty : Other_ID_Continue ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeProperty : ∙Other_ID_Start
 	{
@@ -3466,7 +3466,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeProperty : Other_ID_Start ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeProperty : ∙Other_Lowercase
 	{
@@ -3474,7 +3474,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeProperty : Other_Lowercase ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeProperty : ∙Other_Math
 	{
@@ -3482,7 +3482,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeProperty : Other_Math ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeProperty : ∙Other_Uppercase
 	{
@@ -3490,7 +3490,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeProperty : Other_Uppercase ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeProperty : ∙Pattern_Syntax
 	{
@@ -3498,7 +3498,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeProperty : Pattern_Syntax ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeProperty : ∙Pattern_White_Space
 	{
@@ -3506,7 +3506,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeProperty : Pattern_White_Space ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeProperty : ∙Prepended_Concatenation_Mark
 	{
@@ -3514,7 +3514,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeProperty : Prepended_Concatenation_Mark ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeProperty : ∙Quotation_Mark
 	{
@@ -3522,7 +3522,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeProperty : Quotation_Mark ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeProperty : ∙Radical
 	{
@@ -3530,7 +3530,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeProperty : Radical ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeProperty : ∙Regional_Indicator
 	{
@@ -3538,7 +3538,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeProperty : Regional_Indicator ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeProperty : ∙STerm
 	{
@@ -3546,7 +3546,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeProperty : STerm ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeProperty : ∙Sentence_Terminal
 	{
@@ -3554,7 +3554,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeProperty : Sentence_Terminal ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeProperty : ∙Soft_Dotted
 	{
@@ -3562,7 +3562,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeProperty : Soft_Dotted ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeProperty : ∙Terminal_Punctuation
 	{
@@ -3570,7 +3570,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeProperty : Terminal_Punctuation ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeProperty : ∙Unified_Ideograph
 	{
@@ -3578,7 +3578,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeProperty : Unified_Ideograph ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeProperty : ∙Variation_Selector
 	{
@@ -3586,7 +3586,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeProperty : Variation_Selector ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeProperty : ∙White_Space
 	{
@@ -3594,7 +3594,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeProperty : White_Space ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeRange : ∙UnicodeCategory
 	{
@@ -3648,7 +3648,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeRange : UnicodeCategory ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeRange : ∙UnicodeProperty
 	{
@@ -3690,7 +3690,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeRange : UnicodeProperty ∙
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeSet : ∙'[ UnicodeSetSpec UnicodeSetSpecs ]'
 	{
@@ -3722,16 +3722,16 @@ var first = []map[token.Type]string{
 		token.T_92:  "[",
 		token.T_94:  "]",
 		token.T_96:  "any",
-		token.T_98:  "char_lit",
-		token.T_101: "letter",
-		token.T_103: "lowcase",
-		token.T_104: "not",
-		token.T_106: "number",
-		token.T_109: "tokid",
-		token.T_110: "upcase",
-		token.T_111: "{",
-		token.T_112: "|",
-		token.T_113: "}",
+		token.T_97:  "char_lit",
+		token.T_100: "letter",
+		token.T_101: "lowcase",
+		token.T_102: "not",
+		token.T_104: "number",
+		token.T_107: "tokid",
+		token.T_108: "upcase",
+		token.T_109: "{",
+		token.T_110: "|",
+		token.T_111: "}",
 	},
 	// UnicodeSetSpec : ∙\p{ UnicodeRange }
 	{
@@ -3824,7 +3824,7 @@ var first = []map[token.Type]string{
 	},
 	// UnicodeSetSpec : \p{ UnicodeRange ∙}
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeSetSpec : \p{ UnicodeRange } ∙
 	{
@@ -3880,7 +3880,7 @@ var followSets = []map[token.Type]string{
 		token.T_3:   ")",
 		token.T_9:   ">",
 		token.T_94:  "]",
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// LexBracket
 	{
@@ -3894,16 +3894,16 @@ var followSets = []map[token.Type]string{
 		token.T_92:  "[",
 		token.T_94:  "]",
 		token.T_96:  "any",
-		token.T_98:  "char_lit",
-		token.T_101: "letter",
-		token.T_103: "lowcase",
-		token.T_104: "not",
-		token.T_106: "number",
-		token.T_109: "tokid",
-		token.T_110: "upcase",
-		token.T_111: "{",
-		token.T_112: "|",
-		token.T_113: "}",
+		token.T_97:  "char_lit",
+		token.T_100: "letter",
+		token.T_101: "lowcase",
+		token.T_102: "not",
+		token.T_104: "number",
+		token.T_107: "tokid",
+		token.T_108: "upcase",
+		token.T_109: "{",
+		token.T_110: "|",
+		token.T_111: "}",
 	},
 	// LexGroup
 	{
@@ -3917,16 +3917,16 @@ var followSets = []map[token.Type]string{
 		token.T_92:  "[",
 		token.T_94:  "]",
 		token.T_96:  "any",
-		token.T_98:  "char_lit",
-		token.T_101: "letter",
-		token.T_103: "lowcase",
-		token.T_104: "not",
-		token.T_106: "number",
-		token.T_109: "tokid",
-		token.T_110: "upcase",
-		token.T_111: "{",
-		token.T_112: "|",
-		token.T_113: "}",
+		token.T_97:  "char_lit",
+		token.T_100: "letter",
+		token.T_101: "lowcase",
+		token.T_102: "not",
+		token.T_104: "number",
+		token.T_107: "tokid",
+		token.T_108: "upcase",
+		token.T_109: "{",
+		token.T_110: "|",
+		token.T_111: "}",
 	},
 	// LexOneOrMore
 	{
@@ -3940,16 +3940,16 @@ var followSets = []map[token.Type]string{
 		token.T_92:  "[",
 		token.T_94:  "]",
 		token.T_96:  "any",
-		token.T_98:  "char_lit",
-		token.T_101: "letter",
-		token.T_103: "lowcase",
-		token.T_104: "not",
-		token.T_106: "number",
-		token.T_109: "tokid",
-		token.T_110: "upcase",
-		token.T_111: "{",
-		token.T_112: "|",
-		token.T_113: "}",
+		token.T_97:  "char_lit",
+		token.T_100: "letter",
+		token.T_101: "lowcase",
+		token.T_102: "not",
+		token.T_104: "number",
+		token.T_107: "tokid",
+		token.T_108: "upcase",
+		token.T_109: "{",
+		token.T_110: "|",
+		token.T_111: "}",
 	},
 	// LexOptional
 	{
@@ -3963,23 +3963,23 @@ var followSets = []map[token.Type]string{
 		token.T_92:  "[",
 		token.T_94:  "]",
 		token.T_96:  "any",
-		token.T_98:  "char_lit",
-		token.T_101: "letter",
-		token.T_103: "lowcase",
-		token.T_104: "not",
-		token.T_106: "number",
-		token.T_109: "tokid",
-		token.T_110: "upcase",
-		token.T_111: "{",
-		token.T_112: "|",
-		token.T_113: "}",
+		token.T_97:  "char_lit",
+		token.T_100: "letter",
+		token.T_101: "lowcase",
+		token.T_102: "not",
+		token.T_104: "number",
+		token.T_107: "tokid",
+		token.T_108: "upcase",
+		token.T_109: "{",
+		token.T_110: "|",
+		token.T_111: "}",
 	},
 	// LexRule
 	{
 		token.T_0:   "!",
 		token.EOF:   "$",
-		token.T_105: "nt",
-		token.T_109: "tokid",
+		token.T_103: "nt",
+		token.T_107: "tokid",
 	},
 	// LexSymbol
 	{
@@ -3993,16 +3993,16 @@ var followSets = []map[token.Type]string{
 		token.T_92:  "[",
 		token.T_94:  "]",
 		token.T_96:  "any",
-		token.T_98:  "char_lit",
-		token.T_101: "letter",
-		token.T_103: "lowcase",
-		token.T_104: "not",
-		token.T_106: "number",
-		token.T_109: "tokid",
-		token.T_110: "upcase",
-		token.T_111: "{",
-		token.T_112: "|",
-		token.T_113: "}",
+		token.T_97:  "char_lit",
+		token.T_100: "letter",
+		token.T_101: "lowcase",
+		token.T_102: "not",
+		token.T_104: "number",
+		token.T_107: "tokid",
+		token.T_108: "upcase",
+		token.T_109: "{",
+		token.T_110: "|",
+		token.T_111: "}",
 	},
 	// LexZeroOrMore
 	{
@@ -4016,22 +4016,22 @@ var followSets = []map[token.Type]string{
 		token.T_92:  "[",
 		token.T_94:  "]",
 		token.T_96:  "any",
-		token.T_98:  "char_lit",
-		token.T_101: "letter",
-		token.T_103: "lowcase",
-		token.T_104: "not",
-		token.T_106: "number",
-		token.T_109: "tokid",
-		token.T_110: "upcase",
-		token.T_111: "{",
-		token.T_112: "|",
-		token.T_113: "}",
+		token.T_97:  "char_lit",
+		token.T_100: "letter",
+		token.T_101: "lowcase",
+		token.T_102: "not",
+		token.T_104: "number",
+		token.T_107: "tokid",
+		token.T_108: "upcase",
+		token.T_109: "{",
+		token.T_110: "|",
+		token.T_111: "}",
 	},
 	// Package
 	{
 		token.T_0:   "!",
-		token.T_105: "nt",
-		token.T_109: "tokid",
+		token.T_103: "nt",
+		token.T_107: "tokid",
 	},
 	// PlusOrMinUnicodeSet
 	{
@@ -4045,15 +4045,15 @@ var followSets = []map[token.Type]string{
 		token.T_7:   ";",
 		token.T_9:   ">",
 		token.T_94:  "]",
-		token.T_112: "|",
-		token.T_113: "}",
+		token.T_110: "|",
+		token.T_111: "}",
 	},
 	// Rule
 	{
 		token.T_0:   "!",
 		token.EOF:   "$",
-		token.T_105: "nt",
-		token.T_109: "tokid",
+		token.T_103: "nt",
+		token.T_107: "tokid",
 	},
 	// Rules
 	{
@@ -4062,7 +4062,7 @@ var followSets = []map[token.Type]string{
 	// SyntaxAlternate
 	{
 		token.T_7:   ";",
-		token.T_112: "|",
+		token.T_110: "|",
 	},
 	// SyntaxAlternates
 	{
@@ -4072,25 +4072,25 @@ var followSets = []map[token.Type]string{
 	{
 		token.T_0:   "!",
 		token.EOF:   "$",
-		token.T_105: "nt",
-		token.T_109: "tokid",
+		token.T_103: "nt",
+		token.T_107: "tokid",
 	},
 	// SyntaxSymbol
 	{
 		token.T_7:   ";",
-		token.T_105: "nt",
-		token.T_108: "string_lit",
-		token.T_109: "tokid",
-		token.T_112: "|",
+		token.T_103: "nt",
+		token.T_106: "string_lit",
+		token.T_107: "tokid",
+		token.T_110: "|",
 	},
 	// SyntaxSymbols
 	{
 		token.T_7:   ";",
-		token.T_112: "|",
+		token.T_110: "|",
 	},
 	// UnicodeCategory
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeClass
 	{
@@ -4104,24 +4104,24 @@ var followSets = []map[token.Type]string{
 		token.T_92:  "[",
 		token.T_94:  "]",
 		token.T_96:  "any",
-		token.T_98:  "char_lit",
-		token.T_101: "letter",
-		token.T_103: "lowcase",
-		token.T_104: "not",
-		token.T_106: "number",
-		token.T_109: "tokid",
-		token.T_110: "upcase",
-		token.T_111: "{",
-		token.T_112: "|",
-		token.T_113: "}",
+		token.T_97:  "char_lit",
+		token.T_100: "letter",
+		token.T_101: "lowcase",
+		token.T_102: "not",
+		token.T_104: "number",
+		token.T_107: "tokid",
+		token.T_108: "upcase",
+		token.T_109: "{",
+		token.T_110: "|",
+		token.T_111: "}",
 	},
 	// UnicodeProperty
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeRange
 	{
-		token.T_113: "}",
+		token.T_111: "}",
 	},
 	// UnicodeSet
 	{
@@ -4135,16 +4135,16 @@ var followSets = []map[token.Type]string{
 		token.T_92:  "[",
 		token.T_94:  "]",
 		token.T_96:  "any",
-		token.T_98:  "char_lit",
-		token.T_101: "letter",
-		token.T_103: "lowcase",
-		token.T_104: "not",
-		token.T_106: "number",
-		token.T_109: "tokid",
-		token.T_110: "upcase",
-		token.T_111: "{",
-		token.T_112: "|",
-		token.T_113: "}",
+		token.T_97:  "char_lit",
+		token.T_100: "letter",
+		token.T_101: "lowcase",
+		token.T_102: "not",
+		token.T_104: "number",
+		token.T_107: "tokid",
+		token.T_108: "upcase",
+		token.T_109: "{",
+		token.T_110: "|",
+		token.T_111: "}",
 	},
 	// UnicodeSetSpec
 	{

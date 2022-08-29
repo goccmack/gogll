@@ -1,19 +1,13 @@
 package lex6
 
 import (
-	"fmt"
 	"testing"
-	"unicode"
 
 	"github.com/goccmack/gogll/v3/test/lex/lex6/lexer"
 )
 
-var src = []string{"name", "<"}
-var tokType = []string{"id_start", "ptrn_stx"}
-
-func Test0(t *testing.T) {
-	fmt.Printf("< %t\n", unicode.In('<', unicode.Pattern_Syntax))
-}
+var src = []string{"name"}
+var tokType = []string{"id"}
 
 func Test1(t *testing.T) {
 	for i, s := range src {

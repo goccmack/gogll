@@ -232,23 +232,21 @@ const(
     T_94  // ] 
     T_95  // ]' 
     T_96  // any 
-    T_97  // bigU 
-    T_98  // char_lit 
-    T_99  // empty 
-    T_100  // hex_digit 
-    T_101  // letter 
-    T_102  // littleU 
-    T_103  // lowcase 
-    T_104  // not 
-    T_105  // nt 
-    T_106  // number 
-    T_107  // package 
-    T_108  // string_lit 
-    T_109  // tokid 
-    T_110  // upcase 
-    T_111  // { 
-    T_112  // | 
-    T_113  // } 
+    T_97  // char_lit 
+    T_98  // empty 
+    T_99  // hex_digit 
+    T_100  // letter 
+    T_101  // lowcase 
+    T_102  // not 
+    T_103  // nt 
+    T_104  // number 
+    T_105  // package 
+    T_106  // string_lit 
+    T_107  // tokid 
+    T_108  // upcase 
+    T_109  // { 
+    T_110  // | 
+    T_111  // } 
 )
 
 var TypeToString = []string{ 
@@ -366,8 +364,6 @@ var TypeToString = []string{
     "T_109",
     "T_110",
     "T_111",
-    "T_112",
-    "T_113",
 }
 
 var StringToType = map[string] Type { 
@@ -485,8 +481,6 @@ var StringToType = map[string] Type {
     "T_109" : T_109, 
     "T_110" : T_110, 
     "T_111" : T_111, 
-    "T_112" : T_112, 
-    "T_113" : T_113, 
 }
 
 var TypeToID = []string { 
@@ -589,12 +583,10 @@ var TypeToID = []string {
     "]", 
     "]'", 
     "any", 
-    "bigU", 
     "char_lit", 
     "empty", 
     "hex_digit", 
     "letter", 
-    "littleU", 
     "lowcase", 
     "not", 
     "nt", 
@@ -708,28 +700,24 @@ var IDToType = map[string]Type {
     "]": 96, 
     "]'": 97, 
     "any": 98, 
-    "bigU": 99, 
-    "char_lit": 100, 
-    "empty": 101, 
-    "hex_digit": 102, 
-    "letter": 103, 
-    "littleU": 104, 
-    "lowcase": 105, 
-    "not": 106, 
-    "nt": 107, 
-    "number": 108, 
-    "package": 109, 
-    "string_lit": 110, 
-    "tokid": 111, 
-    "upcase": 112, 
-    "{": 113, 
-    "|": 114, 
-    "}": 115, 
+    "char_lit": 99, 
+    "empty": 100, 
+    "hex_digit": 101, 
+    "letter": 102, 
+    "lowcase": 103, 
+    "not": 104, 
+    "nt": 105, 
+    "number": 106, 
+    "package": 107, 
+    "string_lit": 108, 
+    "tokid": 109, 
+    "upcase": 110, 
+    "{": 111, 
+    "|": 112, 
+    "}": 113, 
 }
 
 var Suppress = []bool { 
-    false, 
-    false, 
     false, 
     false, 
     false, 
