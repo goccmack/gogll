@@ -204,6 +204,7 @@ func noneOf(r rune, rs *runeset.RuneSet) bool {
 	return !rs.Contains(r)
 }
 
+// sort events from most to least specific class
 func sortEvents(events []ast.LexBase) {
 	sort.Slice(events, func(i, j int) bool {
 		switch e1 := events[i].(type) {
@@ -269,7 +270,6 @@ func sortEvents(events []ast.LexBase) {
 			case *ast.CharLiteral:
 				return false
 			case *ast.Not:
-				// TODO: check that this is correct
 				return !unicodeClassContains(e1, e2.Set.Elements()...)
 			case *ast.UnicodeClass:
 				return e2.Type == ast.Letter && (e1.Type == ast.Lowcase || e1.Type == ast.Upcase)
@@ -287,8 +287,7 @@ func sortEvents(events []ast.LexBase) {
 			case *ast.CharLiteral:
 				return false
 			case *ast.Not:
-				// TODO: check that this is correct
-				return e1.ContainsRunes(e2.Set.Elements()...)
+				return !e1.ContainsRunes(e2.Set.Elements()...)
 			case *ast.UnicodeClass:
 				return e2.ContainsSet(e1)
 			case *ast.UnicodeSet:
