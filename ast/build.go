@@ -452,9 +452,15 @@ func (bld *builder) unicodeSet(b bsr.BSR) *UnicodeSet {
 	}
 }
 
-// UnicodeSetSpec : "\\p{" UnicodeRange "}" ;
+// UnicodeSetSpec : UnicodeCategory | UnicodeProperty ;
 func (bld *builder) unicodeSetSpec(b bsr.BSR) *UnicodeRange {
-	return bld.unicodeRange(b.GetNTChild(symbols.NT_UnicodeRange, 0))
+	switch b.Alternate() {
+	case 0:
+		return bld.unicodeCategory(b.GetNTChild(symbols.NT_UnicodeCategory, 0))
+	case 1:
+		return bld.unicodeProperty(b.GetNTChild(symbols.NT_UnicodeProperty, 0))
+	}
+	panic("impossible")
 }
 
 // UnicodeSetSpecs
@@ -503,17 +509,6 @@ func (bld *builder) plusOrMinusUnicodeSet(b bsr.BSR) *UnicodeRange {
 		rng.Exclude = true
 	}
 	return rng
-}
-
-// UnicodeRange : UnicodeCategory | UnicodeProperty ;
-func (bld *builder) unicodeRange(b bsr.BSR) *UnicodeRange {
-	switch b.Alternate() {
-	case 0:
-		return bld.unicodeCategory(b.GetNTChild(symbols.NT_UnicodeCategory, 0))
-	case 1:
-		return bld.unicodeProperty(b.GetNTChild(symbols.NT_UnicodeProperty, 0))
-	}
-	panic("impossible")
 }
 
 // UnicodeCategory

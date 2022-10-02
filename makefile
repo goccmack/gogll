@@ -7,6 +7,7 @@ parser/parser.go: gogll.md
 	gogll -o . gogll.md 
 
 clean:
+	rm lexfsa.txt ; \
 	rm first_follow.txt; \
 	rm grammar_slots.txt; \
 	rm symbols.txt; \

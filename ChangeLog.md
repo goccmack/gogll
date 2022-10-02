@@ -1,5 +1,8 @@
 # Change Log
 
+# V3.3.2 2022-10-02
+* Allow length 1 non-terminals.
+
 # V3.3.0 2022-08-20
 * Add regular definitions to lexical rules
 * Support the Unicode category and property range tables supported by Go package unicode.

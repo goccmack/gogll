@@ -145,108 +145,106 @@ const(
     T_7  // ; 
     T_8  // < 
     T_9  // > 
-    T_10  // ASCII_Hex_Digit 
-    T_11  // Bidi_Control 
-    T_12  // C 
-    T_13  // Cc 
-    T_14  // Cf 
-    T_15  // Co 
-    T_16  // Cs 
-    T_17  // Dash 
-    T_18  // Deprecated 
-    T_19  // Diacritic 
-    T_20  // Digit 
-    T_21  // Extender 
-    T_22  // Hex_Digit 
-    T_23  // Hyphen 
-    T_24  // IDS_Binary_Operator 
-    T_25  // IDS_Trinary_Operator 
-    T_26  // Ideographic 
-    T_27  // Join_Control 
-    T_28  // L 
-    T_29  // Letter 
-    T_30  // Ll 
-    T_31  // Lm 
-    T_32  // Lo 
-    T_33  // Logical_Order_Exception 
-    T_34  // Lower 
-    T_35  // Lt 
-    T_36  // Lu 
-    T_37  // M 
-    T_38  // Mark 
-    T_39  // Mc 
-    T_40  // Me 
-    T_41  // Mn 
-    T_42  // N 
-    T_43  // Nd 
-    T_44  // Nl 
-    T_45  // No 
-    T_46  // Noncharacter_Code_Point 
-    T_47  // Number 
-    T_48  // Other 
-    T_49  // Other_Alphabetic 
-    T_50  // Other_Default_Ignorable_Code_Point 
-    T_51  // Other_Grapheme_Extend 
-    T_52  // Other_ID_Continue 
-    T_53  // Other_ID_Start 
-    T_54  // Other_Lowercase 
-    T_55  // Other_Math 
-    T_56  // Other_Uppercase 
-    T_57  // P 
-    T_58  // Pattern_Syntax 
-    T_59  // Pattern_White_Space 
-    T_60  // Pc 
-    T_61  // Pd 
-    T_62  // Pe 
-    T_63  // Pf 
-    T_64  // Pi 
-    T_65  // Po 
-    T_66  // Prepended_Concatenation_Mark 
-    T_67  // Ps 
-    T_68  // Punct 
-    T_69  // Quotation_Mark 
-    T_70  // Radical 
-    T_71  // Regional_Indicator 
-    T_72  // S 
-    T_73  // STerm 
-    T_74  // Sc 
-    T_75  // Sentence_Terminal 
-    T_76  // Sk 
-    T_77  // Sm 
-    T_78  // So 
-    T_79  // Soft_Dotted 
-    T_80  // Space 
-    T_81  // Symbol 
-    T_82  // Terminal_Punctuation 
-    T_83  // Title 
-    T_84  // Unified_Ideograph 
-    T_85  // Upper 
-    T_86  // Variation_Selector 
-    T_87  // White_Space 
-    T_88  // Z 
-    T_89  // Zl 
-    T_90  // Zp 
-    T_91  // Zs 
-    T_92  // [ 
-    T_93  // \\p{ 
-    T_94  // ] 
-    T_95  // ]' 
-    T_96  // any 
-    T_97  // char_lit 
-    T_98  // empty 
-    T_99  // hex_digit 
-    T_100  // letter 
-    T_101  // lowcase 
-    T_102  // not 
-    T_103  // nt 
-    T_104  // number 
-    T_105  // package 
-    T_106  // string_lit 
-    T_107  // tokid 
-    T_108  // upcase 
-    T_109  // { 
-    T_110  // | 
-    T_111  // } 
+    T_10  // [ 
+    T_11  // \\p{ASCII_Hex_Digit} 
+    T_12  // \\p{Bidi_Control} 
+    T_13  // \\p{Cc} 
+    T_14  // \\p{Cf} 
+    T_15  // \\p{Co} 
+    T_16  // \\p{Cs} 
+    T_17  // \\p{C} 
+    T_18  // \\p{Dash} 
+    T_19  // \\p{Deprecated} 
+    T_20  // \\p{Diacritic} 
+    T_21  // \\p{Digit} 
+    T_22  // \\p{Extender} 
+    T_23  // \\p{Hex_Digit} 
+    T_24  // \\p{Hyphen} 
+    T_25  // \\p{IDS_Binary_Operator} 
+    T_26  // \\p{IDS_Trinary_Operator} 
+    T_27  // \\p{Ideographic} 
+    T_28  // \\p{Join_Control} 
+    T_29  // \\p{Letter} 
+    T_30  // \\p{Ll} 
+    T_31  // \\p{Lm} 
+    T_32  // \\p{Logical_Order_Exception} 
+    T_33  // \\p{Lower} 
+    T_34  // \\p{Lo} 
+    T_35  // \\p{Lt} 
+    T_36  // \\p{Lu} 
+    T_37  // \\p{L} 
+    T_38  // \\p{Mark} 
+    T_39  // \\p{Mc} 
+    T_40  // \\p{Me} 
+    T_41  // \\p{Mn} 
+    T_42  // \\p{M} 
+    T_43  // \\p{Nd} 
+    T_44  // \\p{Nl} 
+    T_45  // \\p{Noncharacter_Code_Point} 
+    T_46  // \\p{No} 
+    T_47  // \\p{Number} 
+    T_48  // \\p{N} 
+    T_49  // \\p{Other_Alphabetic} 
+    T_50  // \\p{Other_Default_Ignorable_Code_Point} 
+    T_51  // \\p{Other_Grapheme_Extend} 
+    T_52  // \\p{Other_ID_Continue} 
+    T_53  // \\p{Other_ID_Start} 
+    T_54  // \\p{Other_Lowercase} 
+    T_55  // \\p{Other_Math} 
+    T_56  // \\p{Other_Uppercase} 
+    T_57  // \\p{Other} 
+    T_58  // \\p{Pattern_Syntax} 
+    T_59  // \\p{Pattern_White_Space} 
+    T_60  // \\p{Pc} 
+    T_61  // \\p{Pd} 
+    T_62  // \\p{Pe} 
+    T_63  // \\p{Pf} 
+    T_64  // \\p{Pi} 
+    T_65  // \\p{Po} 
+    T_66  // \\p{Prepended_Concatenation_Mark} 
+    T_67  // \\p{Ps} 
+    T_68  // \\p{Punct} 
+    T_69  // \\p{P} 
+    T_70  // \\p{Quotation_Mark} 
+    T_71  // \\p{Radical} 
+    T_72  // \\p{Regional_Indicator} 
+    T_73  // \\p{STerm} 
+    T_74  // \\p{Sc} 
+    T_75  // \\p{Sentence_Terminal} 
+    T_76  // \\p{Sk} 
+    T_77  // \\p{Sm} 
+    T_78  // \\p{Soft_Dotted} 
+    T_79  // \\p{So} 
+    T_80  // \\p{Space} 
+    T_81  // \\p{Symbol} 
+    T_82  // \\p{S} 
+    T_83  // \\p{Terminal_Punctuation} 
+    T_84  // \\p{Title} 
+    T_85  // \\p{Unified_Ideograph} 
+    T_86  // \\p{Upper} 
+    T_87  // \\p{Variation_Selector} 
+    T_88  // \\p{White_Space} 
+    T_89  // \\p{Zl} 
+    T_90  // \\p{Zp} 
+    T_91  // \\p{Zs} 
+    T_92  // \\p{Z} 
+    T_93  // ] 
+    T_94  // ]' 
+    T_95  // any 
+    T_96  // char_lit 
+    T_97  // empty 
+    T_98  // letter 
+    T_99  // lowcase 
+    T_100  // not 
+    T_101  // nt 
+    T_102  // number 
+    T_103  // package 
+    T_104  // string_lit 
+    T_105  // tokid 
+    T_106  // upcase 
+    T_107  // { 
+    T_108  // | 
+    T_109  // } 
 )
 
 var TypeToString = []string{ 
@@ -362,8 +360,6 @@ var TypeToString = []string{
     "T_107",
     "T_108",
     "T_109",
-    "T_110",
-    "T_111",
 }
 
 var StringToType = map[string] Type { 
@@ -479,8 +475,6 @@ var StringToType = map[string] Type {
     "T_107" : T_107, 
     "T_108" : T_108, 
     "T_109" : T_109, 
-    "T_110" : T_110, 
-    "T_111" : T_111, 
 }
 
 var TypeToID = []string { 
@@ -496,96 +490,94 @@ var TypeToID = []string {
     ";", 
     "<", 
     ">", 
-    "ASCII_Hex_Digit", 
-    "Bidi_Control", 
-    "C", 
-    "Cc", 
-    "Cf", 
-    "Co", 
-    "Cs", 
-    "Dash", 
-    "Deprecated", 
-    "Diacritic", 
-    "Digit", 
-    "Extender", 
-    "Hex_Digit", 
-    "Hyphen", 
-    "IDS_Binary_Operator", 
-    "IDS_Trinary_Operator", 
-    "Ideographic", 
-    "Join_Control", 
-    "L", 
-    "Letter", 
-    "Ll", 
-    "Lm", 
-    "Lo", 
-    "Logical_Order_Exception", 
-    "Lower", 
-    "Lt", 
-    "Lu", 
-    "M", 
-    "Mark", 
-    "Mc", 
-    "Me", 
-    "Mn", 
-    "N", 
-    "Nd", 
-    "Nl", 
-    "No", 
-    "Noncharacter_Code_Point", 
-    "Number", 
-    "Other", 
-    "Other_Alphabetic", 
-    "Other_Default_Ignorable_Code_Point", 
-    "Other_Grapheme_Extend", 
-    "Other_ID_Continue", 
-    "Other_ID_Start", 
-    "Other_Lowercase", 
-    "Other_Math", 
-    "Other_Uppercase", 
-    "P", 
-    "Pattern_Syntax", 
-    "Pattern_White_Space", 
-    "Pc", 
-    "Pd", 
-    "Pe", 
-    "Pf", 
-    "Pi", 
-    "Po", 
-    "Prepended_Concatenation_Mark", 
-    "Ps", 
-    "Punct", 
-    "Quotation_Mark", 
-    "Radical", 
-    "Regional_Indicator", 
-    "S", 
-    "STerm", 
-    "Sc", 
-    "Sentence_Terminal", 
-    "Sk", 
-    "Sm", 
-    "So", 
-    "Soft_Dotted", 
-    "Space", 
-    "Symbol", 
-    "Terminal_Punctuation", 
-    "Title", 
-    "Unified_Ideograph", 
-    "Upper", 
-    "Variation_Selector", 
-    "White_Space", 
-    "Z", 
-    "Zl", 
-    "Zp", 
-    "Zs", 
     "[", 
-    "\\p{", 
+    "\\p{ASCII_Hex_Digit}", 
+    "\\p{Bidi_Control}", 
+    "\\p{Cc}", 
+    "\\p{Cf}", 
+    "\\p{Co}", 
+    "\\p{Cs}", 
+    "\\p{C}", 
+    "\\p{Dash}", 
+    "\\p{Deprecated}", 
+    "\\p{Diacritic}", 
+    "\\p{Digit}", 
+    "\\p{Extender}", 
+    "\\p{Hex_Digit}", 
+    "\\p{Hyphen}", 
+    "\\p{IDS_Binary_Operator}", 
+    "\\p{IDS_Trinary_Operator}", 
+    "\\p{Ideographic}", 
+    "\\p{Join_Control}", 
+    "\\p{Letter}", 
+    "\\p{Ll}", 
+    "\\p{Lm}", 
+    "\\p{Logical_Order_Exception}", 
+    "\\p{Lower}", 
+    "\\p{Lo}", 
+    "\\p{Lt}", 
+    "\\p{Lu}", 
+    "\\p{L}", 
+    "\\p{Mark}", 
+    "\\p{Mc}", 
+    "\\p{Me}", 
+    "\\p{Mn}", 
+    "\\p{M}", 
+    "\\p{Nd}", 
+    "\\p{Nl}", 
+    "\\p{Noncharacter_Code_Point}", 
+    "\\p{No}", 
+    "\\p{Number}", 
+    "\\p{N}", 
+    "\\p{Other_Alphabetic}", 
+    "\\p{Other_Default_Ignorable_Code_Point}", 
+    "\\p{Other_Grapheme_Extend}", 
+    "\\p{Other_ID_Continue}", 
+    "\\p{Other_ID_Start}", 
+    "\\p{Other_Lowercase}", 
+    "\\p{Other_Math}", 
+    "\\p{Other_Uppercase}", 
+    "\\p{Other}", 
+    "\\p{Pattern_Syntax}", 
+    "\\p{Pattern_White_Space}", 
+    "\\p{Pc}", 
+    "\\p{Pd}", 
+    "\\p{Pe}", 
+    "\\p{Pf}", 
+    "\\p{Pi}", 
+    "\\p{Po}", 
+    "\\p{Prepended_Concatenation_Mark}", 
+    "\\p{Ps}", 
+    "\\p{Punct}", 
+    "\\p{P}", 
+    "\\p{Quotation_Mark}", 
+    "\\p{Radical}", 
+    "\\p{Regional_Indicator}", 
+    "\\p{STerm}", 
+    "\\p{Sc}", 
+    "\\p{Sentence_Terminal}", 
+    "\\p{Sk}", 
+    "\\p{Sm}", 
+    "\\p{Soft_Dotted}", 
+    "\\p{So}", 
+    "\\p{Space}", 
+    "\\p{Symbol}", 
+    "\\p{S}", 
+    "\\p{Terminal_Punctuation}", 
+    "\\p{Title}", 
+    "\\p{Unified_Ideograph}", 
+    "\\p{Upper}", 
+    "\\p{Variation_Selector}", 
+    "\\p{White_Space}", 
+    "\\p{Zl}", 
+    "\\p{Zp}", 
+    "\\p{Zs}", 
+    "\\p{Z}", 
     "]", 
     "]'", 
     "any", 
     "char_lit", 
     "empty", 
-    "hex_digit", 
     "letter", 
     "lowcase", 
     "not", 
@@ -613,113 +605,109 @@ var IDToType = map[string]Type {
     ";": 9, 
     "<": 10, 
     ">": 11, 
-    "ASCII_Hex_Digit": 12, 
-    "Bidi_Control": 13, 
-    "C": 14, 
-    "Cc": 15, 
-    "Cf": 16, 
-    "Co": 17, 
-    "Cs": 18, 
-    "Dash": 19, 
-    "Deprecated": 20, 
-    "Diacritic": 21, 
-    "Digit": 22, 
-    "Extender": 23, 
-    "Hex_Digit": 24, 
-    "Hyphen": 25, 
-    "IDS_Binary_Operator": 26, 
-    "IDS_Trinary_Operator": 27, 
-    "Ideographic": 28, 
-    "Join_Control": 29, 
-    "L": 30, 
-    "Letter": 31, 
-    "Ll": 32, 
-    "Lm": 33, 
-    "Lo": 34, 
-    "Logical_Order_Exception": 35, 
-    "Lower": 36, 
-    "Lt": 37, 
-    "Lu": 38, 
-    "M": 39, 
-    "Mark": 40, 
-    "Mc": 41, 
-    "Me": 42, 
-    "Mn": 43, 
-    "N": 44, 
-    "Nd": 45, 
-    "Nl": 46, 
-    "No": 47, 
-    "Noncharacter_Code_Point": 48, 
-    "Number": 49, 
-    "Other": 50, 
-    "Other_Alphabetic": 51, 
-    "Other_Default_Ignorable_Code_Point": 52, 
-    "Other_Grapheme_Extend": 53, 
-    "Other_ID_Continue": 54, 
-    "Other_ID_Start": 55, 
-    "Other_Lowercase": 56, 
-    "Other_Math": 57, 
-    "Other_Uppercase": 58, 
-    "P": 59, 
-    "Pattern_Syntax": 60, 
-    "Pattern_White_Space": 61, 
-    "Pc": 62, 
-    "Pd": 63, 
-    "Pe": 64, 
-    "Pf": 65, 
-    "Pi": 66, 
-    "Po": 67, 
-    "Prepended_Concatenation_Mark": 68, 
-    "Ps": 69, 
-    "Punct": 70, 
-    "Quotation_Mark": 71, 
-    "Radical": 72, 
-    "Regional_Indicator": 73, 
-    "S": 74, 
-    "STerm": 75, 
-    "Sc": 76, 
-    "Sentence_Terminal": 77, 
-    "Sk": 78, 
-    "Sm": 79, 
-    "So": 80, 
-    "Soft_Dotted": 81, 
-    "Space": 82, 
-    "Symbol": 83, 
-    "Terminal_Punctuation": 84, 
-    "Title": 85, 
-    "Unified_Ideograph": 86, 
-    "Upper": 87, 
-    "Variation_Selector": 88, 
-    "White_Space": 89, 
-    "Z": 90, 
-    "Zl": 91, 
-    "Zp": 92, 
-    "Zs": 93, 
-    "[": 94, 
-    "\\p{": 95, 
-    "]": 96, 
-    "]'": 97, 
-    "any": 98, 
-    "char_lit": 99, 
-    "empty": 100, 
-    "hex_digit": 101, 
-    "letter": 102, 
-    "lowcase": 103, 
-    "not": 104, 
-    "nt": 105, 
-    "number": 106, 
-    "package": 107, 
-    "string_lit": 108, 
-    "tokid": 109, 
-    "upcase": 110, 
-    "{": 111, 
-    "|": 112, 
-    "}": 113, 
+    "[": 12, 
+    "\\p{ASCII_Hex_Digit}": 13, 
+    "\\p{Bidi_Control}": 14, 
+    "\\p{Cc}": 15, 
+    "\\p{Cf}": 16, 
+    "\\p{Co}": 17, 
+    "\\p{Cs}": 18, 
+    "\\p{C}": 19, 
+    "\\p{Dash}": 20, 
+    "\\p{Deprecated}": 21, 
+    "\\p{Diacritic}": 22, 
+    "\\p{Digit}": 23, 
+    "\\p{Extender}": 24, 
+    "\\p{Hex_Digit}": 25, 
+    "\\p{Hyphen}": 26, 
+    "\\p{IDS_Binary_Operator}": 27, 
+    "\\p{IDS_Trinary_Operator}": 28, 
+    "\\p{Ideographic}": 29, 
+    "\\p{Join_Control}": 30, 
+    "\\p{Letter}": 31, 
+    "\\p{Ll}": 32, 
+    "\\p{Lm}": 33, 
+    "\\p{Logical_Order_Exception}": 34, 
+    "\\p{Lower}": 35, 
+    "\\p{Lo}": 36, 
+    "\\p{Lt}": 37, 
+    "\\p{Lu}": 38, 
+    "\\p{L}": 39, 
+    "\\p{Mark}": 40, 
+    "\\p{Mc}": 41, 
+    "\\p{Me}": 42, 
+    "\\p{Mn}": 43, 
+    "\\p{M}": 44, 
+    "\\p{Nd}": 45, 
+    "\\p{Nl}": 46, 
+    "\\p{Noncharacter_Code_Point}": 47, 
+    "\\p{No}": 48, 
+    "\\p{Number}": 49, 
+    "\\p{N}": 50, 
+    "\\p{Other_Alphabetic}": 51, 
+    "\\p{Other_Default_Ignorable_Code_Point}": 52, 
+    "\\p{Other_Grapheme_Extend}": 53, 
+    "\\p{Other_ID_Continue}": 54, 
+    "\\p{Other_ID_Start}": 55, 
+    "\\p{Other_Lowercase}": 56, 
+    "\\p{Other_Math}": 57, 
+    "\\p{Other_Uppercase}": 58, 
+    "\\p{Other}": 59, 
+    "\\p{Pattern_Syntax}": 60, 
+    "\\p{Pattern_White_Space}": 61, 
+    "\\p{Pc}": 62, 
+    "\\p{Pd}": 63, 
+    "\\p{Pe}": 64, 
+    "\\p{Pf}": 65, 
+    "\\p{Pi}": 66, 
+    "\\p{Po}": 67, 
+    "\\p{Prepended_Concatenation_Mark}": 68, 
+    "\\p{Ps}": 69, 
+    "\\p{Punct}": 70, 
+    "\\p{P}": 71, 
+    "\\p{Quotation_Mark}": 72, 
+    "\\p{Radical}": 73, 
+    "\\p{Regional_Indicator}": 74, 
+    "\\p{STerm}": 75, 
+    "\\p{Sc}": 76, 
+    "\\p{Sentence_Terminal}": 77, 
+    "\\p{Sk}": 78, 
+    "\\p{Sm}": 79, 
+    "\\p{Soft_Dotted}": 80, 
+    "\\p{So}": 81, 
+    "\\p{Space}": 82, 
+    "\\p{Symbol}": 83, 
+    "\\p{S}": 84, 
+    "\\p{Terminal_Punctuation}": 85, 
+    "\\p{Title}": 86, 
+    "\\p{Unified_Ideograph}": 87, 
+    "\\p{Upper}": 88, 
+    "\\p{Variation_Selector}": 89, 
+    "\\p{White_Space}": 90, 
+    "\\p{Zl}": 91, 
+    "\\p{Zp}": 92, 
+    "\\p{Zs}": 93, 
+    "\\p{Z}": 94, 
+    "]": 95, 
+    "]'": 96, 
+    "any": 97, 
+    "char_lit": 98, 
+    "empty": 99, 
+    "letter": 100, 
+    "lowcase": 101, 
+    "not": 102, 
+    "nt": 103, 
+    "number": 104, 
+    "package": 105, 
+    "string_lit": 106, 
+    "tokid": 107, 
+    "upcase": 108, 
+    "{": 109, 
+    "|": 110, 
+    "}": 111, 
 }
 
 var Suppress = []bool { 
-    false, 
-    false, 
     false, 
     false, 
     false, 

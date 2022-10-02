@@ -64,13 +64,8 @@ which are used to specify tokens:
 
 `any`, `not`, `letter`, `upcase`, `lowcase` and `number` are the only reserved
 words of gogll.
-```
-hex_digit 
-    :   (   '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' 
-    |       'a' | 'b' | 'c' | 'd' | 'e' | 'f' 
-    |       'A' | 'B' | 'C' | 'D' | 'E' | 'F' ) 
-    ;
 
+```
 LexSymbol 
     :   "." | "any" string_lit | char_lit | LexBracket | "not" string_lit 
     |   UnicodeClass 
@@ -90,7 +85,7 @@ A character property may be included in a set, e.g.: `\p{L}`;
 or excluded from a set, e.g.: `-\p{Pattern_Syntax}`
 ```
 
-UnicodeSetSpec : "\\p{" UnicodeRange "}" ;
+UnicodeSetSpec : UnicodeCategory | UnicodeProperty ;
 
 UnicodeSetSpecs 
     :   empty
@@ -107,7 +102,6 @@ PlusOrMinUnicodeSet
     |   "-" UnicodeSetSpec
     ;
 
-UnicodeRange : UnicodeCategory | UnicodeProperty ;
 ```
 `UnicodeCategory` and `UnicodeProperty` correspond with the matching range table variable
 definitions in Go *package unicode*.
@@ -116,94 +110,94 @@ definitions in Go *package unicode*.
 These categories may be used in the specification of a `UnicodeSet`.
 ```
 UnicodeCategory 
-    :   "Cc"
-    |   "Cf"
-    |   "Co"
-    |   "Cs"
-    |   "Digit"
-    |   "Nd"
-    |   "Letter"
-    |   "L"
-    |   "Lm"
-    |   "Lo"
-    |   "Lower"
-    |   "Ll"
-    |   "Mark"
-    |   "M"
-    |   "Mc"
-    |   "Me"
-    |   "Mn"
-    |   "Nl"
-    |   "No"
-    |   "Number"
-    |   "N"
-    |   "Other"
-    |   "C"
-    |   "Pc"
-    |   "Pd"
-    |   "Pe"
-    |   "Pf"
-    |   "Pi"
-    |   "Po"
-    |   "Ps"
-    |   "Punct"
-    |   "P"
-    |   "Sc"
-    |   "Sk"
-    |   "Sm"
-    |   "So"
-    |   "Space"
-    |   "Z"
-    |   "Symbol"
-    |   "S"
-    |   "Title"
-    |   "Lt"
-    |   "Upper"
-    |   "Lu"
-    |   "Zl"
-    |   "Zp"
-    |   "Zs"
+    :   "\\p{Cc}"
+    |   "\\p{Cf}"
+    |   "\\p{Co}"
+    |   "\\p{Cs}"
+    |   "\\p{Digit}"
+    |   "\\p{Nd}"
+    |   "\\p{Letter}"
+    |   "\\p{L}"
+    |   "\\p{Lm}"
+    |   "\\p{Lo}"
+    |   "\\p{Lower}"
+    |   "\\p{Ll}"
+    |   "\\p{Mark}"
+    |   "\\p{M}"
+    |   "\\p{Mc}"
+    |   "\\p{Me}"
+    |   "\\p{Mn}"
+    |   "\\p{Nl}"
+    |   "\\p{No}"
+    |   "\\p{Number}"
+    |   "\\p{N}"
+    |   "\\p{Other}"
+    |   "\\p{C}"
+    |   "\\p{Pc}"
+    |   "\\p{Pd}"
+    |   "\\p{Pe}"
+    |   "\\p{Pf}"
+    |   "\\p{Pi}"
+    |   "\\p{Po}"
+    |   "\\p{Ps}"
+    |   "\\p{Punct}"
+    |   "\\p{P}"
+    |   "\\p{Sc}"
+    |   "\\p{Sk}"
+    |   "\\p{Sm}"
+    |   "\\p{So}"
+    |   "\\p{Space}"
+    |   "\\p{Z}"
+    |   "\\p{Symbol}"
+    |   "\\p{S}"
+    |   "\\p{Title}"
+    |   "\\p{Lt}"
+    |   "\\p{Upper}"
+    |   "\\p{Lu}"
+    |   "\\p{Zl}"
+    |   "\\p{Zp}"
+    |   "\\p{Zs}"
     ;
 ```
 `UnicodeProperty` is the set of Unicode character properties supported in 
 *package unicode*. They may be used in `UnicodeSet` specifications.
 ```
 UnicodeProperty
-    :   "ASCII_Hex_Digit"
-    |   "Bidi_Control"
-    |   "Dash"
-    |   "Deprecated"
-    |   "Diacritic"
-    |   "Extender"
-    |   "Hex_Digit"
-    |   "Hyphen"
-    |   "IDS_Binary_Operator"
-    |   "IDS_Trinary_Operator"
-    |   "Ideographic"
-    |   "Join_Control"
-    |   "Logical_Order_Exception"
-    |   "Noncharacter_Code_Point"
-    |   "Other_Alphabetic"
-    |   "Other_Default_Ignorable_Code_Point"
-    |   "Other_Grapheme_Extend"
-    |   "Other_ID_Continue"
-    |   "Other_ID_Start"
-    |   "Other_Lowercase"
-    |   "Other_Math"
-    |   "Other_Uppercase"
-    |   "Pattern_Syntax"
-    |   "Pattern_White_Space"
-    |   "Prepended_Concatenation_Mark"
-    |   "Quotation_Mark"
-    |   "Radical"
-    |   "Regional_Indicator"
-    |   "STerm"
-    |   "Sentence_Terminal"
-    |   "Soft_Dotted"
-    |   "Terminal_Punctuation"
-    |   "Unified_Ideograph"
-    |   "Variation_Selector"
-    |   "White_Space"
+    :   "\\p{ASCII_Hex_Digit}"
+    |   "\\p{Bidi_Control}"
+    |   "\\p{Dash}"
+    |   "\\p{Deprecated}"
+    |   "\\p{Diacritic}"
+    |   "\\p{Extender}"
+    |   "\\p{Hex_Digit}"
+    |   "\\p{Hyphen}"
+    |   "\\p{IDS_Binary_Operator}"
+    |   "\\p{IDS_Trinary_Operator}"
+    |   "\\p{Ideographic}"
+    |   "\\p{Join_Control}"
+    |   "\\p{Logical_Order_Exception}"
+    |   "\\p{Noncharacter_Code_Point}"
+    |   "\\p{Other_Alphabetic}"
+    |   "\\p{Other_Default_Ignorable_Code_Point}"
+    |   "\\p{Other_Grapheme_Extend}"
+    |   "\\p{Other_ID_Continue}"
+    |   "\\p{Other_ID_Start}"
+    |   "\\p{Other_Lowercase}"
+    |   "\\p{Other_Math}"
+    |   "\\p{Other_Uppercase}"
+    |   "\\p{Pattern_Syntax}"
+    |   "\\p{Pattern_White_Space}"
+    |   "\\p{Prepended_Concatenation_Mark}"
+    |   "\\p{Quotation_Mark}"
+    |   "\\p{Radical}"
+    |   "\\p{Regional_Indicator}"
+    |   "\\p{STerm}"
+    |   "\\p{Sentence_Terminal}"
+    |   "\\p{Soft_Dotted}"
+    |   "\\p{Terminal_Punctuation}"
+    |   "\\p{Unified_Ideograph}"
+    |   "\\p{Variation_Selector}"
+    |   "\\p{White_Space}"
     ;
 
 char_lit : '\'' (not "'" | '\\' any "\\'nrt") '\'' ;
@@ -279,7 +273,7 @@ does not have the same set of escape characters as `char_lit` or `char_set`.
 Gogll uses the specified syntax rules to generate the parser.
 ```
 SyntaxRule : nt ":" SyntaxAlternates ";"  ;
-nt : upcase <letter|number|'_'> ;
+nt : upcase {letter|number|'_'} ;
 ```
 `nt` is a `SyntaxRule` ID and stands for Non-terminal. An `nt` is distinguished 
 from a `tokid` by its first character, which is upper case. `SyntaxRule` is 
