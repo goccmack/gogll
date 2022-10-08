@@ -1,0 +1,8 @@
+digraph SPPF {
+"S,0,3"
+"S:aAb,2"
+"S,0,3" -> "S:aAb,2"
+"S:aAB,2"
+"S,0,3" -> "S:aAB,2"
+"S:aAb,2";"S:aAB,2"
+}

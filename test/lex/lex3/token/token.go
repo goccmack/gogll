@@ -156,6 +156,12 @@ var TypeToID = []string {
     "rule1", 
 }
 
+var IDToType = map[string]Type { 
+    "Error": 0, 
+    "$": 1, 
+    "rule1": 2, 
+}
+
 var Suppress = []bool { 
     false, 
     false, 

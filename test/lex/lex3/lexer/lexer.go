@@ -15,6 +15,95 @@ type state int
 
 const nullState state = -1
 
+// Unicode categories
+var (
+	_Cc     = unicode.Cc     // Cc is the set of Unicode characters in category Cc (Other, control).
+	_Cf     = unicode.Cf     // Cf is the set of Unicode characters in category Cf (Other, format).
+	_Co     = unicode.Co     // Co is the set of Unicode characters in category Co (Other, private use).
+	_Cs     = unicode.Cs     // Cs is the set of Unicode characters in category Cs (Other, surrogate).
+	_Digit  = unicode.Digit  // Digit is the set of Unicode characters with the "decimal digit" property.
+	_Nd     = unicode.Nd     // Nd is the set of Unicode characters in category Nd (Number, decimal digit).
+	_Letter = unicode.Letter // Letter/L is the set of Unicode letters, category L.
+	_L      = unicode.L
+	_Lm     = unicode.Lm    // Lm is the set of Unicode characters in category Lm (Letter, modifier).
+	_Lo     = unicode.Lo    // Lo is the set of Unicode characters in category Lo (Letter, other).
+	_Lower  = unicode.Lower // Lower is the set of Unicode lower case letters.
+	_Ll     = unicode.Ll    // Ll is the set of Unicode characters in category Ll (Letter, lowercase).
+	_Mark   = unicode.Mark  // Mark/M is the set of Unicode mark characters, category M.
+	_M      = unicode.M
+	_Mc     = unicode.Mc     // Mc is the set of Unicode characters in category Mc (Mark, spacing combining).
+	_Me     = unicode.Me     // Me is the set of Unicode characters in category Me (Mark, enclosing).
+	_Mn     = unicode.Mn     // Mn is the set of Unicode characters in category Mn (Mark, nonspacing).
+	_Nl     = unicode.Nl     // Nl is the set of Unicode characters in category Nl (Number, letter).
+	_No     = unicode.No     // No is the set of Unicode characters in category No (Number, other).
+	_Number = unicode.Number // Number/N is the set of Unicode number characters, category N.
+	_N      = unicode.N
+	_Other  = unicode.Other // Other/C is the set of Unicode control and special characters, category C.
+	_C      = unicode.C
+	_Pc     = unicode.Pc    // Pc is the set of Unicode characters in category Pc (Punctuation, connector).
+	_Pd     = unicode.Pd    // Pd is the set of Unicode characters in category Pd (Punctuation, dash).
+	_Pe     = unicode.Pe    // Pe is the set of Unicode characters in category Pe (Punctuation, close).
+	_Pf     = unicode.Pf    // Pf is the set of Unicode characters in category Pf (Punctuation, final quote).
+	_Pi     = unicode.Pi    // Pi is the set of Unicode characters in category Pi (Punctuation, initial quote).
+	_Po     = unicode.Po    // Po is the set of Unicode characters in category Po (Punctuation, other).
+	_Ps     = unicode.Ps    // Ps is the set of Unicode characters in category Ps (Punctuation, open).
+	_Punct  = unicode.Punct // Punct/P is the set of Unicode punctuation characters, category P.
+	_P      = unicode.P
+	_Sc     = unicode.Sc    // Sc is the set of Unicode characters in category Sc (Symbol, currency).
+	_Sk     = unicode.Sk    // Sk is the set of Unicode characters in category Sk (Symbol, modifier).
+	_Sm     = unicode.Sm    // Sm is the set of Unicode characters in category Sm (Symbol, math).
+	_So     = unicode.So    // So is the set of Unicode characters in category So (Symbol, other).
+	_Space  = unicode.Space // Space/Z is the set of Unicode space characters, category Z.
+	_Z      = unicode.Z
+	_Symbol = unicode.Symbol // Symbol/S is the set of Unicode symbol characters, category S.
+	_S      = unicode.S
+	_Title  = unicode.Title // Title is the set of Unicode title case letters.
+	_Lt     = unicode.Lt    // Lt is the set of Unicode characters in category Lt (Letter, titlecase).
+	_Upper  = unicode.Upper // Upper is the set of Unicode upper case letters.
+	_Lu     = unicode.Lu    // Lu is the set of Unicode characters in category Lu (Letter, uppercase).
+	_Zl     = unicode.Zl    // Zl is the set of Unicode characters in category Zl (Separator, line).
+	_Zp     = unicode.Zp    // Zp is the set of Unicode characters in category Zp (Separator, paragraph).
+	_Zs     = unicode.Zs    // Zs is the set of Unicode characters in category Zs (Separator, space).
+)
+
+// Unicode properties
+var (
+	_ASCII_Hex_Digit                    = unicode.ASCII_Hex_Digit                    // ASCII_Hex_Digit is the set of Unicode characters with property ASCII_Hex_Digit.
+	_Bidi_Control                       = unicode.Bidi_Control                       // Bidi_Control is the set of Unicode characters with property Bidi_Control.
+	_Dash                               = unicode.Dash                               // Dash is the set of Unicode characters with property Dash.
+	_Deprecated                         = unicode.Deprecated                         // Deprecated is the set of Unicode characters with property Deprecated.
+	_Diacritic                          = unicode.Diacritic                          // Diacritic is the set of Unicode characters with property Diacritic.
+	_Extender                           = unicode.Extender                           // Extender is the set of Unicode characters with property Extender.
+	_Hex_Digit                          = unicode.Hex_Digit                          // Hex_Digit is the set of Unicode characters with property Hex_Digit.
+	_Hyphen                             = unicode.Hyphen                             // Hyphen is the set of Unicode characters with property Hyphen.
+	_IDS_Binary_Operator                = unicode.IDS_Binary_Operator                // IDS_Binary_Operator is the set of Unicode characters with property IDS_Binary_Operator.
+	_IDS_Trinary_Operator               = unicode.IDS_Trinary_Operator               // IDS_Trinary_Operator is the set of Unicode characters with property IDS_Trinary_Operator.
+	_Ideographic                        = unicode.Ideographic                        // Ideographic is the set of Unicode characters with property Ideographic.
+	_Join_Control                       = unicode.Join_Control                       // Join_Control is the set of Unicode characters with property Join_Control.
+	_Logical_Order_Exception            = unicode.Logical_Order_Exception            // Logical_Order_Exception is the set of Unicode characters with property Logical_Order_Exception.
+	_Noncharacter_Code_Point            = unicode.Noncharacter_Code_Point            // Noncharacter_Code_Point is the set of Unicode characters with property Noncharacter_Code_Point.
+	_Other_Alphabetic                   = unicode.Other_Alphabetic                   // Other_Alphabetic is the set of Unicode characters with property Other_Alphabetic.
+	_Other_Default_Ignorable_Code_Point = unicode.Other_Default_Ignorable_Code_Point // Other_Default_Ignorable_Code_Point is the set of Unicode characters with property Other_Default_Ignorable_Code_Point.
+	_Other_Grapheme_Extend              = unicode.Other_Grapheme_Extend              // Other_Grapheme_Extend is the set of Unicode characters with property Other_Grapheme_Extend.
+	_Other_ID_Continue                  = unicode.Other_ID_Continue                  // Other_ID_Continue is the set of Unicode characters with property Other_ID_Continue.
+	_Other_ID_Start                     = unicode.Other_ID_Start                     // Other_ID_Start is the set of Unicode characters with property Other_ID_Start.
+	_Other_Lowercase                    = unicode.Other_Lowercase                    // Other_Lowercase is the set of Unicode characters with property Other_Lowercase.
+	_Other_Math                         = unicode.Other_Math                         // Other_Math is the set of Unicode characters with property Other_Math.
+	_Other_Uppercase                    = unicode.Other_Uppercase                    // Other_Uppercase is the set of Unicode characters with property Other_Uppercase.
+	_Pattern_Syntax                     = unicode.Pattern_Syntax                     // Pattern_Syntax is the set of Unicode characters with property Pattern_Syntax.
+	_Pattern_White_Space                = unicode.Pattern_White_Space                // Pattern_White_Space is the set of Unicode characters with property Pattern_White_Space.
+	_Prepended_Concatenation_Mark       = unicode.Prepended_Concatenation_Mark       // Prepended_Concatenation_Mark is the set of Unicode characters with property Prepended_Concatenation_Mark.
+	_Quotation_Mark                     = unicode.Quotation_Mark                     // Quotation_Mark is the set of Unicode characters with property Quotation_Mark.
+	_Radical                            = unicode.Radical                            // Radical is the set of Unicode characters with property Radical.
+	_Regional_Indicator                 = unicode.Regional_Indicator                 // Regional_Indicator is the set of Unicode characters with property Regional_Indicator.
+	_STerm                              = unicode.STerm                              // STerm is an alias for Sentence_Terminal.
+	_Sentence_Terminal                  = unicode.Sentence_Terminal                  // Sentence_Terminal is the set of Unicode characters with property Sentence_Terminal.
+	_Soft_Dotted                        = unicode.Soft_Dotted                        // Soft_Dotted is the set of Unicode characters with property Soft_Dotted.
+	_Terminal_Punctuation               = unicode.Terminal_Punctuation               // Terminal_Punctuation is the set of Unicode characters with property Terminal_Punctuation.
+	_Unified_Ideograph                  = unicode.Unified_Ideograph                  // Unified_Ideograph is the set of Unicode characters with property Unified_Ideograph.
+	_Variation_Selector                 = unicode.Variation_Selector                 // Variation_Selector is the set of Unicode characters with property Variation_Selector.
+	_White_Space                        = unicode.White_Space                        // White_Space is the set of Unicode characters with property White_Space.
+)
 
 // Lexer contains both the input slice of runes and the slice of tokens
 // parsed from the input

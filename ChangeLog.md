@@ -1,5 +1,8 @@
 # Change Log
 
+# V3.3.3 
+* BSR set stores only symbol strings in stringBSR
+
 # V3.3.2 2022-10-02
 * Allow length 1 non-terminals.
 

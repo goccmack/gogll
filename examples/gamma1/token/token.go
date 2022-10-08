@@ -135,34 +135,46 @@ func (t Type) ID() string {
 const(
     Error  Type = iota  // Error 
     EOF  // $ 
-    T_0  // rule1 
+    T_0  // a 
+    T_1  // b 
+    T_2  // c 
 )
 
 var TypeToString = []string{ 
     "Error",
     "EOF",
     "T_0",
+    "T_1",
+    "T_2",
 }
 
 var StringToType = map[string] Type { 
     "Error" : Error, 
     "EOF" : EOF, 
     "T_0" : T_0, 
+    "T_1" : T_1, 
+    "T_2" : T_2, 
 }
 
 var TypeToID = []string { 
     "Error", 
     "$", 
-    "rule1", 
+    "a", 
+    "b", 
+    "c", 
 }
 
 var IDToType = map[string]Type { 
     "Error": 0, 
     "$": 1, 
-    "rule1": 2, 
+    "a": 2, 
+    "b": 3, 
+    "c": 4, 
 }
 
 var Suppress = []bool { 
+    false, 
+    false, 
     false, 
     false, 
     false, 

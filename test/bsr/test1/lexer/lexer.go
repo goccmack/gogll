@@ -8,7 +8,7 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/goccmack/gogll/v3/test/lex/lex2/token"
+	"github.com/goccmack/gogll/v3/test/bsr/test1/token"
 )
 
 type state int
@@ -284,6 +284,8 @@ func not(r rune, set []rune) bool {
 var accept = []token.Type{ 
 	token.Error, 
 	token.T_0, 
+	token.T_1, 
+	token.T_2, 
 }
 
 var nextState = []func(r rune) state{ 
@@ -291,13 +293,27 @@ var nextState = []func(r rune) state{
 	func(r rune) state {
 		switch { 
 		case r == 'a':
-			return 0 
-		case r == 'b':
 			return 1 
+		case r == 'b':
+			return 2 
+		case r == 'c':
+			return 3 
 		}
 		return nullState
 	}, 
 	// Set1
+	func(r rune) state {
+		switch { 
+		}
+		return nullState
+	}, 
+	// Set2
+	func(r rune) state {
+		switch { 
+		}
+		return nullState
+	}, 
+	// Set3
 	func(r rune) state {
 		switch { 
 		}

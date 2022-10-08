@@ -10,10 +10,9 @@ Package bsr implements a Binary Subtree Representation set as defined in
 package bsr
 
 import (
-	"bytes"
 	"fmt"
+	"sort"
 	"strings"
-	"unicode/utf8"
 
 	"github.com/goccmack/gogll/v3/test/lex/lex5/lexer"
 	"github.com/goccmack/gogll/v3/test/lex/lex5/parser/slot"
@@ -33,7 +32,7 @@ Set contains the set of Binary Subtree Representations (BSR).
 type Set struct {
 	slotEntries   map[BSR]bool
 	ntSlotEntries map[ntSlot][]BSR
-	stringEntries map[stringBSR]bool
+	stringEntries map[stringKey]*stringBSR
 	rightExtent   int
 	lex           *lexer.Lexer
 
@@ -55,20 +54,26 @@ type BSR struct {
 	set         *Set
 }
 
+type BSRs []BSR
+
 type stringBSR struct {
-	Label       slot.Label
+	Symbols     symbols.Symbols
 	leftExtent  int
 	pivot       int
 	rightExtent int
 	set         *Set
 }
 
+type stringBSRs []*stringBSR
+
+type stringKey string
+
 // New returns a new initialised BSR Set
 func New(startSymbol symbols.NT, l *lexer.Lexer) *Set {
 	return &Set{
 		slotEntries:   make(map[BSR]bool),
 		ntSlotEntries: make(map[ntSlot][]BSR),
-		stringEntries: make(map[stringBSR]bool),
+		stringEntries: make(map[stringKey]*stringBSR),
 		rightExtent:   0,
 		lex:           l,
 		startSym:      startSymbol,
@@ -79,12 +84,12 @@ func New(startSymbol symbols.NT, l *lexer.Lexer) *Set {
 Add a bsr to the set. (i,j) is the extent. k is the pivot.
 */
 func (s *Set) Add(l slot.Label, i, k, j int) {
-	// fmt.Printf("bsr.Add(%s,%d,%d,%d)\n", l,i,k,j)
+	// fmt.Printf("bsr.Add(%s,%d,%d,%d l.Pos %d)\n", l, i, k, j, l.Pos())
 	if l.EoR() {
 		s.insert(BSR{l, i, k, j, s})
 	} else {
 		if l.Pos() > 1 {
-			s.insert(stringBSR{l, i, k, j, s})
+			s.insert(&stringBSR{l.Symbols()[:l.Pos()], i, k, j, s})
 		}
 	}
 }
@@ -111,31 +116,25 @@ func (s *Set) Contain(nt symbols.NT, left, right int) bool {
 	return false
 }
 
-/*
-Dump prints the NT symbols of the parse forest.
-*/
+// Dump prints all the NT and string elements of the BSR set
 func (s *Set) Dump() {
-	for _, root := range s.GetRoots() {
-		s.dump(root, 0)
+	fmt.Println("Roots:")
+	for _, rt := range s.GetRoots() {
+		fmt.Println(rt)
 	}
-}
+	fmt.Println()
 
-func (s *Set) dump(b BSR, level int) {
-	fmt.Print(indent(level, " "))
-	fmt.Println(b)
-	for _, cn := range b.GetAllNTChildren() {
-		for _, c := range cn {
-			s.dump(c, level+1)
-		}
+	fmt.Println("NT BSRs:")
+	for _, bsr := range s.getNTBSRs() {
+		fmt.Println(bsr)
 	}
-}
+	fmt.Println()
 
-func indent(n int, c string) string {
-	buf := new(bytes.Buffer)
-	for i := 0; i < 4*n; i++ {
-		fmt.Fprint(buf, c)
+	fmt.Println("string BSRs:")
+	for _, bsr := range s.getStringBSRs() {
+		fmt.Println(bsr)
 	}
-	return buf.String()
+	fmt.Println()
 }
 
 // GetAll returns all BSR grammar slot entries
@@ -171,15 +170,36 @@ func (s *Set) GetRoots() (roots []BSR) {
 	return
 }
 
-func (s *Set) getString(l slot.Label, leftExtent, rightExtent int) stringBSR {
-	for str := range s.stringEntries {
-		if str.Label == l && str.leftExtent == leftExtent && str.rightExtent == rightExtent {
-			return str
+func (s *Set) getNTBSRs() BSRs {
+	bsrs := make(BSRs, 0, len(s.ntSlotEntries))
+	for _, bsrl := range s.ntSlotEntries {
+		for _, bsr := range bsrl {
+			bsrs = append(bsrs, bsr)
 		}
 	}
-	fmt.Printf("Error: no string %s left extent=%d right extent=%d pos=%d\n",
-		strings.Join(l.Symbols()[:l.Pos()].Strings(), " "), leftExtent, rightExtent, l.Pos())
-	panic("must not happen")
+	sort.Sort(bsrs)
+	return bsrs
+}
+
+func (s *Set) getStringBSRs() stringBSRs {
+	bsrs := make(stringBSRs, 0, len(s.stringEntries))
+	for _, bsr := range s.stringEntries {
+		bsrs = append(bsrs, bsr)
+	}
+	sort.Sort(bsrs)
+	return bsrs
+}
+
+func (s *Set) getString(symbols symbols.Symbols, leftExtent, rightExtent int) *stringBSR {
+	// fmt.Printf("Set.getString(%s,%d,%d)\n", symbols, leftExtent, rightExtent)
+
+	strBsr, exist := s.stringEntries[getStringKey(symbols, leftExtent, rightExtent)]
+	if exist {
+		return strBsr
+	}
+
+	panic(fmt.Sprintf("Error: no string %s left extent=%d right extent=%d\n",
+		symbols, leftExtent, rightExtent))
 }
 
 func (s *Set) insert(bsr bsr) {
@@ -191,11 +211,19 @@ func (s *Set) insert(bsr bsr) {
 		s.slotEntries[b] = true
 		nt := ntSlot{b.Label.Head(), b.leftExtent, b.rightExtent}
 		s.ntSlotEntries[nt] = append(s.ntSlotEntries[nt], b)
-	case stringBSR:
-		s.stringEntries[b] = true
+	case *stringBSR:
+		s.stringEntries[b.key()] = b
 	default:
 		panic(fmt.Sprintf("Invalid type %T", bsr))
 	}
+}
+
+func (s *stringBSR) key() stringKey {
+	return getStringKey(s.Symbols, s.leftExtent, s.rightExtent)
+}
+
+func getStringKey(symbols symbols.Symbols, lext, rext int) stringKey {
+	return stringKey(fmt.Sprintf("%s,%d,%d", symbols, lext, rext))
 }
 
 // Alternate returns the index of the grammar rule alternate.
@@ -257,7 +285,8 @@ func (b BSR) GetNTChildren(nt symbols.NT, i int) []BSR {
 
 // GetNTChildrenI returns all the BSRs of NT symbol[i] in s
 func (b BSR) GetNTChildrenI(i int) []BSR {
-	// fmt.Printf("bsr.GetNTChildI(%d) %s\n", i, b)
+	// fmt.Printf("bsr.GetNTChildI(%d) %s Pos %d\n", i, b, b.Label.Pos())
+
 	if i >= len(b.Label.Symbols()) {
 		b.set.fail(b, "Error: cannot get NT child %d of %s", i, b)
 	}
@@ -270,22 +299,29 @@ func (b BSR) GetNTChildrenI(i int) []BSR {
 		}
 		return b.set.getNTSlot(b.Label.Symbols()[i], b.pivot, b.rightExtent)
 	}
-	idx := b.Label.Index()
-	str := stringBSR{b.Label, b.leftExtent, b.pivot, b.rightExtent, b.set}
-	for idx.Pos > i+1 && idx.Pos > 2 {
-		idx.Pos--
-		str = b.set.getString(slot.GetLabel(idx.NT, idx.Alt, idx.Pos), str.leftExtent, str.pivot)
-		// fmt.Printf("  %s\n", str)
+	if b.Label.Pos() == i+1 {
+		return b.set.getNTSlot(b.Label.Symbols()[i], b.pivot, b.rightExtent)
 	}
-	if i == 0 {
-		return b.set.getNTSlot(b.Label.Symbols()[i], str.leftExtent, str.pivot)
-	}
-	return b.set.getNTSlot(b.Label.Symbols()[i], str.pivot, str.rightExtent)
-}
 
-// func (b BSR) GetString() string {
-// 	return set.lex.GetString(b.LeftExtent(),b.RightExtent())
-// }
+	// Walk to pos i from the right
+	symbols := b.Label.Symbols()[:b.Label.Pos()-1]
+	str := b.set.getString(symbols, b.leftExtent, b.pivot)
+	for len(symbols) > i+1 && len(symbols) > 2 {
+		symbols = symbols[:len(symbols)-1]
+		str = b.set.getString(symbols, str.leftExtent, str.pivot)
+	}
+
+	bsrs := []BSR{}
+	if i == 0 {
+		bsrs = b.set.getNTSlot(b.Label.Symbols()[i], str.leftExtent, str.pivot)
+	} else {
+		bsrs = b.set.getNTSlot(b.Label.Symbols()[i], str.pivot, str.rightExtent)
+	}
+
+	// fmt.Println(bsrs)
+
+	return bsrs
+}
 
 // GetTChildI returns the terminal symbol at position i in b.
 // GetTChildI panics if symbol i is not a valid terminal
@@ -311,22 +347,6 @@ func (b BSR) GetTChildI(i int) *token.Token {
 	return b.set.lex.Tokens[lext]
 }
 
-func deleteNTSlotEntry(b BSR) {
-	// fmt.Printf("deletNTSlotEntry(%s)\n", b)
-	nts := ntSlot{b.Label.Head(), b.leftExtent, b.rightExtent}
-	slots := b.set.ntSlotEntries[nts]
-	slots1 := make([]BSR, 0, len(slots))
-	bi := -1
-	for i, s := range slots {
-		if s == b && bi != -1 {
-			panic(fmt.Sprintf("Duplicate slot entries: %d and %d", bi, i))
-		} else {
-			slots1 = append(slots1, s)
-		}
-	}
-	b.set.ntSlotEntries[nts] = slots1
-}
-
 // LeftExtent returns the left extent of the BSR
 func (b BSR) LeftExtent() int {
 	return b.leftExtent
@@ -343,8 +363,62 @@ func (b BSR) Pivot() int {
 }
 
 func (b BSR) String() string {
-	return fmt.Sprintf("%s,%d,%d,%d - %s", b.Label, b.leftExtent, b.pivot, b.rightExtent,
-		b.set.lex.GetString(b.LeftExtent(), b.RightExtent()-1))
+	srcStr := "ℇ"
+	if b.leftExtent < b.rightExtent {
+		srcStr = b.set.lex.GetString(b.LeftExtent(), b.RightExtent()-1)
+	}
+	return fmt.Sprintf("%s,%d,%d,%d - %s",
+		b.Label, b.leftExtent, b.pivot, b.rightExtent, srcStr)
+}
+
+// BSRs Sort interface
+func (bs BSRs) Len() int {
+	return len(bs)
+}
+
+func (bs BSRs) Less(i, j int) bool {
+	if bs[i].Label < bs[j].Label {
+		return true
+	}
+	if bs[i].Label > bs[j].Label {
+		return false
+	}
+	if bs[i].leftExtent < bs[j].leftExtent {
+		return true
+	}
+	if bs[i].leftExtent > bs[j].leftExtent {
+		return false
+	}
+	return bs[i].rightExtent < bs[j].rightExtent
+}
+
+func (bs BSRs) Swap(i, j int) {
+	bs[i], bs[j] = bs[j], bs[i]
+}
+
+// stringBSRs Sort interface
+func (sbs stringBSRs) Len() int {
+	return len(sbs)
+}
+
+func (sbs stringBSRs) Less(i, j int) bool {
+	if sbs[i].Symbols.String() < sbs[j].Symbols.String() {
+		return true
+	}
+	if sbs[i].Symbols.String() > sbs[j].Symbols.String() {
+		return false
+	}
+	if sbs[i].leftExtent < sbs[j].leftExtent {
+		return true
+	}
+	if sbs[i].leftExtent > sbs[j].leftExtent {
+		return false
+	}
+	return sbs[i].rightExtent < sbs[j].rightExtent
+}
+
+func (sbs stringBSRs) Swap(i, j int) {
+	sbs[i], sbs[j] = sbs[j], sbs[i]
 }
 
 func (s stringBSR) LeftExtent() int {
@@ -365,11 +439,7 @@ func (s stringBSR) Empty() bool {
 
 // String returns a string representation of s
 func (s stringBSR) String() string {
-	// fmt.Printf("bsr.stringBSR.stringBSR(): %s, %d, %d, %d\n",
-	// 	s.Label.Symbols(), s.leftExtent, s.pivot, s.rightExtent)
-	ss := s.Label.Symbols()[:s.Label.Pos()].Strings()
-	str := strings.Join(ss, " ")
-	return fmt.Sprintf("%s,%d,%d,%d - %s", str, s.leftExtent, s.pivot,
+	return fmt.Sprintf("%s,%d,%d,%d - %s", &s.Symbols, s.leftExtent, s.pivot,
 		s.rightExtent, s.set.lex.GetString(s.LeftExtent(), s.RightExtent()))
 }
 
@@ -390,23 +460,6 @@ func (s *Set) fail(b BSR, format string, a ...interface{}) {
 
 func failf(format string, args ...interface{}) {
 	panic(fmt.Sprintf("Error in BSR: %s\n", fmt.Sprintf(format, args...)))
-}
-
-func decodeRune(str []byte) (string, rune, int) {
-	if len(str) == 0 {
-		return "$", '$', 0
-	}
-	r, sz := utf8.DecodeRune(str)
-	if r == utf8.RuneError {
-		panic(fmt.Sprintf("Rune error: %s", str))
-	}
-	switch r {
-	case '\t', ' ':
-		return "space", r, sz
-	case '\n':
-		return "\\n", r, sz
-	}
-	return string(str[:sz]), r, sz
 }
 
 func (s *Set) getLineColumn(cI int) (line, col int) {
@@ -462,7 +515,7 @@ func (s *Set) IsAmbiguous() bool {
 }
 
 // isAmbiguous returns true if b or any of its NT children is ambiguous.
-// A BSR is ambigous if any of its NT symbols does not have exactly one
+// A BSR is ambiguous if any of its NT symbols does not have exactly one
 // subtrees (children).
 func isAmbiguous(b BSR) bool {
 	for i, s := range b.Label.Symbols() {

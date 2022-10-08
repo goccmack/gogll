@@ -7,11 +7,11 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/goccmack/gogll/v3/test/lex/lex5/lexer"
-	"github.com/goccmack/gogll/v3/test/lex/lex5/parser/bsr"
-	"github.com/goccmack/gogll/v3/test/lex/lex5/parser/slot"
-	"github.com/goccmack/gogll/v3/test/lex/lex5/parser/symbols"
-	"github.com/goccmack/gogll/v3/test/lex/lex5/token"
+	"github.com/goccmack/gogll/v3/test/bsr/test1/lexer"
+	"github.com/goccmack/gogll/v3/test/bsr/test1/parser/bsr"
+	"github.com/goccmack/gogll/v3/test/bsr/test1/parser/slot"
+	"github.com/goccmack/gogll/v3/test/bsr/test1/parser/symbols"
+	"github.com/goccmack/gogll/v3/test/bsr/test1/token"
 )
 
 type parser struct {
@@ -38,10 +38,10 @@ func newParser(l *lexer.Lexer) *parser {
 		U:      &descriptors{},
 		popped: make(map[poppedNode]bool),
 		crf: map[clusterNode][]*crfNode{
-			{symbols.NT_Aa, 0}: {},
+			{symbols.NT_S, 0}: {},
 		},
 		crfNodes:    map[crfNode]*crfNode{},
-		bsrSet:      bsr.New(symbols.NT_Aa, l),
+		bsrSet:      bsr.New(symbols.NT_S, l),
 		parseErrors: nil,
 	}
 }
@@ -55,7 +55,7 @@ func Parse(l *lexer.Lexer) (*bsr.Set, []*Error) {
 func (p *parser) parse() (*bsr.Set, []*Error) {
 	var L slot.Label
 	m, cU := len(p.lex.Tokens)-1, 0
-	p.ntAdd(symbols.NT_Aa, 0)
+	p.ntAdd(symbols.NT_S, 0)
 	// p.DumpDescriptors()
 	for !p.R.empty() {
 		L, cU, p.cI = p.R.remove()
@@ -65,30 +65,99 @@ func (p *parser) parse() (*bsr.Set, []*Error) {
 		// p.DumpDescriptors()
 
 		switch L {
-		case slot.Aa0R0: // Aa : ∙\
+		case slot.A0R0: // A : ∙a
 
-			p.bsrSet.Add(slot.Aa0R1, cU, p.cI, p.cI+1)
+			p.bsrSet.Add(slot.A0R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_Aa) {
-				p.rtn(symbols.NT_Aa, cU, p.cI)
+			if p.follow(symbols.NT_A) {
+				p.rtn(symbols.NT_A, cU, p.cI)
 			} else {
-				p.parseError(slot.Aa0R0, p.cI, followSets[symbols.NT_Aa])
+				p.parseError(slot.A0R0, p.cI, followSets[symbols.NT_A])
 			}
-		case slot.Aa1R0: // Aa : ∙"
+		case slot.B0R0: // B : ∙b
 
-			p.bsrSet.Add(slot.Aa1R1, cU, p.cI, p.cI+1)
+			p.bsrSet.Add(slot.B0R1, cU, p.cI, p.cI+1)
 			p.cI++
-			if p.follow(symbols.NT_Aa) {
-				p.rtn(symbols.NT_Aa, cU, p.cI)
+			if p.follow(symbols.NT_B) {
+				p.rtn(symbols.NT_B, cU, p.cI)
 			} else {
-				p.parseError(slot.Aa1R0, p.cI, followSets[symbols.NT_Aa])
+				p.parseError(slot.B0R0, p.cI, followSets[symbols.NT_B])
+			}
+		case slot.C0R0: // C : ∙c
+
+			p.bsrSet.Add(slot.C0R1, cU, p.cI, p.cI+1)
+			p.cI++
+			if p.follow(symbols.NT_C) {
+				p.rtn(symbols.NT_C, cU, p.cI)
+			} else {
+				p.parseError(slot.C0R0, p.cI, followSets[symbols.NT_C])
+			}
+		case slot.S0R0: // S : ∙A B C
+
+			p.call(slot.S0R1, cU, p.cI)
+		case slot.S0R1: // S : A ∙B C
+
+			if !p.testSelect(slot.S0R1) {
+				p.parseError(slot.S0R1, p.cI, first[slot.S0R1])
+				break
+			}
+
+			p.call(slot.S0R2, cU, p.cI)
+		case slot.S0R2: // S : A B ∙C
+
+			if !p.testSelect(slot.S0R2) {
+				p.parseError(slot.S0R2, p.cI, first[slot.S0R2])
+				break
+			}
+
+			p.call(slot.S0R3, cU, p.cI)
+		case slot.S0R3: // S : A B C ∙
+
+			if p.follow(symbols.NT_S) {
+				p.rtn(symbols.NT_S, cU, p.cI)
+			} else {
+				p.parseError(slot.S0R0, p.cI, followSets[symbols.NT_S])
+			}
+		case slot.S1R0: // S : ∙A B C S
+
+			p.call(slot.S1R1, cU, p.cI)
+		case slot.S1R1: // S : A ∙B C S
+
+			if !p.testSelect(slot.S1R1) {
+				p.parseError(slot.S1R1, p.cI, first[slot.S1R1])
+				break
+			}
+
+			p.call(slot.S1R2, cU, p.cI)
+		case slot.S1R2: // S : A B ∙C S
+
+			if !p.testSelect(slot.S1R2) {
+				p.parseError(slot.S1R2, p.cI, first[slot.S1R2])
+				break
+			}
+
+			p.call(slot.S1R3, cU, p.cI)
+		case slot.S1R3: // S : A B C ∙S
+
+			if !p.testSelect(slot.S1R3) {
+				p.parseError(slot.S1R3, p.cI, first[slot.S1R3])
+				break
+			}
+
+			p.call(slot.S1R4, cU, p.cI)
+		case slot.S1R4: // S : A B C S ∙
+
+			if p.follow(symbols.NT_S) {
+				p.rtn(symbols.NT_S, cU, p.cI)
+			} else {
+				p.parseError(slot.S1R0, p.cI, followSets[symbols.NT_S])
 			}
 
 		default:
 			panic("This must not happen")
 		}
 	}
-	if !p.bsrSet.Contain(symbols.NT_Aa, 0, m) {
+	if !p.bsrSet.Contain(symbols.NT_S, 0, m) {
 		p.sortParseErrors()
 		return nil, p.parseErrors
 	}
@@ -329,26 +398,84 @@ func (p *parser) testSelect(l slot.Label) bool {
 }
 
 var first = []map[token.Type]string{
-	// Aa : ∙\
+	// A : ∙a
 	{
-		token.T_1: "\\",
+		token.T_0: "a",
 	},
-	// Aa : \ ∙
+	// A : a ∙
+	{
+		token.T_1: "b",
+	},
+	// B : ∙b
+	{
+		token.T_1: "b",
+	},
+	// B : b ∙
+	{
+		token.T_2: "c",
+	},
+	// C : ∙c
+	{
+		token.T_2: "c",
+	},
+	// C : c ∙
+	{
+		token.EOF: "$",
+		token.T_0: "a",
+	},
+	// S : ∙A B C
+	{
+		token.T_0: "a",
+	},
+	// S : A ∙B C
+	{
+		token.T_1: "b",
+	},
+	// S : A B ∙C
+	{
+		token.T_2: "c",
+	},
+	// S : A B C ∙
 	{
 		token.EOF: "$",
 	},
-	// Aa : ∙"
+	// S : ∙A B C S
 	{
-		token.T_0: "\"",
+		token.T_0: "a",
 	},
-	// Aa : " ∙
+	// S : A ∙B C S
+	{
+		token.T_1: "b",
+	},
+	// S : A B ∙C S
+	{
+		token.T_2: "c",
+	},
+	// S : A B C ∙S
+	{
+		token.T_0: "a",
+	},
+	// S : A B C S ∙
 	{
 		token.EOF: "$",
 	},
 }
 
 var followSets = []map[token.Type]string{
-	// Aa
+	// A
+	{
+		token.T_1: "b",
+	},
+	// B
+	{
+		token.T_2: "c",
+	},
+	// C
+	{
+		token.EOF: "$",
+		token.T_0: "a",
+	},
+	// S
 	{
 		token.EOF: "$",
 	},

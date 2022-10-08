@@ -160,6 +160,13 @@ var TypeToID = []string {
     "\\", 
 }
 
+var IDToType = map[string]Type { 
+    "Error": 0, 
+    "$": 1, 
+    "\"": 2, 
+    "\\": 3, 
+}
+
 var Suppress = []bool { 
     false, 
     false, 

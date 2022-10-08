@@ -19,14 +19,18 @@ func (T) isSymbol() {}
 // NT is the type of non-terminals symbols
 type NT int
 const( 
-	NT_Aa NT = iota
+	NT_A NT = iota
+	NT_B 
+	NT_C 
+	NT_S 
 )
 
 // T is the type of terminals symbols
 type T int
 const( 
-	T_0 T = iota // \" 
-	T_1  // \\ 
+	T_0 T = iota // a 
+	T_1  // b 
+	T_2  // c 
 )
 
 type Symbols []Symbol
@@ -67,14 +71,21 @@ func (t T) String() string {
 }
 
 var ntToString = []string { 
-	"Aa", /* NT_Aa */ 
+	"A", /* NT_A */
+	"B", /* NT_B */
+	"C", /* NT_C */
+	"S", /* NT_S */ 
 }
 
 var tToString = []string { 
-	"\"", /* T_0 */
-	"\\", /* T_1 */ 
+	"a", /* T_0 */
+	"b", /* T_1 */
+	"c", /* T_2 */ 
 }
 
 var stringNT = map[string]NT{ 
-	"Aa":NT_Aa,
+	"A":NT_A,
+	"B":NT_B,
+	"C":NT_C,
+	"S":NT_S,
 }

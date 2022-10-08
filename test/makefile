@@ -1,4 +1,5 @@
-.PHONY: lex
+.PHONY: all
 
-lex:
+all:
 	make -C lex
+	make -C bsr
