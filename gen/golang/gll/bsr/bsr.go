@@ -62,6 +62,7 @@ import (
 	"{{.}}/lexer"
 	"{{.}}/parser/slot"
 	"{{.}}/parser/symbols"
+	"{{.}}/sppf"
 	"{{.}}/token"
 )
 
@@ -210,6 +211,17 @@ func (s *Set) GetRoots() (roots []BSR) {
 	for b := range s.slotEntries {
 		if b.Label.Head() == s.startSym && b.leftExtent == 0 && s.rightExtent == b.rightExtent {
 			roots = append(roots, b)
+		}
+	}
+	return
+}
+
+// GetAllStrings returns all string elements with symbols = str,
+// left extent = lext and right extent = rext
+func (s *Set) GetAllStrings(str symbols.Symbols, lext, rext int) (strs []*stringBSR) {
+	for _, s := range s.stringEntries {
+		if s.Symbols.Equal(str) && s.leftExtent == lext && s.rightExtent == rext {
+			strs = append(strs, s)
 		}
 	}
 	return
@@ -577,4 +589,131 @@ func isAmbiguous(b BSR) bool {
 	}
 	return false
 }
+
+//---- SPPF ------------
+
+type bldSPPF struct {
+	root         *sppf.SymbolNode
+	extLeafNodes []sppf.Node
+	pNodes       map[string]*sppf.PackedNode
+	sNodes       map[string]*sppf.SymbolNode // Index is Node.Label()
+}
+
+func (pf *Set) ToSPPF() *sppf.SymbolNode {
+	fmt.Println("ToSPPF:")
+	bld := &bldSPPF{
+		pNodes: map[string]*sppf.PackedNode{},
+		sNodes: map[string]*sppf.SymbolNode{},
+	}
+	rt := pf.GetRoots()[0]
+	bld.root = bld.mkSN(rt.Label.Head(), rt.leftExtent, rt.rightExtent)
+
+	for len(bld.extLeafNodes) > 0 {
+		// let w = (μ, i, j) be an extendable leaf node of G
+		w := bld.extLeafNodes[len(bld.extLeafNodes)-1]
+		bld.extLeafNodes = bld.extLeafNodes[:len(bld.extLeafNodes)-1]
+
+		// μ is a nonterminal X in Γ
+		if nt, ok := w.(*sppf.SymbolNode); ok && nt.Symbol.IsNonTerminal() {
+			bsts := pf.getNTSlot(nt.Symbol, nt.Lext, nt.Rext)
+			// for each (X ::=γ,i,k, j)∈Υ { mkPN(X ::=γ·,i,k, j,G) } }
+			for _, bst := range bsts {
+				slt := bst.Label.Slot()
+				nt.Children = append(nt.Children,
+					bld.mkPN(slt.NT, slt.Symbols, slt.Pos,
+						bst.leftExtent, bst.pivot, bst.rightExtent))
+			}
+		} else { // w is an intermediate node
+			// suppose μ is X ::=α·δ
+			in := w.(*sppf.IntermediateNode)
+			if in.Pos == 1 {
+				in.Children = append(in.Children, bld.mkPN(in.NT, in.Body, in.Pos,
+					in.Lext, in.Lext, in.Rext))
+			} else {
+				// for each (α,i,k, j)∈Υ { mkPN(X ::=α·δ,i,k, j,G) } } } }
+				alpha, delta := in.Body[:in.Pos], in.Body[in.Pos:]
+				for _, str := range pf.GetAllStrings(alpha, in.Lext, in.Rext) {
+					body := append(str.Symbols, delta...)
+					in.Children = append(in.Children,
+						bld.mkPN(in.NT, body, in.Pos, str.leftExtent, str.pivot, str.rightExtent))
+				}
+			}
+		}
+	}
+	return bld.root
+}
+
+func (bld *bldSPPF) mkIN(nt symbols.NT, body symbols.Symbols, pos int,
+	lext, rext int) *sppf.IntermediateNode {
+
+	in := &sppf.IntermediateNode{
+		NT:   nt,
+		Body: body,
+		Pos:  pos,
+		Lext: lext,
+		Rext: rext,
+	}
+	bld.extLeafNodes = append(bld.extLeafNodes, in)
+	return in
+}
+
+func (bld *bldSPPF) mkPN(nt symbols.NT, body symbols.Symbols, pos int,
+	lext, pivot, rext int) *sppf.PackedNode {
+	// fmt.Printf("mkPN %s\n", b)
+
+	// X ::= ⍺ • β, k
+	pn := &sppf.PackedNode{
+		NT:         nt,
+		Body:       body,
+		Pos:        pos,
+		Lext:       lext,
+		Rext:       rext,
+		Pivot:      pivot,
+		LeftChild:  nil,
+		RightChild: nil,
+	}
+	if _, exist := bld.pNodes[pn.Label()]; exist {
+		panic("must not happen")
+	}
+	bld.pNodes[pn.Label()] = pn
+
+	// ⍺ = ϵ
+	if lext == rext {
+		// TODO: check this condition
+		pn.RightChild = bld.mkSN(pn.Body[0], lext, lext)
+	}
+	// if ( α=βx, where |x|=1) {
+	if rext-pivot == 1 {
+		// mkN(x,k, j, y,G)
+		pn.RightChild = bld.mkSN(pn.Body[pn.Pos-1], pivot, rext)
+
+		// if (|β|=1) mkN(β,i,k,y,G)
+		if pivot-lext == 1 {
+			pn.LeftChild = bld.mkSN(pn.Body[pn.Pos-2], lext, pivot)
+		}
+		// if (|β|>1) mkN(X ::=β·xδ,i,k,y,G)
+		if pivot-lext > 1 {
+			pn.LeftChild = bld.mkIN(pn.NT, pn.Body, pn.Pos-1, lext, pivot)
+		}
+	}
+
+	return pn
+}
+
+func (bld *bldSPPF) mkSN(symbol symbols.Symbol, lext, rext int) *sppf.SymbolNode {
+	sn := &sppf.SymbolNode{
+		Symbol: symbol,
+		Lext:   lext,
+		Rext:   rext,
+	}
+	if sn1, exist := bld.sNodes[sn.Label()]; exist {
+		return sn1
+	}
+	bld.sNodes[sn.Label()] = sn
+	if symbol.IsNonTerminal() {
+		bld.extLeafNodes = append(bld.extLeafNodes, sn)
+	}
+	return sn
+}
+
 `

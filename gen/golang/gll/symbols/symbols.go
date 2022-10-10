@@ -82,6 +82,18 @@ const( {{range $i, $t := .Terminals}}
 
 type Symbols []Symbol
 
+func (ss Symbols) Equal(ss1 Symbols) bool {
+	if len(ss) != len(ss1) {
+		return false
+	}
+	for i, s := range ss {
+		if s.String() != ss1[i].String() {
+			return false
+		}
+	}
+	return true
+}
+
 func (ss Symbols) String() string {
 	w := new(bytes.Buffer)
 	for i, s := range ss {

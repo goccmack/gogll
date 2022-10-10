@@ -29,6 +29,7 @@ import (
 	"github.com/goccmack/gogll/v3/frstflw"
 	"github.com/goccmack/gogll/v3/gen/golang/gll/bsr"
 	"github.com/goccmack/gogll/v3/gen/golang/gll/slots"
+	"github.com/goccmack/gogll/v3/gen/golang/gll/sppf"
 	"github.com/goccmack/gogll/v3/gen/golang/gll/symbols"
 	"github.com/goccmack/gogll/v3/gslot"
 	"github.com/goccmack/goutil/ioutil"
@@ -48,6 +49,7 @@ func Gen(g *ast.GoGLL, gs *gslot.GSlot, ff *frstflw.FF) {
 	gn.genParser(parserDir)
 	bsr.Gen(filepath.Join(parserDir, "bsr", "bsr.go"), g.Package.GetString())
 	slots.Gen(filepath.Join(parserDir, "slot", "slot.go"), g, gs, ff)
+	sppf.Gen(filepath.Join(cfg.BaseDir, "sppf", "sppf.go"), g.Package.GetString())
 	symbols.Gen(filepath.Join(parserDir, "symbols", "symbols.go"), g)
 }
 
