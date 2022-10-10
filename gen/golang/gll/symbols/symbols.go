@@ -129,6 +129,21 @@ func (t T) String() string {
 	return tToString[t]
 }
 
+// IsNT returns true iff sym is a non-terminal symbol of the grammar
+func IsNT(sym string) bool {
+	_, exist := stringNT[sym]
+	return exist
+}
+
+// ToNT returns the NT value of sym or panics if sym is not a non-terminal of the grammar
+func ToNT(sym string) NT {
+	nt, exist := stringNT[sym]
+	if !exist {
+		panic(fmt.Sprintf("No NT: %s", sym))
+	}
+	return nt
+}
+
 var ntToString = []string { {{range $nt := .NonTerminals}}
 	"{{$nt}}", /* NT_{{$nt}} */{{end}} 
 }

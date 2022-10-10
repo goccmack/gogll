@@ -56,7 +56,7 @@ type IntermediateNode struct {
 }
 
 type SymbolNode struct {
-	Symbol     symbols.Symbol
+	Symbol     string
 	Lext, Rext int
 	Children   []*PackedNode
 }
@@ -138,7 +138,7 @@ func (root *SymbolNode) DotFile(file string) {
 }
 
 func (n *IntermediateNode) dot(bld *dotBuilder) {
-	fmt.Println("in.dot", n.Label())
+	// fmt.Println("in.dot", n.Label())
 
 	fmt.Fprintf(bld.w, "%s [shape=box]\n", n.Label())
 
@@ -151,7 +151,7 @@ func (n *IntermediateNode) dot(bld *dotBuilder) {
 }
 
 func (n *SymbolNode) dot(bld *dotBuilder) {
-	fmt.Println("sn.dot", n.Label())
+	// fmt.Println("sn.dot", n.Label())
 
 	fmt.Fprintln(bld.w, n.Label())
 	for _, pn := range n.Children {
@@ -171,7 +171,7 @@ func (n *SymbolNode) dot(bld *dotBuilder) {
 }
 
 func (n *PackedNode) dot(bld *dotBuilder) {
-	fmt.Println("pn.dot", n.Label(), "exist", bld.pNodes[n.Label()])
+	// fmt.Println("pn.dot", n.Label(), "exist", bld.pNodes[n.Label()])
 
 	fmt.Fprintf(bld.w, "%s [shape=box,style=rounded]\n", n.Label())
 	if n.LeftChild != nil {
