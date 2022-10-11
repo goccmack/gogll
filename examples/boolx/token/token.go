@@ -164,6 +164,14 @@ var TypeToID = []string {
     "|", 
 }
 
+var IDToType = map[string]Type { 
+    "Error": 0, 
+    "$": 1, 
+    "&": 2, 
+    "var": 3, 
+    "|": 4, 
+}
+
 var Suppress = []bool { 
     false, 
     false, 

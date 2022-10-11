@@ -26,7 +26,7 @@ type Expr struct {
 	Right *Expr
 }
 
-const t1Src = `a | b & c | d & e`
+const t1Src = `a | b & c`
 
 func Test1(t *testing.T) {
 	bsrSet, errs := parser.Parse(lexer.New([]rune(t1Src)))
@@ -41,12 +41,17 @@ func Test1(t *testing.T) {
 	for i, r := range bsrSet.GetRoots() {
 		fmt.Printf("%d: %s\n", i, buildExpr(r))
 	}
+
+	bsrSet.Dump()
+	bsrSet.ToSPPF().DotFile("boolx-SPPF.dot")
 }
 
 /*
 Expr :   var
-     |   Expr Op Expr
-     ;
+
+	|   Expr Op Expr
+	;
+
 Op : "&" | "|" ;
 */
 func buildExpr(b bsr.BSR) *Expr {

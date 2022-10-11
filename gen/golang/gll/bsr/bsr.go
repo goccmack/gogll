@@ -12,13 +12,6 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-/*
-ToDo:
-
-* StrBSR is specific to a grammar slot rather than a symbol string. In an
-ambiguous grammar this leads to more string BSRs than necessary.
-*/
-
 // Package bsr generates a Go BSR package
 package bsr
 
@@ -672,8 +665,8 @@ func (bld *bldSPPF) mkPN(nt symbols.NT, body symbols.Symbols, pos int,
 		LeftChild:  nil,
 		RightChild: nil,
 	}
-	if _, exist := bld.pNodes[pn.Label()]; exist {
-		panic("must not happen")
+	if pn1, exist := bld.pNodes[pn.Label()]; exist {
+		return pn1
 	}
 	bld.pNodes[pn.Label()] = pn
 

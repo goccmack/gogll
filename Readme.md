@@ -40,6 +40,8 @@ For comparable grammars tested so far gogll produces faster lexers and parsers
 than [gocc](https://github.com/goccmack/gocc) (FSA/LR-1).
 
 # News
+## 2022-08-11
+SPPF extraction added to the generated code. See [boolx example](examples/boolx/sppf.md)
 ## 2022-08-09
 Gogll is used to build DAU [DASL](https://dau-technology.github.io/dau-blog/post/2022-08-02-dasl/)
 

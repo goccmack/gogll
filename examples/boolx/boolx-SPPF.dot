@@ -1,0 +1,81 @@
+digraph SPPF {
+"Expr,0,5"
+"Expr,0,5" -> "Expr: Expr Op Expr•,0,2,5"
+"Expr: Expr Op Expr•,0,2,5" [shape=box,style=rounded,penwidth=3]
+"Expr: Expr Op •Expr:,0,2" [shape=box]
+"Expr: Expr Op •Expr:,0,2" -> "Expr: Expr Op •Expr,0,1,2"
+"Expr: Expr Op •Expr,0,1,2" [shape=box,style=rounded,penwidth=3]
+"Expr,0,1"
+"Expr,0,1" -> "Expr: var•,0,0,1"
+"Expr: var•,0,0,1" [shape=box,style=rounded,penwidth=3]
+"var,0,1"
+
+"Expr: var•,0,0,1" -> "var,0,1"
+"Expr: var•,0,0,1"
+"Expr: Expr Op •Expr,0,1,2" -> "Expr,0,1"
+"Op,1,2"
+"Op,1,2" -> "Op: |•,1,1,2"
+"Op: |•,1,1,2" [shape=box,style=rounded,penwidth=3]
+"|,1,2"
+
+"Op: |•,1,1,2" -> "|,1,2"
+"Op: |•,1,1,2"
+"Expr: Expr Op •Expr,0,1,2" -> "Op,1,2"
+"Expr,0,1","Op,1,2"
+"Expr: Expr Op Expr•,0,2,5" -> "Expr: Expr Op •Expr:,0,2"
+"Expr,2,5"
+"Expr,2,5" -> "Expr: Expr Op Expr•,2,4,5"
+"Expr: Expr Op Expr•,2,4,5" [shape=box,style=rounded,penwidth=3]
+"Expr: Expr Op •Expr:,2,4" [shape=box]
+"Expr: Expr Op •Expr:,2,4" -> "Expr: Expr Op •Expr,2,3,4"
+"Expr: Expr Op •Expr,2,3,4" [shape=box,style=rounded,penwidth=3]
+"Expr,2,3"
+"Expr,2,3" -> "Expr: var•,2,2,3"
+"Expr: var•,2,2,3" [shape=box,style=rounded,penwidth=3]
+"var,2,3"
+
+"Expr: var•,2,2,3" -> "var,2,3"
+"Expr: var•,2,2,3"
+"Expr: Expr Op •Expr,2,3,4" -> "Expr,2,3"
+"Op,3,4"
+"Op,3,4" -> "Op: &•,3,3,4"
+"Op: &•,3,3,4" [shape=box,style=rounded,penwidth=3]
+"&,3,4"
+
+"Op: &•,3,3,4" -> "&,3,4"
+"Op: &•,3,3,4"
+"Expr: Expr Op •Expr,2,3,4" -> "Op,3,4"
+"Expr,2,3","Op,3,4"
+"Expr: Expr Op Expr•,2,4,5" -> "Expr: Expr Op •Expr:,2,4"
+"Expr,4,5"
+"Expr,4,5" -> "Expr: var•,4,4,5"
+"Expr: var•,4,4,5" [shape=box,style=rounded,penwidth=3]
+"var,4,5"
+
+"Expr: var•,4,4,5" -> "var,4,5"
+"Expr: var•,4,4,5"
+"Expr: Expr Op Expr•,2,4,5" -> "Expr,4,5"
+"Expr: Expr Op •Expr:,2,4","Expr,4,5"
+"Expr: Expr Op Expr•,2,4,5"
+"Expr: Expr Op Expr•,0,2,5" -> "Expr,2,5"
+"Expr: Expr Op •Expr:,0,2","Expr,2,5"
+"Expr,0,5" -> "Expr: Expr Op Expr•,0,4,5"
+"Expr: Expr Op Expr•,0,4,5" [shape=box,style=rounded,penwidth=3]
+"Expr: Expr Op •Expr:,0,4" [shape=box]
+"Expr: Expr Op •Expr:,0,4" -> "Expr: Expr Op •Expr,0,3,4"
+"Expr: Expr Op •Expr,0,3,4" [shape=box,style=rounded,penwidth=3]
+"Expr,0,3"
+"Expr,0,3" -> "Expr: Expr Op Expr•,0,2,3"
+"Expr: Expr Op Expr•,0,2,3" [shape=box,style=rounded,penwidth=3]
+"Expr: Expr Op Expr•,0,2,3" -> "Expr: Expr Op •Expr:,0,2"
+"Expr: Expr Op Expr•,0,2,3" -> "Expr,2,3"
+"Expr: Expr Op •Expr:,0,2","Expr,2,3"
+"Expr: Expr Op Expr•,0,2,3"
+"Expr: Expr Op •Expr,0,3,4" -> "Expr,0,3"
+"Expr: Expr Op •Expr,0,3,4" -> "Op,3,4"
+"Expr,0,3","Op,3,4"
+"Expr: Expr Op Expr•,0,4,5" -> "Expr: Expr Op •Expr:,0,4"
+"Expr: Expr Op Expr•,0,4,5" -> "Expr,4,5"
+"Expr: Expr Op •Expr:,0,4","Expr,4,5"
+"Expr: Expr Op Expr•,0,2,5";"Expr: Expr Op Expr•,0,4,5"
+}

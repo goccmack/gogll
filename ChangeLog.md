@@ -1,6 +1,7 @@
 # Change Log
 
-# V3.3.3 
+# V3.4.0
+* Extraction of Shared Packed Parse Forest from BSR set added 
 * BSR set stores only symbol strings in stringBSR
 
 # V3.3.2 2022-10-02

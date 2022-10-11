@@ -164,6 +164,18 @@ const(
 
 type Symbols []Symbol
 
+func (ss Symbols) Equal(ss1 Symbols) bool {
+	if len(ss) != len(ss1) {
+		return false
+	}
+	for i, s := range ss {
+		if s.String() != ss1[i].String() {
+			return false
+		}
+	}
+	return true
+}
+
 func (ss Symbols) String() string {
 	w := new(bytes.Buffer)
 	for i, s := range ss {
@@ -197,6 +209,21 @@ func (nt NT) String() string {
 
 func (t T) String() string {
 	return tToString[t]
+}
+
+// IsNT returns true iff sym is a non-terminal symbol of the grammar
+func IsNT(sym string) bool {
+	_, exist := stringNT[sym]
+	return exist
+}
+
+// ToNT returns the NT value of sym or panics if sym is not a non-terminal of the grammar
+func ToNT(sym string) NT {
+	nt, exist := stringNT[sym]
+	if !exist {
+		panic(fmt.Sprintf("No NT: %s", sym))
+	}
+	return nt
 }
 
 var ntToString = []string { 
