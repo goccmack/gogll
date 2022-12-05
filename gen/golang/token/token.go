@@ -128,7 +128,7 @@ func (t *Token) GetInput() []rune {
     return t.input
 }
 
-// Lext returns the left extent of t
+// Lext returns the left extent of t in the input stream of runes
 func (t *Token) Lext() int {
     return t.lext
 }
@@ -172,7 +172,7 @@ func (t *Token) LiteralStringStripEscape() string {
 	return string(t.LiteralStripEscape())
 }
 
-// Rext returns the right extent of t in the input
+// Rext returns the right extent of t in the input stream of runes
 func (t *Token) Rext() int {
     return t.rext
 }

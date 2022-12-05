@@ -398,12 +398,12 @@ func (b BSR) GetTChildI(i int) *token.Token {
     return b.set.lex.Tokens[lext]
 }
 
-// LeftExtent returns the left extent of the BSR
+// LeftExtent returns the left extent of the BSR in the stream of tokens
 func (b BSR) LeftExtent() int {
     return b.leftExtent
 }
 
-// RightExtent returns the right extent of the BSR
+// RightExtent returns the right extent of the BSR in the stream of tokens
 func (b BSR) RightExtent() int {
     return b.rightExtent
 }
