@@ -19,7 +19,6 @@ import (
 	"bytes"
 	"fmt"
 	"go/format"
-	"os"
 	"path"
 	"path/filepath"
 	"text/template"
@@ -94,7 +93,6 @@ func (g *gen) getData(baseDir string) *Data {
 func parseErrorError(err error) {
 	fmt.Printf("Error generating parser: %s\n", err)
 	panic("fix me")
-	os.Exit(1)
 }
 
 const mainTemplate = `

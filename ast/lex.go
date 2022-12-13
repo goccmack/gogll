@@ -469,7 +469,7 @@ func (u UnicodeRanges) String() string {
 		if rng.Exclude {
 			fmt.Fprint(w, "-")
 		}
-		fmt.Fprint(w, "\\p{%s}", rng)
+		fmt.Fprintf(w, "\\p{%s}", rng)
 	}
 	return w.String()
 }
