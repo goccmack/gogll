@@ -29,7 +29,7 @@ func States(symbols []string, lr0items *items.Items, first *first.First) *states
 						}
 					}
 
-					st_trans = append(st_trans, states.Transition{trans.Sym, s.List[snum]})
+					st_trans = append(st_trans, states.Transition{Sym: trans.Sym, State: s.List[snum]})
 				}
 			}
 			if !merged {

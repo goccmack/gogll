@@ -298,7 +298,6 @@ func sortEvents(events []ast.LexBase) {
 		default:
 			panic("Invalid")
 		}
-		panic("Missing return")
 	})
 }
 

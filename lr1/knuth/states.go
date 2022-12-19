@@ -19,7 +19,7 @@ func States(symbols []string, lr0items *items.Items, first *first.First) *states
 			newState := true
 			for _, snum := range symSuccessors[trans.Sym] {
 				if s.List[snum].Equal(trans.State) {
-					st_trans = append(st_trans, states.Transition{trans.Sym, s.List[snum]})
+					st_trans = append(st_trans, states.Transition{Sym: trans.Sym, State: s.List[snum]})
 					newState = false
 				}
 			}

@@ -261,11 +261,11 @@ func (sets *Sets) add(set *Set) *Sets {
 }
 
 func stringLitToRule(sl *ast.StringLit) *ast.LexRule {
-	return &ast.LexRule{false, ast.StringLitToTokID(sl), stringLitToRegExp(sl)}
+	return &ast.LexRule{Suppress: false, TokID: ast.StringLitToTokID(sl), RegExp: stringLitToRegExp(sl)}
 }
 
 func stringLitToRegExp(sl *ast.StringLit) *ast.RegExp {
-	return &ast.RegExp{stringLitToLexSymbols(sl)}
+	return &ast.RegExp{Symbols: stringLitToLexSymbols(sl)}
 }
 
 func stringLitToLexSymbols(sl *ast.StringLit) (symbols []ast.LexSymbol) {
