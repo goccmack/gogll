@@ -204,6 +204,7 @@ char_lit : '\'' (not "'" | '\\' any "\\'nrt") '\'' ;
 ```
 `char_lit` is a character literal enclosed in single quotes. A char literal may
 be an escaped character:
+
 |char_lit| Description |
 |---|---|
 `'\''` | single quote
@@ -214,6 +215,7 @@ be an escaped character:
 
 Lexical symbols may be grouped and groups may be optional or repeated.
 For example:
+
 | Bracketed expression | Meaning
 |---|---|
 | `( 𝜶 )` | 𝜶 must occur once
