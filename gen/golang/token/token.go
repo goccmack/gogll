@@ -156,7 +156,7 @@ func (t *Token) LiteralStripEscape() []rune {
 			case 'r':
 				strip = append(strip, '\r')
 			case 'n':
-				strip = append(strip, '\r')
+				strip = append(strip, '\n')
 			default:
 				strip = append(strip, lit[i])
 			}
