@@ -311,6 +311,13 @@ func loadMd(input []rune) {
 				input[i+j] = ' '
 			}
 			i += 3
+			// Skip language tag on same line as opening backticks
+			if !text {
+				for i < len(input) && input[i] != '\n' {
+					input[i] = ' '
+					i++
+				}
+			}
 		}
 		if i < len(input) {
 			if text {
